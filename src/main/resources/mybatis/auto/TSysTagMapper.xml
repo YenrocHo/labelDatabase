@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fc.test.mapper.auto.TSysTagMapper" >
+  <resultMap id="BaseResultMap" type="com.fc.test.model.custom.TSysTag" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stage" property="stage" jdbcType="VARCHAR" />
+    <result column="variety" property="variety" jdbcType="VARCHAR" />
+    <result column="product_Name" property="productName" jdbcType="VARCHAR" />
+    <result column="expiration" property="expiration" jdbcType="INTEGER" />
+    <result column="items" property="items" jdbcType="VARCHAR" />
+    <result column="print_User" property="printUser" jdbcType="VARCHAR" />
+    <result column="print_Time" property="printTime" jdbcType="TIMESTAMP" />
+    <result column="end_Time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="put_Time" property="putTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stage, variety, product_Name, expiration, items, print_User, print_Time, end_Time, 
+    put_Time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_tag
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fc.test.model.custom.TSysTagExample" >
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_tag
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sys_tag
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fc.test.model.custom.TSysTag" >
+    insert into t_sys_tag (id, stage, variety, 
+      product_Name, expiration, items, 
+      print_User, print_Time, end_Time, 
+      put_Time)
+    values (#{id,jdbcType=VARCHAR}, #{stage,jdbcType=VARCHAR}, #{variety,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{expiration,jdbcType=INTEGER}, #{items,jdbcType=VARCHAR}, 
+      #{printUser,jdbcType=VARCHAR}, #{printTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{putTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fc.test.model.custom.TSysTag" >
+    insert into t_sys_tag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="stage != null" >
+        stage,
+      </if>
+      <if test="variety != null" >
+        variety,
+      </if>
+      <if test="productName != null" >
+        product_Name,
+      </if>
+      <if test="expiration != null" >
+        expiration,
+      </if>
+      <if test="items != null" >
+        items,
+      </if>
+      <if test="printUser != null" >
+        print_User,
+      </if>
+      <if test="printTime != null" >
+        print_Time,
+      </if>
+      <if test="endTime != null" >
+        end_Time,
+      </if>
+      <if test="putTime != null" >
+        put_Time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="stage != null" >
+        #{stage,jdbcType=VARCHAR},
+      </if>
+      <if test="variety != null" >
+        #{variety,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="expiration != null" >
+        #{expiration,jdbcType=INTEGER},
+      </if>
+      <if test="items != null" >
+        #{items,jdbcType=VARCHAR},
+      </if>
+      <if test="printUser != null" >
+        #{printUser,jdbcType=VARCHAR},
+      </if>
+      <if test="printTime != null" >
+        #{printTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="putTime != null" >
+        #{putTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fc.test.model.custom.TSysTag" >
+    update t_sys_tag
+    <set >
+      <if test="stage != null" >
+        stage = #{stage,jdbcType=VARCHAR},
+      </if>
+      <if test="variety != null" >
+        variety = #{variety,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_Name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="expiration != null" >
+        expiration = #{expiration,jdbcType=INTEGER},
+      </if>
+      <if test="items != null" >
+        items = #{items,jdbcType=VARCHAR},
+      </if>
+      <if test="printUser != null" >
+        print_User = #{printUser,jdbcType=VARCHAR},
+      </if>
+      <if test="printTime != null" >
+        print_Time = #{printTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_Time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="putTime != null" >
+        put_Time = #{putTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fc.test.model.custom.TSysTag" >
+    update t_sys_tag
+    set stage = #{stage,jdbcType=VARCHAR},
+      variety = #{variety,jdbcType=VARCHAR},
+      product_Name = #{productName,jdbcType=VARCHAR},
+      expiration = #{expiration,jdbcType=INTEGER},
+      items = #{items,jdbcType=VARCHAR},
+      print_User = #{printUser,jdbcType=VARCHAR},
+      print_Time = #{printTime,jdbcType=TIMESTAMP},
+      end_Time = #{endTime,jdbcType=TIMESTAMP},
+      put_Time = #{putTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
