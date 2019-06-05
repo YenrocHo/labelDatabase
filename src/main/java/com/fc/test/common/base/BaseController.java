@@ -57,9 +57,6 @@ public class BaseController
 	//标签管理
     @Autowired
     public SysTagService sysTagService;
-    //员工管理
-    @Autowired
-    public SysEmployeesService sysEmployeesService;
     //阶段管理
     @Autowired
     public SysStageService sysStageService;

@@ -69,7 +69,7 @@ public class UserController extends BaseController{
 	@PostMapping("add")
 	@RequiresPermissions("system:user:add")
 	@ResponseBody
-	public AjaxResult add(TsysUser user,Model model,@RequestParam(value="roles", required = false)List<String> roles){
+	public AjaxResult add(TsysUser user,@RequestParam(value="roles", required = false)List<String> roles){
 		int b=sysUserService.insertUserRoles(user,roles);
 		if(b>0){
 			return success();

@@ -109,4 +109,19 @@ public class StageController extends BaseController {
         return toAjax(sysStageService.updateByPrimaryKeySelective(tSysStage));
     }
 
+    /**
+     * 删除用户
+     * @return
+     */
+    @PostMapping("remove")
+    @RequiresPermissions("system:stage:remove")
+    @ResponseBody
+    public AjaxResult remove(String id){
+        int b=sysStageService.deleteByPrimaryKey(id);
+        if(b>0){
+            return success();
+        }else{
+            return error();
+        }
+    }
 }

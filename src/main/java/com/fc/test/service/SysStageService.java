@@ -1,6 +1,7 @@
 package com.fc.test.service;
 
 import com.fc.test.common.base.BaseService;
+import com.fc.test.common.support.Convert;
 import com.fc.test.mapper.auto.process.TSysStageMapper;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.model.custom.process.TSysStage;
@@ -22,7 +23,10 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
 
     @Override
     public  int deleteByPrimaryKey(String id){
-        return tSysStageMapper.deleteByPrimaryKey(id);
+        List<String> list = Convert.toListStrArray(id);
+        TSysStageExample tSysStage = new TSysStageExample();
+        tSysStage.createCriteria().andIdIn(list);
+        return tSysStageMapper.deleteByExample(tSysStage);
     }
 
     /**

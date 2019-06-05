@@ -22,7 +22,7 @@
     
 -->
 
-    <context id="oracle" targetRuntime="MyBatis3" defaultModelType="flat">
+    <context id="mysql" targetRuntime="MyBatis3" defaultModelType="flat">
         <!-- 序列化model-->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
         <!-- 阻止生成自动注释 -->
@@ -39,9 +39,9 @@
         <!-- 数据库链接地址账号密码 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://127.0.0.1:3306/test"
+                connectionURL="jdbc:mysql://134.175.91.16:3306/demo"
                 userId="root"
-                password="root">
+                password="123456">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -66,23 +66,6 @@
         <table tableName="t_sys_user" domainObjectName="TsysUser" enableCountByExample="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
-        <!-- 配置需要生成的表 
-        <table tableName="t_sys_user" domainObjectName="TsysUser" enableCountByExample="true">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-         <table tableName="t_sys_role" domainObjectName="TsysRole" enableCountByExample="true">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-        <table tableName="t_sys_premission" domainObjectName="TsysPremission" enableCountByExample="true">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-         <table tableName="t_sys_role_user" domainObjectName="TSysRoleUser" enableCountByExample="true">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-        <table tableName="t_sys_permission_role" domainObjectName="TsysPermissionRole" enableCountByExample="true">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>-->
-        
-        
+        <!-- 配置需要生成的表 -->
     </context>
 </generatorConfiguration>

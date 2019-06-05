@@ -124,16 +124,21 @@
     var dataUrl=window.rootPath+"/StageController/list";
     var createUrl=window.rootPath+"/StageController/add";
     var updateUrl=window.rootPath+"/StageController/edit/{id}";
+    var removeUrl=window.rootPath+"/StageController/remove";
     var options = {
         dataUrl: dataUrl,
         createUrl:createUrl,
         updateUrl:updateUrl,
+        removeUrl:removeUrl,
         sortName: "stage",
         modalName: "阶段",
         search: false,
         dataColumns: [
             {
                 checkbox: true
+            }, {
+                field: 'id',
+                title: 'id'
             }, {
                 field: 'stage',
                 title: '阶段'
