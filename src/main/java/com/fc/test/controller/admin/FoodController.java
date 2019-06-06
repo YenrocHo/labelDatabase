@@ -101,4 +101,20 @@ public class FoodController extends BaseController {
             return 0;
         }
     }
+    /**
+     * 删除食物
+     * @param ids
+     * @return
+     */
+    @PostMapping("remove")
+    @RequiresPermissions("system:food:remove")
+    @ResponseBody
+    public AjaxResult remove(String ids){
+        int b=sysFoodService.deleteByPrimaryKey(ids);
+        if(b>0){
+            return success();
+        }else{
+            return error();
+        }
+    }
 }

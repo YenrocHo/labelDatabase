@@ -150,7 +150,6 @@
                     data: {
                         name: function () {
                             return $.trim($("#foodName").val());
-                            alert($("#foodName").val());
                         }
                     },
                     dataFilter: function (data, type) {
@@ -166,7 +165,6 @@
             }
         },
         submitHandler:function(form){
-            alert(1);
             add();
         }
     });
@@ -177,7 +175,6 @@
      */
     function add() {
         var dataFormJson=$("#form-add").serialize();
-        alert(2);
         $.ajax({
             cache : true,
             type : "POST",

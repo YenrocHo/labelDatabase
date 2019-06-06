@@ -2,6 +2,7 @@ package com.fc.test.controller.admin;
 
 import java.util.List;
 
+import com.fc.test.model.auto.TSysItems;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,7 +62,9 @@ public class UserController extends BaseController{
     {
     	//添加角色列表
 		List<TsysRole> tsysRoleList=sysRoleService.queryList();
+		List<TSysItems> tSysItems = sysItemsService.queryItems();
 		modelMap.put("tsysRoleList",tsysRoleList);
+		modelMap.put("tSysItems",tSysItems);
         return prefix + "/add";
     }
 	
@@ -123,9 +126,10 @@ public class UserController extends BaseController{
     {
 		//查询所有角色
 		List<RoleVo> roleVos=sysUserService.getUserIsRole(id);
+		List<TSysItems> tSysItems = sysItemsService.queryItems();
 		mmap.put("roleVos",roleVos);
         mmap.put("TsysUser", sysUserService.selectByPrimaryKey(id));
-
+		mmap.put("tSysItems",tSysItems);
         return prefix + "/edit";
     }
 	
@@ -164,6 +168,7 @@ public class UserController extends BaseController{
     {
         return toAjax(sysUserService.updateUserPassword(tsysUser));
     }
+
 
 	
 }

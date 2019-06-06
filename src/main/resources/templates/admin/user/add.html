@@ -76,10 +76,8 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label ">项目点：</label>
 								<div class="col-sm-8">
-									<select class="form-control" id="items" name="items">
-										<option value="0">故障</option>
-										<option value="1">正常</option>
-										<option value="2">未关闭</option>
+									<select class="form-control" id="items" name="items" >
+										<option th:each="m : ${tSysItems}" th:value="${m.items}"><h3 th:text="${m.items}"></h3></option>
 									</select>
 								</div>
 							</div>

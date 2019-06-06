@@ -130,15 +130,20 @@
 <script type="text/javascript">
     var dataUrl=window.rootPath+"/FoodController/list";
     var createUrl=window.rootPath+"/FoodController/add";
+    var removeUrl=window.rootPath+"/FoodController/remove";
     var options = {
         dataUrl: dataUrl,
         createUrl: createUrl,
+        removeUrl:removeUrl,
         sortName: "foodName",
         modalName: "食品名称",
         search: false,
         dataColumns: [
             {
                 checkbox: true
+            }, {
+                field: 'id',
+                title: 'id'
             }, {
                 field: 'foodName',
                 title: '食品名称'

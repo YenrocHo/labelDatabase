@@ -103,4 +103,14 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
         List<TSysItems> list = selectByExample(example);
         return list.size();
     }
+
+    /**
+     * 获取项目点
+     * @param tSysItems
+     * @return
+     */
+    public List<TSysItems> queryItems(){
+        TSysItemsExample example = new TSysItemsExample();
+        return selectByExample(example);
+    }
 }

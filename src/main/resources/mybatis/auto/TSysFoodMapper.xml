@@ -62,6 +62,12 @@
       order by ${orderByClause}
     </if>
   </select>
+  <delete id="deleteByExample" parameterType="com.fc.test.model.custom.process.TSysFoodExample">
+    delete from t_sys_food
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
+  </delete>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from t_sys_food
     where id = #{id,jdbcType=VARCHAR}

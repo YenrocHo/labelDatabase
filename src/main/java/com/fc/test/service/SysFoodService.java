@@ -1,6 +1,7 @@
 package com.fc.test.service;
 
 import com.fc.test.common.base.BaseService;
+import com.fc.test.common.support.Convert;
 import com.fc.test.mapper.auto.process.TSysFoodMapper;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.model.custom.process.TSysFood;
@@ -20,8 +21,11 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
     @Autowired
     private TSysFoodMapper tSysFoodMapper;
     @Override
-    public int deleteByPrimaryKey(String id){
-        return tSysFoodMapper.deleteByPrimaryKey(id);
+    public int deleteByPrimaryKey(String ids){
+        List<String> lista = Convert.toListStrArray(ids);
+        TSysFoodExample example = new TSysFoodExample();
+        example.createCriteria().andIdIn(lista);
+        return tSysFoodMapper.deleteByExample(example);
     }
 
     @Override
