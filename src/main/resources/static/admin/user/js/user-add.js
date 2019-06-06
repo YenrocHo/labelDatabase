@@ -2,7 +2,6 @@
  * 用户页面js
  */
 
-alert("add");
 $("#form-add").validate({
 	rules:{
 		username:{
