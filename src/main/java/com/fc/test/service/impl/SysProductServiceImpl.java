@@ -71,6 +71,7 @@ public class SysProductServiceImpl implements SysProductService {
         return i;
     }
 
+    @Override
     public TSysProduct selectProductById(String id){
         TSysProduct tSysProduct = tSysProductMapper.selectByPrimaryKey(id);
         if (tSysProduct != null){
