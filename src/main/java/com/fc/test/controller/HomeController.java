@@ -117,6 +117,7 @@ public class HomeController extends BaseController{
 			 }
 		 BootstrapThree bootstrapThree=sysPremissionService.getbooBootstrapThreePerm();
      	 request.getSession().setAttribute("bootstrapThree", bootstrapThree);
+     	 request.getSession().setAttribute("currentUserName",userName);
 		 //跳转到 get请求的登陆方法
 		 view.setViewName("admin/index");
 		 return view;
