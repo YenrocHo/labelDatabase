@@ -63,6 +63,9 @@ public class BaseController
     //食品管理
     @Autowired
     public SysFoodService sysFoodService;
+    //食品管理
+    @Autowired
+    public SysItemsService sysItemsService;
 
     /**
      * 将前台传递过来的日期格式的字符串，自动转化为Date类型

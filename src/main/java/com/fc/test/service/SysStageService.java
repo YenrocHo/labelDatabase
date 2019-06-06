@@ -22,8 +22,8 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
     private TSysStageMapper tSysStageMapper;
 
     @Override
-    public  int deleteByPrimaryKey(String id){
-        List<String> list = Convert.toListStrArray(id);
+    public  int deleteByPrimaryKey(String ids){
+        List<String> list = Convert.toListStrArray(ids);
         TSysStageExample tSysStage = new TSysStageExample();
         tSysStage.createCriteria().andIdIn(list);
         return tSysStageMapper.deleteByExample(tSysStage);

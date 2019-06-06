@@ -89,6 +89,18 @@ CREATE TABLE `t_sys_stage` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='制作阶段';
 
+DROP TABLE IF EXISTS `t_sys_items`;
+CREATE TABLE `t_sys_items` (
+  `id` varchar(255) NOT NULL COMMENT 'id',
+  `items` varchar(255) DEFAULT NULL COMMENT '项目点名称',
+  `name` varchar(255) DEFAULT NULL COMMENT '中文名',
+  `english_name` varchar(255) DEFAULT NULL COMMENT '英文名',
+  `create_Time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_Time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='项目点';
+
+
 DROP TABLE IF EXISTS `t_sys_food`;
 CREATE TABLE `t_sys_food` (
   `id` varchar(255) NOT NULL COMMENT 'id',

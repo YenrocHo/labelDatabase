@@ -72,7 +72,7 @@
                             <!-- 工具条 -->
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                                  <button onclick="$.operate.add()" type="button" class="btn btn-primary">
-                                      <span class="entypo-plus-squared"></span>&nbsp;&nbsp;新增阶段
+                                      <span class="entypo-plus-squared"></span>&nbsp;&nbsp;新增项目点
                                   </button>
                                 <button onclick="$.operate.batRemove()" type="button" class="btn btn-info">
                                     <span class="entypo-trash"></span>&nbsp;&nbsp;删除
@@ -121,17 +121,17 @@
 <!-- 遮罩层 -->
 <script th:src="@{/static/admin/assets/js/blockUI/jquery.blockUI.js}" type="text/javascript"></script>
 <script type="text/javascript">
-    var dataUrl=window.rootPath+"/StageController/list";
-    var createUrl=window.rootPath+"/StageController/add";
-    var updateUrl=window.rootPath+"/StageController/edit/{id}";
-    var removeUrl=window.rootPath+"/StageController/remove";
+    var dataUrl=window.rootPath+"/ItemsController/list";
+    var createUrl=window.rootPath+"/ItemsController/add";
+    var updateUrl=window.rootPath+"/ItemsController/edit/{id}";
+    var removeUrl=window.rootPath+"/ItemsController/remove";
     var options = {
         dataUrl: dataUrl,
         createUrl:createUrl,
         updateUrl:updateUrl,
         removeUrl:removeUrl,
-        sortName: "stage",
-        modalName: "阶段",
+        sortName: "items",
+        modalName: "项目点",
         search: false,
         dataColumns: [
             {
@@ -140,8 +140,8 @@
                 field: 'id',
                 title: 'id'
             }, {
-                field: 'stage',
-                title: '阶段'
+                field: 'items',
+                title: '项目点'
             }, {
                 field: 'name',
                 title: '中文名'
