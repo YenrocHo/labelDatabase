@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.test.mapper.auto.process.TSysProductMapper">
+  <resultMap id="BaseResultMap" type="com.fc.test.model.custom.process.TSysProduct">
+    <id column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="c_name" jdbcType="VARCHAR" property="cName" />
+    <result column="e_name" jdbcType="VARCHAR" property="eName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    product_id, c_name, e_name, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_product
+    where product_id = #{productId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sys_product
+    where product_id = #{productId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fc.test.model.custom.process.TSysProduct">
+    insert into t_sys_product (product_id, c_name, e_name, 
+      create_time, update_time)
+    values (#{productId,jdbcType=VARCHAR}, #{cName,jdbcType=VARCHAR}, #{eName,jdbcType=VARCHAR}, 
+      now(), now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.fc.test.model.custom.process.TSysProduct">
+    insert into t_sys_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="cName != null">
+        c_name,
+      </if>
+      <if test="eName != null">
+        e_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null">
+        #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="eName != null">
+        #{eName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        now(),
+      </if>
+      <if test="updateTime != null">
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fc.test.model.custom.process.TSysProduct">
+    update t_sys_product
+    <set>
+      <if test="cName != null">
+        c_name = #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="eName != null">
+        e_name = #{eName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
+    </set>
+    where product_id = #{productId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fc.test.model.custom.process.TSysProduct">
+    update t_sys_product
+    set c_name = #{cName,jdbcType=VARCHAR},
+      e_name = #{eName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
+    where product_id = #{productId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_product
+  </select>
+  <select id="selectProductBycName" resultType="int" parameterType="string">
+    select
+    count(1)
+    from t_sys_product
+    where c_name = #{cName}
+  </select>
+  <delete id="deleteProductByIds" parameterType="map">
+    delete
+    from t_sys_product
+    where product_id in
+    <foreach collection="productIdList" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>
