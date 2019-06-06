@@ -75,19 +75,16 @@ public class HomeController extends BaseController{
 	/**
 	 * 用户登陆验证
 	 * @param user
-	 * @param rcode
 	 * @param redirectAttributes
 	 * @param rememberMe
-	 * @param model
 	 * @param request
 	 * @return
 	 */
 	@PostMapping("login")
-	public ModelAndView login(TsysUser user,String code,RedirectAttributes redirectAttributes,boolean rememberMe,Model model,HttpServletRequest request) {
+	public ModelAndView login(TsysUser user,RedirectAttributes redirectAttributes,boolean rememberMe,HttpServletRequest request) {
 		 ModelAndView view =new ModelAndView();
-		 String scode = (String)request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
+		// String scode = (String)request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
 		 //判断验证码
-		 if(StringUtils.isNotEmpty(scode)&&StringUtils.isNotEmpty(code)&&scode.equals(code)){
 			 String userName = user.getUsername();
 			 Subject currentUser = SecurityUtils.getSubject();
 			 if(!currentUser.isAuthenticated()) {
@@ -98,10 +95,7 @@ public class HomeController extends BaseController{
 					 }
 					 //存入用户
 					 currentUser.login(token);
-					 
 					 //setTitle(model, new TitleVo("欢迎页面", "首页", true,"欢迎进入", true, false));
-						
-					 
 				 }catch (UnknownAccountException uae) {
 			            logger.info("对用户[" + userName + "]进行登录验证..验证未通过,未知账户");
 			            redirectAttributes.addFlashAttribute("message", "未知账户");
@@ -121,9 +115,6 @@ public class HomeController extends BaseController{
 			            redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
 			        }
 			 }
-		 }else{
-			 redirectAttributes.addFlashAttribute("message", "验证码不正确");
-		 }
 		 BootstrapThree bootstrapThree=sysPremissionService.getbooBootstrapThreePerm();
      	 request.getSession().setAttribute("bootstrapThree", bootstrapThree);
 		 //跳转到 get请求的登陆方法
