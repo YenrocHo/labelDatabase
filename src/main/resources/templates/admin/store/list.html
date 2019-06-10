@@ -89,7 +89,6 @@
                                     <span class="entypo-trash"></span>&nbsp;&nbsp;删除
                                 </button>
 
-
                             </div>
                             <!-- 工具条 end-->
                             <table id="dataTable" class="table-striped footable-res footable metro-blue" data-page-size="6">
@@ -134,10 +133,10 @@
     <!-- jquery-export 表格导出插件 -->
 
     <!-- 导出 -->
-    var dataUrl  =window.rootPath+"/ProductController/list";
-    var removeUrl=window.rootPath+"/ProductController/remove";
-    var createUrl=window.rootPath+"/ProductController/add";
-    var updateUrl=window.rootPath+"/ProductController/edit/{id}";
+    var dataUrl  =window.rootPath+"/StoreController/list";
+    var removeUrl=window.rootPath+"";
+    var createUrl=window.rootPath+"";
+    var updateUrl=window.rootPath+"";
     var exportUrl=window.rootPath+"";
     var options = {
         dataUrl: dataUrl,
@@ -145,31 +144,36 @@
         updateUrl: updateUrl,
         removeUrl:removeUrl,
         exportUrl: exportUrl,
-        sortName: "productSort",
-        modalName: "产品",
+        sortName: "storeSort",
+        modalName: "存储条件",
         search: false,
         dataColumns: [
             {
                 checkbox: true
             },{
-                field: 'productId',
+                field: 'id',
                 title: '序号'
             },{
-                field: 'name',
-                title: '产品'
+                field: 'condition',
+                title: '条件'
             },{
-                field: 'cName',
-                title: '中文名'
+                field: 'cCondition',
+                title: '条件中文名'
             },{
-                field: 'eName',
-                title: '英文名'
-            },{
+                field: 'eCondition',
+                title: '条件英文名'
+            },
+            {
+                field: 'temperature',
+                title: '温度中文名'
+            }, {
                 title: '操作',
                 formatter: function (value, row, index) {
                     var id = row.productId;
                     var actions = [];
                     actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.productId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                     actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.productId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                    actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.freeze(\'' + row.productId + '\')"><i class="fa fa-remove"></i>冻结</a>');
                     return actions.join('');
                 }
             }]

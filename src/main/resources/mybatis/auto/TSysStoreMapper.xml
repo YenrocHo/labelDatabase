@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.test.mapper.auto.process.TSysStoreMapper">
+  <resultMap id="BaseResultMap" type="com.fc.test.model.custom.process.TSysStore">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="condition" jdbcType="VARCHAR" property="condition" />
+    <result column="c_condition" jdbcType="VARCHAR" property="cCondition" />
+    <result column="e_condition" jdbcType="VARCHAR" property="eCondition" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="status" jdbcType="CHAR" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, condition, c_condition, e_condition, temperature, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_store
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sys_store
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fc.test.model.custom.process.TSysStore">
+    insert into t_sys_store (id, condition, c_condition, 
+      e_condition, temperature, status
+      )
+    values (#{id,jdbcType=VARCHAR}, #{condition,jdbcType=VARCHAR}, #{cCondition,jdbcType=VARCHAR}, 
+      #{eCondition,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fc.test.model.custom.process.TSysStore">
+    insert into t_sys_store
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="condition != null">
+        condition,
+      </if>
+      <if test="cCondition != null">
+        c_condition,
+      </if>
+      <if test="eCondition != null">
+        e_condition,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="condition != null">
+        #{condition,jdbcType=VARCHAR},
+      </if>
+      <if test="cCondition != null">
+        #{cCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="eCondition != null">
+        #{eCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fc.test.model.custom.process.TSysStore">
+    update t_sys_store
+    <set>
+      <if test="condition != null">
+        condition = #{condition,jdbcType=VARCHAR},
+      </if>
+      <if test="cCondition != null">
+        c_condition = #{cCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="eCondition != null">
+        e_condition = #{eCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        temperature = #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fc.test.model.custom.process.TSysStore">
+    update t_sys_store
+    set condition = #{condition,jdbcType=VARCHAR},
+      c_condition = #{cCondition,jdbcType=VARCHAR},
+      e_condition = #{eCondition,jdbcType=VARCHAR},
+      temperature = #{temperature,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -7,7 +7,7 @@ import com.github.pagehelper.PageInfo;
 
 public interface SysProductService {
 
-    public PageInfo list(int pageNum, int pageSize);
+    public PageInfo list(Tablepar tablepar,String searchTxt);
 
     public int checkcNameUnique(TSysProduct tSysProduct);
 
@@ -16,4 +16,6 @@ public interface SysProductService {
     public int removeProduct(String ids);
 
     public TSysProduct selectProductById(String id);
+
+    public int updateProduct(TSysProduct tSysProduct);
 }

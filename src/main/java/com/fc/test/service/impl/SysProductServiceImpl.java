@@ -7,6 +7,7 @@ import com.fc.test.model.custom.Tablepar;
 import com.fc.test.model.custom.process.TSysProduct;
 import com.fc.test.service.SysProductService;
 import com.fc.test.util.SnowflakeIdWorker;
+import com.fc.test.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,9 +28,16 @@ public class SysProductServiceImpl implements SysProductService {
      * @return com.github.pagehelper.PageInfo<com.fc.test.model.custom.process.TSysProduct>
      **/
     @Override
-    public PageInfo<TSysProduct> list(int pageNum, int pageSize){
-        PageHelper.startPage(pageNum, pageSize);
-        List<TSysProduct> tSysProductList = tSysProductMapper.selectList();
+    public PageInfo<TSysProduct> list(Tablepar tablepar,String searchTxt){
+        List<TSysProduct> tSysProductList = null;
+        if (StringUtils.isEmpty(searchTxt)){
+            PageHelper.startPage(tablepar.getPageNum(),tablepar.getPageSize());
+            tSysProductList = tSysProductMapper.selectList();
+        }else {
+            PageHelper.startPage(tablepar.getPageNum(),tablepar.getPageSize());
+            searchTxt = "%"+searchTxt+"%";
+            tSysProductList = tSysProductMapper.selectListBycNameOreName(searchTxt);
+        }
         PageInfo<TSysProduct> pageInfo = new PageInfo<TSysProduct>(tSysProductList);
         return pageInfo;
     }
@@ -57,6 +65,7 @@ public class SysProductServiceImpl implements SysProductService {
         TSysProduct product = new TSysProduct();
         String productId = SnowflakeIdWorker.getUUID();
         product.setProductId(productId);
+        product.setName(tSysProduct.getName());
         product.setcName(tSysProduct.getcName());
         product.seteName(tSysProduct.geteName());
         product.setCreateTime(new Date());
@@ -79,5 +88,16 @@ public class SysProductServiceImpl implements SysProductService {
         }else {
             return null;
         }
+    }
+
+    @Override
+    public int updateProduct(TSysProduct tSysProduct){
+        int i = tSysProductMapper.updateByPrimaryKeySelective(tSysProduct);
+        if (i>0){
+            return i;
+        }else {
+            return 0;
+        }
+
     }
 }
