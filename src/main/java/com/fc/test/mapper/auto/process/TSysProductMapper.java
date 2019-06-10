@@ -24,4 +24,6 @@ public interface TSysProductMapper {
 
     int deleteProductByIds(@Param("productIdList") List<String> productIdList);
 
+    List<TSysProduct> selectListBycNameOreName(String searchTxt);
+
 }

@@ -3,13 +3,14 @@
 <mapper namespace="com.fc.test.mapper.auto.process.TSysProductMapper">
   <resultMap id="BaseResultMap" type="com.fc.test.model.custom.process.TSysProduct">
     <id column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="c_name" jdbcType="VARCHAR" property="cName" />
     <result column="e_name" jdbcType="VARCHAR" property="eName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    product_id, c_name, e_name, create_time, update_time
+    product_id, name,c_name, e_name, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -22,7 +23,7 @@
     where product_id = #{productId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.test.model.custom.process.TSysProduct">
-    insert into t_sys_product (product_id, c_name, e_name, 
+    insert into t_sys_product (product_id, name,c_name, e_name,
       create_time, update_time)
     values (#{productId,jdbcType=VARCHAR}, #{cName,jdbcType=VARCHAR}, #{eName,jdbcType=VARCHAR}, 
       now(), now())
@@ -32,6 +33,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productId != null">
         product_id,
+      </if>
+      <if test="name != null">
+        name,
       </if>
       <if test="cName != null">
         c_name,
@@ -50,6 +54,9 @@
       <if test="productId != null">
         #{productId,jdbcType=VARCHAR},
       </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
       <if test="cName != null">
         #{cName,jdbcType=VARCHAR},
       </if>
@@ -67,6 +74,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fc.test.model.custom.process.TSysProduct">
     update t_sys_product
     <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="cName != null">
         c_name = #{cName,jdbcType=VARCHAR},
       </if>
@@ -84,7 +94,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fc.test.model.custom.process.TSysProduct">
     update t_sys_product
-    set c_name = #{cName,jdbcType=VARCHAR},
+    set
+      name = #{name,jdbcType=VARCHAR},
+      c_name = #{cName,jdbcType=VARCHAR},
       e_name = #{eName,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
@@ -109,4 +121,10 @@
       #{item}
     </foreach>
   </delete>
+  <select id="selectListBycNameOreName" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_product
+    where c_name like #{searchTxt} or e_name like #{searchTxt}
+  </select>
 </mapper>
