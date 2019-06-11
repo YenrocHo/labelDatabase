@@ -3,14 +3,16 @@
 <mapper namespace="com.fc.test.mapper.auto.process.TSysStoreMapper">
   <resultMap id="BaseResultMap" type="com.fc.test.model.custom.process.TSysStore">
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="condition" jdbcType="VARCHAR" property="condition" />
+    <result column="query" jdbcType="VARCHAR" property="query" />
     <result column="c_condition" jdbcType="VARCHAR" property="cCondition" />
     <result column="e_condition" jdbcType="VARCHAR" property="eCondition" />
     <result column="temperature" jdbcType="VARCHAR" property="temperature" />
-    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, condition, c_condition, e_condition, temperature, status
+    id, query, c_condition, e_condition, temperature, status, creat_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -23,12 +25,12 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.test.model.custom.process.TSysStore">
-    insert into t_sys_store (id, condition, c_condition, 
-      e_condition, temperature, status
-      )
-    values (#{id,jdbcType=VARCHAR}, #{condition,jdbcType=VARCHAR}, #{cCondition,jdbcType=VARCHAR}, 
-      #{eCondition,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}
-      )
+    insert into t_sys_store (id, query, c_condition, 
+      e_condition, temperature, status, 
+      creat_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{query,jdbcType=VARCHAR}, #{cCondition,jdbcType=VARCHAR}, 
+      #{eCondition,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.fc.test.model.custom.process.TSysStore">
     insert into t_sys_store
@@ -36,8 +38,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="condition != null">
-        condition,
+      <if test="query != null">
+        query,
       </if>
       <if test="cCondition != null">
         c_condition,
@@ -51,13 +53,19 @@
       <if test="status != null">
         status,
       </if>
+      <if test="creatTime != null">
+        creat_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="condition != null">
-        #{condition,jdbcType=VARCHAR},
+      <if test="query != null">
+        #{query,jdbcType=VARCHAR},
       </if>
       <if test="cCondition != null">
         #{cCondition,jdbcType=VARCHAR},
@@ -69,15 +77,21 @@
         #{temperature,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=CHAR},
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="creatTime != null">
+        now(),
+      </if>
+      <if test="updateTime != null">
+        now()
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fc.test.model.custom.process.TSysStore">
     update t_sys_store
     <set>
-      <if test="condition != null">
-        condition = #{condition,jdbcType=VARCHAR},
+      <if test="query != null">
+        query = #{query,jdbcType=VARCHAR},
       </if>
       <if test="cCondition != null">
         c_condition = #{cCondition,jdbcType=VARCHAR},
@@ -89,18 +103,52 @@
         temperature = #{temperature,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=CHAR},
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        now()
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fc.test.model.custom.process.TSysStore">
     update t_sys_store
-    set condition = #{condition,jdbcType=VARCHAR},
+    set query = #{query,jdbcType=VARCHAR},
       c_condition = #{cCondition,jdbcType=VARCHAR},
       e_condition = #{eCondition,jdbcType=VARCHAR},
       temperature = #{temperature,jdbcType=VARCHAR},
-      status = #{status,jdbcType=CHAR}
+      status = #{status,jdbcType=INTEGER},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      update_time = now()
     where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_store
+  </select>
+  <delete id="delectStoreByIds" parameterType="map">
+    delete
+    from t_sys_store
+    where id in
+    <foreach collection="storeIdlist" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+  <update id="updateStatusById" parameterType="map">
+    update t_sys_store
+    set
+    <choose>
+      <when test="status == 1">
+        status = 0
+      </when>
+      <when test="status == 0">
+        status = 1
+      </when>
+    </choose>
+    where id = #{id}
   </update>
 </mapper>

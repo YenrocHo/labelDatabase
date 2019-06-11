@@ -6,11 +6,12 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="c_name" jdbcType="VARCHAR" property="cName" />
     <result column="e_name" jdbcType="VARCHAR" property="eName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    product_id, name,c_name, e_name, create_time, update_time
+    product_id, name,c_name, e_name, status,create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -23,9 +24,9 @@
     where product_id = #{productId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.test.model.custom.process.TSysProduct">
-    insert into t_sys_product (product_id, name,c_name, e_name,
+    insert into t_sys_product (product_id, name,c_name, e_name, status,
       create_time, update_time)
-    values (#{productId,jdbcType=VARCHAR}, #{cName,jdbcType=VARCHAR}, #{eName,jdbcType=VARCHAR}, 
+    values (#{productId,jdbcType=VARCHAR}, #{cName,jdbcType=VARCHAR}, #{eName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
       now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.fc.test.model.custom.process.TSysProduct">
@@ -42,6 +43,9 @@
       </if>
       <if test="eName != null">
         e_name,
+      </if>
+      <if test="status != null">
+        status,
       </if>
       <if test="createTime != null">
         create_time,
@@ -63,6 +67,9 @@
       <if test="eName != null">
         #{eName,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         now(),
       </if>
@@ -83,6 +90,9 @@
       <if test="eName != null">
         e_name = #{eName,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -98,6 +108,7 @@
       name = #{name,jdbcType=VARCHAR},
       c_name = #{cName,jdbcType=VARCHAR},
       e_name = #{eName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
     where product_id = #{productId,jdbcType=VARCHAR}
@@ -125,6 +136,6 @@
     select
     <include refid="Base_Column_List"/>
     from t_sys_product
-    where c_name like #{searchTxt} or e_name like #{searchTxt}
+    where c_name like #{searchTxt} or e_name like #{searchTxt} or name like #{searchTxt}
   </select>
 </mapper>
