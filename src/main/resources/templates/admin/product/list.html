@@ -164,12 +164,20 @@
                 field: 'eName',
                 title: '英文名'
             },{
+                field: 'status',
+                title: '状态'
+            },{
                 title: '操作',
                 formatter: function (value, row, index) {
                     var id = row.productId;
                     var actions = [];
                     actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.productId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                     actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.productId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                    if(row.status == 1){
+                        actions.push('<a class="btn btn-freeze btn-xs"  onclick="$.operate.freeze(\'' + row.productId + '\')" style="background-color: lightcoral;margin-left: 3px"><i class="fa fa-ban"></i>冻结</a>');
+                    }else {
+                        actions.push('<a class="btn btn-freeze btn-xs"  onclick="$.operate.freeze(\'' + row.productId + '\')" style="background-color: lightskyblue;margin-left: 3px"><i class="fa fa-check"></i>解冻</a>');
+                    }
                     return actions.join('');
                 }
             }]

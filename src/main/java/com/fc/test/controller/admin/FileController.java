@@ -161,7 +161,6 @@ public class FileController extends BaseController {
         }
     }
 
-
     /**
      * 修改文件
      *
@@ -184,7 +183,6 @@ public class FileController extends BaseController {
     public AjaxResult editSave(TsysFile tsysFile, String dataId) {
         return toAjax(sysFileService.updateByPrimaryKey(tsysFile, dataId));
     }
-
 
     @GetMapping("/viewfile/{id}")
     public String viewfile(@PathVariable("id") String id, ModelMap mmap) {
@@ -210,46 +208,6 @@ public class FileController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @RequestMapping(value = "/download")
-    public String POExcel(@RequestParam(value = "url", defaultValue = "") String url, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        FileInputStream inputStream = null;
-        ServletOutputStream out = null;
-        BufferedInputStream bis = null;
-        try {
-            response.setContentType("text/plain;charset=UTF-8");
-//            设置response的编码方式
-            response.setContentType("application/xls");
-//             设置附加文件名
-            //String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/" + url;
-            File file = new File(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" + url);
-
-            //判断文件是否存在
-            if (!file.exists()) {
-                //控制下载文件的名字
-                response.setHeader("Content-Disposition", "attachment;filename=items_template.xls");
-                inputStream = new FileInputStream(file);
-                bis = new BufferedInputStream(inputStream);
-                out = response.getOutputStream();
-                byte[] data = new byte[4 * 1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(data)) != -1) {
-                    out.write(data, 0, bytesRead);
-                }
-            } else {
-                logger.info("下载失败！");
-            }
-            // 这里主要关闭。
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            out.close();
-            inputStream.close();
-            bis.close();
-        }
-        return null;
     }
 
     @RequestMapping(value = "/uploadFile")

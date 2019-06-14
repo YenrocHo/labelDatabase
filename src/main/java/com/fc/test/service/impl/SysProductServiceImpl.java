@@ -2,13 +2,11 @@ package com.fc.test.service.impl;
 
 import com.fc.test.common.support.Convert;
 import com.fc.test.mapper.auto.process.TSysProductMapper;
-import com.fc.test.model.auto.TsysUser;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.model.custom.process.TSysProduct;
 import com.fc.test.service.SysProductService;
 import com.fc.test.util.SnowflakeIdWorker;
 import com.fc.test.util.StringUtils;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

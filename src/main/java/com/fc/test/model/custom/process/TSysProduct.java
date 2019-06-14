@@ -14,16 +14,19 @@ public class TSysProduct implements Serializable {
     private String cName;
     //产品英文名
     private String eName;
+
+    private Integer status;
     //产品创建时间
     private Date createTime;
     //产品更新时间
     private Date updateTime;
 
-    public TSysProduct(String productId, String name, String cName, String eName, Date createTime, Date updateTime) {
+    public TSysProduct(String productId, String name, String cName, String eName, Integer status, Date createTime, Date updateTime) {
         this.productId = productId;
         this.name = name;
         this.cName = cName;
         this.eName = eName;
+        this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -63,6 +66,14 @@ public class TSysProduct implements Serializable {
         this.eName = eName;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -86,6 +97,7 @@ public class TSysProduct implements Serializable {
                 ", name='" + name + '\'' +
                 ", cName='" + cName + '\'' +
                 ", eName='" + eName + '\'' +
+                ", status=" + status +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';

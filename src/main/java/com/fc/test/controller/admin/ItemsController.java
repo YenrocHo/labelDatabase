@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 制作阶段
+ * luanbing
  */
 @Controller
 @Api(value = "项目点管理")
@@ -36,7 +37,7 @@ public class ItemsController extends BaseController {
      * 阶段列表
      *
      * @param tablepar
-     * @param searchTxt 搜索字符
+     * @param items 搜索字符
      * @return
      */
     @PostMapping("list")

@@ -131,6 +131,7 @@ CREATE TABLE `t_sys_product` (
   `name` varchar(255) NOT NULL COMMENT '产品名称',
   `c_name` varchar(255) DEFAULT NULL COMMENT '产品中文名',
   `e_name` varchar(255) DEFAULT NULL COMMENT '产品英文名',
+  `status` int(11) DEFAULT NULL COMMENT '状态',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`product_id`)
@@ -143,7 +144,9 @@ CREATE TABLE `t_sys_store` (
   `c_condition` varchar(255) DEFAULT NULL COMMENT '存储中文名',
   `e_condition` varchar(255) DEFAULT NULL COMMENT '存储英文名',
   `temperature` varchar(255) DEFAULT NULL COMMENT '存储',
-  `status` varchar(25) DEFAULT NULL COMMENT '存储状态',
+  `status` int(11) DEFAULT NULL COMMENT '存储状态',
+  `creat_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- ----------------------------

@@ -112,12 +112,15 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
                         tSysItem.setEnglishName(column.get(ITEM_MODE_TITLE[2]));
                         tSysItems.add(tSysItem);
                     }
-
                     //file.getOriginalFilename() 获取上传时的文件名
                     String dateStylePath = FileUploadUtils.dateStylePath();
                     String path = ROOT_PATH + dateStylePath + File.separator + file.getOriginalFilename();
                     if (!FileUploadUtils.isFileExist(path)) {
                         FileUploadUtils.createFileDir(path);
+                    }
+                    if (path.length() > 20 * 1024 * 1024) {
+                        logger.info("上传文件超过设定.");
+                        return "redirect:/ItemsController/upload";
                     }
                     // 上传到文件
                     file.transferTo(new File(path));
@@ -129,16 +132,14 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
                    for (int i = 0; i < tSysItems.size(); i++) {
                        TSysItems tSysItem = tSysItems.get(i);
                        TSysItemsExample tSysItemsExample = new TSysItemsExample();
-                       // TODO sql 通过名字查询是否有数据，有则同步更新该数据
-
+                       // 通过项目点查询是否有数据，有则同步更新该数据
                        tSysItemsExample.createCriteria().andItemsEqualTo("%"+tSysItem.getItems()+"%");
                        System.out.println("开始验证项目名：" + tSysItem.getItems());
                        // TODO 没有数据的话，则创建数据
                    }
-
-
                 } else {
                     logger.warn("上传文件不能为空");
+                    return "redirect:/ItemsController/upload";
                 }
             }
         }
