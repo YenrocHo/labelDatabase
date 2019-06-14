@@ -37,7 +37,6 @@
             <div class="row">
                 <div class="col-sm-12">
                 <!-- 搜索条件 -->
-                
                 	 <div class="nest" id="inlineClose">
                             <div class="title-alt">
                                 <h6>搜索条件</h6>
@@ -53,12 +52,20 @@
                                 </div>
                             </div>
 
-                            <div class="body-nest" id="search_div"  style="display: none">
+                            <div class="body-nest" id="search_div">
                                 <div class="form_left">
                                     <form role="form" class="form-inline">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail2" class="sr-only">用户名字</label>
-                                            <input type="text" name="username" placeholder="用户名字"class="form-control">
+                                            <label for="exampleInputEmail2" class="sr-only">工号</label>
+                                            <input type="text" name="number" placeholder="工号"class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail2" class="sr-only">登录账号</label>
+                                            <input type="text" name="username" placeholder="登录名"class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail2" class="sr-only">用户姓名</label>
+                                            <input type="text" name="name" placeholder="用户姓名"class="form-control">
                                         </div>
                                         <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
                                     </form>
@@ -94,16 +101,10 @@
                                <button onclick="updatePwd()" type="button" class="btn btn-danger">
                                     <span class="entypo-tools"></span>&nbsp;&nbsp;修改密码
                                </button>
-                               
-                               
                            </div>
                             <!-- 工具条 end-->
                            <table id="dataTable" class="table-striped footable-res footable metro-blue" data-page-size="6">
-                                   
-                                    
                            </table>
-                           
-                           
                         </div>
                     </div>
                 </div>
@@ -138,7 +139,6 @@
 
 <script type="text/javascript">
 <!-- jquery-表格导出插件 -->
-
 <!-- 导出 -->
 var dataUrl=window.rootPath+"/UserController/list";
 var removeUrl=window.rootPath+"/UserController/remove";
@@ -194,8 +194,6 @@ $(function(){
 	oTab.Init();
 })
 </script>
-
-
 <script type="text/javascript">
 	var editPwdUrl=window.rootPath+"/UserController/editPwd/{id}";
 	function updatePwd(){
@@ -207,8 +205,6 @@ $(function(){
         	 $.modal.alertWarning("请选择一条记录");
         	 return
          }
-         
-        
          var url = editPwdUrl.replace("{id}", rows.join());
          var data = {
              "id":rows.join()
@@ -217,10 +213,5 @@ $(function(){
 	}
 
 </script>
-
-
-
 </body>
-
-
 </html>

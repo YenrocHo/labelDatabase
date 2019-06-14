@@ -48,6 +48,13 @@
                         </div>
                         <div class="body-nest" id="search_div">
                             <div class="form_left">
+                                <form role="form" class="form-inline">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail2" class="sr-only">项目点</label>
+                                        <input type="text" name="items" placeholder="项目点"class="form-control">
+                                    </div>
+                                    <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -71,9 +78,12 @@
                         <div class="body-nest" id="Blank_Page_Content">
                             <!-- 工具条 -->
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                 <button onclick="$.operate.add()" type="button" class="btn btn-primary">
+                                 <button onclick="$.operate.add()" type="button" class="btn btn-info">
                                       <span class="entypo-plus-squared"></span>&nbsp;&nbsp;新增项目点
                                   </button>
+                                <button onclick="itemsUpload()" type="button" class="btn btn-primary">
+                                    <span class="entypo-plus-squared"></span>&nbsp;&nbsp;批量导入
+                                </button>
                                 <button onclick="$.operate.batRemove()" type="button" class="btn btn-info">
                                     <span class="entypo-trash"></span>&nbsp;&nbsp;删除
                                 </button>
@@ -125,11 +135,13 @@
     var createUrl=window.rootPath+"/ItemsController/add";
     var updateUrl=window.rootPath+"/ItemsController/edit/{id}";
     var removeUrl=window.rootPath+"/ItemsController/remove";
+    var downUrl = window.rootPath+"/ItemsController/upload";
     var options = {
         dataUrl: dataUrl,
         createUrl:createUrl,
         updateUrl:updateUrl,
         removeUrl:removeUrl,
+        downUrl:downUrl,
         sortName: "items",
         modalName: "项目点",
         search: false,
@@ -164,6 +176,13 @@
         var oTab=$.table.oTableInit(options);
         oTab.Init();
     })
+
+</script>
+<script type="text/javascript">
+    function itemsUpload() {
+        var url = $.table._option.downUrl;
+        $.modal.open("导入" + $.table._option.modalName, url);
+    }
 </script>
 </body>
 </html>

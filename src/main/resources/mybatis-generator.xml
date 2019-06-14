@@ -39,9 +39,9 @@
         <!-- 数据库链接地址账号密码 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://134.175.91.16:3306/demo"
+                connectionURL="jdbc:mysql://localhost:3306/demo"
                 userId="root"
-                password="123456">
+                password="123456789">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -75,10 +75,10 @@
         </table>
          <table tableName="t_sys_role_user" domainObjectName="TSysRoleUser" enableCountByExample="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-        <table tableName="t_sys_permission_role" domainObjectName="TsysPermissionRole" enableCountByExample="true">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>-->
+        <table tableName="t_sys_learn_file" domainObjectName="TSysLearnFile" enableCountByExample="true">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
 
     </context>
 </generatorConfiguration>

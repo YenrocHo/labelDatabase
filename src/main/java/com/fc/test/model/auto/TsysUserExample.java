@@ -189,6 +189,10 @@ public class TsysUserExample {
             return (Criteria) this;
         }
 
+        public Criteria andNumberEqualTo(String value) {
+            addCriterion("number =", value, "number");
+            return (Criteria) this;
+        }
         public Criteria andUsernameNotEqualTo(String value) {
             addCriterion("username <>", value, "username");
             return (Criteria) this;
@@ -218,6 +222,15 @@ public class TsysUserExample {
             addCriterion("username like", value, "username");
             return (Criteria) this;
         }
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+        public Criteria andNumberLike(String value) {
+            addCriterion("number like", value, "number");
+            return (Criteria) this;
+        }
+
 
         public Criteria andUsernameNotLike(String value) {
             addCriterion("username not like", value, "username");

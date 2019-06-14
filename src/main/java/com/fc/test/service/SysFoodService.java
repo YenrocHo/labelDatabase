@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,15 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
 
     @Autowired
     private TSysFoodMapper tSysFoodMapper;
+
+    private final String IMG_TAG = "<image src='{0}'></image>";
+
+    // 正常图片的地址
+    private final String IMG_STR = "{0}/FileController/viewImg/{1}";
+
+    // 缩略图的图片的地址
+    private final String IMG_SMALL_STR = "{0}/FileController/viewImgSmall/{1}";
+
     @Override
     public int deleteByPrimaryKey(String ids){
         List<String> lista = Convert.toListStrArray(ids);
@@ -80,15 +90,25 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      * @param searchTxt
      * @return
      */
-    public com.github.pagehelper.PageInfo<TSysFood> sysFoodList(Tablepar tablepar, String searchTxt){
+    public PageInfo<TSysFood> sysFoodList(Tablepar tablepar, String foodName){
         TSysFoodExample tSysFoodExample = new TSysFoodExample();
         tSysFoodExample.setOrderByClause("id+0 desc");
-        if(searchTxt!=null&&!"".equals(searchTxt)){
-            tSysFoodExample.createCriteria().andProductNameLike("%"+searchTxt+"%");
+        if(foodName!=null&&!"".equals(foodName)){
+            tSysFoodExample.createCriteria().andfoodNameLike("%"+foodName+"%");
         }
         PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         List<TSysFood> list= selectByExample(tSysFoodExample);
-        com.github.pagehelper.PageInfo<TSysFood> pageInfo = new PageInfo<>(list);
+       /* if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                String imgId = list.get(i).getPicture();
+                // TODO 修改为访问缩略图片的img标签
+                String imgUrl = MessageFormat.format(IMG_SMALL_STR,"http://localhost:8080", imgId);
+                System.out.println(imgUrl);
+                list.get(i).setPicture("<image src='"+imgUrl+"'></image>");
+            }
+        }*/
+
+        PageInfo<TSysFood> pageInfo = new PageInfo<TSysFood>(list);
         return  pageInfo;
     }
 

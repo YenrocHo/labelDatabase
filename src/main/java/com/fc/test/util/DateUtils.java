@@ -1,5 +1,6 @@
 package com.fc.test.util;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,5 +27,18 @@ public class DateUtils {
             return df.format(date);
         }
         return null;
+    }
+
+    /**
+     * 时间戳格式化为字符串.
+     *
+     * @param time
+     * @param pattern
+     * @return
+     */
+    public static String longToString(Long time, String pattern) {
+        Date date = new Date(time);
+        DateFormat df = new SimpleDateFormat(pattern);
+        return df.format(date);
     }
 }

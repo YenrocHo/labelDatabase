@@ -66,7 +66,9 @@ public class BaseController
     //食品管理
     @Autowired
     public SysItemsService sysItemsService;
-
+    //上传文件管理
+    @Autowired
+    public SysLearnFileService sysLearnFileService;
 
     /**
      * 将前台传递过来的日期格式的字符串，自动转化为Date类型

@@ -77,14 +77,14 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
     /**
      * 阶段管理列表
      * @param tablepar
-     * @param searchTxt
+     * @param items
      * @return
      */
-    public PageInfo<TSysItems> sysIteamsList(Tablepar tablepar, String searchTxt){
+    public PageInfo<TSysItems> sysIteamsList(Tablepar tablepar, String items){
         TSysItemsExample tSysItemsExample = new TSysItemsExample();
         tSysItemsExample.setOrderByClause("id+0 desc");
-        if(searchTxt!=null&&!"".equals(searchTxt)){
-            tSysItemsExample.createCriteria().andItemsLike("%"+searchTxt+"%");
+        if(items!=null&&!"".equals(items)){
+            tSysItemsExample.createCriteria().andItemsLike("%"+items+"%");
         }
         PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         List<TSysItems> list= selectByExample(tSysItemsExample);
@@ -106,7 +106,6 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
 
     /**
      * 获取项目点
-     * @param tSysItems
      * @return
      */
     public List<TSysItems> queryItems(){

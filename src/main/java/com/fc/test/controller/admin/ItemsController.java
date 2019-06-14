@@ -42,8 +42,8 @@ public class ItemsController extends BaseController {
     @PostMapping("list")
     @RequiresPermissions("system:items:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String searchTxt) {
-        PageInfo<TSysItems> page = sysItemsService.sysIteamsList(tablepar, searchTxt);
+    public Object list(Tablepar tablepar, String items) {
+        PageInfo<TSysItems> page = sysItemsService.sysIteamsList(tablepar, items);
         TableSplitResult<TSysItems> result = new TableSplitResult<TSysItems>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
@@ -122,4 +122,22 @@ public class ItemsController extends BaseController {
             return error();
         }
     }
+
+    @GetMapping("/upload")
+    public String upload() {
+        return prefix + "/upload";
+    }
+
+    @PostMapping("upload")
+    @RequiresPermissions("system:items:upload")
+    @ResponseBody
+    public AjaxResult upload(TSysItems tSysItems) {
+        int b = sysItemsService.insertSelective(tSysItems);
+        if (b > 0) {
+            return success();
+        } else {
+            return error();
+        }
+    }
+
 }

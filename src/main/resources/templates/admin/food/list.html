@@ -136,7 +136,7 @@
         createUrl: createUrl,
         removeUrl:removeUrl,
         sortName: "foodName",
-        modalName: "食品名称",
+        modalName: "食品种类",
         search: false,
         dataColumns: [
             {
@@ -156,6 +156,11 @@
             },{
                 field: 'picture',
                 title: '图片'
+            /*    formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push('/<img src="" alt=""> ');
+                    return actions.join('');
+                }*/
             },{
                 title: '操作',
                 formatter: function (value, row, index) {

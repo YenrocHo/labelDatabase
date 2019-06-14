@@ -20,6 +20,22 @@ $("#form-add").validate({
                 }
             }
 		},
+		number:{
+			required:true,
+			minlength: 2,
+			maxlength: 20,
+			remote: {
+				url: rootPath + "/UserController/checkNumberUnique",
+				type: "post",
+				dataType: "json",
+				dataFilter: function(data, type) {
+					if (data == "0")
+						return true;
+					else
+						return false;
+				}
+			}
+		},
 		deptName:{
 			required:true,
 		},
@@ -32,6 +48,8 @@ $("#form-add").validate({
 	messages: {
         "username": {
             remote: "用户已经存在"
+        },"number": {
+            remote: "工号已经存在"
         },
     },
 	submitHandler:function(form){

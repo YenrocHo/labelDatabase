@@ -133,7 +133,7 @@ public class ProductController extends BaseController {
             return error();
         }
     }
-    @RequiresPermissions("system:user:edit")
+    @RequiresPermissions("system:product:edit")
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(TSysProduct tSysProduct,HttpServletRequest request){
