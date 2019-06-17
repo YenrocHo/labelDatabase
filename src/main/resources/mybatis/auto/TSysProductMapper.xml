@@ -138,4 +138,17 @@
     from t_sys_product
     where c_name like #{searchTxt} or e_name like #{searchTxt} or name like #{searchTxt}
   </select>
+  <update id="updateStatusById" parameterType="map">
+    update t_sys_product
+    set
+    <choose>
+      <when test="status == 1">
+        status = 0
+      </when>
+      <when test="status == 0">
+        status = 1
+      </when>
+    </choose>
+    where product_id = #{id}
+  </update>
 </mapper>
