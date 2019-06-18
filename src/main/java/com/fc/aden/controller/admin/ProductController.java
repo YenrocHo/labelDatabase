@@ -144,4 +144,10 @@ public class ProductController extends BaseController {
         return toAjax(sysProductService.updateProduct(tSysProduct));
     }
 
+    @PostMapping("/freeze")
+    @ResponseBody
+    public AjaxResult updateStatus(@RequestParam String id, @RequestParam String status) {
+        return toAjax(sysProductService.updateStatus(id, status));
+    }
+
 }

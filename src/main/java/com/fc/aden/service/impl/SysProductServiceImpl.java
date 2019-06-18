@@ -98,4 +98,13 @@ public class SysProductServiceImpl implements SysProductService {
         }
 
     }
+
+    @Override
+    public int updateStatus(String id, String status) {
+        Integer num_status = Integer.parseInt(status);
+        int i = tSysProductMapper.updateStatusById(id, num_status);
+        return i;
+    }
+
+
 }

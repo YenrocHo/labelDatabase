@@ -26,4 +26,6 @@ public interface TSysProductMapper {
 
     List<TSysProduct> selectListBycNameOreName(String searchTxt);
 
+    int updateStatusById(@Param("id") String id, @Param("status") Integer status);
+
 }

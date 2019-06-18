@@ -17,4 +17,6 @@ public interface SysProductService {
     public TSysProduct selectProductById(String id);
 
     public int updateProduct(TSysProduct tSysProduct);
+
+    public int updateStatus(String id,String status);
 }
