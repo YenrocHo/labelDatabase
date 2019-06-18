@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fc.test.mapper.custom.PermissionDao">
-  <resultMap id="BaseResultMap" type="com.fc.test.model.auto.TsysPremission">
+<mapper namespace="com.fc.aden.mapper.custom.PermissionDao">
+  <resultMap id="BaseResultMap" type="com.fc.aden.model.auto.TsysPremission">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="descripion" jdbcType="VARCHAR" property="descripion" />
@@ -15,12 +15,12 @@
    <sql id="Base_Column_List">
      id, `name`, descripion, url, pid, perms, type, icon, order_num
   </sql>
-   <select id="findAll"  resultType="com.fc.test.model.auto.TsysPremission">
+   <select id="findAll"  resultType="com.fc.aden.model.auto.TsysPremission">
 
 	  select  * from t_sys_premission
 	</select>
 
-<select id="findByAdminUserId" parameterType="String" resultType="com.fc.test.model.auto.TsysPremission">
+<select id="findByAdminUserId" parameterType="String" resultType="com.fc.aden.model.auto.TsysPremission">
            select p.*
         from t_sys_user u
         LEFT JOIN t_sys_role_user sru on u.id= sru.Sys_User_id
@@ -30,7 +30,7 @@
         where u.id=#{userId}
  </select>
  
- <select id="queryRoleId"  parameterType="String" resultType="com.fc.test.model.auto.TsysPremission">
+ <select id="queryRoleId"  parameterType="String" resultType="com.fc.aden.model.auto.TsysPremission">
  	select p.* from t_sys_premission p
 	left join t_sys_permission_role pr on p.id=pr.permission_id
 	where pr.role_id=#{roleid}

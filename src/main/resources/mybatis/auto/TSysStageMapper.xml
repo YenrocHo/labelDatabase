@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fc.test.mapper.auto.process.TSysStageMapper">
-    <resultMap id="BaseResultMap" type="com.fc.test.model.custom.process.TSysStage">
+<mapper namespace="com.fc.aden.mapper.auto.process.TSysStageMapper">
+    <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysStage">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="stage" property="stage" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
@@ -42,7 +42,7 @@
             </foreach>
         </where>
     </sql>
-    <delete id="deleteByExample" parameterType="com.fc.test.model.custom.process.TSysStageExample">
+    <delete id="deleteByExample" parameterType="com.fc.aden.model.custom.process.TSysStageExample">
         delete from t_sys_stage
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -55,7 +55,7 @@
         where id = #{id,jdbcType=VARCHAR}
     </select>
     <select id="selectByExample" resultMap="BaseResultMap"
-            parameterType="com.fc.test.model.custom.process.TSysStageExample">
+            parameterType="com.fc.aden.model.custom.process.TSysStageExample">
         select
         <if test="distinct">
             distinct
@@ -73,7 +73,7 @@
     delete from t_sys_stage
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-    <insert id="insert" parameterType="com.fc.test.model.custom.process.TSysStage">
+    <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysStage">
     insert into t_sys_stage (id, stage, name, 
       english_name, create_Time, update_Time
       )
@@ -81,7 +81,7 @@
       #{englishName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.fc.test.model.custom.process.TSysStage">
+    <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysStage">
         insert into t_sys_stage
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -124,7 +124,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.fc.test.model.custom.process.TSysStage">
+    <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysStage">
         update t_sys_stage
         <set>
             <if test="stage != null">
@@ -142,7 +142,7 @@
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.fc.test.model.custom.process.TSysStage">
+    <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.TSysStage">
     update t_sys_stage
     set stage = #{stage,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},

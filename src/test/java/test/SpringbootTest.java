@@ -1,19 +1,14 @@
 package test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import com.fc.SpringbootSwagger2Application;
-import com.fc.test.mapper.custom.PermissionDao;
-import com.fc.test.model.auto.TsysPremission;
-import com.fc.test.model.custom.BootstrapThree;
-import com.fc.test.model.custom.PremissionThreeModelVo;
-import com.fc.test.service.SysPremissionService;
+import com.fc.aden.mapper.custom.PermissionDao;
+import com.fc.aden.model.auto.TsysPremission;
+import com.fc.aden.model.custom.BootstrapThree;
+import com.fc.aden.service.SysPremissionService;
 import com.google.gson.Gson;
 
 //@RunWith(SpringRunner.class)

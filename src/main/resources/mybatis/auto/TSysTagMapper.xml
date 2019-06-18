@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fc.test.mapper.auto.TSysTagMapper" >
-  <resultMap id="BaseResultMap" type="com.fc.test.model.custom.TSysTag" >
+<mapper namespace="com.fc.aden.mapper.auto.TSysTagMapper" >
+  <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.TSysTag" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="stage" property="stage" jdbcType="VARCHAR" />
     <result column="variety" property="variety" jdbcType="VARCHAR" />
@@ -23,7 +23,7 @@
     from t_sys_tag
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fc.test.model.custom.TSysTagExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.TSysTagExample" >
     select
     <include refid="Base_Column_List" />
     from t_sys_tag
@@ -32,7 +32,7 @@
     delete from t_sys_tag
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.fc.test.model.custom.TSysTag" >
+  <insert id="insert" parameterType="com.fc.aden.model.custom.TSysTag" >
     insert into t_sys_tag (id, stage, variety, 
       product_Name, expiration, items, 
       print_User, print_Time, end_Time, 
@@ -42,7 +42,7 @@
       #{printUser,jdbcType=VARCHAR}, #{printTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
       #{putTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.fc.test.model.custom.TSysTag" >
+  <insert id="insertSelective" parameterType="com.fc.aden.model.custom.TSysTag" >
     insert into t_sys_tag
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -109,7 +109,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fc.test.model.custom.TSysTag" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.TSysTag" >
     update t_sys_tag
     <set >
       <if test="stage != null" >
@@ -142,7 +142,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fc.test.model.custom.TSysTag" >
+  <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.TSysTag" >
     update t_sys_tag
     set stage = #{stage,jdbcType=VARCHAR},
       variety = #{variety,jdbcType=VARCHAR},
