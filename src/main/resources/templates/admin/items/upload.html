@@ -25,7 +25,7 @@
                 </div>
                 <div class="body-nest" id="element">
                     <div class="panel-body">
-                        <form class="form-horizontal m" id="form-add" action="/FileController/uploadFile" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal m" action="/fileController/uploadFile" id="form-add" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <p class="text-info">
                                     <button onclick="downloadItem()"
@@ -44,7 +44,8 @@
                             <div class="form-group">
                                 <div class="form-control-static col-sm-offset-9">
                                     <div class="text-center">
-                                        <input class="btn btn-primary" type="submit" value="提交" id="formSubmit" onclick="return checkData()"/>
+<!--                                        <button class="btn btn-primary" id="formSubmit" onclick="checkData()">提交</button>-->
+                                        <input type="submit" class="brn btn-danger" value="提交" onclick="return checkData()"/>
                                         <input onclick="$.modal.close()" class="btn btn-danger" type="button" value="关闭">
                                     </div>
                                 </div>
@@ -79,13 +80,12 @@
     function downloadItem() {
         var host = window.location.host;//获取请求地址
         window.open("http://" + host + "/static/templates/items_template.xls");
-        location.href = '/ItemsController/upload';
     }
         //JS校验form表单信息
         function checkData(){
-            var fileDir = $("#myFile").val();
-            var suffix = fileDir.substr(fileDir.lastIndexOf("."));
-            if("" == fileDir){
+            var myFile = $("#myFile").val();
+            var suffix = myFile.substr(myFile.lastIndexOf("."));
+            if("" == myFile){
                 alert("选择需要导入的Excel文件！");
                 return false;
             }
@@ -94,19 +94,13 @@
                 return false;
             }
             return true;
+            /*if(myFile){
+                $.post(window.rootPath+"/fileController/uploadFile",{"file": myFile},function(code){
+                    if (code) {
+
+                    }
+                });
+            }*/
         }
-    //上传文件 swf上传附件插件
-    // $(document).ready(function () {
-    //     debugger;
-    //     $("#myFile").uploadify({
-    //         'buttonText': '上传文件',
-    //         'onUploadSuccess': uploadSuccess,
-    //         'onQueueComplete': formSubmit,
-    //         'fileTypeExts': "*.xls",
-    //         'multi': false,
-    //         'swf': '/static/js/uploadify/uploadify.swf',
-    //         'uploader': '/FileController/uploadFile'
-    //     });
-    // });
 </script>
 </html>

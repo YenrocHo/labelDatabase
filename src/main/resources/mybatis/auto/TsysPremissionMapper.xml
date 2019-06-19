@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fc.test.mapper.auto.TsysPremissionMapper">
-  <resultMap id="BaseResultMap" type="com.fc.test.model.auto.TsysPremission">
+<mapper namespace="com.fc.aden.mapper.auto.TsysPremissionMapper">
+  <resultMap id="BaseResultMap" type="com.fc.aden.model.auto.TsysPremission">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="descripion" jdbcType="VARCHAR" property="descripion" />
@@ -74,7 +74,7 @@
   <sql id="Base_Column_List">
     id, name, descripion, url, pid, perms, type, icon, order_num, order_num,(select count(1) from t_sys_premission where pid=a.id) childcount
   </sql>
-  <select id="selectByExample" parameterType="com.fc.test.model.auto.TsysPremissionExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.fc.aden.model.auto.TsysPremissionExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -98,13 +98,13 @@
     delete from t_sys_premission
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fc.test.model.auto.TsysPremissionExample">
+  <delete id="deleteByExample" parameterType="com.fc.aden.model.auto.TsysPremissionExample">
     delete from t_sys_premission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.fc.test.model.auto.TsysPremission">
+  <insert id="insert" parameterType="com.fc.aden.model.auto.TsysPremission">
     insert into t_sys_premission (id, name, descripion, 
       url, pid, perms, type, 
       icon, order_num)
@@ -112,7 +112,7 @@
       #{url,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, #{perms,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{icon,jdbcType=VARCHAR}, #{orderNum,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.fc.test.model.auto.TsysPremission">
+  <insert id="insertSelective" parameterType="com.fc.aden.model.auto.TsysPremission">
     insert into t_sys_premission
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -173,7 +173,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.fc.test.model.auto.TsysPremissionExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.fc.aden.model.auto.TsysPremissionExample" resultType="java.lang.Long">
     select count(*) from t_sys_premission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -229,7 +229,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fc.test.model.auto.TsysPremission">
+  <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.auto.TsysPremission">
     update t_sys_premission
     <set>
       <if test="name != null">
@@ -259,7 +259,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fc.test.model.auto.TsysPremission">
+  <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.auto.TsysPremission">
     update t_sys_premission
     set name = #{name,jdbcType=VARCHAR},
       descripion = #{descripion,jdbcType=VARCHAR},

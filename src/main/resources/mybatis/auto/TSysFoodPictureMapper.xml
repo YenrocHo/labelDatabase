@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fc.test.mapper.auto.process.TSysFoodPictureMapper" >
-  <resultMap id="BaseResultMap" type="com.fc.test.model.custom.process.TSysFoodPicture" >
+<mapper namespace="com.fc.aden.mapper.auto.process.TSysFoodPictureMapper" >
+  <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysFoodPicture" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="food_id" property="foodId" jdbcType="VARCHAR" />
     <result column="data_id" property="dataId" jdbcType="VARCHAR" />
@@ -21,13 +21,13 @@
     delete from t_sys_food_picture
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.fc.test.model.custom.process.TSysFoodPicture" >
+  <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysFoodPicture" >
     insert into t_sys_food_picture (id, food_id, data_id, 
       create_Time, update_Time)
     values (#{id,jdbcType=VARCHAR}, #{foodId,jdbcType=VARCHAR}, #{dataId,jdbcType=VARCHAR}, 
       now(), now())
   </insert>
-  <insert id="insertSelective" parameterType="com.fc.test.model.custom.process.TSysFoodPicture" >
+  <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysFoodPicture" >
     insert into t_sys_food_picture
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fc.test.model.custom.process.TSysFoodPicture" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysFoodPicture" >
     update t_sys_food_picture
     <set >
       <if test="foodId != null" >
@@ -82,7 +82,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fc.test.model.custom.process.TSysFoodPicture" >
+  <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.TSysFoodPicture" >
     update t_sys_food_picture
     set food_id = #{foodId,jdbcType=VARCHAR},
       data_id = #{dataId,jdbcType=VARCHAR},

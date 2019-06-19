@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-@MapperScan(value = "com.fc.test.mapper")
+@MapperScan(value = "com.fc.aden.mapper")
 public class SpringbootSwagger2Application {
 
     public static void main(String[] args) {
