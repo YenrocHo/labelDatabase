@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
 
 * @Description:    产品管理
@@ -73,12 +75,11 @@ public class ProductController extends BaseController {
 
     /**
      * @Author Noctis
-     * @Description //TODO
+     * @Description //产品分页展示
      * @Date 2019/6/10 16:54
      * @Param [tablepar, searchTxt]
      * @return java.lang.Object
      **/
-
     @PostMapping("list")
     @RequiresPermissions("system:product:list")
     @ResponseBody
@@ -89,7 +90,7 @@ public class ProductController extends BaseController {
     }
     /**
      * @Author Noctis
-     * @Description //TODO
+     * @Description //产品添加
      * @Date 2019/6/6 10:57
      * @Param [tSysProduct]
      * @return com.fc.aden.common.domain.AjaxResult
@@ -108,7 +109,7 @@ public class ProductController extends BaseController {
 
     /**
      * @Author Noctis
-     * @Description //TODO
+     * @Description //产品添加时保证名字唯一
      * @Date 2019/6/6 10:57
      * @Param [tSysProduct]
      * @return int
@@ -119,6 +120,13 @@ public class ProductController extends BaseController {
         return sysProductService.checkcNameUnique(tSysProduct);
     }
 
+    /***
+     * @Author Noctis
+     * @Description //产品移除
+     * @Date 2019/6/18 14:12
+     * @Param [ids]
+     * @return com.fc.test.common.domain.AjaxResult
+     **/
     @PostMapping("remove")
     @RequiresPermissions("system:product:remove")
     @ResponseBody
@@ -130,6 +138,13 @@ public class ProductController extends BaseController {
             return error();
         }
     }
+    /***
+     * @Author Noctis
+     * @Description //产品修改
+     * @Date 2019/6/18 14:13
+     * @Param [tSysProduct, request]
+     * @return com.fc.test.common.domain.AjaxResult
+     **/
     @RequiresPermissions("system:product:edit")
     @PostMapping("/edit")
     @ResponseBody
@@ -138,11 +153,23 @@ public class ProductController extends BaseController {
         tSysProduct.setProductId(product.getProductId());
         return toAjax(sysProductService.updateProduct(tSysProduct));
     }
-
+    /***
+     * @Author Noctis
+     * @Description //产品状态改变
+     * @Date 2019/6/18 14:14
+     * @Param [id]
+     * @return com.fc.test.common.domain.AjaxResult
+     **/
     @PostMapping("/freeze")
     @ResponseBody
-    public AjaxResult updateStatus(@RequestParam String id, @RequestParam String status) {
-        return toAjax(sysProductService.updateStatus(id, status));
+    public AjaxResult updateStatus(@RequestParam String id) {
+        TSysProduct product_status = sysProductService.selectProductById(id);
+        TSysProduct product = sysProductService.updateStatus(product_status);
+        if (product != null){
+            return retobject(1,product);
+        }else {
+            return error(0,"修改失败");
+        }
     }
 
 }

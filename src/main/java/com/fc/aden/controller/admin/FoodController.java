@@ -11,8 +11,12 @@ import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @Api(value = "食品记录")
@@ -20,6 +24,17 @@ import org.springframework.web.multipart.MultipartFile;
 public class FoodController extends BaseController {
     //跳转页面参数
     private String prefix = "admin/food";
+
+    private String imgPrefix = "http://www.image.com/image/";
+
+    @GetMapping("detail/{id}")
+    public String detail(@PathVariable("id") String id, ModelMap mmap){
+        TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
+        String[] strings = tSysFood.getPicture().split("/");
+        mmap.put("imagrUrl",imgPrefix+strings[3]);
+        mmap.put("foodName",tSysFood.getName());
+        return prefix + "/detail";
+    }
 
     @GetMapping("view")
     @RequiresPermissions("system:food:view")
@@ -30,11 +45,12 @@ public class FoodController extends BaseController {
     }
 
     /**
-     * 文件列表
-     * @param tablepar
-     * @param foodName 搜索字符
-     * @return
-     */
+     * @Author Noctis
+     * @Description //TODO
+     * @Date 2019/6/18 15:29
+     * @Param [tablepar, foodName]
+     * @return java.lang.Object
+     **/
     @PostMapping("list")
     @RequiresPermissions("system:food:list")
     @ResponseBody
@@ -57,7 +73,7 @@ public class FoodController extends BaseController {
     @PostMapping("add")
     @RequiresPermissions("system:food:add")
     @ResponseBody
-    public AjaxResult add(TSysFood tSysFood) {
+    public AjaxResult add(TSysFood tSysFood, HttpServletRequest request) {
         int b = sysFoodService.insertSelective(tSysFood);
         if (b > 0) {
             return success();

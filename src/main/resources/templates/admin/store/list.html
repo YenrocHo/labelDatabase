@@ -89,6 +89,7 @@
                                     <span class="entypo-trash"></span>&nbsp;&nbsp;删除
                                 </button>
 
+
                             </div>
                             <!-- 工具条 end-->
                             <table id="dataTable" class="table-striped footable-res footable metro-blue" data-page-size="6">
@@ -164,35 +165,27 @@
             },{
                 field: 'eCondition',
                 title: '条件英文名'
-            },
-            {
+            },{
                 field: 'temperature',
                 title: '温度中文名'
-            },
-            {
-                field: 'status',
-                title: '状态'
-            },
-            {
+            },{
                 title: '操作',
                 formatter: function (value, row, index) {
                     var id = row.id;
                     var actions = [];
-
-                    if(row.status == 1){
-                        actions.push('<a class="btn btn-success btn-xs" name="edit" href="#" onclick="$.operate.edit(\'' + row.id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
-                        actions.push('<a class="btn btn-freeze btn-xs" name=\'' + id + '\' href="#" onclick="freeze(\'' + row.id + '\',\'' + row.status + '\')" style="background-color: lightcoral;margin-left: 3px;color: white;"><i class="fa fa-ban"></i>冻结</a>');
+                    if(row.status == 0){
+                        actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\'  href="#" onclick="$.operate.edit(\'' + id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')" ><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\'  href="#" onclick="freeze(\'' + id + '\')" style="background-color: #87CEFA;margin-left: 3px;color: white;width: 50px"><i class="fa fa-check"></i>解冻</a>');
                     }else {
-                        actions.push('<a class="btn btn-success btn-xs" name="edit" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
-                        actions.push('<a class="btn btn-freeze btn-xs" name=\'' + id + '\' href="#" onclick="freeze(\'' + row.id + '\',\'' + row.status + '\')" style="background-color: lightskyblue;margin-left: 3px;color: white;"><i class="fa fa-check"></i>解冻</a>');
+                        actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\' href="#" onclick="$.operate.edit(\'' + id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\' href="#" onclick="freeze(\'' + id + '\')" style="background-color: #F08080;margin-left: 3px;color: white;width: 50px"><i class="fa fa-ban"></i>冻结</a>');
                     }
                     return actions.join('');
                 }
             }]
     };
-
     $(function(){
         var oTab=$.table.oTableInit(options);
         oTab.Init();
@@ -203,16 +196,22 @@
             dataType:"json",   //返回格式为json
             async:true,//请求是否异步，默认为异步，这也是ajax重要特性
             data:{
-                "id":id,
-                "status":status
+                "id":id
             },    //参数值
             type:"POST",   //请求方式
-            success:function(){
-                alert("修改成功");
-                location.reload();
+            success:function(result){
+                var status = result.data.status;
+                if( status == 1){
+                    $("#"+id).html("<i class=\"fa fa-ban\"></i>冻结</a>").css("background-color","#F08080");
+                    $("a[name='"+id+"']").attr("disabled",false);
+                }
+                if (status == 0){
+                    $("#"+id).html("<i class=\"fa fa-check\"></i>解冻</a>").css("background-color","#87CEFA");
+                    $("a[name='"+id+"']").attr("disabled",true);
+                }
             },
-            error:function(){
-                alert("修改失败");
+            error:function(result){
+                alert(result.message);
                 location.reload();
             }
         });

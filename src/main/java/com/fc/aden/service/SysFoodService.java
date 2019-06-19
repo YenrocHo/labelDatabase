@@ -1,5 +1,14 @@
 package com.fc.aden.service;
 
+import com.fc.aden.common.conf.V2Config;
+import com.fc.aden.mapper.auto.TsysDatasMapper;
+import com.fc.aden.mapper.auto.process.TSysFoodPictureMapper;
+import com.fc.aden.model.auto.TsysDatas;
+import com.fc.aden.model.custom.process.TSysFoodPicture;
+import com.fc.aden.util.FileUtils;
+import com.fc.aden.util.StringUtils;
+
+
 import com.fc.aden.common.base.BaseService;
 import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.process.TSysFoodMapper;
@@ -21,6 +30,10 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
 
     @Autowired
     private TSysFoodMapper tSysFoodMapper;
+    @Autowired
+    private TsysDatasMapper tsysDatasMapper;
+    @Autowired
+    private TSysFoodPictureMapper tSysFoodPictureMapper;
 
     private final String IMG_TAG = "<image src='{0}'></image>";
 
@@ -45,10 +58,38 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         tSysFood.setId(id);
         tSysFood.setCreateTime(new Date());//保存创建时间
         tSysFood.setUpdateTime(new Date());//保存更新时间
-        return tSysFoodMapper.insertSelective(tSysFood);
+        String newPath = insertFoodPicture(tSysFood);
+        if (StringUtils.isNotEmpty(newPath)){
+            tSysFood.setPicture(newPath);
+            return tSysFoodMapper.insertSelective(tSysFood);
+        }else {
+            return 0;
+        }
     }
+    private String insertFoodPicture(TSysFood tSysFood){
+        TsysDatas tsysDatas = tsysDatasMapper.selectFileParhById(tSysFood.getPicture());
+        String[] strings = tsysDatas.getFilePath().split("/");
+        TSysFoodPicture tSysFoodPicture = new TSysFoodPicture();
+        String FoodPictueId= SnowflakeIdWorker.getUUID();
+        tSysFoodPicture.setId(FoodPictueId);
+        tSysFoodPicture.setFoodId(tSysFood.getId());
+        tSysFoodPicture.setDataId(tsysDatas.getId());
+        tSysFoodPicture.setCreateTime(new Date());
+        tSysFoodPicture.setUpdateTime(new Date());
+        String oldPath= V2Config.getProfile()+strings[2];
+        String newPath = V2Config.getProfile()+"image/"+strings[2];
+        FileUtils.moveFile(oldPath,newPath);
+        tsysDatas.setFilePath(newPath);
+        tsysDatasMapper.updateByPrimaryKeySelective(tsysDatas);
+        int i = tSysFoodPictureMapper.insertSelective(tSysFoodPicture);
+        if(i>0){
+            return newPath;
+        }else {
+            return null;
+        }
 
-    @Override
+    }
+        @Override
     public TSysFood selectByPrimaryKey(String id){
         return tSysFoodMapper.selectByPrimaryKey(id);
     }
@@ -88,6 +129,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      * 标签管理
      * @param tablepar
      * @param foodName
+     * @param
      * @return
      */
     public PageInfo<TSysFood> sysFoodList(Tablepar tablepar, String foodName){

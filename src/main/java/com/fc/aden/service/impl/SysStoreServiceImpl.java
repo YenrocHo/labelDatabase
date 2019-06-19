@@ -22,7 +22,14 @@ public class SysStoreServiceImpl implements SysStoreService {
 
     @Autowired
     private TSysStoreMapper tSysStoreMapper;
-
+    
+    /**
+     * @Author Noctis
+     * @Description //存储条件分页展示
+     * @Date 2019/6/18 14:29
+     * @Param [tablepar, searchTxt]
+     * @return com.github.pagehelper.PageInfo<com.fc.test.model.custom.process.TSysStore>
+     **/
     @Override
     public PageInfo<TSysStore> list(Tablepar tablepar, String searchTxt) {
         List<TSysStore> tSysStores = null;
@@ -41,14 +48,26 @@ public class SysStoreServiceImpl implements SysStoreService {
         PageInfo<TSysStore> pageInfo = new PageInfo<TSysStore>(tSysStores);
         return pageInfo;
     }
-
+    /**
+     * @Author Noctis
+     * @Description //存储条件删除
+     * @Date 2019/6/18 14:30
+     * @Param [ids]
+     * @return int
+     **/
     @Override
     public int removeStore(String ids) {
         List<String> storeIdlist = Convert.toListStrArray(ids);
         int i = tSysStoreMapper.delectStoreByIds(storeIdlist);
         return i;
     }
-
+    /**
+     * @Author Noctis
+     * @Description //存储条件添加
+     * @Date 2019/6/18 14:30
+     * @Param [tSysStore]
+     * @return int
+     **/
     @Override
     public int insertStore(TSysStore tSysStore) {
         tSysStore.setId(SnowflakeIdWorker.getUUID());
@@ -58,7 +77,13 @@ public class SysStoreServiceImpl implements SysStoreService {
         int i = tSysStoreMapper.insertSelective(tSysStore);
         return i;
     }
-
+    /**
+     * @Author Noctis
+     * @Description //存储条件根据ID查找
+     * @Date 2019/6/18 14:30
+     * @Param [id]
+     * @return com.fc.test.model.custom.process.TSysStore
+     **/
     @Override
     public TSysStore selectStoreById(String id) {
         TSysStore tSysStore = tSysStoreMapper.selectByPrimaryKey(id);
@@ -68,7 +93,13 @@ public class SysStoreServiceImpl implements SysStoreService {
             return null;
         }
     }
-
+    /**
+     * @Author Noctis
+     * @Description //存储条件更新
+     * @Date 2019/6/18 14:30
+     * @Param [tSysStore]
+     * @return int
+     **/
     @Override
     public int updateStoreById(TSysStore tSysStore) {
         int i = tSysStoreMapper.updateByPrimaryKeySelective(tSysStore);
@@ -78,11 +109,21 @@ public class SysStoreServiceImpl implements SysStoreService {
             return 0;
         }
     }
-
+    /**
+     * @Author Noctis
+     * @Description //存储条件状态改变
+     * @Date 2019/6/18 14:30
+     * @Param [tSysStore]
+     * @return com.fc.test.model.custom.process.TSysStore
+     **/
     @Override
-    public int updateStatus(String id, String status) {
-        Integer num_status = Integer.parseInt(status);
-        int i = tSysStoreMapper.updateStatusById(id, num_status);
-        return i;
+    public TSysStore updateStatus(TSysStore tSysStore) {
+        int i = tSysStoreMapper.updateStatusById(tSysStore.getId(), tSysStore.getStatus());
+        if (i>0){
+            TSysStore store = tSysStoreMapper.selectByPrimaryKey(tSysStore.getId());
+            return store;
+        }else{
+            return null;
+        }
     }
 }

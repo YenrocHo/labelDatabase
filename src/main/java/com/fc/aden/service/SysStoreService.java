@@ -15,5 +15,5 @@ public interface SysStoreService  {
 
     public int updateStoreById(TSysStore tSysStore);
 
-    public int updateStatus(String id,String status);
+    public TSysStore updateStatus(TSysStore tSysStore);
 }

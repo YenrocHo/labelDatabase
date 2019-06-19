@@ -17,12 +17,40 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+/**
 
+* @Description:    java类作用描述
+
+* @Author:         Noctis
+
+* @CreateDate:     2019/6/18 14:25
+
+* @UpdateUser:     Noctis
+
+* @UpdateDate:     2019/6/18 14:25
+
+* @UpdateRemark:   修改内容
+
+* @Version:        1.0
+
+*/
 @Controller
 @Api(value = "存储条件")
 @RequestMapping("StoreController")
 public class StoreController extends BaseController {
     private String prefix = "admin/store";
+
+    @Autowired
+    private SysStoreService sysStoreService;
+    
+    /**
+     * @Author Noctis
+     * @Description //页面跳转
+     * @Date 2019/6/18 14:26
+     * @Param [model]
+     * @return java.lang.String
+     **/
+
 
     @GetMapping("/view")
     @RequiresPermissions("system:store:view")
@@ -44,7 +72,13 @@ public class StoreController extends BaseController {
     }
 
     //===============================================业务处理================================================//
-
+    /**
+     * @Author Noctis
+     * @Description //TODO 
+     * @Date 2019/6/18 14:27
+     * @Param [tablepar, searchTxt]
+     * @return java.lang.Object
+     **/
     @PostMapping("/list")
     @RequiresPermissions("system:store:list")
     @ResponseBody
@@ -53,7 +87,13 @@ public class StoreController extends BaseController {
         TableSplitResult<TSysStore> result = new TableSplitResult<TSysStore>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
-
+    /**
+     * @Author Noctis
+     * @Description //TODO 
+     * @Date 2019/6/18 14:28
+     * @Param [ids]
+     * @return com.fc.test.common.domain.AjaxResult
+     **/
     @PostMapping("/remove")
     @RequiresPermissions("system:store:remove")
     @ResponseBody
@@ -65,7 +105,13 @@ public class StoreController extends BaseController {
             return error();
         }
     }
-
+    /**
+     * @Author Noctis
+     * @Description //TODO 
+     * @Date 2019/6/18 14:28
+     * @Param [tSysStore]
+     * @return com.fc.test.common.domain.AjaxResult
+     **/
     @PostMapping("/add")
     @RequiresPermissions("system:store:add")
     @ResponseBody
@@ -77,7 +123,13 @@ public class StoreController extends BaseController {
             return error();
         }
     }
-
+    /**
+     * @Author Noctis
+     * @Description //TODO 
+     * @Date 2019/6/18 14:28
+     * @Param [tSysStore, request]
+     * @return com.fc.test.common.domain.AjaxResult
+     **/
     @PostMapping("/edit")
     @RequiresPermissions("system:store:edit")
     @ResponseBody
@@ -86,11 +138,23 @@ public class StoreController extends BaseController {
         tSysStore.setId(store.getId());
         return toAjax(sysStoreService.updateStoreById(tSysStore));
     }
-
+    /**
+     * @Author Noctis
+     * @Description //TODO 
+     * @Date 2019/6/18 14:28
+     * @Param [id]
+     * @return com.fc.test.common.domain.AjaxResult
+     **/
     @PostMapping("/freeze")
     @ResponseBody
-    public AjaxResult updateStatus(@RequestParam String id, @RequestParam String status) {
-        return toAjax(sysStoreService.updateStatus(id, status));
+    public AjaxResult updateStatus(@RequestParam String id) {
+        TSysStore tSysStore_status = sysStoreService.selectStoreById(id);
+        TSysStore store = sysStoreService.updateStatus(tSysStore_status);
+        if (store != null) {
+            return retobject(1,store);
+        }else{
+            return error(0,"修改失败");
+        }
     }
 
 }
