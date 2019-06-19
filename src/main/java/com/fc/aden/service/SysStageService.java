@@ -86,7 +86,9 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
         if(searchTxt!=null&&!"".equals(searchTxt)){
             tSysStageExample.createCriteria().andProductNameLike("%"+searchTxt+"%");
         }
-        PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        }
         List<TSysStage> list= selectByExample(tSysStageExample);
         PageInfo<TSysStage> pageInfo = new PageInfo<TSysStage>(list);
         return  pageInfo;

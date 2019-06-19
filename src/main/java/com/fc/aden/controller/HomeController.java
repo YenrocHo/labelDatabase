@@ -81,7 +81,6 @@ public class HomeController extends BaseController{
 	@PostMapping("login")
 	public ModelAndView login(TsysUser user,RedirectAttributes redirectAttributes,boolean rememberMe,HttpServletRequest request) {
 		 ModelAndView view =new ModelAndView();
-		// String scode = (String)request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
 		 //判断验证码
 			 String userName = user.getUsername();
 			 Subject currentUser = SecurityUtils.getSubject();
@@ -93,7 +92,6 @@ public class HomeController extends BaseController{
 					 }
 					 //存入用户
 					 currentUser.login(token);
-					 //setTitle(model, new TitleVo("欢迎页面", "首页", true,"欢迎进入", true, false));
 				 }catch (UnknownAccountException uae) {
 			            logger.info("对用户[" + userName + "]进行登录验证..验证未通过,未知账户");
 			            redirectAttributes.addFlashAttribute("message", "未知账户");

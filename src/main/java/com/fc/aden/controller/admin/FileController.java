@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fc.aden.model.auto.TSysItems;
-import com.fc.aden.model.custom.ImportDTO;
+import com.fc.aden.model.custom.ImportItemsDTO;
 import io.swagger.annotations.Api;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -42,7 +42,7 @@ import com.github.pagehelper.PageInfo;
  */
 @Controller
 @Api(value = "文件上传")
-@RequestMapping("fileController")
+@RequestMapping("FileController")
 public class FileController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(FileController.class);
     //跳转页面参数
@@ -210,12 +210,11 @@ public class FileController extends BaseController {
     }
 
     @PostMapping("/uploadFile")
-//    @ResponseBody
     public String uploadFile(MultipartFile myFile, Model model) {
-        ImportDTO importDTO = sysLearnFileService.importValid(myFile);
-        List<TSysItems> tSysItems = sysLearnFileService.getSuccessTSysItems(importDTO.gettSysItems());
+        ImportItemsDTO importItemsDTO = sysLearnFileService.importValid(myFile);
+        List<TSysItems> tSysItems = sysLearnFileService.getSuccessTSysItems(importItemsDTO.gettSysItems());
         sysLearnFileService.saveSysItems(tSysItems);
-        model.addAttribute("importDTO",importDTO);
+        model.addAttribute("importItemsDTO", importItemsDTO);
 //        return sysLearnFileService.inportItems(request);
         return prefix+"/items_valid";
     }

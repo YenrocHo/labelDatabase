@@ -29,10 +29,14 @@ public class SysProductServiceImpl implements SysProductService {
     public PageInfo<TSysProduct> list(Tablepar tablepar,String searchTxt){
         List<TSysProduct> tSysProductList = null;
         if (StringUtils.isEmpty(searchTxt)){
-            PageHelper.startPage(tablepar.getPageNum(),tablepar.getPageSize());
+            if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            }
             tSysProductList = tSysProductMapper.selectList();
         }else {
-            PageHelper.startPage(tablepar.getPageNum(),tablepar.getPageSize());
+            if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            }
             searchTxt = "%"+searchTxt+"%";
             tSysProductList = tSysProductMapper.selectListBycNameOreName(searchTxt);
         }

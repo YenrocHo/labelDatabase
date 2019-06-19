@@ -2,8 +2,9 @@ package com.fc.aden.vo;
 
 
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 
-public class ImportTSysIemsDTO extends TSysItems {
+public class ImportTSysUserDTO extends TsysUser {
 
     //是否校验通过
     private Boolean pass;

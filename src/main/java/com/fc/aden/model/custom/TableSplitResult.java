@@ -1,6 +1,7 @@
 package com.fc.aden.model.custom;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TableSplitResult<T> implements Serializable {
@@ -9,8 +10,7 @@ public class TableSplitResult<T> implements Serializable {
 	private  Integer page;
     private Long total;
     private List<T> rows;
- 
- 
+
     public TableSplitResult() {
     }
  

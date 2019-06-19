@@ -75,7 +75,9 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
         if(searchTxt!=null&&!"".equals(searchTxt)){
             tSysTagExample.createCriteria().andProductNameLike("%"+searchTxt+"%");
         }
-        PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        }
         List<TSysTag> list= selectByExample(tSysTagExample);
         com.github.pagehelper.PageInfo<TSysTag> pageInfo = new PageInfo<>(list);
         return  pageInfo;

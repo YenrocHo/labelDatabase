@@ -38,9 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("ProductController")
 public class ProductController extends BaseController {
 
-    @Autowired
-    private SysProductService sysProductService;
-
     //跳转页面参数
     private String prefix = "admin/product";
 
@@ -88,8 +85,6 @@ public class ProductController extends BaseController {
     public Object list(Tablepar tablepar,String searchTxt){
         PageInfo<TSysProduct> page = sysProductService.list(tablepar,searchTxt) ;
         TableSplitResult<TSysProduct> result = new TableSplitResult<TSysProduct>(page.getPageNum(),page.getTotal(),page.getList());
-//        AjaxResult ajaxResult = AjaxResult.success("读取成功");
-//        ajaxResult.put(AjaxResult.AJAX_DATA,result);
         return result;
     }
     /**

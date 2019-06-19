@@ -148,7 +148,7 @@ public class SysPremissionService implements BaseService<TsysPremission, TsysPre
 
 	/**
 	 * 检查权限perms字段
-	 * @param tsysUser
+	 * @param tsysPremission
 	 * @return
 	 */
 	public int checkPermsUnique(TsysPremission tsysPremission){

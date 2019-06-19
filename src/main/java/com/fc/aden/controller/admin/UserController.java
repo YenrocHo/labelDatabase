@@ -3,6 +3,7 @@ package com.fc.aden.controller.admin;
 import java.util.List;
 
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.custom.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +20,10 @@ import com.fc.aden.common.domain.AjaxResult;
 import com.fc.aden.common.log.Log;
 import com.fc.aden.model.auto.TsysRole;
 import com.fc.aden.model.auto.TsysUser;
-import com.fc.aden.model.custom.RoleVo;
-import com.fc.aden.model.custom.TableSplitResult;
-import com.fc.aden.model.custom.Tablepar;
-import com.fc.aden.model.custom.TitleVo;
 import com.github.pagehelper.PageInfo;
 
 import io.swagger.annotations.Api;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("UserController")
@@ -49,8 +47,6 @@ public class UserController extends BaseController {
     public Object list(Tablepar tablepar, String username, String number, String name) {
         PageInfo<TsysUser> page = sysUserService.list(tablepar, username, number, name);
         TableSplitResult<TsysUser> result = new TableSplitResult<TsysUser>(page.getPageNum(), page.getTotal(), page.getList());
-        /*AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA,result);*/
         return result;
     }
 
@@ -144,10 +140,13 @@ public class UserController extends BaseController {
     public String edit(@PathVariable("id") String id, ModelMap mmap) {
         //查询所有角色
         List<RoleVo> roleVos = sysUserService.getUserIsRole(id);
+        TsysUser user = sysUserService.selectByPrimaryKey(id);
+        String ite = user.getItems();
         List<TSysItems> tSysItems = sysItemsService.queryItems();
         mmap.put("roleVos", roleVos);
         mmap.put("TsysUser", sysUserService.selectByPrimaryKey(id));
         mmap.put("tSysItems", tSysItems);
+        mmap.put("ite", ite);
         return prefix + "/edit";
     }
 
@@ -183,4 +182,33 @@ public class UserController extends BaseController {
     public AjaxResult editPwdSave(TsysUser tsysUser) {
         return toAjax(sysUserService.updateUserPassword(tsysUser));
     }
+
+    /**
+     * 跳转导入页面
+     * @return
+     */
+    @GetMapping("/upload")
+    public String upload() {
+        return prefix + "/upload";
+    }
+
+    @PostMapping("/upload")
+    @RequiresPermissions("system:user:upload")
+    public String upload(TSysItems tSysItems) {
+        return prefix + "/upload";
+    }
+
+
+    @PostMapping("/uploadFile")
+    public String uploadFile(MultipartFile myFile, Model model) {
+        ImportUserDTO importUserDTO = sysUserService.importValid(myFile);
+        List<TsysUser> tsysUsers = sysUserService.getSuccessTSysItems(importUserDTO.gettSysUser());
+        sysUserService.saveSysUser(tsysUsers);
+        model.addAttribute("importUserDTO", importUserDTO);
+//        return sysLearnFileService.inportItems(request);
+        return prefix+"/user_valid";
+    }
+
 }
+
+

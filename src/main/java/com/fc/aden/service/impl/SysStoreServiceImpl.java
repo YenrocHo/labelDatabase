@@ -27,10 +27,14 @@ public class SysStoreServiceImpl implements SysStoreService {
     public PageInfo<TSysStore> list(Tablepar tablepar, String searchTxt) {
         List<TSysStore> tSysStores = null;
         if (StringUtils.isEmpty(searchTxt)) {
-            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            }
             tSysStores = tSysStoreMapper.selectList();
         } else {
-            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            }
             searchTxt = "%" + searchTxt + "%";
             tSysStores = tSysStoreMapper.selectListBycQuery(searchTxt);
         }

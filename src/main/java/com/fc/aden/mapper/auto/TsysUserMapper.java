@@ -27,4 +27,7 @@ public interface TsysUserMapper {
     int updateByPrimaryKeySelective(TsysUser record);
 
     int updateByPrimaryKey(TsysUser record);
+
+    List<TsysUser> selectByName(String name);
+    List<TsysUser> selectByNumber(String number);
 }

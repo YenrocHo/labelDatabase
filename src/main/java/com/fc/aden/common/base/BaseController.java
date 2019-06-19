@@ -69,6 +69,10 @@ public class BaseController
     //上传文件管理
     @Autowired
     public SysLearnFileService sysLearnFileService;
+    @Autowired
+    public SysStoreService sysStoreService;
+    @Autowired
+    public SysProductService sysProductService;
 
     /**
      * 将前台传递过来的日期格式的字符串，自动转化为Date类型

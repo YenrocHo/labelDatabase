@@ -36,17 +36,15 @@ public class StageController extends BaseController {
      * 阶段列表
      *
      * @param tablepar
-     * @param searchTxt 搜索字符
+     * @param stage 搜索字符
      * @return
      */
     @PostMapping("list")
     @RequiresPermissions("system:stage:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String searchTxt) {
-        PageInfo<TSysStage> page = sysStageService.sysStageList(tablepar, searchTxt);
+    public Object list(Tablepar tablepar, String stage) {
+        PageInfo<TSysStage> page = sysStageService.sysStageList(tablepar, stage);
         TableSplitResult<TSysStage> result = new TableSplitResult<TSysStage>(page.getPageNum(), page.getTotal(), page.getList());
-       /* AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA,result);*/
         return result;
     }
 

@@ -7,11 +7,12 @@ import com.fc.aden.mapper.auto.TSysLearnFileMapper;
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TSysLearnFile;
 import com.fc.aden.model.auto.TSysLearnFileExample;
-import com.fc.aden.model.custom.ImportDTO;
+import com.fc.aden.model.custom.ImportItemsDTO;
+import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.DateUtils;
 import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.util.SnowflakeIdWorker;
-import com.fc.aden.vo.ImportTSysIemsDTO;
+import com.fc.aden.vo.ImportTSysItemsDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -107,8 +108,8 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
      * @return
      * @throws Exception
      */
-    public ImportDTO inportItems(HttpServletRequest request) throws Exception {
-        ImportDTO result = new ImportDTO();
+    public ImportItemsDTO inportItems(HttpServletRequest request) throws Exception {
+        ImportItemsDTO result = new ImportItemsDTO();
         String id = SnowflakeIdWorker.getUUID();
         long startTime = System.currentTimeMillis();
         // 将当前上下文初始化给 CommonsMutipartResolver （多部分解析器）
@@ -192,13 +193,18 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
         return result;
     }
 
-    public ImportDTO importValid(MultipartFile excelFile){
+    /**
+     * 验证文件，数据导入到DTO
+     * @param excelFile
+     * @return
+     */
+    public ImportItemsDTO importValid(MultipartFile excelFile){
         List<Map<String, String>> dataList;
         List<String> projectNames = new ArrayList<>();
-        ImportDTO importDTO = new ImportDTO();
-        List<ImportTSysIemsDTO> importTSysIemsDTOS = new ArrayList<>();
+        ImportItemsDTO importItemsDTO = new ImportItemsDTO();
+        List<ImportTSysItemsDTO> importTSysItemsDTOS = new ArrayList<>();
         try {
-            dataList = ExcelUtils.getExcelData(excelFile, ImportDTO.IMPORT_TABLE_HEADER);
+            dataList = ExcelUtils.getExcelData(excelFile, ImportItemsDTO.IMPORT_TABLE_HEADER);
         } catch (Exception e) {
             logger.warn("数据异常，重新导入", e);
             //文件解析异常
@@ -207,78 +213,89 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
         int errNumber = 0;
         int successNumber = 0;
         for (Map<String, String> row : dataList) {
-            String projectName = row.get(ImportDTO.PROJECT_NAME);
-            String chineseName = row.get(ImportDTO.CHINESE_NAME);
-            String englishName = row.get(ImportDTO.ENGLISH_NAME);
+            String projectName = row.get(ImportItemsDTO.PROJECT_NAME);
+            String chineseName = row.get(ImportItemsDTO.CHINESE_NAME);
+            String englishName = row.get(ImportItemsDTO.ENGLISH_NAME);
 
             StringBuffer errorMessage = new StringBuffer();
             boolean pass = true;
-            ImportTSysIemsDTO importTSysIemsDTO = new ImportTSysIemsDTO();
-            importTSysIemsDTO.setCreateTime(new Date());
-            importTSysIemsDTO.setUpdateTime(new Date());
-            importTSysIemsDTO.setId(SnowflakeIdWorker.getUUID());
+            ImportTSysItemsDTO importTSysItemsDTO = new ImportTSysItemsDTO();
+            importTSysItemsDTO.setCreateTime(new Date());
+            importTSysItemsDTO.setUpdateTime(new Date());
+            importTSysItemsDTO.setId(UUID.randomUUID().toString());
 
+            List<TSysItems> items = tSysItemsMapper.selectByItems(projectName);
             if(StringUtils.isEmpty(projectName)){
                 errorMessage.append("项目点名称不能为空；");
                 pass = false;
             }else if(projectNames.contains(projectName)){
                 errorMessage.append("项目点名称不能重复；");
                 pass = false;
+            }else if(items!=null&&items.size()>0) {
+                errorMessage.append("项目点名称不能重复；");
+                pass = false;
             }else{
-                importTSysIemsDTO.setItems(projectName);
+                importTSysItemsDTO.setItems(projectName);
             }
-
             if(StringUtils.isEmpty(chineseName)){
                 errorMessage.append("中文名称不能为空；");
                 pass = false;
             }else{
-                importTSysIemsDTO.setName(chineseName);
+                importTSysItemsDTO.setName(chineseName);
             }
-
             if(pass){
                 errorMessage.append("成功！");
                 successNumber++;
             }else{
                 errNumber++;
             }
-            importTSysIemsDTO.setEnglishName(englishName);
-            importTSysIemsDTO.setPass(pass);
-            importTSysIemsDTO.setMessages(errorMessage.toString());
-            importTSysIemsDTOS.add(importTSysIemsDTO);
-
+            importTSysItemsDTO.setEnglishName(englishName);
+            importTSysItemsDTO.setPass(pass);
+            importTSysItemsDTO.setMessages(errorMessage.toString());
+            importTSysItemsDTOS.add(importTSysItemsDTO);
         }
-        importDTO.setErrorNumber(errNumber);
-        importDTO.setSuccessNumber(successNumber);
-        importDTO.settSysItems(importTSysIemsDTOS);
-        return importDTO;
+        importItemsDTO.setErrorNumber(errNumber);
+        importItemsDTO.setSuccessNumber(successNumber);
+        importItemsDTO.settSysItems(importTSysItemsDTOS);
+        return importItemsDTO;
 
     }
 
+    /**
+     * 导入文件
+     * @param itemsList
+     */
     public void saveSysItems(List<TSysItems> itemsList){
         for (TSysItems tSysItems : itemsList) {
             tSysItemsMapper.insertSelective(tSysItems);
         }
     }
 
-    public List<TSysItems> getSuccessTSysItems(List<ImportTSysIemsDTO> importTSysIemsDTOS){
-        if(importTSysIemsDTOS==null) return new ArrayList<>();
+    public List<TSysItems> getSuccessTSysItems(List<ImportTSysItemsDTO> importTSysItemsDTOS){
+        if(importTSysItemsDTOS ==null) return new ArrayList<>();
         List<TSysItems> tSysItemsList = new ArrayList<>();
-        for (ImportTSysIemsDTO importTSysIemsDTO : importTSysIemsDTOS) {
-            if(importTSysIemsDTO.getPass()){
-                tSysItemsList.add(loadByDTO(importTSysIemsDTO));
+        for (ImportTSysItemsDTO importTSysItemsDTO : importTSysItemsDTOS) {
+            if(importTSysItemsDTO.getPass()){
+                tSysItemsList.add(loadByDTO(importTSysItemsDTO));
             }
         }
         return tSysItemsList;
     }
 
-    private TSysItems loadByDTO(ImportTSysIemsDTO dto){
+    /**
+     * 确认导入数据
+     * @param dto
+     * @return
+     */
+    private TSysItems loadByDTO(ImportTSysItemsDTO dto){
         TSysItems tSysItems = new TSysItems();
-        tSysItems.setId(dto.getId());
+   /*     tSysItems.setId(dto.getId());
         tSysItems.setItems(dto.getItems());
         tSysItems.setName(dto.getName());
         tSysItems.setEnglishName(dto.getEnglishName());
         tSysItems.setCreateTime(dto.getCreateTime());
-        tSysItems.setUpdateTime(dto.getUpdateTime());
+        tSysItems.setUpdateTime(dto.getUpdateTime());*/
+        BeanCopierEx.copy(dto,tSysItems);
         return tSysItems;
     }
 }

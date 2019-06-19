@@ -86,7 +86,9 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
         if(items!=null&&!"".equals(items)){
             tSysItemsExample.createCriteria().andItemsLike("%"+items+"%");
         }
-        PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        }
         List<TSysItems> list= selectByExample(tSysItemsExample);
         PageInfo<TSysItems> pageInfo = new PageInfo<TSysItems>(list);
         return  pageInfo;

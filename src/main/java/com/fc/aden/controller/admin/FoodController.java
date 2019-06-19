@@ -41,8 +41,6 @@ public class FoodController extends BaseController {
     public Object list(Tablepar tablepar, String foodName){
         PageInfo<TSysFood> page=sysFoodService.sysFoodList(tablepar,foodName);
         TableSplitResult<TSysFood> result=new TableSplitResult<TSysFood>(page.getPageNum(), page.getTotal(), page.getList());
-        /*AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA,result);*/
         return result;
     }
 

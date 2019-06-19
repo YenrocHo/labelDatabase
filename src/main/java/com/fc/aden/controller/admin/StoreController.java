@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("StoreController")
 public class StoreController extends BaseController {
     private String prefix = "admin/store";
-    @Autowired
-    private SysStoreService sysStoreService;
 
     @GetMapping("/view")
     @RequiresPermissions("system:store:view")
@@ -53,8 +51,6 @@ public class StoreController extends BaseController {
     public Object list(Tablepar tablepar, String searchTxt) {
         PageInfo<TSysStore> page = sysStoreService.list(tablepar, searchTxt);
         TableSplitResult<TSysStore> result = new TableSplitResult<TSysStore>(page.getPageNum(), page.getTotal(), page.getList());
-  /*      AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA,result);*/
         return result;
     }
 

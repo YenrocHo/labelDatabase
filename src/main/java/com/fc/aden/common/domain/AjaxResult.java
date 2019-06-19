@@ -27,6 +27,8 @@ public class AjaxResult extends HashMap<String, Object>
     public static final String AJAX_DATA  = "data";
     public static final String AJAX_CODE = "code";
     public static final String AJAX_MSG  = "msg";
+    public static final String AJAX_TOKEN  = "token";
+
     public static final String AJAX_KEY  = "key";
     public static final String CODE_ERROR_MSG  = "操作失败";
 

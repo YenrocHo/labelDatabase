@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.fc.aden.common.domain.AjaxResult;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +58,7 @@ public class GeneratorController extends BaseController{
 		TableSplitResult<TsysTables> result=new TableSplitResult<TsysTables>(page.getPageNum(), page.getTotal(), page.getList()); 
 		return  result;
 	}
-	
-	
+
 	/**
 	 * 生成代码
 	 */

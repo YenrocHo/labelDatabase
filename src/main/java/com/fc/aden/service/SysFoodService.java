@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -86,7 +87,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
     /**
      * 标签管理
      * @param tablepar
-     * @param searchTxt
+     * @param foodName
      * @return
      */
     public PageInfo<TSysFood> sysFoodList(Tablepar tablepar, String foodName){
@@ -95,18 +96,10 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         if(foodName!=null&&!"".equals(foodName)){
             tSysFoodExample.createCriteria().andfoodNameLike("%"+foodName+"%");
         }
-        PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        }
         List<TSysFood> list= selectByExample(tSysFoodExample);
-       /* if (list != null && list.size() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-                String imgId = list.get(i).getPicture();
-                // TODO 修改为访问缩略图片的img标签
-                String imgUrl = MessageFormat.format(IMG_SMALL_STR,"http://localhost:8080", imgId);
-                System.out.println(imgUrl);
-                list.get(i).setPicture("<image src='"+imgUrl+"'></image>");
-            }
-        }*/
-
         PageInfo<TSysFood> pageInfo = new PageInfo<TSysFood>(list);
         return  pageInfo;
     }

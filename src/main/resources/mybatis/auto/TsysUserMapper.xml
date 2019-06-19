@@ -94,6 +94,32 @@
             order by ${orderByClause}
         </if>
     </select>
+    <select id="selectByNameOrNumber" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByName" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+        where username = #{username,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByNumber" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+        where number = #{number,jdbcType=VARCHAR}
+    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

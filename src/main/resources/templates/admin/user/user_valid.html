@@ -15,23 +15,29 @@
 <!-- 右边内容 -->
 <div class="wrap-fluid">
     <div class="container-fluid paper-wrap bevel tlbr">
-        校验成功：<span th:text="${importItemsDTO.successNumber}"></span>条 <br>
-        校验失败：<span th:text="${importItemsDTO.errorNumber}"></span>条
+        校验成功：<span th:text="${importUserDTO.successNumber}"></span>条 <br>
+        校验失败：<span th:text="${importUserDTO.errorNumber}"></span>条
 
         <table border="1">
             <tr>
-                <td >状态</td>
+                <td>状态</td>
                 <td>消息</td>
-                <td>项目名</td>
+                <td>工号</td>
+                <td>登录名</td>
                 <td>中文名</td>
                 <td>英文名</td>
+                <td>性别</td>
+                <td>项目点</td>
             </tr>
-            <tr th:each="tSysItem : ${importItemsDTO.tSysItems}">
-                <td th:text="${tSysItem.pass}"></td>
-                <td th:text="${tSysItem.messages}"></td>
-                <td th:text="${tSysItem.items}"></td>
-                <td th:text="${tSysItem.name}"></td>
-                <th th:text="${tSysItem.englishName}"></th>
+            <tr th:each="tsysUser : ${importUserDTO.tSysUser}">
+                <td th:text="${tsysUser.pass}"></td>
+                <td th:text="${tsysUser.messages}"></td>
+                <td th:text="${tsysUser.number}"></td>
+                <td th:text="${tsysUser.username}"></td>
+                <td th:text="${tsysUser.name}"></td>
+                <th th:text="${tsysUser.englishName}"></th>
+                <th th:text="${tsysUser.sex}"></th>
+                <th th:text="${tsysUser.items}"></th>
             </tr>
         </table>
 

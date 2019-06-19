@@ -1,10 +1,10 @@
 package com.fc.aden.model.custom;
 
-import com.fc.aden.vo.ImportTSysIemsDTO;
+import com.fc.aden.vo.ImportTSysItemsDTO;
 
 import java.util.List;
 
-public class ImportDTO {
+public class ImportItemsDTO {
     public static final String PROJECT_NAME="项目点名称（必填）";
     public static final String CHINESE_NAME="中文名";
     public static final String ENGLISH_NAME="英文名";
@@ -21,7 +21,7 @@ public class ImportDTO {
     private int errorNumber;
 
 
-    private List<ImportTSysIemsDTO> tSysItems;
+    private List<ImportTSysItemsDTO> tSysItems;
 
     public int getSuccessNumber() {
         return successNumber;
@@ -39,11 +39,11 @@ public class ImportDTO {
         this.errorNumber = errorNumber;
     }
 
-    public List<ImportTSysIemsDTO> gettSysItems() {
+    public List<ImportTSysItemsDTO> gettSysItems() {
         return tSysItems;
     }
 
-    public void settSysItems(List<ImportTSysIemsDTO> tSysItems) {
+    public void settSysItems(List<ImportTSysItemsDTO> tSysItems) {
         this.tSysItems = tSysItems;
     }
 }

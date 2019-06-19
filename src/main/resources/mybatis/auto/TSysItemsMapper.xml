@@ -86,17 +86,9 @@
   </select>
   <select id="selectByItems" parameterType="com.fc.aden.model.auto.TSysItems" resultMap="BaseResultMap">
     select
-    <if test="distinct">
-      distinct
-    </if>
     <include refid="Base_Column_List" />
     from t_sys_items
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
+    where items = #{items,jdbcType=VARCHAR}
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
