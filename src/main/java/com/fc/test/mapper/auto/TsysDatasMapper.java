@@ -27,4 +27,6 @@ public interface TsysDatasMapper {
     int updateByPrimaryKeySelective(TsysDatas record);
 
     int updateByPrimaryKey(TsysDatas record);
+
+    TsysDatas selectFileParhById(String id);
 }

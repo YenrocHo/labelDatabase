@@ -149,9 +149,6 @@
                     $.operate.submit(url, "post", "json", data);
                 })
 			},
-            freeze: function (id) {
-                alert(id);
-            },
 			batRemove: function() {
                 var rows = $.common.isEmpty($.table._option.id) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.id);
                 if (rows.length == 0) {

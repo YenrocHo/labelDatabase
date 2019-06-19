@@ -1,12 +1,19 @@
 package com.fc.test.service;
 
 import com.fc.test.common.base.BaseService;
+import com.fc.test.common.conf.V2Config;
 import com.fc.test.common.support.Convert;
+import com.fc.test.mapper.auto.TsysDatasMapper;
 import com.fc.test.mapper.auto.process.TSysFoodMapper;
+import com.fc.test.mapper.auto.process.TSysFoodPictureMapper;
+import com.fc.test.model.auto.TsysDatas;
 import com.fc.test.model.custom.Tablepar;
 import com.fc.test.model.custom.process.TSysFood;
 import com.fc.test.model.custom.process.TSysFoodExample;
+import com.fc.test.model.custom.process.TSysFoodPicture;
+import com.fc.test.util.FileUtils;
 import com.fc.test.util.SnowflakeIdWorker;
+import com.fc.test.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +28,10 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
 
     @Autowired
     private TSysFoodMapper tSysFoodMapper;
+    @Autowired
+    private TsysDatasMapper tsysDatasMapper;
+    @Autowired
+    private TSysFoodPictureMapper tSysFoodPictureMapper;
 
     private final String IMG_TAG = "<image src='{0}'></image>";
 
@@ -45,10 +56,38 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         tSysFood.setId(id);
         tSysFood.setCreateTime(new Date());//保存创建时间
         tSysFood.setUpdateTime(new Date());//保存更新时间
-        return tSysFoodMapper.insertSelective(tSysFood);
+        String newPath = insertFoodPicture(tSysFood);
+        if (StringUtils.isNotEmpty(newPath)){
+            tSysFood.setPicture(newPath);
+            return tSysFoodMapper.insertSelective(tSysFood);
+        }else {
+            return 0;
+        }
     }
+    private String insertFoodPicture(TSysFood tSysFood){
+        TsysDatas tsysDatas = tsysDatasMapper.selectFileParhById(tSysFood.getPicture());
+        String[] strings = tsysDatas.getFilePath().split("/");
+        TSysFoodPicture tSysFoodPicture = new TSysFoodPicture();
+        String FoodPictueId= SnowflakeIdWorker.getUUID();
+        tSysFoodPicture.setId(FoodPictueId);
+        tSysFoodPicture.setFoodId(tSysFood.getId());
+        tSysFoodPicture.setDataId(tsysDatas.getId());
+        tSysFoodPicture.setCreateTime(new Date());
+        tSysFoodPicture.setUpdateTime(new Date());
+        String oldPath= V2Config.getProfile()+strings[2];
+        String newPath = V2Config.getProfile()+"image/"+strings[2];
+        FileUtils.moveFile(oldPath,newPath);
+        tsysDatas.setFilePath(newPath);
+        tsysDatasMapper.updateByPrimaryKeySelective(tsysDatas);
+        int i = tSysFoodPictureMapper.insertSelective(tSysFoodPicture);
+        if(i>0){
+            return newPath;
+        }else {
+            return null;
+        }
 
-    @Override
+    }
+        @Override
     public TSysFood selectByPrimaryKey(String id){
         return tSysFoodMapper.selectByPrimaryKey(id);
     }
@@ -87,7 +126,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
     /**
      * 标签管理
      * @param tablepar
-     * @param searchTxt
+     * @param
      * @return
      */
     public PageInfo<TSysFood> sysFoodList(Tablepar tablepar, String foodName){

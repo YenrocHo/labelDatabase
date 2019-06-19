@@ -7,17 +7,17 @@ import com.github.pagehelper.PageInfo;
 
 public interface SysProductService {
 
-    public PageInfo list(Tablepar tablepar,String searchTxt);
+    PageInfo list(Tablepar tablepar,String searchTxt);
 
-    public int checkcNameUnique(TSysProduct tSysProduct);
+    int checkcNameUnique(TSysProduct tSysProduct);
 
-    public int insertProduct(TSysProduct tSysProduct);
+    int insertProduct(TSysProduct tSysProduct);
 
-    public int removeProduct(String ids);
+    int removeProduct(String ids);
 
-    public TSysProduct selectProductById(String id);
+    TSysProduct selectProductById(String id);
 
-    public int updateProduct(TSysProduct tSysProduct);
+    int updateProduct(TSysProduct tSysProduct);
 
-    public int updateStatus(String id,String status);
+    TSysProduct updateStatus(TSysProduct tSysProduct);
 }

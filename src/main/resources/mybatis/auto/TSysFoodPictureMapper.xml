@@ -25,7 +25,7 @@
     insert into t_sys_food_picture (id, food_id, data_id, 
       create_Time, update_Time)
     values (#{id,jdbcType=VARCHAR}, #{foodId,jdbcType=VARCHAR}, #{dataId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.fc.test.model.custom.process.TSysFoodPicture" >
     insert into t_sys_food_picture
@@ -57,10 +57,10 @@
         #{dataId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
     </trim>
   </insert>
@@ -77,7 +77,7 @@
         create_Time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_Time = #{updateTime,jdbcType=TIMESTAMP},
+        update_Time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -87,7 +87,7 @@
     set food_id = #{foodId,jdbcType=VARCHAR},
       data_id = #{dataId,jdbcType=VARCHAR},
       create_Time = #{createTime,jdbcType=TIMESTAMP},
-      update_Time = #{updateTime,jdbcType=TIMESTAMP}
+      update_Time = now()
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

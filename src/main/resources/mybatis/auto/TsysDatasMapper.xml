@@ -161,4 +161,10 @@
     set file_path = #{filePath,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectFileParhById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from t_sys_datas
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
 </mapper>

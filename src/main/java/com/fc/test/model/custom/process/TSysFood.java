@@ -22,7 +22,7 @@ public class TSysFood {
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
     public String getFoodName() {
@@ -30,7 +30,7 @@ public class TSysFood {
     }
 
     public void setFoodName(String foodName) {
-        this.foodName = foodName == null ? null : foodName.trim();
+        this.foodName = foodName;
     }
 
     public String getName() {
@@ -38,7 +38,7 @@ public class TSysFood {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getEnglishName() {
@@ -46,7 +46,7 @@ public class TSysFood {
     }
 
     public void setEnglishName(String englishName) {
-        this.englishName = englishName == null ? null : englishName.trim();
+        this.englishName = englishName;
     }
 
     public String getPicture() {
@@ -54,7 +54,7 @@ public class TSysFood {
     }
 
     public void setPicture(String picture) {
-        this.picture = picture == null ? null : picture.trim();
+        this.picture = picture;
     }
 
     public Date getCreateTime() {
@@ -71,5 +71,18 @@ public class TSysFood {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "TSysFood{" +
+                "id='" + id + '\'' +
+                ", foodName='" + foodName + '\'' +
+                ", name='" + name + '\'' +
+                ", englishName='" + englishName + '\'' +
+                ", picture='" + picture + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }
