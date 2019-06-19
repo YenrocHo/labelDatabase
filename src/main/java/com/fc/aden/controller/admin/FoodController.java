@@ -45,21 +45,12 @@ public class FoodController extends BaseController {
     }
 
     /**
-<<<<<<< HEAD:src/main/java/com/fc/test/controller/admin/FoodController.java
      * @Author Noctis
      * @Description //TODO
      * @Date 2019/6/18 15:29
      * @Param [tablepar, foodName]
      * @return java.lang.Object
      **/
-
-=======
-     * 文件列表
-     * @param tablepar
-     * @param foodName 搜索字符
-     * @return
-     */
->>>>>>> ef9a72d82791bf10722dca0ac7e3a26937e7774a:src/main/java/com/fc/aden/controller/admin/FoodController.java
     @PostMapping("list")
     @RequiresPermissions("system:food:list")
     @ResponseBody

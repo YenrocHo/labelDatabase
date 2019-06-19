@@ -1,4 +1,4 @@
-package com.fc.test.util;
+package com.fc.aden.util;
 
 import java.io.File;
 import java.io.FileInputStream;
