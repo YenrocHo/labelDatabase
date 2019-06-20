@@ -29,8 +29,8 @@ public class SysDatasService implements BaseService<TsysDatas, TsysDatasExample>
 	
 	/**
 	 * 分页查询
-	 * @param pageNum
-	 * @param pageSize
+	 * @param
+	 * @param
 	 * @return
 	 */
 	 public PageInfo<TsysDatas> list(Tablepar tablepar,String searchTxt){
@@ -56,8 +56,8 @@ public class SysDatasService implements BaseService<TsysDatas, TsysDatasExample>
 	
 	/**
 	 * 文件上传文件存储到文件表
-	 * @param record
-	 * @param fileURL
+	 * @param
+	 * @param
 	 * @return 主键
 	 * @throws IOException 
 	 */
@@ -65,7 +65,7 @@ public class SysDatasService implements BaseService<TsysDatas, TsysDatasExample>
 		//文件上传获取文件名字
         String files = FileUploadUtils.upload(file);
         //补充完整url地址 
-        String filesURL=V2Config.getProfile()+files;
+        String filesURL=V2Config.getProfile()+"temp/"+files;
         
 		TsysDatas record=new TsysDatas();
 		//添加雪花主键id

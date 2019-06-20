@@ -11,13 +11,23 @@ public class FileUtils {
     public FileUtils() {
     }
     /**
-     *  新建目录
-     *  @param  folderPath  String  如  c:/fqf
-     *  @return  boolean
+     * 创建任意深度的文件所在文件夹,可以用来替代直接new File(path)。
+     *
+     * @param path 文件(不是文件夹)
+     * @return File对象 (文件夹,不是文件)
      */
-    public static void  newFolder(String  folderPath)  {
+    public static void createFileDir(String path) {
+        File file = new File(path);
+        //寻找父目录是否存在
+        File parent = new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(File.separator)));
+        //如果父目录不存在，则递归寻找更上一层目录
+        if (!parent.exists()) {
+            createFileDir(parent.getPath());
+            //创建父目录
+            parent.mkdirs();
+        }
         try  {
-            String  filePath  =  folderPath;
+            String  filePath  =  path;
             filePath  =  filePath.toString();
             java.io.File  myFilePath  =  new  java.io.File(filePath);
             if  (!myFilePath.exists())  {
@@ -29,6 +39,7 @@ public class FileUtils {
             e.printStackTrace();
         }
     }
+
     /**
      *  新建文件
      *  @param  filePathAndName  String  文件路径及名称  如c:/fqf.txt

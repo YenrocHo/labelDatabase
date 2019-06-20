@@ -31,7 +31,7 @@ public class FoodController extends BaseController {
     public String detail(@PathVariable("id") String id, ModelMap mmap){
         TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
         String[] strings = tSysFood.getPicture().split("/");
-        mmap.put("imagrUrl",imgPrefix+strings[3]);
+        mmap.put("imagrUrl",imgPrefix+strings[strings.length-2]+"/"+strings[strings.length-1]);
         mmap.put("foodName",tSysFood.getFoodName());
         mmap.put("name",tSysFood.getName());
         mmap.put("EnglishName",tSysFood.getEnglishName());
@@ -75,7 +75,7 @@ public class FoodController extends BaseController {
     @PostMapping("/add")
     @RequiresPermissions("system:food:add")
     @ResponseBody
-    public AjaxResult add(TSysFood tSysFood, HttpServletRequest request) {
+    public AjaxResult add(TSysFood tSysFood) {
         int b = sysFoodService.insertSelective(tSysFood);
         if (b > 0) {
             return success();
