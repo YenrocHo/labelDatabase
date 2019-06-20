@@ -35,7 +35,7 @@ public class FileUploadUtils
     /**
      * 默认上传的地址
      */
-    private static String defaultBaseDir = V2Config.getProfile();
+    private static String defaultBaseDir = V2Config.getProfile()+"temp/";
 
     /**
      * 默认的文件名最大长度
@@ -103,7 +103,7 @@ public class FileUploadUtils
      *
      * @param baseDir 相对应用的基目录
      * @param file 上传的文件
-     * @param needDatePathAndRandomName 是否需要日期目录和随机文件名前缀
+     * @param
      * @param extension 上传文件类型
      * @return 返回上传成功的文件名
      * @throws FileSizeLimitExceededException 如果超出最大大小
@@ -199,7 +199,7 @@ public class FileUploadUtils
      */
     public static void scaleImage(File file, File toFile, int width, int height, String suffix) throws IOException {
         System.setProperty("java.awt.headless", "true");
-        if (suffix == null) suffix = "JPEG";
+        if (suffix == null){ suffix = "JPEG";}
         //读为bufferedImage 以便取得参数
         BufferedImage bi = ImageIO.read(file);
         //计算成为合适参数
@@ -207,8 +207,8 @@ public class FileUploadUtils
         double originalW = (double) bi.getWidth();
         double originalH = (double) bi.getHeight();
         double originalRatio = originalW / originalH;
-        if (originalRatio > 1) height = (int) (height * originalRatio);
-        else if (originalRatio < 1) width = (int) (width * originalRatio);
+        if (originalRatio > 1) {height = (int) (height * originalRatio);}
+        else if (originalRatio < 1) {width = (int) (width * originalRatio);}
         //AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(wRatio, hRatio), null);
         //创建输出图片
         int type = bi.getType();

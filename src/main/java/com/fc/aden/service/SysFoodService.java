@@ -21,7 +21,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +48,13 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         List<String> lista = Convert.toListStrArray(ids);
         TSysFoodExample example = new TSysFoodExample();
         example.createCriteria().andIdIn(lista);
-        return tSysFoodMapper.deleteByExample(example);
+        int i = tSysFoodPictureMapper.deleteByFoodIds(lista);
+        if(i>0){
+            return tSysFoodMapper.deleteByExample(example);
+        }else {
+            return 0;
+        }
+
     }
 
     @Override
@@ -58,7 +64,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         tSysFood.setId(id);
         tSysFood.setCreateTime(new Date());//保存创建时间
         tSysFood.setUpdateTime(new Date());//保存更新时间
-        String newPath = insertFoodPicture(tSysFood);
+        String newPath = insertFoodPictureAndGetNewPath(tSysFood);
         if (StringUtils.isNotEmpty(newPath)){
             tSysFood.setPicture(newPath);
             return tSysFoodMapper.insertSelective(tSysFood);
@@ -66,9 +72,10 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
             return 0;
         }
     }
-    private String insertFoodPicture(TSysFood tSysFood){
+    private String insertFoodPictureAndGetNewPath(TSysFood tSysFood){
         TsysDatas tsysDatas = tsysDatasMapper.selectFileParhById(tSysFood.getPicture());
         String[] strings = tsysDatas.getFilePath().split("/");
+        String pictureName = strings[strings.length-1];
         TSysFoodPicture tSysFoodPicture = new TSysFoodPicture();
         String FoodPictueId= SnowflakeIdWorker.getUUID();
         tSysFoodPicture.setId(FoodPictueId);
@@ -76,20 +83,30 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         tSysFoodPicture.setDataId(tsysDatas.getId());
         tSysFoodPicture.setCreateTime(new Date());
         tSysFoodPicture.setUpdateTime(new Date());
-        String oldPath= V2Config.getProfile()+strings[2];
-        String newPath = V2Config.getProfile()+"image/"+strings[2];
-        FileUtils.moveFile(oldPath,newPath);
-        tsysDatas.setFilePath(newPath);
+        //V2Config.getProfile() = E:/Aden_lable/profile/
+        String oldPath= tsysDatas.getFilePath();
+        String newPath = V2Config.getProfile()+"image/"+getSystemTimeAndToString();
+        FileUtils.createFileDir(newPath);
+        String newPicturePath = newPath+"/"+pictureName;
+        // 点击提交后
+        // 删除E:/Aden_lable/profile/ 下的图片
+        // 转移到E:/Aden_lable/profile/image中
+        FileUtils.moveFile(oldPath,newPicturePath);
+        tsysDatas.setFilePath(newPicturePath);
         tsysDatasMapper.updateByPrimaryKeySelective(tsysDatas);
         int i = tSysFoodPictureMapper.insertSelective(tSysFoodPicture);
         if(i>0){
-            return newPath;
+            return newPicturePath;
         }else {
             return null;
         }
-
     }
-        @Override
+    private String getSystemTimeAndToString(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        String time = df.format(new Date());
+        return time;
+    }
+    @Override
     public TSysFood selectByPrimaryKey(String id){
         return tSysFoodMapper.selectByPrimaryKey(id);
     }

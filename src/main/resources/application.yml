@@ -7,7 +7,8 @@ fuce:
   #版权年份
   copyrightYear: 2018
   #头像上传路径
-  profile: D:/profile/
+  #profile: D:/profile/
+  profile: E:/Aden_lable/profile/
 #tomcat config
 server :
   port : 8080
@@ -50,3 +51,5 @@ pagehelper:
     reasonable: true
     supportMethodsArguments: true
     params: count=countSql
+logging:
+  file: E:/Aden_lable/log/
