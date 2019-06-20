@@ -122,7 +122,11 @@
             dictRemoveLinks: "删除",
             dictCancelUpload: "取消",
             init:function(){
-                this.on("addedfile", function(file) {//上传文件时触发的事件
+                this.on("addedfile", function(file) {
+                    /*
+                    static/admin/assets/js/dropZone/lib/dropzone.js 这个文件的第747行报错 ，为了能正常运行把那句话注释了。
+                    目前还不知道会不会有影响
+                     */
                 });
                 this.on("success",function(file,data){//上传成功触发的事件
                     if(data!=null&&data!=""){

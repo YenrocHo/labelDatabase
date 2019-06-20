@@ -5,6 +5,7 @@
 
     <title th:text=${title}></title>
     <!-- 这儿引用单独的css link -->
+    <link rel="stylesheet" th:href="@{/static/admin/food/css/detail.css}">
     <!-- Ladda for Bootstrap 3按钮加载进度插件 -->
     <link rel="stylesheet" th:href="@{/static/admin/assets/js/button/ladda/ladda.min.css}">
     <!-- bootstrap-table表单样式 -->
@@ -17,18 +18,14 @@
     <style type="text/css"></style>
 
 </head>
-<body>
-
-<div class="content-wrap">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="img_box" >
-                <img class="image" th:src="${imagrUrl}">
-                <label class="image_name" th:text="${foodName}"></label>
-            </div>
-        </div>
+<body onclick="$.modal.close()">
+    <div class="name_box">
+        <h3>食品名</h3>
+        <span class="img_name" th:text="${foodName}"></span>
     </div>
-</div>
+    <div class="img_box" >
+        <img class="image" th:src="${imagrUrl}">
+    </div>
 
 <!-- 通用js -->
 <div th:include="admin/common/html/js :: onload_js">

@@ -32,7 +32,9 @@ public class FoodController extends BaseController {
         TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
         String[] strings = tSysFood.getPicture().split("/");
         mmap.put("imagrUrl",imgPrefix+strings[3]);
-        mmap.put("foodName",tSysFood.getName());
+        mmap.put("foodName",tSysFood.getFoodName());
+        mmap.put("name",tSysFood.getName());
+        mmap.put("EnglishName",tSysFood.getEnglishName());
         return prefix + "/detail";
     }
 
