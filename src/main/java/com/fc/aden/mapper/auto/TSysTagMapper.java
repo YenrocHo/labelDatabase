@@ -11,7 +11,7 @@ public interface TSysTagMapper {
 
     int deleteByExample(TSysTagExample example);
 
-    int deleteByPrimaryKey(String id);
+    int deleteByPrimaryKey(String ids);
 
     int insert(TSysTag record);
 

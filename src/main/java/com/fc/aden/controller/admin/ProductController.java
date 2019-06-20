@@ -80,7 +80,7 @@ public class ProductController extends BaseController {
      * @Param [tablepar, searchTxt]
      * @return java.lang.Object
      **/
-    @PostMapping("list")
+    @PostMapping("/list")
     @RequiresPermissions("system:product:list")
     @ResponseBody
     public Object list(Tablepar tablepar,String searchTxt){
@@ -95,7 +95,7 @@ public class ProductController extends BaseController {
      * @Param [tSysProduct]
      * @return com.fc.aden.common.domain.AjaxResult
      **/
-    @PostMapping("add")
+    @PostMapping("/add")
     @RequiresPermissions("system:product:add")
     @ResponseBody
     public AjaxResult add(TSysProduct tSysProduct){
@@ -114,7 +114,7 @@ public class ProductController extends BaseController {
      * @Param [tSysProduct]
      * @return int
      **/
-    @PostMapping("checkcNameUnique")
+    @PostMapping("/checkcNameUnique")
     @ResponseBody
     public int checkcNameUnique(TSysProduct tSysProduct){
         return sysProductService.checkcNameUnique(tSysProduct);
@@ -127,7 +127,7 @@ public class ProductController extends BaseController {
      * @Param [ids]
      * @return com.fc.test.common.domain.AjaxResult
      **/
-    @PostMapping("remove")
+    @PostMapping("/remove")
     @RequiresPermissions("system:product:remove")
     @ResponseBody
     public AjaxResult remove(String ids){

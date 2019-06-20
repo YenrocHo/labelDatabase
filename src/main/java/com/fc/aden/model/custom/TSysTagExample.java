@@ -184,6 +184,22 @@ public class TSysTagExample {
             addCriterion("product_name like", value, "productName");
             return (Criteria) this;
         }
+        public Criteria andStageLike(String value) {
+            addCriterion("stage like", value, "stage");
+            return (Criteria) this;
+        }
+        public Criteria andVarietyLike(String value) {
+            addCriterion("variety like", value, "variety");
+            return (Criteria) this;
+        }
+        public Criteria andItemsLike(String value) {
+            addCriterion("items like", value, "items");
+            return (Criteria) this;
+        }
+        public Criteria andPrintUserLike(String value) {
+            addCriterion(" print_User like", value, "printUser");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

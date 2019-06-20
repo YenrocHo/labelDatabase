@@ -8,14 +8,44 @@
     <result column="product_Name" property="productName" jdbcType="VARCHAR" />
     <result column="expiration" property="expiration" jdbcType="INTEGER" />
     <result column="items" property="items" jdbcType="VARCHAR" />
+    <result column="store" property="store" jdbcType="VARCHAR" />
     <result column="print_User" property="printUser" jdbcType="VARCHAR" />
     <result column="print_Time" property="printTime" jdbcType="TIMESTAMP" />
     <result column="end_Time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="put_Time" property="putTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, stage, variety, product_Name, expiration, items, print_User, print_Time, end_Time, 
+    id, stage, variety, product_Name, expiration, items,store, print_User, print_Time, end_Time,
     put_Time
+  </sql>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -25,8 +55,17 @@
   </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.TSysTagExample" >
     select
+    <if test="distinct">
+      distinct
+    </if>
     <include refid="Base_Column_List" />
     from t_sys_tag
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from t_sys_tag
@@ -34,11 +73,11 @@
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.TSysTag" >
     insert into t_sys_tag (id, stage, variety, 
-      product_Name, expiration, items, 
+      product_Name, expiration, items, store,
       print_User, print_Time, end_Time, 
       put_Time)
     values (#{id,jdbcType=VARCHAR}, #{stage,jdbcType=VARCHAR}, #{variety,jdbcType=VARCHAR}, 
-      #{productName,jdbcType=VARCHAR}, #{expiration,jdbcType=INTEGER}, #{items,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{expiration,jdbcType=INTEGER}, #{items,jdbcType=VARCHAR},#{store,jdbcType=VARCHAR},
       #{printUser,jdbcType=VARCHAR}, #{printTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
       #{putTime,jdbcType=TIMESTAMP})
   </insert>
@@ -62,6 +101,9 @@
       </if>
       <if test="items != null" >
         items,
+      </if>
+      <if test="store != null" >
+      store,
       </if>
       <if test="printUser != null" >
         print_User,
@@ -95,6 +137,9 @@
       <if test="items != null" >
         #{items,jdbcType=VARCHAR},
       </if>
+      <if test="store != null" >
+        #{store,jdbcType=VARCHAR},
+      </if>
       <if test="printUser != null" >
         #{printUser,jdbcType=VARCHAR},
       </if>
@@ -127,6 +172,9 @@
       <if test="items != null" >
         items = #{items,jdbcType=VARCHAR},
       </if>
+      <if test="store != null" >
+        store = #{store,jdbcType=VARCHAR},
+      </if>
       <if test="printUser != null" >
         print_User = #{printUser,jdbcType=VARCHAR},
       </if>
@@ -149,6 +197,7 @@
       product_Name = #{productName,jdbcType=VARCHAR},
       expiration = #{expiration,jdbcType=INTEGER},
       items = #{items,jdbcType=VARCHAR},
+      store = #{store,jdbcType=VARCHAR},
       print_User = #{printUser,jdbcType=VARCHAR},
       print_Time = #{printTime,jdbcType=TIMESTAMP},
       end_Time = #{endTime,jdbcType=TIMESTAMP},

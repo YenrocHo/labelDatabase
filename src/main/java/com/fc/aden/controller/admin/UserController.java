@@ -64,7 +64,7 @@ public class UserController extends BaseController {
     }
 
 
-    @PostMapping("add")
+    @PostMapping("/add")
     @RequiresPermissions("system:user:add")
     @ResponseBody
     public AjaxResult add(TsysUser user, @RequestParam(value = "roles", required = false) List<String> roles) {
@@ -205,7 +205,6 @@ public class UserController extends BaseController {
         List<TsysUser> tsysUsers = sysUserService.getSuccessTSysItems(importUserDTO.gettSysUser());
         sysUserService.saveSysUser(tsysUsers);
         model.addAttribute("importUserDTO", importUserDTO);
-//        return sysLearnFileService.inportItems(request);
         return prefix+"/user_valid";
     }
 

@@ -25,7 +25,7 @@ public class StageController extends BaseController {
     //跳转页面参数
     private String prefix = "admin/stage";
 
-    @GetMapping("view")
+    @GetMapping("/view")
     @RequiresPermissions("system:stage:view")
     public String view(Model model) {
         setTitle(model, new TitleVo("制作阶段", "阶段列表", false, "欢迎进入图片页面", false, false));
@@ -39,7 +39,7 @@ public class StageController extends BaseController {
      * @param stage 搜索字符
      * @return
      */
-    @PostMapping("list")
+    @PostMapping("/list")
     @RequiresPermissions("system:stage:list")
     @ResponseBody
     public Object list(Tablepar tablepar, String stage) {
@@ -53,7 +53,7 @@ public class StageController extends BaseController {
         return prefix + "/add";
     }
 
-    @PostMapping("add")
+    @PostMapping("/add")
     @RequiresPermissions("system:stage:add")
     @ResponseBody
     public AjaxResult add(TSysStage tSysStage) {
@@ -70,7 +70,7 @@ public class StageController extends BaseController {
      * @param tSysStage
      * @return
      */
-    @PostMapping("checkStageUnique")
+    @PostMapping("/checkStageUnique")
     @ResponseBody
     public int checkStageUnique(TSysStage tSysStage){
         int b = sysStageService.checkStageUnique(tSysStage);
@@ -111,7 +111,7 @@ public class StageController extends BaseController {
      * 删除用户
      * @return
      */
-    @PostMapping("remove")
+    @PostMapping("/remove")
     @RequiresPermissions("system:stage:remove")
     @ResponseBody
     public AjaxResult remove(String ids){

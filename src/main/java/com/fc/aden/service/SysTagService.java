@@ -19,8 +19,8 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
     private TSysTagMapper tagMapper;
 
     @Override
-    public int deleteByPrimaryKey(String id){
-        return tagMapper.deleteByPrimaryKey(id);
+    public int deleteByPrimaryKey(String ids){
+        return tagMapper.deleteByPrimaryKey(ids);
     }
 
     @Override
@@ -66,15 +66,32 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
     /**
      * 标签管理
      * @param tablepar
-     * @param searchTxt
+     * @param stage
+     * @param variety
+     * @param productName
+     * @param items
+     * @param printUser
      * @return
      */
-    public com.github.pagehelper.PageInfo<TSysTag> sysTagList(Tablepar tablepar, String searchTxt){
+    public com.github.pagehelper.PageInfo<TSysTag> sysTagList(Tablepar tablepar, String stage,String variety,String productName,String items,String printUser){
         TSysTagExample tSysTagExample = new TSysTagExample();
         tSysTagExample.setOrderByClause("id+0 desc");
-        if(searchTxt!=null&&!"".equals(searchTxt)){
-            tSysTagExample.createCriteria().andProductNameLike("%"+searchTxt+"%");
+        if(stage!=null&&!"".equals(stage)){
+            tSysTagExample.createCriteria().andStageLike("%"+stage+"%");
         }
+        if(variety!=null&&!"".equals(variety)){
+            tSysTagExample.createCriteria().andVarietyLike("%"+variety+"%");
+        }
+        if(productName!=null&&!"".equals(productName)){
+            tSysTagExample.createCriteria().andProductNameLike("%"+productName+"%");
+        }
+        if(items!=null&&!"".equals(items)){
+            tSysTagExample.createCriteria().andItemsLike("%"+items+"%");
+        }
+        if(printUser!=null&&!"".equals(printUser)){
+            tSysTagExample.createCriteria().andPrintUserLike("%"+printUser+"%");
+        }
+
         if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }

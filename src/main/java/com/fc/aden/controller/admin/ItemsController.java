@@ -26,7 +26,7 @@ public class ItemsController extends BaseController {
     //跳转页面参数
     private String prefix = "admin/items";
 
-    @GetMapping("view")
+    @GetMapping("/view")
     @RequiresPermissions("system:items:view")
     public String view(Model model) {
         setTitle(model, new TitleVo("制作阶段", "阶段列表", false, "欢迎进入图片页面", false, false));
@@ -40,7 +40,7 @@ public class ItemsController extends BaseController {
      * @param items 搜索字符
      * @return
      */
-    @PostMapping("list")
+    @PostMapping("/list")
     @RequiresPermissions("system:items:list")
     @ResponseBody
     public Object list(Tablepar tablepar, String items) {
@@ -54,7 +54,7 @@ public class ItemsController extends BaseController {
         return prefix + "/add";
     }
 
-    @PostMapping("add")
+    @PostMapping("/add")
     @RequiresPermissions("system:items:add")
     @ResponseBody
     public AjaxResult add(TSysItems tSysItems) {
@@ -71,7 +71,7 @@ public class ItemsController extends BaseController {
      * @param tSysItems
      * @return
      */
-    @PostMapping("checkItemsUnique")
+    @PostMapping("/checkItemsUnique")
     @ResponseBody
     public int checkStageUnique(TSysItems tSysItems){
         int b = sysItemsService.checkIteamsUnique(tSysItems);
@@ -112,7 +112,7 @@ public class ItemsController extends BaseController {
      * 删除用户
      * @return
      */
-    @PostMapping("remove")
+    @PostMapping("/remove")
     @RequiresPermissions("system:items:remove")
     @ResponseBody
     public AjaxResult remove(String ids){
@@ -129,7 +129,7 @@ public class ItemsController extends BaseController {
         return prefix + "/upload";
     }
 
-    @PostMapping("upload")
+    @PostMapping("/upload")
     @RequiresPermissions("system:items:upload")
     public String upload(TSysItems tSysItems) {
         return prefix + "/upload";

@@ -27,7 +27,7 @@ public class FoodController extends BaseController {
 
     private String imgPrefix = "http://www.image.com/image/";
 
-    @GetMapping("detail/{id}")
+    @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") String id, ModelMap mmap){
         TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
         String[] strings = tSysFood.getPicture().split("/");
@@ -38,7 +38,7 @@ public class FoodController extends BaseController {
         return prefix + "/detail";
     }
 
-    @GetMapping("view")
+    @GetMapping("/view")
     @RequiresPermissions("system:food:view")
     public String view(Model model)
     {
@@ -53,7 +53,7 @@ public class FoodController extends BaseController {
      * @Param [tablepar, foodName]
      * @return java.lang.Object
      **/
-    @PostMapping("list")
+    @PostMapping("/list")
     @RequiresPermissions("system:food:list")
     @ResponseBody
     public Object list(Tablepar tablepar, String foodName){
@@ -72,7 +72,7 @@ public class FoodController extends BaseController {
      * @param tSysFood
      * @return
      */
-    @PostMapping("add")
+    @PostMapping("/add")
     @RequiresPermissions("system:food:add")
     @ResponseBody
     public AjaxResult add(TSysFood tSysFood, HttpServletRequest request) {
@@ -109,7 +109,7 @@ public class FoodController extends BaseController {
      * @param sysFood
      * @return
      */
-    @PostMapping("checkFoodUnique")
+    @PostMapping("/checkFoodUnique")
     @ResponseBody
     public int checkStageUnique(TSysFood sysFood){
         int b = sysFoodService.checkFoodUnique(sysFood);
@@ -124,7 +124,7 @@ public class FoodController extends BaseController {
      * @param ids
      * @return
      */
-    @PostMapping("remove")
+    @PostMapping("/remove")
     @RequiresPermissions("system:food:remove")
     @ResponseBody
     public AjaxResult remove(String ids){
