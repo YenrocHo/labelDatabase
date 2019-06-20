@@ -50,8 +50,6 @@ public class StoreController extends BaseController {
      * @Param [model]
      * @return java.lang.String
      **/
-
-
     @GetMapping("/view")
     @RequiresPermissions("system:store:view")
     public String view(Model model) {

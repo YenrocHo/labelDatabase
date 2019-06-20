@@ -69,13 +69,12 @@
 			<artifactId>pagehelper</artifactId>
 			<version>4.1.4</version>
 		</dependency>
-		<!-- mysql驱动7.0-->
-	<!--	<dependency>
+		<!-- mysql驱动8.0-->
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.15</version>&lt;!&ndash;$NO-MVN-MAN-VER$&ndash;&gt;
+			<version>8.0.15</version><!--$NO-MVN-MAN-VER$-->
 		</dependency> 
--->
 		<!-- mysql驱动8.0 -->
 		<!-- <dependency>
 		 	<groupId>mysql</groupId> 
@@ -84,11 +83,11 @@
 		 </dependency>-->
 
 		<!-- mysql驱动5.1.46 -->
-		<dependency>
+	<!--	<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.46</version>
-		</dependency>
+		</dependency>-->
 
 
 		<!--druid 数据源监控-->

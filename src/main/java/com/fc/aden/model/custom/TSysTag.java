@@ -26,6 +26,10 @@ public class TSysTag {
      */
     private String items;
     /**
+     * 存储条件
+     */
+    private String store;
+    /**
      * 打印人
      */
     private String printUser;
@@ -123,5 +127,13 @@ public class TSysTag {
 
     public void setPutTime(Date putTime) {
         this.putTime = putTime;
+    }
+
+    public String getStore() {
+        return store;
+    }
+
+    public void setStore(String store) {
+        this.store = store;
     }
 }
