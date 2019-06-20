@@ -215,7 +215,6 @@ public class FileController extends BaseController {
         List<TSysItems> tSysItems = sysLearnFileService.getSuccessTSysItems(importItemsDTO.gettSysItems());
         sysLearnFileService.saveSysItems(tSysItems);
         model.addAttribute("importItemsDTO", importItemsDTO);
-//        return sysLearnFileService.inportItems(request);
         return prefix+"/items_valid";
     }
 }

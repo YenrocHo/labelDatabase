@@ -216,7 +216,6 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
             String projectName = row.get(ImportItemsDTO.PROJECT_NAME);
             String chineseName = row.get(ImportItemsDTO.CHINESE_NAME);
             String englishName = row.get(ImportItemsDTO.ENGLISH_NAME);
-
             StringBuffer errorMessage = new StringBuffer();
             boolean pass = true;
             ImportTSysItemsDTO importTSysItemsDTO = new ImportTSysItemsDTO();
