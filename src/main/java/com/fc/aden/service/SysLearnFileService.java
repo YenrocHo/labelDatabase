@@ -203,19 +203,12 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
         List<String> projectNames = new ArrayList<>();
         ImportItemsDTO importItemsDTO = new ImportItemsDTO();
         List<ImportTSysItemsDTO> importTSysItemsDTOS = new ArrayList<>();
-        ImportTSysItemsDTO importTSysItemsDTO = null;
-        StringBuffer errorMessage = null;
         try {
             dataList = ExcelUtils.getExcelData(excelFile, ImportItemsDTO.IMPORT_TABLE_HEADER);
         } catch (Exception e) {
-            logger.info("数据异常，重新导入", e);
-            importTSysItemsDTO = new ImportTSysItemsDTO();
+            logger.warn("数据异常，重新导入", e);
             //文件解析异常
-            errorMessage.append("数据异常,请确认文档");
-            importTSysItemsDTO.setMessages(errorMessage.toString());
-            importTSysItemsDTOS.add(importTSysItemsDTO);
-            importItemsDTO.settSysItems(importTSysItemsDTOS);
-            return importItemsDTO;
+            return null;
         }
         int errNumber = 0;
         int successNumber = 0;
@@ -223,12 +216,13 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
             String projectName = row.get(ImportItemsDTO.PROJECT_NAME);
             String chineseName = row.get(ImportItemsDTO.CHINESE_NAME);
             String englishName = row.get(ImportItemsDTO.ENGLISH_NAME);
-            errorMessage = new StringBuffer();
+            StringBuffer errorMessage = new StringBuffer();
             boolean pass = true;
-            importTSysItemsDTO = new ImportTSysItemsDTO();
+            ImportTSysItemsDTO importTSysItemsDTO = new ImportTSysItemsDTO();
             importTSysItemsDTO.setCreateTime(new Date());
             importTSysItemsDTO.setUpdateTime(new Date());
             importTSysItemsDTO.setId(UUID.randomUUID().toString());
+
             List<TSysItems> items = tSysItemsMapper.selectByItems(projectName);
             if(StringUtils.isEmpty(projectName)){
                 errorMessage.append("项目点名称不能为空；");
@@ -294,12 +288,6 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
      */
     private TSysItems loadByDTO(ImportTSysItemsDTO dto){
         TSysItems tSysItems = new TSysItems();
-   /*     tSysItems.setId(dto.getId());
-        tSysItems.setItems(dto.getItems());
-        tSysItems.setName(dto.getName());
-        tSysItems.setEnglishName(dto.getEnglishName());
-        tSysItems.setCreateTime(dto.getCreateTime());
-        tSysItems.setUpdateTime(dto.getUpdateTime());*/
         BeanCopierEx.copy(dto,tSysItems);
         return tSysItems;
     }

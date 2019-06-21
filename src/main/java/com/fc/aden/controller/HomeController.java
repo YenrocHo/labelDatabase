@@ -117,7 +117,6 @@ public class HomeController extends BaseController{
 		 //跳转到 get请求的登陆方法
 		 view.setViewName("admin/index");
 		 return view;
-		 
 	}
 	
 	/**
