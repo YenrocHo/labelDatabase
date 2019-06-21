@@ -141,4 +141,10 @@ public class FoodController extends BaseController {
             return error();
         }
     }
+    @GetMapping("/edit")
+    @ResponseBody
+    public String edit(@PathVariable("id") String id, HttpServletRequest request, ModelMap mmap){
+        TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
+        return prefix + "/edit";
+    }
 }

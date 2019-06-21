@@ -17,6 +17,22 @@ public class TSysFood {
 
     private Date updateTime;
 
+    private Integer status;
+
+    public TSysFood(String id, String foodName, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
+        this.id = id;
+        this.foodName = foodName;
+        this.name = name;
+        this.englishName = englishName;
+        this.picture = picture;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.status = status;
+    }
+
+    public TSysFood() {
+    }
+
     public String getId() {
         return id;
     }
@@ -73,6 +89,14 @@ public class TSysFood {
         this.updateTime = updateTime;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "TSysFood{" +
@@ -83,6 +107,7 @@ public class TSysFood {
                 ", picture='" + picture + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", status=" + status +
                 '}';
     }
 }

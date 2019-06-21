@@ -7,11 +7,12 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="english_name" property="englishName" jdbcType="VARCHAR" />
     <result column="picture" property="picture" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER"/>
     <result column="create_Time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_Time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, food_name, name, english_name, picture, create_Time, update_Time
+    id, food_name, name, english_name, picture, status,create_Time, update_Time
   </sql>
   <sql id="Example_Where_Clause">
     <where>
@@ -98,6 +99,9 @@
       <if test="picture != null" >
         picture,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
       <if test="createTime != null" >
         create_Time,
       </if>
@@ -120,6 +124,9 @@
       </if>
       <if test="picture != null" >
         #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -144,6 +151,9 @@
       <if test="picture != null" >
         picture = #{picture,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         create_Time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -159,6 +169,7 @@
       name = #{name,jdbcType=VARCHAR},
       english_name = #{englishName,jdbcType=VARCHAR},
       picture = #{picture,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
       create_Time = #{createTime,jdbcType=TIMESTAMP},
       update_Time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
