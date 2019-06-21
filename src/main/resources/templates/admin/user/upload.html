@@ -28,10 +28,9 @@
                         <form class="form-horizontal m" action="/UserController/uploadFile" id="form-add" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <p class="text-info">
-                                    <button onclick="downloadUser()"
-                                            style="border: 0; background-color: transparent; outline: none;font-size: 20px">
-                                        点击按钮下载模板
-                                    </button>
+                                    <input type="button" onclick="downloadUser()"
+                                            style="border: 0; background-color: transparent; outline: none;font-size: 20px" value="点击按钮下载模板">
+
                                 </p>
                                 <p>a.模板文件中第一行为标题,请保留</p>
                                 <p>b.模板文件中各列不能变动,请按要求填写,否则可能导致导入的那一行验证不通过</p>
@@ -44,7 +43,6 @@
                             <div class="form-group">
                                 <div class="form-control-static col-sm-offset-9">
                                     <div class="text-center">
-                                        <!--                                        <button class="btn btn-primary" id="formSubmit" onclick="checkData()">提交</button>-->
                                         <input type="submit" class="brn btn-danger" value="提交" onclick="return checkData()"/>
                                         <input onclick="$.modal.close()" class="btn btn-danger" type="button" value="关闭">
                                     </div>

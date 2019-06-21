@@ -8,7 +8,7 @@ fuce:
   copyrightYear: 2018
   #头像上传路径
   #profile: D:/profile/
-  profile: E:/Aden_lable/profile/
+  profile: D:/Aden_lable/profile/
 #tomcat config
 server :
   port : 8080

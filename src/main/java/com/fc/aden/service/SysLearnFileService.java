@@ -203,12 +203,19 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
         List<String> projectNames = new ArrayList<>();
         ImportItemsDTO importItemsDTO = new ImportItemsDTO();
         List<ImportTSysItemsDTO> importTSysItemsDTOS = new ArrayList<>();
+        ImportTSysItemsDTO importTSysItemsDTO = null;
+        StringBuffer errorMessage = null;
         try {
             dataList = ExcelUtils.getExcelData(excelFile, ImportItemsDTO.IMPORT_TABLE_HEADER);
         } catch (Exception e) {
-            logger.warn("数据异常，重新导入", e);
+            logger.info("数据异常，重新导入", e);
+            importTSysItemsDTO = new ImportTSysItemsDTO();
             //文件解析异常
-            return null;
+            errorMessage.append("数据异常,请确认文档");
+            importTSysItemsDTO.setMessages(errorMessage.toString());
+            importTSysItemsDTOS.add(importTSysItemsDTO);
+            importItemsDTO.settSysItems(importTSysItemsDTOS);
+            return importItemsDTO;
         }
         int errNumber = 0;
         int successNumber = 0;
@@ -216,13 +223,12 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
             String projectName = row.get(ImportItemsDTO.PROJECT_NAME);
             String chineseName = row.get(ImportItemsDTO.CHINESE_NAME);
             String englishName = row.get(ImportItemsDTO.ENGLISH_NAME);
-            StringBuffer errorMessage = new StringBuffer();
+            errorMessage = new StringBuffer();
             boolean pass = true;
-            ImportTSysItemsDTO importTSysItemsDTO = new ImportTSysItemsDTO();
+            importTSysItemsDTO = new ImportTSysItemsDTO();
             importTSysItemsDTO.setCreateTime(new Date());
             importTSysItemsDTO.setUpdateTime(new Date());
             importTSysItemsDTO.setId(UUID.randomUUID().toString());
-
             List<TSysItems> items = tSysItemsMapper.selectByItems(projectName);
             if(StringUtils.isEmpty(projectName)){
                 errorMessage.append("项目点名称不能为空；");

@@ -840,7 +840,7 @@ input: -moz-placeholder {
     padding-left: 32px;
     width: 130px;
 }
-#demo-b input: -moz-placeholder {
+#demo-b input:-moz-placeholder {
     color: rgba(0, 0, 0, 0);
 }
 .search-hover {

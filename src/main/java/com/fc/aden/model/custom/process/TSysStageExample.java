@@ -184,8 +184,8 @@ public class TSysStageExample {
             return (Criteria) this;
         }
 
-        public Criteria andProductNameLike(String value) {
-            addCriterion("product_name like", value, "productName");
+        public Criteria andStageLike(String value) {
+            addCriterion("stage like", value, "stage");
             return (Criteria) this;
         }
         public Criteria andQueryLike(String value) {

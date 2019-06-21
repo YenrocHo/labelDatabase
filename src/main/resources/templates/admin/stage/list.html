@@ -48,6 +48,13 @@
                         </div>
                         <div class="body-nest" id="search_div">
                             <div class="form_left">
+                                <form role="form" class="form-inline">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail2" class="sr-only">阶段</label>
+                                        <input type="text" name="stage" placeholder="阶段"class="form-control">
+                                    </div>
+                                    <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -138,7 +145,7 @@
                 checkbox: true
             }, {
                 field: 'id',
-                title: 'id'
+                title: '编号'
             }, {
                 field: 'stage',
                 title: '阶段'

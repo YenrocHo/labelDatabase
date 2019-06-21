@@ -77,14 +77,14 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
     /**
      * 阶段管理列表
      * @param tablepar
-     * @param searchTxt
+     * @param stage
      * @return
      */
-    public PageInfo<TSysStage> sysStageList(Tablepar tablepar, String searchTxt){
+    public PageInfo<TSysStage> sysStageList(Tablepar tablepar, String stage){
         TSysStageExample tSysStageExample = new TSysStageExample();
         tSysStageExample.setOrderByClause("id+0 desc");
-        if(searchTxt!=null&&!"".equals(searchTxt)){
-            tSysStageExample.createCriteria().andProductNameLike("%"+searchTxt+"%");
+        if(stage!=null&&!"".equals(stage)){
+            tSysStageExample.createCriteria().andStageLike("%"+stage+"%");
         }
         if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
