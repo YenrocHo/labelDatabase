@@ -26,7 +26,13 @@ public class FoodController extends BaseController {
     private String prefix = "admin/food";
 
     private String imgPrefix = "http://www.image.com/image/";
-
+    /**
+     * @Author Noctis
+     * @Description //TODO 查看视频图片
+     * @Date 2019/6/21 10:30
+     * @Param [id, mmap]
+     * @return java.lang.String
+     **/
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") String id, ModelMap mmap){
         TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
