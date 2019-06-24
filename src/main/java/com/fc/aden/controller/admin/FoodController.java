@@ -25,7 +25,7 @@ public class FoodController extends BaseController {
     //跳转页面参数
     private String prefix = "admin/food";
 
-    private String imgPrefix = "http://www.image.com/image/";
+    private String imgPrefix = "https://www.desmart.com.cn/image/";
     /**
      * @Author Noctis
      * @Description //TODO 查看视频图片

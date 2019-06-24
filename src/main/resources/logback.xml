@@ -31,7 +31,6 @@
         </encoder>
     </appender>
 
-
     <logger name="com.fc">
         <level value="DEBUG" />
     </logger>

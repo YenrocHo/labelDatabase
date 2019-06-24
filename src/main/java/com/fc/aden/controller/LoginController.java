@@ -11,6 +11,7 @@ import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysProduct;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.model.custom.process.TSysStore;
+import com.fc.aden.service.AUserService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
@@ -18,11 +19,14 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import static com.fc.aden.common.domain.AjaxResult.AJAX_DATA;
 
 @Controller
 @Api(value = "Android调用接口")
@@ -32,50 +36,24 @@ public class LoginController  extends BaseController {
 
 
     /////////////////登录校验接口//////////////////////////
+
+    @Autowired
+    private AUserService aUserService;
     /**
-     * 登录校验接口
-     * @param user
-     * @param rememberMe
-     * @param request
-     * @return
-     */
+     * @Author Noctis
+     * @Description //安卓用户登录
+     * @Date 2019/6/24 11:58
+     * @Param [number, request]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/android/login")
     @ResponseBody
-    public AjaxResult login(TsysUser user,  boolean rememberMe, HttpServletRequest request) {
-        logger.info("login---------------");
-        AjaxResult json = new AjaxResult();
-        String userName = user.getUsername();
-        Subject currentUser = SecurityUtils.getSubject();
-        if(!currentUser.isAuthenticated()) {
-            UsernamePasswordToken token =new UsernamePasswordToken(userName,user.getPassword());
-            try {
-                if(rememberMe) {
-                    token.setRememberMe(true);
-                }
-                //存入用户
-                currentUser.login(token);
-            }catch (UnknownAccountException uae) {
-                logger.info("对用户[" + userName + "]进行登录验证..验证未通过,未知账户");
-                json.error("未知账户");
-            } catch (IncorrectCredentialsException ice) {
-                logger.info("对用户[" + userName + "]进行登录验证..验证未通过,错误的凭证");
-                json.error("用户名或密码不正确");
-            } catch (LockedAccountException lae) {
-                logger.info("对用户[" + userName + "]进行登录验证..验证未通过,账户已锁定");
-                json.error("账户已锁定");
-            } catch (ExcessiveAttemptsException eae) {
-                logger.info("对用户[" + userName + "]进行登录验证..验证未通过,错误次数过多");
-                json.error("用户名或密码错误次数过多");
-            } catch (AuthenticationException ae) {
-                //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景
-                logger.info("对用户[" + userName + "]进行登录验证..验证未通过,堆栈轨迹如下");
-                ae.printStackTrace();
-                json.error("用户名或密码不正确");
-            }
-            json.success("登录成功");
+    public AjaxResult login(String number, HttpServletRequest request) {
+        AjaxResult result = aUserService.login(number);
+        if (result != null){
+            request.getSession().setAttribute("current_user",result.get(AJAX_DATA));
         }
-        logger.info("登录成功---------------");
-        return json;
+        return result;
     }
 
 
@@ -97,7 +75,7 @@ public class LoginController  extends BaseController {
         PageInfo<TsysUser> page = sysUserService.list(tablepar, username, number, name);
         TableSplitResult<TsysUser> result = new TableSplitResult<TsysUser>(page.getPageNum(), page.getTotal(),page.getList());
         AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA,result);
+        ajaxResult.put(AJAX_DATA,result);
         return ajaxResult;
     }
 
@@ -114,7 +92,7 @@ public class LoginController  extends BaseController {
         PageInfo<TSysFood> page=sysFoodService.sysFoodList(tablepar,foodName);
         TableSplitResult<TSysFood> result=new TableSplitResult<TSysFood>(page.getPageNum(), page.getTotal(), page.getList());
         AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA,result);
+        ajaxResult.put(AJAX_DATA,result);
         return ajaxResult;
     }
 
@@ -131,7 +109,7 @@ public class LoginController  extends BaseController {
         PageInfo<TSysItems> page = sysItemsService.sysIteamsList(tablepar, items);
         TableSplitResult<TSysItems> result = new TableSplitResult<TSysItems>(page.getPageNum(), page.getTotal(), page.getList());
         AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA,result);
+        ajaxResult.put(AJAX_DATA,result);
         return ajaxResult;
     }
 
@@ -148,7 +126,7 @@ public class LoginController  extends BaseController {
         PageInfo<TSysStage> page = sysStageService.sysStageList(tablepar, stage);
         TableSplitResult<TSysStage> result = new TableSplitResult<TSysStage>(page.getPageNum(), page.getTotal(), page.getList());
         AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA,result);
+        ajaxResult.put(AJAX_DATA,result);
         return ajaxResult;
     }
 
@@ -165,7 +143,7 @@ public class LoginController  extends BaseController {
         PageInfo<TSysStore> page = sysStoreService.list(tablepar, store);
         TableSplitResult<TSysStore> result = new TableSplitResult<TSysStore>(page.getPageNum(), page.getTotal(), page.getList());
         AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA, result);
+        ajaxResult.put(AJAX_DATA, result);
         return ajaxResult;
     }
 
@@ -182,7 +160,7 @@ public class LoginController  extends BaseController {
         PageInfo<TSysProduct> page = sysProductService.list(tablepar,searchTxt) ;
         TableSplitResult<TSysProduct> result = new TableSplitResult<TSysProduct>(page.getPageNum(),page.getTotal(),page.getList());
         AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AjaxResult.AJAX_DATA,result);
+        ajaxResult.put(AJAX_DATA,result);
         return ajaxResult;
     }
 

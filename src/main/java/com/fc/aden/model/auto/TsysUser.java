@@ -156,4 +156,23 @@ public class TsysUser implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "TsysUser{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", number='" + number + '\'' +
+                ", englishName='" + englishName + '\'' +
+                ", items='" + items + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", sex='" + sex + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", email='" + email + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", createTime='" + createTime + '\'' +
+                '}';
+    }
 }

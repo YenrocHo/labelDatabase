@@ -30,4 +30,8 @@ public interface TsysUserMapper {
 
     List<TsysUser> selectByName(String name);
     List<TsysUser> selectByNumber(String number);
+
+    int checkNumber(String number);
+
+    TsysUser selectLogin(String number);
 }
