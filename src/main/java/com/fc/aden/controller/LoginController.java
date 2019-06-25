@@ -12,6 +12,7 @@ import com.fc.aden.model.custom.process.TSysProduct;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.*;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import javafx.stage.Stage;
@@ -32,7 +33,7 @@ import static com.fc.aden.common.domain.AjaxResult.CODE_SUCCESS;
 
 @Controller
 @Api(value = "Android调用接口")
-@RequestMapping("/loginController")
+@RequestMapping("/androidController")
 public class LoginController  extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
@@ -158,13 +159,21 @@ public class LoginController  extends BaseController {
     @ResponseBody
     public AjaxResult allList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                               @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        AjaxResult ajaxResult = new AjaxResult();
         AjaxResult stage = aStageService.selectStageList(pageNum,pageSize,null);
         AjaxResult food = aFoodService.selectFoodList(pageNum,pageSize,null,null);
         AjaxResult product = aFoodService.selectFoodList(pageNum,pageSize,null,null);
         AjaxResult store = aStoreService.selectStoreList(pageNum,pageSize,null,null);
-        return stage;
+        PageInfo stages = (PageInfo)stage.get(AJAX_DATA);
+        PageInfo foods = (PageInfo)food.get(AJAX_DATA);
+        PageInfo products = (PageInfo)product.get(AJAX_DATA);
+        PageInfo stores = (PageInfo)store.get(AJAX_DATA);
+        ajaxResult.put("store",stores);
+        ajaxResult.put("product",products);
+        ajaxResult.put("food",foods);
+        ajaxResult.put("stage",stages);
+        return ajaxResult;
     }
-
 
     ////////////////////////////////////////基础信息提交接口//////////////////////////
 
