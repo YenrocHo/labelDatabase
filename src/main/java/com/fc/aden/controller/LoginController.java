@@ -162,7 +162,7 @@ public class LoginController  extends BaseController {
         AjaxResult ajaxResult = new AjaxResult();
         AjaxResult stage = aStageService.selectStageList(pageNum,pageSize,null);
         AjaxResult food = aFoodService.selectFoodList(pageNum,pageSize,null,null);
-        AjaxResult product = aFoodService.selectFoodList(pageNum,pageSize,null,null);
+        AjaxResult product = aProductService.selectProductList(pageNum,pageSize,null,null);
         AjaxResult store = aStoreService.selectStoreList(pageNum,pageSize,null,null);
         PageInfo stages = (PageInfo)stage.get(AJAX_DATA);
         PageInfo foods = (PageInfo)food.get(AJAX_DATA);
@@ -174,6 +174,20 @@ public class LoginController  extends BaseController {
         ajaxResult.put("stage",stages);
         return ajaxResult;
     }
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allUser")
+    @ResponseBody
+    public AjaxResult allUserList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                  @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        AjaxResult result = aUserService.AllUserList(pageNum, pageSize);
+        return result;
+    }
+
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
+    @ResponseBody
+    public AjaxResult submit(TSysStage tSysStage,TSysFood tSysFood,TSysProduct tSysProduct,TSysStore tSysStore){
+        return null;
+    }
+
 
     ////////////////////////////////////////基础信息提交接口//////////////////////////
 

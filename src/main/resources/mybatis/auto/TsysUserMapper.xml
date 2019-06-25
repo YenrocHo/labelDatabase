@@ -380,4 +380,9 @@
         from t_sys_user
         where number = #{number}
     </select>
+    <select id="selectAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+    </select>
 </mapper>
