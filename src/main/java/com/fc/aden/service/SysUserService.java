@@ -285,6 +285,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             String englishName = row.get(ImportUserDTO.ENGLISH_NAME);
             String sex = row.get(ImportUserDTO.SEX);
             String items = row.get(ImportUserDTO.ITEMS);
+            String phone = row.get(ImportUserDTO.PHONE);
 
             StringBuffer errorMessage = new StringBuffer();
             boolean pass = true;
@@ -303,7 +304,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             }else if(users!=null && users.size()>0) {
                  errorMessage.append("工号名称不能重复；");
                  pass = false;
-            }else{
+            }else {
                 importTSysUserDTO.setNumber(number);
             }
             List<TsysUser> userlist = tsysUserMapper.selectByName(loginName);
@@ -316,7 +317,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             }else if(userlist!=null && userlist.size()>0) {
                 errorMessage.append("登录名称不能重复；");
                 pass = false;
-            }else{
+            }else {
                 importTSysUserDTO.setUsername(loginName);
             }
 
@@ -350,6 +351,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             }
             importTSysUserDTO.setEnglishName(englishName);
             importTSysUserDTO.setPass(pass);
+            importTSysUserDTO.setPhoneNumber(phone);
             importTSysUserDTO.setMessages(errorMessage.toString());
             importTSysUserDTOs.add(importTSysUserDTO);
 
@@ -398,8 +400,10 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
         tsysUser.setCreateTime(dto.getCreateTime());
         tsysUser.setUpdateTime(dto.getUpdateTime());
         tsysUser.setSex(dto.getSex());
+        tsysUser.setPhoneNumber(dto.getPhoneNumber());
         //密码默认使用登录名称
-        tsysUser.setPassword(MD5Util.encode(dto.getUsername()));
+        String pw = MD5Util.encode(dto.getUsername());
+        tsysUser.setPassword(pw);
         return tsysUser;
     }
 }

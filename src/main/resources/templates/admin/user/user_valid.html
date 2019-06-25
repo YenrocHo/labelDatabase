@@ -9,17 +9,20 @@
 <link rel="stylesheet" th:href="@{/static/admin/assets/js/button/ladda/ladda.min.css}">
 <!-- bootstrap-table表单样式 -->
 <link th:href="@{/static/admin/assets/js/bootstrap/css/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+<link th:href="@{/static/admin/file/css/item_vaild.css}" rel="stylesheet"/>
 <style type="text/css">
 
 </style>
 <!-- 右边内容 -->
 <div class="wrap-fluid">
     <div class="container-fluid paper-wrap bevel tlbr">
-        校验成功：<span th:text="${importUserDTO.successNumber}"></span>条 <br>
-        校验失败：<span th:text="${importUserDTO.errorNumber}"></span>条
-
-        <table border="1">
-            <tr>
+        <div class="massage">
+            校验成功：<span th:text="${importUserDTO.successNumber}"></span>条 <br>
+            校验失败：<span th:text="${importUserDTO.errorNumber}"></span>条
+        </div>
+        <div class="content">
+            <table>
+            <tr class="title">
                 <td>状态</td>
                 <td>消息</td>
                 <td>工号</td>
@@ -28,8 +31,9 @@
                 <td>英文名</td>
                 <td>性别</td>
                 <td>项目点</td>
+                <td>手机号</td>
             </tr>
-            <tr th:each="tsysUser : ${importUserDTO.tSysUser}">
+            <tr th:each="tsysUser : ${importUserDTO.tSysUser}" class="data">
                 <td th:text="${tsysUser.pass}"></td>
                 <td th:text="${tsysUser.messages}"></td>
                 <td th:text="${tsysUser.number}"></td>
@@ -38,6 +42,7 @@
                 <th th:text="${tsysUser.englishName}"></th>
                 <th th:text="${tsysUser.sex}"></th>
                 <th th:text="${tsysUser.items}"></th>
+                <th th:text="${tsysUser.phoneNumber}"></th>
             </tr>
         </table>
 

@@ -12,8 +12,9 @@ public class ImportUserDTO {
     public static final String ENGLISH_NAME="英文名";
     public static final String SEX="性别('男'或'女')";
     public static final String ITEMS="所属项目点(必填)";
+    public static final String PHONE="手机号";
 
-    public static final String[] IMPORT_TABLE_HEADER = new String[]{NUMBER,LOGIN_NAME, CHINESE_NAME, ENGLISH_NAME,SEX,ITEMS};
+    public static final String[] IMPORT_TABLE_HEADER = new String[]{NUMBER,LOGIN_NAME, CHINESE_NAME, ENGLISH_NAME,SEX,ITEMS,PHONE};
 
     /**
      * 成功导入数量
