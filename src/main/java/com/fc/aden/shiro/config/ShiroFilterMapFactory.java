@@ -42,7 +42,7 @@ user:例如/admins/user/**=user没有参数表示必须存在用户，当登入�
 		filterChainDefinitionMap.put("/login", "anon");
 		filterChainDefinitionMap.put("/login", "anon");
 		filterChainDefinitionMap.put("/logout", "logout");
-		filterChainDefinitionMap.put("/androidController/login", "anon");
+		filterChainDefinitionMap.put("/androidController/*", "anon");
 		//放验证码
 		filterChainDefinitionMap.put("/captcha/captchaImage**", "anon");
 		// 释放 druid 监控画面
