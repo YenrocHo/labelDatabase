@@ -16,19 +16,22 @@ public class TSysStore implements Serializable {
 
     private Integer status;
 
+    private String productId;
+
     private Date creatTime;
 
     private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 
-    public TSysStore(String id, String query, String cCondition, String eCondition, String temperature, Integer status, Date creatTime, Date updateTime) {
+    public TSysStore(String id, String query, String cCondition, String eCondition, String temperature, Integer status, String productId, Date creatTime, Date updateTime) {
         this.id = id;
         this.query = query;
         this.cCondition = cCondition;
         this.eCondition = eCondition;
         this.temperature = temperature;
         this.status = status;
+        this.productId = productId;
         this.creatTime = creatTime;
         this.updateTime = updateTime;
     }
@@ -84,6 +87,14 @@ public class TSysStore implements Serializable {
         this.status = status;
     }
 
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
     public Date getCreatTime() {
         return creatTime;
     }
@@ -113,6 +124,7 @@ public class TSysStore implements Serializable {
                 ", eCondition='" + eCondition + '\'' +
                 ", temperature='" + temperature + '\'' +
                 ", status=" + status +
+                ", productId='" + productId + '\'' +
                 ", creatTime=" + creatTime +
                 ", updateTime=" + updateTime +
                 '}';

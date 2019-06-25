@@ -1,5 +1,6 @@
 package com.fc.aden.mapper.auto.process;
 
+
 import com.fc.aden.model.custom.process.TSysStore;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,6 @@ public interface TSysStoreMapper {
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
     List<TSysStore> selectListBycQuery(String searchTxt);
+
+    List<TSysStore> selectStoreList(@Param("productId") String productId, @Param("keyword") String keyword);
 }

@@ -151,4 +151,15 @@
       update_Time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+    <select id="selectStageList" resultMap="BaseResultMap" parameterType="string">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_stage
+        <where>
+            <if test="keyword != null">
+                stage like #{keyword,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 </mapper>

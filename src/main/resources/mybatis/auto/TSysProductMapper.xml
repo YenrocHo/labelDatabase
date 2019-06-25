@@ -7,11 +7,12 @@
     <result column="c_name" jdbcType="VARCHAR" property="cName" />
     <result column="e_name" jdbcType="VARCHAR" property="eName" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="food_id" jdbcType="VARCHAR" property="foodId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    product_id, name,c_name, e_name, status,create_time, update_time
+    product_id, name,c_name, e_name, status, food_id,create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -24,9 +25,9 @@
     where product_id = #{productId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysProduct">
-    insert into t_sys_product (product_id, name,c_name, e_name, status,
+    insert into t_sys_product (product_id, name,c_name, e_name, status,food_id,
       create_time, update_time)
-    values (#{productId,jdbcType=VARCHAR}, #{cName,jdbcType=VARCHAR}, #{eName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+    values (#{productId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{cName,jdbcType=VARCHAR}, #{eName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},#{foodId,jdbcType=VARCHAR}
       now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysProduct">
@@ -46,6 +47,9 @@
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="foodId != null">
+        food_id,
       </if>
       <if test="createTime != null">
         create_time,
@@ -70,6 +74,9 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="foodId != null">
+        #{foodId,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         now(),
       </if>
@@ -93,6 +100,9 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="foodId != null">
+        food_id = #{foodId,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -109,6 +119,7 @@
       c_name = #{cName,jdbcType=VARCHAR},
       e_name = #{eName,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
+      food_id = #{foodId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
     where product_id = #{productId,jdbcType=VARCHAR}
@@ -151,4 +162,17 @@
     </choose>
     where product_id = #{id}
   </update>
+  <select id="selectProductList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_product
+    <where>
+      <if test="keyword != null">
+        name like #{keyword,jdbcType=VARCHAR}
+      </if>
+      <if test="foodId != null">
+        and food_id like #{foodId,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>

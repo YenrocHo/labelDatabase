@@ -8,11 +8,18 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface TSysFoodMapper {
+
     int deleteByPrimaryKey(String id);
+
     int insertSelective(TSysFood record);
+
     TSysFood selectByPrimaryKey(String id);
 
+    int insert(TSysFood record);
+
     int updateByPrimaryKeySelective(TSysFood record);
+
+    int updateByPrimaryKey(TSysFood record);
 
     int updateByExampleSelective(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
 
@@ -23,4 +30,7 @@ public interface TSysFoodMapper {
     long countByExample(TSysFoodExample example);
 
     int deleteByExample(TSysFoodExample example);
+
+    List<TSysFood> selectFoodList(@Param("stageId") String stageId,@Param("keyword") String keyword);
+
 }

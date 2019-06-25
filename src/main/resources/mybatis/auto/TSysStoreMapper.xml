@@ -8,11 +8,12 @@
     <result column="e_condition" jdbcType="VARCHAR" property="eCondition" />
     <result column="temperature" jdbcType="VARCHAR" property="temperature" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, query, c_condition, e_condition, temperature, status, creat_time, update_time
+    id, query, c_condition, e_condition, temperature, status, product_id,creat_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -26,10 +27,10 @@
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysStore">
     insert into t_sys_store (id, query, c_condition, 
-      e_condition, temperature, status, 
+      e_condition, temperature, status,product_id,
       creat_time, update_time)
     values (#{id,jdbcType=VARCHAR}, #{query,jdbcType=VARCHAR}, #{cCondition,jdbcType=VARCHAR}, 
-      #{eCondition,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+      #{eCondition,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},#{productId,jdbcType=VARCHAR}
       #{creatTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysStore">
@@ -52,6 +53,9 @@
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="productId != null">
+        product_id,
       </if>
       <if test="creatTime != null">
         creat_time,
@@ -79,11 +83,14 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
       <if test="creatTime != null">
-        #{creatTime,jdbcType=INTEGER},
+        now(),
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=INTEGER},
+        now(),
       </if>
     </trim>
   </insert>
@@ -105,11 +112,14 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=VARCHAR} ,
+      </if>
       <if test="creatTime != null">
         creat_time = #{creatTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -121,6 +131,7 @@
       e_condition = #{eCondition,jdbcType=VARCHAR},
       temperature = #{temperature,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=VARCHAR},
       creat_time = #{creatTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
     where id = #{id,jdbcType=VARCHAR}
@@ -157,5 +168,18 @@
     <include refid="Base_Column_List"/>
     from t_sys_store
     where query like #{searchTxt} or c_condition like #{searchTxt}
+  </select>
+  <select id="selectStoreList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_store
+    <where>
+      <if test="keyword != null">
+        name like #{keyword,jdbcType=VARCHAR}
+      </if>
+      <if test="productId != null">
+        and product_id like #{productId,jdbcType=VARCHAR}
+      </if>
+    </where>
   </select>
 </mapper>

@@ -23,4 +23,6 @@ public interface TSysStageMapper {
     long countByExample(TSysStageExample example);
 
     int deleteByExample(TSysStageExample example);
+
+    List<TSysStage> selectStageList(String keyword);
 }

@@ -19,7 +19,9 @@ public class TSysFood {
 
     private Integer status;
 
-    public TSysFood(String id, String foodName, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
+    private String stageId;
+
+    public TSysFood(String id, String foodName, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status, String stageId) {
         this.id = id;
         this.foodName = foodName;
         this.name = name;
@@ -28,6 +30,7 @@ public class TSysFood {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.status = status;
+        this.stageId = stageId;
     }
 
     public TSysFood() {
@@ -97,6 +100,14 @@ public class TSysFood {
         this.status = status;
     }
 
+    public String getStageId() {
+        return stageId;
+    }
+
+    public void setStageId(String stageId) {
+        this.stageId = stageId;
+    }
+
     @Override
     public String toString() {
         return "TSysFood{" +
@@ -108,6 +119,7 @@ public class TSysFood {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", status=" + status +
+                ", stageId='" + stageId + '\'' +
                 '}';
     }
 }

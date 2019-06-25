@@ -11,9 +11,10 @@ import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysProduct;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.model.custom.process.TSysStore;
-import com.fc.aden.service.AUserService;
+import com.fc.aden.service.*;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import javafx.stage.Stage;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.fc.aden.common.domain.AjaxResult.AJAX_DATA;
+import static com.fc.aden.common.domain.AjaxResult.CODE_SUCCESS;
 
 @Controller
 @Api(value = "Android调用接口")
@@ -37,64 +39,6 @@ public class LoginController  extends BaseController {
 
     /////////////////登录校验接口//////////////////////////
 
-    @Autowired
-    private AUserService aUserService;
-    /**
-     * @Author Noctis
-     * @Description //安卓用户登录
-     * @Date 2019/6/24 11:58
-     * @Param [number, request]
-     * @return com.fc.aden.common.domain.AjaxResult
-     **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/android/login")
-    @ResponseBody
-    public AjaxResult login(String number, HttpServletRequest request) {
-        AjaxResult result = aUserService.login(number);
-        if (result != null){
-            request.getSession().setAttribute("current_user",result.get(AJAX_DATA));
-        }
-        return result;
-    }
-
-
-//////////////////////基础信息列表接口///////////////////////////////
-
-
-    /**
-     * 获取登录员工信息接口
-     * @param tablepar
-     * @param username
-     * @param number
-     * @param name
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/user-list")
-    @ResponseBody
-    public AjaxResult list(Tablepar tablepar, String username, String number, String name) {
-        logger.info("登录员工信息接口---------------");
-        PageInfo<TsysUser> page = sysUserService.list(tablepar, username, number, name);
-        TableSplitResult<TsysUser> result = new TableSplitResult<TsysUser>(page.getPageNum(), page.getTotal(),page.getList());
-        AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AJAX_DATA,result);
-        return ajaxResult;
-    }
-
-    /**
-     * 获取食品列表接口
-     * @param tablepar
-     * @param foodName
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/food-list")
-    @ResponseBody
-    public AjaxResult list(Tablepar tablepar, String foodName) {
-        logger.info("获取食品列表接口========================");
-        PageInfo<TSysFood> page=sysFoodService.sysFoodList(tablepar,foodName);
-        TableSplitResult<TSysFood> result=new TableSplitResult<TSysFood>(page.getPageNum(), page.getTotal(), page.getList());
-        AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AJAX_DATA,result);
-        return ajaxResult;
-    }
 
     /**
      * 项目点列表接口
@@ -113,56 +57,114 @@ public class LoginController  extends BaseController {
         return ajaxResult;
     }
 
+
+
+
+    /*李源*/
+    @Autowired
+    private AStageService aStageService;
+    @Autowired
+    private AUserService aUserService;
+    @Autowired
+    private AFoodService aFoodService;
+    @Autowired
+    private AProductService aProductService;
+    @Autowired
+    private AStoreService aStoreService;
+
     /**
-     * 制作阶段列表接口
-     * @param tablepar
-     * @param stage
-     * @return
-     */
+     * @Author Noctis
+     * @Description //安卓用户登录
+     * @Date 2019/6/24 11:58
+     * @Param [number, request]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/android/login")
+    @ResponseBody
+    public AjaxResult login(String number, HttpServletRequest request) {
+        AjaxResult result = aUserService.login(number);
+        request.getSession().setAttribute("current_user",result.get("current_user"));
+        return result;
+    }
+
+    /***
+     * @Author Noctis
+     * @Description //安卓阶段列表（列表展示，按条件搜索）
+     * @Date 2019/6/24 19:06
+     * @Param [tablepar, stage]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/stage-list")
     @ResponseBody
-    public AjaxResult stageList(Tablepar tablepar, String stage) {
-        logger.info("制作阶段列表接口========================");
-        PageInfo<TSysStage> page = sysStageService.sysStageList(tablepar, stage);
-        TableSplitResult<TSysStage> result = new TableSplitResult<TSysStage>(page.getPageNum(), page.getTotal(), page.getList());
-        AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AJAX_DATA,result);
-        return ajaxResult;
+    public AjaxResult stageList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                @RequestParam(value = "keyword", required = false) String keyword) {
+        AjaxResult result = aStageService.selectStageList(pageNum,pageSize,keyword);
+        return result;
     }
 
     /**
-     * 存储条件列表接口
-     * @param tablepar
-     * @param store
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/store-list")
+     * @Author Noctis
+     * @Description //安卓食品列表（列表展示，按条件搜索）
+     * @Date 2019/6/24 17:25
+     * @Param [pageNum, pageSize, stageId, keyword]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/food-list")
     @ResponseBody
-    public AjaxResult storeList(Tablepar tablepar, String store) {
-        logger.info("存储条件列表接口========================");
-        PageInfo<TSysStore> page = sysStoreService.list(tablepar, store);
-        TableSplitResult<TSysStore> result = new TableSplitResult<TSysStore>(page.getPageNum(), page.getTotal(), page.getList());
-        AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AJAX_DATA, result);
-        return ajaxResult;
+    public AjaxResult list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                           @RequestParam(value = "stageId", required = false) String stageId,
+                           @RequestParam(value = "keyword", required = false) String keyword) {
+        AjaxResult result = aFoodService.selectFoodList(pageNum,pageSize,stageId,keyword);
+        return result;
     }
 
     /**
-     * 产品获取列表接口
-     * @param tablepar
-     * @param searchTxt
-     * @return
-     */
+     * @Author Noctis
+     * @Description //安卓产品列表（列表展示，按条件搜索）
+     * @Date 2019/6/24 17:36
+     * @Param [pageNum, pageSize, stageId, keyword]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/product-list")
     @ResponseBody
-    public AjaxResult productList(Tablepar tablepar,String searchTxt){
-        logger.info("产品获取列表接口=======================");
-        PageInfo<TSysProduct> page = sysProductService.list(tablepar,searchTxt) ;
-        TableSplitResult<TSysProduct> result = new TableSplitResult<TSysProduct>(page.getPageNum(),page.getTotal(),page.getList());
-        AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AJAX_DATA,result);
-        return ajaxResult;
+    public AjaxResult productList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                  @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                  @RequestParam(value = "stageId", required = false) String foodId,
+                                  @RequestParam(value = "keyword", required = false) String keyword){
+        AjaxResult result = aProductService.selectProductList(pageNum,pageSize,foodId,keyword);
+        return result;
     }
+    /**
+     * @Author Noctis
+     * @Description //安卓存储条件列表（列表展示，按条件搜索）
+     * @Date 2019/6/24 18:34
+     * @Param [tablepar, store]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/store-list")
+    @ResponseBody
+    public AjaxResult storeList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                @RequestParam(value = "stageId", required = false) String productId,
+                                @RequestParam(value = "keyword", required = false) String keyword) {
+
+        AjaxResult result = aStoreService.selectStoreList(pageNum,pageSize,productId,keyword);
+        return result;
+    }
+
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allData")
+    @ResponseBody
+    public AjaxResult allList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        AjaxResult stage = aStageService.selectStageList(pageNum,pageSize,null);
+        AjaxResult food = aFoodService.selectFoodList(pageNum,pageSize,null,null);
+        AjaxResult product = aFoodService.selectFoodList(pageNum,pageSize,null,null);
+        AjaxResult store = aStoreService.selectStoreList(pageNum,pageSize,null,null);
+        return stage;
+    }
+
 
     ////////////////////////////////////////基础信息提交接口//////////////////////////
 
@@ -267,6 +269,27 @@ public class LoginController  extends BaseController {
         } else {
             return error();
         }
+    }
+
+
+
+    /**
+     * 获取登录员工信息接口
+     * @param tablepar
+     * @param username
+     * @param number
+     * @param name
+     * @return
+     */
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/user-list")
+    @ResponseBody
+    public AjaxResult list(Tablepar tablepar, String username, String number, String name) {
+        logger.info("登录员工信息接口---------------");
+        PageInfo<TsysUser> page = sysUserService.list(tablepar, username, number, name);
+        TableSplitResult<TsysUser> result = new TableSplitResult<TsysUser>(page.getPageNum(), page.getTotal(),page.getList());
+        AjaxResult ajaxResult = AjaxResult.success("读取成功");
+        ajaxResult.put(AJAX_DATA,result);
+        return ajaxResult;
     }
 }
 

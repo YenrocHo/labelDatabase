@@ -67,7 +67,20 @@ public class AjaxResult extends HashMap<String, Object>
         json.put(AJAX_MSG, msg);
         return json;
     }
-
+    /**
+     * @Author Noctis
+     * @Description //返回成功消息
+     * @Date 2019/6/24 16:42
+     * @Param [code, msg]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    public static AjaxResult success(int code, String msg)
+    {
+        AjaxResult json = new AjaxResult();
+        json.put(AJAX_CODE, code);
+        json.put(AJAX_MSG, msg);
+        return json;
+    }
     /**
      * 返回成功消息
      * 

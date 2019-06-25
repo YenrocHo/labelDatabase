@@ -8,11 +8,12 @@
     <result column="english_name" property="englishName" jdbcType="VARCHAR" />
     <result column="picture" property="picture" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER"/>
+    <result column="stage_id" property="stageId" jdbcType="VARCHAR"/>
     <result column="create_Time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_Time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, food_name, name, english_name, picture, status,create_Time, update_Time
+    id, food_name, name, english_name, picture, status, stage_id,create_Time, update_Time
   </sql>
   <sql id="Example_Where_Clause">
     <where>
@@ -75,11 +76,11 @@
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysFood" >
     insert into t_sys_food (id, food_name, name, 
-      english_name, picture, create_Time, 
+      english_name, picture, status, stage_id,create_Time,
       update_Time)
     values (#{id,jdbcType=VARCHAR}, #{foodName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{englishName,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{englishName,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER} ,#{stageId,jdbcType=VARCHAR} ,now(),
+      now())
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysFood" >
     insert into t_sys_food
@@ -101,6 +102,9 @@
       </if>
       <if test="status != null" >
         status,
+      </if>
+      <if test="stageId != null" >
+        stage_id,
       </if>
       <if test="createTime != null" >
         create_Time,
@@ -128,11 +132,14 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="stageId != null" >
+        #{stage_id,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+       now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+       now(),
       </if>
     </trim>
   </insert>
@@ -154,6 +161,9 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="stageId != null" >
+        stage_id = #{stageId,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         create_Time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -170,8 +180,23 @@
       english_name = #{englishName,jdbcType=VARCHAR},
       picture = #{picture,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
+      stage_id = #{stageId,jdbcType=VARCHAR},
       create_Time = #{createTime,jdbcType=TIMESTAMP},
       update_Time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectFoodList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_food
+    <where>
+      <if test="keyword != null">
+        food_name like #{keyword,jdbcType=VARCHAR}
+      </if>
+      <if test="stageId != null">
+        and stage_id like #{stageId,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>
