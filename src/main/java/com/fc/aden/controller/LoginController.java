@@ -4,7 +4,6 @@ import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
-import com.fc.aden.model.custom.BootstrapThree;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.TSysFood;
@@ -12,13 +11,8 @@ import com.fc.aden.model.custom.process.TSysProduct;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.*;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
-import javafx.stage.Stage;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.fc.aden.common.domain.AjaxResult.AJAX_DATA;
-import static com.fc.aden.common.domain.AjaxResult.CODE_SUCCESS;
 
 @Controller
 @Api(value = "Android调用接口")
@@ -80,7 +73,7 @@ public class LoginController  extends BaseController {
      * @Param [number, request]
      * @return com.fc.aden.common.domain.AjaxResult
      **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/android/login")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/login")
     @ResponseBody
     public AjaxResult login(String number, HttpServletRequest request) {
         AjaxResult result = aUserService.login(number);

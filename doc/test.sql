@@ -520,11 +520,22 @@ INSERT INTO `t_sys_role_user` VALUES ('575114609501929472', '575114609501929472'
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_user`;
 CREATE TABLE `t_sys_user` (
-  `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `username` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '用户账号',
-  `password` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '用户密码',
+  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户账号',
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户密码',
+  `number` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `english_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `items` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `phone_number` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `sex` varchar(2) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `email` varchar(150) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `birthday` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户表';
+
 
 -- ----------------------------
 -- Records of t_sys_user
