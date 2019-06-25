@@ -80,7 +80,7 @@ public class LoginController  extends BaseController {
      * @Param [number, request]
      * @return com.fc.aden.common.domain.AjaxResult
      **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/android/login")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/login")
     @ResponseBody
     public AjaxResult login(String number, HttpServletRequest request) {
         AjaxResult result = aUserService.login(number);
