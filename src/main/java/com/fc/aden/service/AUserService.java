@@ -5,5 +5,5 @@ import com.fc.aden.common.domain.AjaxResult;
 public interface AUserService {
     AjaxResult login(String number);
 
-    AjaxResult AllUserList(int pageNum, int pageSize);
+    AjaxResult AllUserList(String statusToken);
 }

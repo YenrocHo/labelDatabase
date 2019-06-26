@@ -90,10 +90,8 @@ public class LoginController  extends BaseController {
      **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/stage-list")
     @ResponseBody
-    public AjaxResult stageList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                @RequestParam(value = "keyword", required = false) String keyword) {
-        AjaxResult result = aStageService.selectStageList(pageNum,pageSize,keyword);
+    public AjaxResult stageList(@RequestParam(value = "keyword", required = false) String keyword,String statusToken) {
+        AjaxResult result = aStageService.selectStageList(keyword,statusToken);
         return result;
     }
 
@@ -106,11 +104,9 @@ public class LoginController  extends BaseController {
      **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/food-list")
     @ResponseBody
-    public AjaxResult list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                           @RequestParam(value = "stageId", required = false) String stageId,
-                           @RequestParam(value = "keyword", required = false) String keyword) {
-        AjaxResult result = aFoodService.selectFoodList(pageNum,pageSize,stageId,keyword);
+    public AjaxResult list(@RequestParam(value = "stageId", required = false) String stageId,
+                           @RequestParam(value = "keyword", required = false) String keyword,String statusToken) {
+        AjaxResult result = aFoodService.selectFoodList(stageId,keyword,statusToken);
         return result;
     }
 
@@ -123,11 +119,9 @@ public class LoginController  extends BaseController {
      **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/product-list")
     @ResponseBody
-    public AjaxResult productList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                  @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                  @RequestParam(value = "stageId", required = false) String foodId,
-                                  @RequestParam(value = "keyword", required = false) String keyword){
-        AjaxResult result = aProductService.selectProductList(pageNum,pageSize,foodId,keyword);
+    public AjaxResult productList(@RequestParam(value = "stageId", required = false) String foodId,
+                                  @RequestParam(value = "keyword", required = false) String keyword,String statusToken){
+        AjaxResult result = aProductService.selectProductList(foodId,keyword,statusToken);
         return result;
     }
     /**
@@ -139,45 +133,40 @@ public class LoginController  extends BaseController {
      **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/store-list")
     @ResponseBody
-    public AjaxResult storeList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                @RequestParam(value = "stageId", required = false) String productId,
-                                @RequestParam(value = "keyword", required = false) String keyword) {
+    public AjaxResult storeList(@RequestParam(value = "stageId", required = false) String productId,
+                                @RequestParam(value = "keyword", required = false) String keyword,String statusToken) {
 
-        AjaxResult result = aStoreService.selectStoreList(pageNum,pageSize,productId,keyword);
+        AjaxResult result = aStoreService.selectStoreList(productId,keyword,statusToken);
         return result;
     }
 
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allData")
     @ResponseBody
-    public AjaxResult allList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+    public AjaxResult allList(String statusToken) {
         AjaxResult ajaxResult = new AjaxResult();
-        AjaxResult stage = aStageService.selectStageList(pageNum,pageSize,null);
-        AjaxResult food = aFoodService.selectFoodList(pageNum,pageSize,null,null);
-        AjaxResult product = aProductService.selectProductList(pageNum,pageSize,null,null);
-        AjaxResult store = aStoreService.selectStoreList(pageNum,pageSize,null,null);
-        PageInfo stages = (PageInfo)stage.get(AJAX_DATA);
-        PageInfo foods = (PageInfo)food.get(AJAX_DATA);
-        PageInfo products = (PageInfo)product.get(AJAX_DATA);
-        PageInfo stores = (PageInfo)store.get(AJAX_DATA);
-        ajaxResult.put("store",stores);
-        ajaxResult.put("product",products);
-        ajaxResult.put("food",foods);
-        ajaxResult.put("stage",stages);
+        AjaxResult stage = aStageService.selectStageList(null,statusToken);
+        AjaxResult food = aFoodService.selectFoodList(null,null,statusToken);
+        AjaxResult product = aProductService.selectProductList(null,null,statusToken);
+        AjaxResult store = aStoreService.selectStoreList(null,null,statusToken);
+        ajaxResult.put("Stage",stage);
+        ajaxResult.put("Food",food);
+        ajaxResult.put("Product",product);
+        ajaxResult.put("Store",store);
         return ajaxResult;
     }
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allUser")
     @ResponseBody
-    public AjaxResult allUserList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                  @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
-        AjaxResult result = aUserService.AllUserList(pageNum, pageSize);
+    public AjaxResult allUserList(String statusToken){
+        AjaxResult result = aUserService.AllUserList(statusToken);
         return result;
     }
 
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
     @ResponseBody
-    public AjaxResult submit(TSysStage tSysStage,TSysFood tSysFood,TSysProduct tSysProduct,TSysStore tSysStore){
+    public AjaxResult submit(@RequestParam("list") List list){
+        for( int i = 0 ; i < list.size() ; i++) {
+            System.out.println(list.get(i));
+        }
         return null;
     }
 

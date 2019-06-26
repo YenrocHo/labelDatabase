@@ -21,20 +21,21 @@ public class StageServiceImpl implements AStageService {
     private TSysStageMapper tSysStageMapper;
 
     @Override
-    public AjaxResult selectStageList(int pageNum, int pageSize,String keyword){
+    public AjaxResult selectStageList(String keyword,String statusToken){
+        if (StringUtils.isBlank(statusToken)) {
+            return AjaxResult.success(Const.CodeEnum.noToken.getCode(),Const.CodeEnum.noToken.getValue());
+        }
         if (StringUtils.isNotBlank(keyword)) {
             keyword = fuzzyQuery(keyword);
         }
-        PageHelper.startPage(pageNum, pageSize);
         List<TSysStage> tSysStageList = tSysStageMapper.selectStageList(keyword);
         if (tSysStageList != null){
-            PageInfo<TSysStage> pageInfo = new PageInfo<TSysStage>(tSysStageList);
             if (tSysStageList.size() == 0){
                 AjaxResult ajaxResult = AjaxResult.success(Const.CodeEnum.noObject.getCode(),Const.CodeEnum.noObject.getValue());
                 return ajaxResult;
             }
             AjaxResult ajaxResult = AjaxResult.success(Const.CodeEnum.success.getCode(),Const.CodeEnum.success.getValue());
-            ajaxResult.put(AJAX_DATA,pageInfo);
+            ajaxResult.put(AJAX_DATA,tSysStageList);
             return ajaxResult;
         }else {
             AjaxResult ajaxResult = AjaxResult.success(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
