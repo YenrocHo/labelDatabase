@@ -150,7 +150,7 @@ public class ProductController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(TSysProduct tSysProduct,HttpServletRequest request){
         TSysProduct product = (TSysProduct)request.getSession().getAttribute("tSysProduct");
-        tSysProduct.setProductId(product.getProductId());
+        tSysProduct.setId(product.getId());
         return toAjax(sysProductService.updateProduct(tSysProduct));
     }
     /***

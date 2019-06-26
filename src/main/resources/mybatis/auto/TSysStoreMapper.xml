@@ -3,17 +3,17 @@
 <mapper namespace="com.fc.aden.mapper.auto.process.TSysStoreMapper">
   <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysStore">
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="query" jdbcType="VARCHAR" property="query" />
-    <result column="c_condition" jdbcType="VARCHAR" property="cCondition" />
-    <result column="e_condition" jdbcType="VARCHAR" property="eCondition" />
+    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="store" jdbcType="VARCHAR" property="store" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="english_name" jdbcType="VARCHAR" property="englishName" />
     <result column="temperature" jdbcType="VARCHAR" property="temperature" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, query, c_condition, e_condition, temperature, status, product_id,creat_time, update_time
+    id,item_id,store,name,english_name,temperature, status,creat_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -26,12 +26,10 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysStore">
-    insert into t_sys_store (id, query, c_condition, 
-      e_condition, temperature, status,product_id,
-      creat_time, update_time)
-    values (#{id,jdbcType=VARCHAR}, #{query,jdbcType=VARCHAR}, #{cCondition,jdbcType=VARCHAR}, 
-      #{eCondition,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},#{productId,jdbcType=VARCHAR}
-      #{creatTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR})
+    insert into t_sys_store (id,item_id,store,name,english_name,temperature, status,creat_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR} ,#{store,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysStore">
     insert into t_sys_store
@@ -39,23 +37,23 @@
       <if test="id != null">
         id,
       </if>
-      <if test="query != null">
-        query,
+      <if test="itemId != null">
+        item_id,
       </if>
-      <if test="cCondition != null">
-        c_condition,
+      <if test="store != null">
+        store,
       </if>
-      <if test="eCondition != null">
-        e_condition,
+      <if test="name != null">
+        name,
       </if>
-      <if test="temperature != null">
-        temperature,
+      <if test="englishName != null">
+        english_name,
       </if>
       <if test="status != null">
         status,
       </if>
-      <if test="productId != null">
-        product_id,
+      <if test="temperature != null">
+        temperature,
       </if>
       <if test="creatTime != null">
         creat_time,
@@ -68,23 +66,23 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="query != null">
-        #{query,jdbcType=VARCHAR},
+      <if test="itemId != null">
+        #{itemId,jdbcType=VARCHAR},
       </if>
-      <if test="cCondition != null">
-        #{cCondition,jdbcType=VARCHAR},
+      <if test="store != null">
+        #{store,jdbcType=INTEGER},
       </if>
-      <if test="eCondition != null">
-        #{eCondition,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null">
+        #{englishName,jdbcType=VARCHAR} ,
       </if>
       <if test="temperature != null">
         #{temperature,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
-      </if>
-      <if test="productId != null">
-        #{productId,jdbcType=VARCHAR},
       </if>
       <if test="creatTime != null">
         now(),
@@ -97,23 +95,23 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysStore">
     update t_sys_store
     <set>
-      <if test="query != null">
-        query = #{query,jdbcType=VARCHAR},
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=VARCHAR},
       </if>
-      <if test="cCondition != null">
-        c_condition = #{cCondition,jdbcType=VARCHAR},
+      <if test="store != null">
+        store = #{store,jdbcType=VARCHAR},
       </if>
-      <if test="eCondition != null">
-        e_condition = #{eCondition,jdbcType=VARCHAR},
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null">
+        english_name = #{englishName,jdbcType=VARCHAR} ,
       </if>
       <if test="temperature != null">
         temperature = #{temperature,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="productId != null">
-        product_id = #{productId,jdbcType=VARCHAR} ,
       </if>
       <if test="creatTime != null">
         creat_time = #{creatTime,jdbcType=TIMESTAMP},
@@ -126,12 +124,12 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.TSysStore">
     update t_sys_store
-    set query = #{query,jdbcType=VARCHAR},
-      c_condition = #{cCondition,jdbcType=VARCHAR},
-      e_condition = #{eCondition,jdbcType=VARCHAR},
+    set item_id = #{query,jdbcType=VARCHAR},
+      store = #{cCondition,jdbcType=VARCHAR},
+      name = #{eCondition,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
       temperature = #{temperature,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      product_id = #{productId,jdbcType=VARCHAR},
       creat_time = #{creatTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
     where id = #{id,jdbcType=VARCHAR}
@@ -167,7 +165,7 @@
     select
     <include refid="Base_Column_List"/>
     from t_sys_store
-    where query like #{searchTxt} or c_condition like #{searchTxt}
+    where store like #{searchTxt} or name like #{searchTxt} or english_name like #{searchTxt}
   </select>
   <select id="selectStoreList" resultMap="BaseResultMap">
     select
@@ -177,8 +175,8 @@
       <if test="keyword != null">
         name like #{keyword,jdbcType=VARCHAR}
       </if>
-      <if test="productId != null">
-        and product_id like #{productId,jdbcType=VARCHAR}
+      <if test="itemId != null">
+        and item_id like #{itemId,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

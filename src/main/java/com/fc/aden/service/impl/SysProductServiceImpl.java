@@ -70,7 +70,7 @@ public class SysProductServiceImpl implements SysProductService {
      **/
     @Override
     public int checkcNameUnique(TSysProduct tSysProduct){
-        return tSysProductMapper.selectProductBycName(tSysProduct.getcName());
+        return tSysProductMapper.selectProductBycName(tSysProduct.getName());
     }
     /**
      * @Author Noctis
@@ -83,11 +83,10 @@ public class SysProductServiceImpl implements SysProductService {
     public int insertProduct(TSysProduct tSysProduct){
         TSysProduct product = new TSysProduct();
         String productId = SnowflakeIdWorker.getUUID();
-        product.setProductId(productId);
+        product.setId(productId);
+        product.setProduct(tSysProduct.getProduct());
         product.setName(tSysProduct.getName());
-        product.setcName(tSysProduct.getcName());
-        product.seteName(tSysProduct.geteName());
-        product.setStatus(1);
+        product.setEnglishName(tSysProduct.getEnglishName());
         product.setCreateTime(new Date());
         product.setUpdateTime(new Date());
         return tSysProductMapper.insertSelective(product);
@@ -148,9 +147,9 @@ public class SysProductServiceImpl implements SysProductService {
      **/
     @Override
     public TSysProduct updateStatus(TSysProduct tSysProduct) {
-        int i = tSysProductMapper.updateStatusById(tSysProduct.getProductId(), tSysProduct.getStatus());
+        int i = tSysProductMapper.updateStatusById(tSysProduct.getId(), tSysProduct.getStatus());
         if (i>0){
-            TSysProduct product = tSysProductMapper.selectByPrimaryKey(tSysProduct.getProductId());
+            TSysProduct product = tSysProductMapper.selectByPrimaryKey(tSysProduct.getId());
             return product;
         }else {
             return null;

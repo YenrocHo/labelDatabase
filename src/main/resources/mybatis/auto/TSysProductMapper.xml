@@ -2,54 +2,53 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fc.aden.mapper.auto.process.TSysProductMapper">
   <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysProduct">
-    <id column="product_id" jdbcType="VARCHAR" property="productId" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="product" jdbcType="VARCHAR" property="product" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="c_name" jdbcType="VARCHAR" property="cName" />
-    <result column="e_name" jdbcType="VARCHAR" property="eName" />
+    <result column="english_name" jdbcType="VARCHAR" property="englishName" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="food_id" jdbcType="VARCHAR" property="foodId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    product_id, name,c_name, e_name, status, food_id,create_time, update_time
+    id, item_id,product,name,english_name, status,create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_sys_product
-    where product_id = #{productId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_sys_product
-    where product_id = #{productId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysProduct">
-    insert into t_sys_product (product_id, name,c_name, e_name, status,food_id,
-      create_time, update_time)
-    values (#{productId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{cName,jdbcType=VARCHAR}, #{eName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},#{foodId,jdbcType=VARCHAR}
+    insert into t_sys_product (id, item_id,product,name,english_name, status,create_time, update_time)
+    values (#{id,jdbcType=VARCHAR},#{itemId,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=INTEGER},#{status,jdbcType=INTEGER}
       now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysProduct">
     insert into t_sys_product
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="productId != null">
-        product_id,
+      <if test="id != null">
+        id,
+      </if>
+      <if test="itemId != null">
+        item_id,
+      </if>
+      <if test="product != null">
+        product,
       </if>
       <if test="name != null">
         name,
       </if>
-      <if test="cName != null">
-        c_name,
-      </if>
-      <if test="eName != null">
-        e_name,
+      <if test="englishName != null">
+        english_name,
       </if>
       <if test="status != null">
         status,
-      </if>
-      <if test="foodId != null">
-        food_id,
       </if>
       <if test="createTime != null">
         create_time,
@@ -59,23 +58,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="productId != null">
-        #{productId,jdbcType=VARCHAR},
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR} ,
+      </if>
+      <if test="itemId != null">
+        #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null">
+        #{product,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="cName != null">
-        #{cName,jdbcType=VARCHAR},
-      </if>
-      <if test="eName != null">
-        #{eName,jdbcType=VARCHAR},
+      <if test="englishName != null">
+        #{englishName,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
-      </if>
-      <if test="foodId != null">
-        #{foodId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         now(),
@@ -88,20 +87,20 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysProduct">
     update t_sys_product
     <set>
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null">
+        product = #{product,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="cName != null">
-        c_name = #{cName,jdbcType=VARCHAR},
-      </if>
-      <if test="eName != null">
-        e_name = #{eName,jdbcType=VARCHAR},
+      <if test="englishName != null">
+        english_name = #{englishName,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="foodId != null">
-        food_id = #{foodId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -110,19 +109,19 @@
         update_time = now(),
       </if>
     </set>
-    where product_id = #{productId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.TSysProduct">
     update t_sys_product
     set
+      item_id = #{itemId,jdbcType=VARCHAR},
+      product = #{product,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      c_name = #{cName,jdbcType=VARCHAR},
-      e_name = #{eName,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      food_id = #{foodId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
-    where product_id = #{productId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectList" resultMap="BaseResultMap">
     select
@@ -133,12 +132,12 @@
     select
     count(1)
     from t_sys_product
-    where c_name = #{cName}
+    where product = #{product,jdbcType=VARCHAR}
   </select>
   <delete id="deleteProductByIds" parameterType="map">
     delete
     from t_sys_product
-    where product_id in
+    where id in
     <foreach collection="productIdList" item="item" index="index" open="(" separator="," close=")">
       #{item}
     </foreach>
@@ -147,7 +146,7 @@
     select
     <include refid="Base_Column_List"/>
     from t_sys_product
-    where c_name like #{searchTxt} or e_name like #{searchTxt} or name like #{searchTxt}
+    where product like #{searchTxt} or name like #{searchTxt} or english_name like #{searchTxt}
   </select>
   <update id="updateStatusById" parameterType="map">
     update t_sys_product
@@ -160,7 +159,7 @@
         status = 1
       </when>
     </choose>
-    where product_id = #{id}
+    where id = #{id}
   </update>
   <select id="selectProductList" resultMap="BaseResultMap">
     select
@@ -170,8 +169,8 @@
       <if test="keyword != null">
         name like #{keyword,jdbcType=VARCHAR}
       </if>
-      <if test="foodId != null">
-        and food_id like #{foodId,jdbcType=VARCHAR}
+      <if test="itemId != null">
+        and item_id like #{itemId,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

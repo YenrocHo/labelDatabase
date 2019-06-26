@@ -27,5 +27,5 @@ public interface TSysStoreMapper {
 
     List<TSysStore> selectListBycQuery(String searchTxt);
 
-    List<TSysStore> selectStoreList(@Param("productId") String productId, @Param("keyword") String keyword);
+    List<TSysStore> selectStoreList(@Param("itemId") String itemId, @Param("keyword") String keyword);
 }

@@ -150,21 +150,26 @@
             {
                 checkbox: true
             }, {
-                field: 'productId',
+                field: 'id',
                 title: '编号'
-            }, {
-                field: 'name',
+            },
+            {
+                field: 'itemId',
+                title: '项目点'
+            },
+            {
+                field: 'product',
                 title: '产品'
             }, {
-                field: 'cName',
+                field: 'name',
                 title: '中文名'
             }, {
-                field: 'eName',
+                field: 'englishName',
                 title: '英文名'
             }, {
                 title: '操作',
                 formatter: function (value, row, index) {
-                    var id = row.productId;
+                    var id = row.id;
                     var actions = [];
                     if (row.status == 0) {
                         actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\'  href="#" onclick="$.operate.edit(\'' + id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');

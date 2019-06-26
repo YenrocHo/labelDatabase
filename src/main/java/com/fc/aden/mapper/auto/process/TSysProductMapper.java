@@ -20,7 +20,7 @@ public interface TSysProductMapper {
 
     List<TSysProduct> selectList();
 
-    int selectProductBycName(String cName);
+    int selectProductBycName(String product);
 
     int deleteProductByIds(@Param("productIdList") List<String> productIdList);
 
@@ -28,5 +28,5 @@ public interface TSysProductMapper {
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
-    List<TSysProduct> selectProductList(@Param("foodId") String foodId,@Param("keyword") String keyword);
+    List<TSysProduct> selectProductList(@Param("itemId") String itemId,@Param("keyword") String keyword);
 }

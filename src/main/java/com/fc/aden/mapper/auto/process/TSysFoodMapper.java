@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface TSysFoodMapper {
 
+    TSysFood selectByPrimaryKey(String id);
+
     int deleteByPrimaryKey(String id);
 
     int insertSelective(TSysFood record);
-
-    TSysFood selectByPrimaryKey(String id);
 
     int insert(TSysFood record);
 
@@ -21,16 +21,17 @@ public interface TSysFoodMapper {
 
     int updateByPrimaryKey(TSysFood record);
 
-    int updateByExampleSelective(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
-
-    int updateByExample(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
-
     List<TSysFood> selectByExample(TSysFoodExample example);
-
-    long countByExample(TSysFoodExample example);
 
     int deleteByExample(TSysFoodExample example);
 
-    List<TSysFood> selectFoodList(@Param("stageId") String stageId,@Param("keyword") String keyword);
+    List<TSysFood> selectFoodList(@Param("itemId") String itemId,@Param("keyword") String keyword);
+
+
+
+
+    long countByExample(TSysFoodExample example);
+    int updateByExampleSelective(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
+    int updateByExample(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
 
 }

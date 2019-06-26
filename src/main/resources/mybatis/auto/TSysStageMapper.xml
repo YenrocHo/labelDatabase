@@ -3,15 +3,17 @@
 <mapper namespace="com.fc.aden.mapper.auto.process.TSysStageMapper">
     <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysStage">
         <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="item_id" property="itemId" jdbcType="VARCHAR"/>
         <result column="stage" property="stage" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="english_name" property="englishName" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="create_Time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_Time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, stage, name, english_name, create_Time, update_Time
-  </sql>
+    id,item_id, stage, name, english_name, status,create_Time, update_Time
+    </sql>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -74,11 +76,11 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
     <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysStage">
-    insert into t_sys_stage (id, stage, name, 
-      english_name, create_Time, update_Time
+    insert into t_sys_stage (id,item_id, stage, name,
+        english_name, status,create_Time, update_Time
       )
-    values (#{id,jdbcType=VARCHAR}, #{stage,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{englishName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=VARCHAR},#{itemId,jdbcType=VARCHAR} ,#{stage,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{englishName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},now(), now()
       )
   </insert>
     <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysStage">
@@ -86,6 +88,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
+            </if>
+            <if test="itemId != null">
+                item_id,
             </if>
             <if test="stage != null">
                 stage,
@@ -95,6 +100,9 @@
             </if>
             <if test="englishName != null">
                 english_name,
+            </if>
+            <if test="status != null">
+                status,
             </if>
             <if test="createTime != null">
                 create_Time,
@@ -107,6 +115,9 @@
             <if test="id != null">
                 #{id,jdbcType=VARCHAR},
             </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=VARCHAR},
+            </if>
             <if test="stage != null">
                 #{stage,jdbcType=VARCHAR},
             </if>
@@ -116,17 +127,26 @@
             <if test="englishName != null">
                 #{englishName,jdbcType=VARCHAR},
             </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
             <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+                now(),
             </if>
             <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
+                now()
             </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysStage">
         update t_sys_stage
         <set>
+            <if test="id != null">
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="itemId != null">
+                item_id = #{itemId,jdbcType=VARCHAR},
+            </if>
             <if test="stage != null">
                 stage = #{stage,jdbcType=VARCHAR},
             </if>
@@ -136,19 +156,29 @@
             <if test="englishName != null">
                 english_name = #{englishName,jdbcType=VARCHAR},
             </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                update_Time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="updateTime != null">
-                update_Time = #{updateTime,jdbcType=TIMESTAMP},
+                update_Time = now(),
             </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.TSysStage">
     update t_sys_stage
-    set stage = #{stage,jdbcType=VARCHAR},
+    set
+      id = #{id,jdbcType=VARCHAR},
+      item_id = #{itemId,jdbcType=VARCHAR},
+      stage = #{stage,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       english_name = #{englishName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER} ,
       create_Time = #{createTime,jdbcType=TIMESTAMP},
-      update_Time = #{updateTime,jdbcType=TIMESTAMP}
+      update_Time = now()
     where id = #{id,jdbcType=VARCHAR}
   </update>
 

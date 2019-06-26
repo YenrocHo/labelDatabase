@@ -5,22 +5,48 @@ import java.util.Date;
 public class TSysStage {
     private String id;
 
+    private String itemId;
+
     private String stage;
 
     private String name;
 
     private String englishName;
 
+    private Integer status;
+
     private Date createTime;
 
     private Date updateTime;
+
+    public TSysStage(String id, String itemId, String stage, String name, String englishName, Integer status, Date createTime, Date updateTime) {
+        this.id = id;
+        this.itemId = itemId;
+        this.stage = stage;
+        this.name = name;
+        this.englishName = englishName;
+        this.status = status;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
+
+    public TSysStage() {
+    }
 
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public String getStage() {
@@ -28,7 +54,7 @@ public class TSysStage {
     }
 
     public void setStage(String stage) {
-        this.stage = stage == null ? null : stage.trim();
+        this.stage = stage;
     }
 
     public String getName() {
@@ -36,7 +62,7 @@ public class TSysStage {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getEnglishName() {
@@ -44,7 +70,15 @@ public class TSysStage {
     }
 
     public void setEnglishName(String englishName) {
-        this.englishName = englishName == null ? null : englishName.trim();
+        this.englishName = englishName;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getCreateTime() {
@@ -61,5 +95,19 @@ public class TSysStage {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "TSysStage{" +
+                "id='" + id + '\'' +
+                ", itemId='" + itemId + '\'' +
+                ", stage='" + stage + '\'' +
+                ", name='" + name + '\'' +
+                ", englishName='" + englishName + '\'' +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

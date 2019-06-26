@@ -6,32 +6,30 @@ import java.util.Date;
 public class TSysStore implements Serializable {
     private String id;
 
-    private String query;
+    private String itemId;
 
-    private String cCondition;
+    private String store;
 
-    private String eCondition;
+    private String name;
+
+    private String englishName;
 
     private String temperature;
 
     private Integer status;
 
-    private String productId;
-
     private Date creatTime;
 
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
-
-    public TSysStore(String id, String query, String cCondition, String eCondition, String temperature, Integer status, String productId, Date creatTime, Date updateTime) {
+    public TSysStore(String id, String itemId, String store, String name, String englishName, String temperature, Integer status, Date creatTime, Date updateTime) {
         this.id = id;
-        this.query = query;
-        this.cCondition = cCondition;
-        this.eCondition = eCondition;
+        this.itemId = itemId;
+        this.store = store;
+        this.name = name;
+        this.englishName = englishName;
         this.temperature = temperature;
         this.status = status;
-        this.productId = productId;
         this.creatTime = creatTime;
         this.updateTime = updateTime;
     }
@@ -47,28 +45,36 @@ public class TSysStore implements Serializable {
         this.id = id;
     }
 
-    public String getQuery() {
-        return query;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setQuery(String query) {
-        this.query = query;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
-    public String getcCondition() {
-        return cCondition;
+    public String getStore() {
+        return store;
     }
 
-    public void setcCondition(String cCondition) {
-        this.cCondition = cCondition;
+    public void setStore(String store) {
+        this.store = store;
     }
 
-    public String geteCondition() {
-        return eCondition;
+    public String getName() {
+        return name;
     }
 
-    public void seteCondition(String eCondition) {
-        this.eCondition = eCondition;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEnglishName() {
+        return englishName;
+    }
+
+    public void setEnglishName(String englishName) {
+        this.englishName = englishName;
     }
 
     public String getTemperature() {
@@ -87,14 +93,6 @@ public class TSysStore implements Serializable {
         this.status = status;
     }
 
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
     public Date getCreatTime() {
         return creatTime;
     }
@@ -111,20 +109,16 @@ public class TSysStore implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     @Override
     public String toString() {
         return "TSysStore{" +
                 "id='" + id + '\'' +
-                ", query='" + query + '\'' +
-                ", cCondition='" + cCondition + '\'' +
-                ", eCondition='" + eCondition + '\'' +
+                ", itemId='" + itemId + '\'' +
+                ", store='" + store + '\'' +
+                ", name='" + name + '\'' +
+                ", englishName='" + englishName + '\'' +
                 ", temperature='" + temperature + '\'' +
                 ", status=" + status +
-                ", productId='" + productId + '\'' +
                 ", creatTime=" + creatTime +
                 ", updateTime=" + updateTime +
                 '}';

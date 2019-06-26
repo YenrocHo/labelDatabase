@@ -5,19 +5,18 @@ import java.util.Date;
 
 public class TSysProduct implements Serializable {
     //产品Id
-    private String productId;
+    private String id;
+
+    private String itemId;
 
     //产品名
-    private String name;
+    private String product;
 
     //产品中文名
-    private String cName;
+    private String name;
 
     //产品英文名
-    private String eName;
-
-    //上级食品Id
-    private String foodId;
+    private String englishName;
 
     //食品状态
     private Integer status;
@@ -28,12 +27,12 @@ public class TSysProduct implements Serializable {
     //产品更新时间
     private Date updateTime;
 
-    public TSysProduct(String productId, String name, String cName, String eName, String foodId, Integer status, Date createTime, Date updateTime) {
-        this.productId = productId;
+    public TSysProduct(String id, String itemId, String product, String name, String englishName, Integer status, Date createTime, Date updateTime) {
+        this.id = id;
+        this.itemId = itemId;
+        this.product = product;
         this.name = name;
-        this.cName = cName;
-        this.eName = eName;
-        this.foodId = foodId;
+        this.englishName = englishName;
         this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -42,12 +41,28 @@ public class TSysProduct implements Serializable {
     public TSysProduct() {
     }
 
-    public String getProductId() {
-        return productId;
+    public String getId() {
+        return id;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
     }
 
     public String getName() {
@@ -58,28 +73,12 @@ public class TSysProduct implements Serializable {
         this.name = name;
     }
 
-    public String getcName() {
-        return cName;
+    public String getEnglishName() {
+        return englishName;
     }
 
-    public void setcName(String cName) {
-        this.cName = cName;
-    }
-
-    public String geteName() {
-        return eName;
-    }
-
-    public void seteName(String eName) {
-        this.eName = eName;
-    }
-
-    public String getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(String foodId) {
-        this.foodId = foodId;
+    public void setEnglishName(String englishName) {
+        this.englishName = englishName;
     }
 
     public Integer getStatus() {
@@ -109,11 +108,11 @@ public class TSysProduct implements Serializable {
     @Override
     public String toString() {
         return "TSysProduct{" +
-                "productId='" + productId + '\'' +
+                "id='" + id + '\'' +
+                ", itemId='" + itemId + '\'' +
+                ", product='" + product + '\'' +
                 ", name='" + name + '\'' +
-                ", cName='" + cName + '\'' +
-                ", eName='" + eName + '\'' +
-                ", foodId='" + foodId + '\'' +
+                ", englishName='" + englishName + '\'' +
                 ", status=" + status +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

@@ -77,7 +77,8 @@ public class LoginController  extends BaseController {
     @ResponseBody
     public AjaxResult login(String number, HttpServletRequest request) {
         AjaxResult result = aUserService.login(number);
-        request.getSession().setAttribute("current_user",result.get("current_user"));
+        System.out.println(result.get("data"));
+        request.getSession().setAttribute("current_user",result.get("data"));
         return result;
     }
 
@@ -142,12 +143,14 @@ public class LoginController  extends BaseController {
 
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allData")
     @ResponseBody
-    public AjaxResult allList(String statusToken) {
+    public AjaxResult allList(String statusToken,HttpServletRequest request) {
         AjaxResult ajaxResult = new AjaxResult();
         AjaxResult stage = aStageService.selectStageList(null,statusToken);
         AjaxResult food = aFoodService.selectFoodList(null,null,statusToken);
         AjaxResult product = aProductService.selectProductList(null,null,statusToken);
         AjaxResult store = aStoreService.selectStoreList(null,null,statusToken);
+        /*TsysUser current_user = (TsysUser)request.getSession().getAttribute("current_user");
+        ajaxResult.put("User",current_user);*/
         ajaxResult.put("Stage",stage);
         ajaxResult.put("Food",food);
         ajaxResult.put("Product",product);

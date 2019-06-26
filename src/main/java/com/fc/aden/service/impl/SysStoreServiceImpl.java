@@ -71,7 +71,6 @@ public class SysStoreServiceImpl implements SysStoreService {
     @Override
     public int insertStore(TSysStore tSysStore) {
         tSysStore.setId(SnowflakeIdWorker.getUUID());
-        tSysStore.setStatus(0);
         tSysStore.setCreatTime(new Date());
         tSysStore.setUpdateTime(new Date());
         int i = tSysStoreMapper.insertSelective(tSysStore);

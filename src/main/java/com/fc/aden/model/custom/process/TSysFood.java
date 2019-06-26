@@ -5,6 +5,8 @@ import java.util.Date;
 public class TSysFood {
     private String id;
 
+    private String itemId;
+
     private String foodName;
 
     private String name;
@@ -19,10 +21,9 @@ public class TSysFood {
 
     private Integer status;
 
-    private String stageId;
-
-    public TSysFood(String id, String foodName, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status, String stageId) {
+    public TSysFood(String id, String itemId, String foodName, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
         this.id = id;
+        this.itemId = itemId;
         this.foodName = foodName;
         this.name = name;
         this.englishName = englishName;
@@ -30,7 +31,6 @@ public class TSysFood {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.status = status;
-        this.stageId = stageId;
     }
 
     public TSysFood() {
@@ -42,6 +42,14 @@ public class TSysFood {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public String getFoodName() {
@@ -100,18 +108,11 @@ public class TSysFood {
         this.status = status;
     }
 
-    public String getStageId() {
-        return stageId;
-    }
-
-    public void setStageId(String stageId) {
-        this.stageId = stageId;
-    }
-
     @Override
     public String toString() {
         return "TSysFood{" +
                 "id='" + id + '\'' +
+                ", itemId='" + itemId + '\'' +
                 ", foodName='" + foodName + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +
@@ -119,7 +120,6 @@ public class TSysFood {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", status=" + status +
-                ", stageId='" + stageId + '\'' +
                 '}';
     }
 }

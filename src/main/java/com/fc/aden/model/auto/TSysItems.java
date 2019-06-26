@@ -16,14 +16,24 @@ public class TSysItems implements Serializable {
 
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
+    public TSysItems(String id, String items, String name, String englishName, Date createTime, Date updateTime) {
+        this.id = id;
+        this.items = items;
+        this.name = name;
+        this.englishName = englishName;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
+
+    public TSysItems() {
+    }
 
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
     public String getItems() {
@@ -31,7 +41,7 @@ public class TSysItems implements Serializable {
     }
 
     public void setItems(String items) {
-        this.items = items == null ? null : items.trim();
+        this.items = items;
     }
 
     public String getName() {
@@ -39,7 +49,7 @@ public class TSysItems implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getEnglishName() {
@@ -47,7 +57,7 @@ public class TSysItems implements Serializable {
     }
 
     public void setEnglishName(String englishName) {
-        this.englishName = englishName == null ? null : englishName.trim();
+        this.englishName = englishName;
     }
 
     public Date getCreateTime() {
@@ -64,5 +74,17 @@ public class TSysItems implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "TSysItems{" +
+                "id='" + id + '\'' +
+                ", items='" + items + '\'' +
+                ", name='" + name + '\'' +
+                ", englishName='" + englishName + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }
