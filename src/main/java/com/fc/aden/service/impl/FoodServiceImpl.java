@@ -22,23 +22,24 @@ public class FoodServiceImpl implements AFoodService {
     private TSysFoodMapper tSysFoodMapper;
 
     @Override
-    public AjaxResult selectFoodList(int pageNum,int pageSize,String stageId, String keyword){
+    public AjaxResult selectFoodList(String stageId, String keyword,String statusToken){
+        if (StringUtils.isBlank(statusToken)) {
+            return AjaxResult.success(Const.CodeEnum.noToken.getCode(),Const.CodeEnum.noToken.getValue());
+        }
         if (StringUtils.isNotBlank(keyword)) {
             keyword = fuzzyQuery(keyword);
         }
         if(stageId != null){
             stageId = fuzzyQuery(stageId);
         }
-        PageHelper.startPage(pageNum, pageSize);
-        List<TSysFood>  tSysFoodList = tSysFoodMapper.selectFoodList(stageId,keyword);
+        List<TSysFood> tSysFoodList = tSysFoodMapper.selectFoodList(stageId,keyword);
         if (tSysFoodList != null){
-            PageInfo<TSysFood> pageInfo = new PageInfo<TSysFood>(tSysFoodList);
             if (tSysFoodList.size() == 0){
                 AjaxResult ajaxResult = AjaxResult.success(Const.CodeEnum.noObject.getCode(),Const.CodeEnum.noObject.getValue());
                 return ajaxResult;
             }
             AjaxResult ajaxResult = AjaxResult.success(Const.CodeEnum.success.getCode(),Const.CodeEnum.success.getValue());
-            ajaxResult.put(AJAX_DATA,pageInfo);
+            ajaxResult.put(AJAX_DATA,tSysFoodList);
             return ajaxResult;
         }else {
             AjaxResult ajaxResult = AjaxResult.success(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
