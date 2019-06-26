@@ -307,5 +307,6 @@ public class LoginController  extends BaseController {
         ajaxResult.put(AJAX_DATA,result);
         return ajaxResult;
     }
+
 }
 
