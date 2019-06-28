@@ -34,5 +34,5 @@ public interface TSysItemsMapper {
 
     TSysItems selectItemByUserNumber(@Param("number")String number);
 
-    List<TSysItems> selectItemList(@Param("keyword")String keyword);
+    List<TSysItems> selectItemList(@Param("itemId") String itemId,@Param("keyword")String keyword);
 }

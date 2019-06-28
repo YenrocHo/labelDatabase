@@ -12,9 +12,6 @@ import com.fc.aden.service.*;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,13 +119,7 @@ public class LoginController  extends BaseController {
     public AjaxResult submit(@RequestBody String jsonString){
         return androidService.submit(jsonString);
     }
-    /***
-     * @Author Noctis
-     * @Description //提交
-     * @Date 2019/6/27 14:56
-     * @Param [jsonString]
-     * @return com.fc.aden.common.domain.AjaxResult
-     **/
+
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
     @ResponseBody
 
@@ -136,6 +127,7 @@ public class LoginController  extends BaseController {
         System.out.println(jsonString);
         return null;
     }
+
 
 
 

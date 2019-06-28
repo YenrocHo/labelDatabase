@@ -50,15 +50,14 @@ public class AndroidServiceImpl implements AndroidService {
             return ajaxResult;
         }
         TsysUser tsysUser = tsysUserMapper.selectLogin(number);
-        TSysItems tSysItem = tSysItemsMapper.selectItemByUserNumber(tsysUser.getNumber());
         if(tsysUser == null){
             return AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
         }
         String statusToken = UUID.randomUUID().toString();
         TokenCache.setKey(TokenCache.TOKRN_PREFIX + number, statusToken);
+        tsysUser.setStatusToken(statusToken);
         AjaxResult ajaxResult = AjaxResult.success(Const.CodeEnum.success.getCode(),Const.CodeEnum.success.getValue());
-        ajaxResult.put("data",tsysUser).put("userItem",tSysItem);
-        ajaxResult.put("statusToken",statusToken);
+        ajaxResult.put("data",tsysUser);
         return ajaxResult;
     }
 
@@ -154,11 +153,9 @@ public class AndroidServiceImpl implements AndroidService {
         tSysTag.setProduct(jsonObject.getString("product"));
         tSysTag.setStore(jsonObject.getString("store"));
         tSysTag.setPrintUser(jsonObject.getString("userName"));
-        tSysTag.setOriginalId(jsonObject.getString("original_Id"));
         tSysTag.setCreatTime(new Date());
-
-        int printCount = 0;
-
+        tSysTag.setOriginalId(jsonObject.getString("original_Id"));
+        tSysTag.setLabelId(jsonObject.getString("labelId"));
         try{
             tSysTag.setItems(tSysItemsMapper.selectByPrimaryKey(jsonObject.getString("itemId")).getItems());
             date.setTime(Long.parseLong(jsonObject.getString("printTime")));
@@ -197,7 +194,7 @@ public class AndroidServiceImpl implements AndroidService {
         try {
             switch (type){
                 case "Item"     :
-                    list = tSysItemsMapper.selectItemList(keyword);
+                    list = tSysItemsMapper.selectItemList(itemId,keyword);
                     break;
                 case "Stage"    :
                     list = tSysStageMapper.selectStageList(itemId,keyword);

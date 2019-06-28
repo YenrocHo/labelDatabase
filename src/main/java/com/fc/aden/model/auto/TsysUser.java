@@ -25,6 +25,7 @@ public class TsysUser implements Serializable {
      * 项目点
      */
     private String items;
+    private String itemId;
     /**
      * 手机号
      */
@@ -36,6 +37,7 @@ public class TsysUser implements Serializable {
     /**
      * 更新时间
      */
+    private String statusToken;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String updateTime;
     /**
@@ -45,12 +47,30 @@ public class TsysUser implements Serializable {
     private String createTime;
     private static final long serialVersionUID = 1L;
 
+    public TsysUser(String id, String username, String name, String password, String number, String englishName, String items, String itemId, String phoneNumber, String sex, String updateTime, String createTime) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.password = password;
+        this.number = number;
+        this.englishName = englishName;
+        this.items = items;
+        this.itemId = itemId;
+        this.phoneNumber = phoneNumber;
+        this.sex = sex;
+        this.updateTime = updateTime;
+        this.createTime = createTime;
+    }
+
+    public TsysUser() {
+    }
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
     public String getUsername() {
@@ -58,7 +78,15 @@ public class TsysUser implements Serializable {
     }
 
     public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+        this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -66,7 +94,15 @@ public class TsysUser implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getEnglishName() {
@@ -85,6 +121,14 @@ public class TsysUser implements Serializable {
         this.items = items;
     }
 
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -101,7 +145,6 @@ public class TsysUser implements Serializable {
         this.sex = sex;
     }
 
-
     public String getUpdateTime() {
         return updateTime;
     }
@@ -114,24 +157,20 @@ public class TsysUser implements Serializable {
         return createTime;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public String getName() {
-        return name;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getStatusToken() {
+        return statusToken;
+    }
+
+    public void setStatusToken(String token) {
+        this.statusToken = token;
     }
 
     @Override
@@ -144,8 +183,10 @@ public class TsysUser implements Serializable {
                 ", number='" + number + '\'' +
                 ", englishName='" + englishName + '\'' +
                 ", items='" + items + '\'' +
+                ", itemId='" + itemId + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", sex='" + sex + '\'' +
+                ", statusToken='" + statusToken + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 ", createTime='" + createTime + '\'' +
                 '}';

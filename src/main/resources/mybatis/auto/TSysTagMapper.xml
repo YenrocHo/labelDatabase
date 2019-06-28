@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysTag">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="original_Id" jdbcType="VARCHAR" property="originalId" />
+    <result column="label_id" jdbcType="VARCHAR" property="labelId" />
     <result column="items" jdbcType="VARCHAR" property="items" />
     <result column="stage" jdbcType="VARCHAR" property="stage" />
     <result column="food" jdbcType="VARCHAR" property="food" />
@@ -74,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, original_Id, items, stage, food, product, expiration, store, print_User, print_Time, 
+    id, original_Id,label_Id, items, stage, food, product, expiration, store, print_User, print_Time,
     end_Time, creat_time
   </sql>
   <select id="selectByExample" parameterType="com.fc.aden.model.custom.process.TSysTagExample" resultMap="BaseResultMap">
@@ -111,11 +112,11 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_sys_tag (id,original_Id, items, stage,
+    insert into t_sys_tag (id,original_Id,label_Id, items, stage,
       food, product, expiration, 
       store, print_User, print_Time, 
       end_Time, creat_time)
-    values (#{id,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR}, #{items,jdbcType=VARCHAR}, #{stage,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR},#{labelId,jdbcType=VARCHAR} , #{items,jdbcType=VARCHAR}, #{stage,jdbcType=VARCHAR},
       #{food,jdbcType=VARCHAR}, #{product,jdbcType=VARCHAR}, #{expiration,jdbcType=VARCHAR}, 
       #{store,jdbcType=VARCHAR}, #{printUser,jdbcType=VARCHAR}, #{printTime,jdbcType=TIMESTAMP}, 
       #{endTime,jdbcType=TIMESTAMP}, now())
@@ -131,6 +132,9 @@
       </if>
       <if test="originalId != null">
         original_Id,
+      </if>
+      <if test="labelId != null">
+        label_Id,
       </if>
       <if test="items != null">
         items,
@@ -169,6 +173,9 @@
       </if>
       <if test="originalId != null">
         #{originalId,jdbcType=VARCHAR},
+      </if>
+      <if test="labelId != null">
+        #{labelId,jdbcType=VARCHAR},
       </if>
       <if test="items != null">
         #{items,jdbcType=VARCHAR},
@@ -217,6 +224,9 @@
       <if test="record.originalId != null">
         original_Id = #{record.originalId,jdbcType=VARCHAR},
       </if>
+      <if test="record.originalId != null">
+        label_Id = #{record.labelId,jdbcType=VARCHAR},
+      </if>
       <if test="record.items != null">
         items = #{record.items,jdbcType=VARCHAR},
       </if>
@@ -256,6 +266,7 @@
     update t_sys_tag
     set id = #{record.id,jdbcType=VARCHAR},
       original_Id = #{record.originalId,jdbcType=VARCHAR},
+      label_Id = #{record.labelId,jdbcType=VARCHAR},
       items = #{record.items,jdbcType=VARCHAR},
       stage = #{record.stage,jdbcType=VARCHAR},
       food = #{record.food,jdbcType=VARCHAR},
@@ -275,6 +286,9 @@
     <set>
       <if test="originalId != null">
         original_Id = #{originalId,jdbcType=VARCHAR},
+      </if>
+      <if test="labelId != null">
+        label_Id = #{labelId,jdbcType=VARCHAR},
       </if>
       <if test="items != null">
         items = #{items,jdbcType=VARCHAR},
@@ -312,6 +326,7 @@
   <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.TSysTag">
     update t_sys_tag
     set original_Id = #{originalId,jdbcType=VARCHAR},
+      label_Id = #{labelId,jdbcType=VARCHAR},
       items = #{items,jdbcType=VARCHAR},
       stage = #{stage,jdbcType=VARCHAR},
       food = #{food,jdbcType=VARCHAR},
