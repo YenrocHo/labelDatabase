@@ -170,7 +170,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      */
     public int checkFoodUnique(TSysFood tSysFood){
         TSysFoodExample example = new TSysFoodExample();
-        example.createCriteria().andStageEqualTo(tSysFood.getFoodName());
+        example.createCriteria().andStageEqualTo(tSysFood.getFood());
         List<TSysFood> list = selectByExample(example);
         return list.size();
     }

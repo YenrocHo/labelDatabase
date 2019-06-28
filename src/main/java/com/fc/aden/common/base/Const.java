@@ -10,7 +10,8 @@ public class Const {
         noObject(402,"对象不存在"),
         badSQL(418,"SQL语句执行失败"),
         wrongServer(500,"服务器内部错误"),
-        noToken(503,"无效的token");
+        noToken(503,"无效的token"),
+        wrongParam(504,"参数错误");
 
 
         CodeEnum(int code,String value){

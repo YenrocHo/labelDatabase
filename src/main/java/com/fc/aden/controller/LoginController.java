@@ -1,5 +1,6 @@
 package com.fc.aden.controller;
 
+
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
 import com.fc.aden.model.auto.TSysItems;
@@ -13,9 +14,11 @@ import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.*;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +34,161 @@ public class LoginController  extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 
-    /////////////////登录校验接口//////////////////////////
 
+
+
+
+
+
+
+
+    /*李源*/
+    @Autowired
+    private AndroidService androidService;
+
+    /**
+     * @Author Noctis
+     * @Description //安卓用户登录
+     * @Date 2019/6/24 11:58
+     * @Param [number, request]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/login")
+    @ResponseBody
+    public AjaxResult login(String number, HttpServletRequest request) {
+        AjaxResult result = androidService.login(number);
+        System.out.println(result.get("data"));
+        request.getSession().setAttribute("current_user",result.get("data"));
+        return result;
+    }
+    /***
+     * @Author Noctis
+     * @Description //获取所有数据(stage food product store ，keyword为关键字只能搜索中文名，itemId为项目点Id用来搜索特定itemid)
+     * @Date 2019/6/28 10:42
+     * @Param [itemId, keyword, statusToken, number]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allData")
+    @ResponseBody
+    public AjaxResult MyAllData(@RequestParam(value = "itemId", required = false) String itemId,
+                                @RequestParam(value = "keyword", required = false) String keyword,
+                                @Param("statusToken") String statusToken,
+                                @Param("number") String number) {
+        AjaxResult ajaxResult = androidService.selectAllList(itemId,keyword,statusToken,number);
+        return ajaxResult;
+    }
+    /***
+     * @Author Noctis
+     * @Description //获取所有用户数据
+     * @Date 2019/6/28 10:43
+     * @Param [statusToken, number]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allUser")
+    @ResponseBody
+    public AjaxResult allUserList(String statusToken,String number){
+        AjaxResult result = androidService.AllUserList(statusToken,number);
+        return result;
+    }
+
+    /***
+     * @Author Noctis
+     * @Description //查找指定类型数据 type【Item Stage Food Product Store（都要大写)】添加itemID和keyword来检索
+     * @Date 2019/6/28 10:41
+     * @Param [itemId, keyword, type, statusToken, number]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/test")
+    @ResponseBody
+    public AjaxResult test(@RequestParam(value = "itemId", required = false) String itemId,
+                           @RequestParam(value = "keyword", required = false) String keyword,
+                           @Param("type") String type,
+                           @Param("statusToken") String statusToken,
+                           @Param("number")String number){
+        AjaxResult ajaxResult = androidService.selectOneList(itemId, keyword, statusToken, type, number);
+        return ajaxResult;
+    }
+
+    /***
+     * @Author Noctis
+     * @Description //提交
+     * @Date 2019/6/27 14:56
+     * @Param [jsonString]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
+    @ResponseBody
+
+    public AjaxResult submit(@RequestBody String jsonString){
+        System.out.println(jsonString);
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ////////////////////////////////////////基础信息提交接口//////////////////////////
 
     /**
      * 项目点列表接口
@@ -50,131 +206,6 @@ public class LoginController  extends BaseController {
         ajaxResult.put(AJAX_DATA,result);
         return ajaxResult;
     }
-
-
-
-
-    /*李源*/
-    @Autowired
-    private AStageService aStageService;
-    @Autowired
-    private AUserService aUserService;
-    @Autowired
-    private AFoodService aFoodService;
-    @Autowired
-    private AProductService aProductService;
-    @Autowired
-    private AStoreService aStoreService;
-
-    /**
-     * @Author Noctis
-     * @Description //安卓用户登录
-     * @Date 2019/6/24 11:58
-     * @Param [number, request]
-     * @return com.fc.aden.common.domain.AjaxResult
-     **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/login")
-    @ResponseBody
-    public AjaxResult login(String number, HttpServletRequest request) {
-        AjaxResult result = aUserService.login(number);
-        System.out.println(result.get("data"));
-        request.getSession().setAttribute("current_user",result.get("data"));
-        return result;
-    }
-
-    /***
-     * @Author Noctis
-     * @Description //安卓阶段列表（列表展示，按条件搜索）
-     * @Date 2019/6/24 19:06
-     * @Param [tablepar, stage]
-     * @return com.fc.aden.common.domain.AjaxResult
-     **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/stage-list")
-    @ResponseBody
-    public AjaxResult stageList(@RequestParam(value = "keyword", required = false) String keyword,String statusToken) {
-        AjaxResult result = aStageService.selectStageList(keyword,statusToken);
-        return result;
-    }
-
-    /**
-     * @Author Noctis
-     * @Description //安卓食品列表（列表展示，按条件搜索）
-     * @Date 2019/6/24 17:25
-     * @Param [pageNum, pageSize, stageId, keyword]
-     * @return com.fc.aden.common.domain.AjaxResult
-     **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/food-list")
-    @ResponseBody
-    public AjaxResult list(@RequestParam(value = "stageId", required = false) String stageId,
-                           @RequestParam(value = "keyword", required = false) String keyword,String statusToken) {
-        AjaxResult result = aFoodService.selectFoodList(stageId,keyword,statusToken);
-        return result;
-    }
-
-    /**
-     * @Author Noctis
-     * @Description //安卓产品列表（列表展示，按条件搜索）
-     * @Date 2019/6/24 17:36
-     * @Param [pageNum, pageSize, stageId, keyword]
-     * @return com.fc.aden.common.domain.AjaxResult
-     **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/product-list")
-    @ResponseBody
-    public AjaxResult productList(@RequestParam(value = "stageId", required = false) String foodId,
-                                  @RequestParam(value = "keyword", required = false) String keyword,String statusToken){
-        AjaxResult result = aProductService.selectProductList(foodId,keyword,statusToken);
-        return result;
-    }
-    /**
-     * @Author Noctis
-     * @Description //安卓存储条件列表（列表展示，按条件搜索）
-     * @Date 2019/6/24 18:34
-     * @Param [tablepar, store]
-     * @return com.fc.aden.common.domain.AjaxResult
-     **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/store-list")
-    @ResponseBody
-    public AjaxResult storeList(@RequestParam(value = "stageId", required = false) String productId,
-                                @RequestParam(value = "keyword", required = false) String keyword,String statusToken) {
-
-        AjaxResult result = aStoreService.selectStoreList(productId,keyword,statusToken);
-        return result;
-    }
-
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allData")
-    @ResponseBody
-    public AjaxResult allList(String statusToken,HttpServletRequest request) {
-        AjaxResult ajaxResult = new AjaxResult();
-        AjaxResult stage = aStageService.selectStageList(null,statusToken);
-        AjaxResult food = aFoodService.selectFoodList(null,null,statusToken);
-        AjaxResult product = aProductService.selectProductList(null,null,statusToken);
-        AjaxResult store = aStoreService.selectStoreList(null,null,statusToken);
-        /*TsysUser current_user = (TsysUser)request.getSession().getAttribute("current_user");
-        ajaxResult.put("User",current_user);*/
-        ajaxResult.put("Stage",stage);
-        ajaxResult.put("Food",food);
-        ajaxResult.put("Product",product);
-        ajaxResult.put("Store",store);
-        return ajaxResult;
-    }
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allUser")
-    @ResponseBody
-    public AjaxResult allUserList(String statusToken){
-        AjaxResult result = aUserService.AllUserList(statusToken);
-        return result;
-    }
-
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
-    @ResponseBody
-    public AjaxResult submit(@RequestParam("list") List list){
-        for( int i = 0 ; i < list.size() ; i++) {
-            System.out.println(list.get(i));
-        }
-        return null;
-    }
-
-
-    ////////////////////////////////////////基础信息提交接口//////////////////////////
 
     /**
      * 添加食品

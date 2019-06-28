@@ -233,4 +233,21 @@
       update_Time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectItemByUserNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        u.items,i.id as 'id',i.name,i.english_name,i.create_Time,i.update_Time
+        from t_sys_user u left join t_sys_items i on u.items = i.items
+        WHERE u.number = #{number}
+    </select>
+
+  <select id="selectItemList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_items
+    <where>
+      <if test="keyword != null">
+        items like #{keyword,jdbcType=VARCHAR} or name like #{keyword,jdbcType=VARCHAR} or english_name like #{keyword,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>

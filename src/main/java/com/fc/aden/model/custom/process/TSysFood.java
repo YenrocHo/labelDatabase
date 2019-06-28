@@ -7,7 +7,7 @@ public class TSysFood {
 
     private String itemId;
 
-    private String foodName;
+    private String food;
 
     private String name;
 
@@ -21,10 +21,10 @@ public class TSysFood {
 
     private Integer status;
 
-    public TSysFood(String id, String itemId, String foodName, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
+    public TSysFood(String id, String itemId, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
         this.id = id;
         this.itemId = itemId;
-        this.foodName = foodName;
+        this.food = food;
         this.name = name;
         this.englishName = englishName;
         this.picture = picture;
@@ -52,12 +52,12 @@ public class TSysFood {
         this.itemId = itemId;
     }
 
-    public String getFoodName() {
-        return foodName;
+    public String getFood() {
+        return food;
     }
 
-    public void setFoodName(String foodName) {
-        this.foodName = foodName;
+    public void setFood(String food) {
+        this.food = food;
     }
 
     public String getName() {
@@ -113,7 +113,7 @@ public class TSysFood {
         return "TSysFood{" +
                 "id='" + id + '\'' +
                 ", itemId='" + itemId + '\'' +
-                ", foodName='" + foodName + '\'' +
+                ", food='" + food + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +
                 ", picture='" + picture + '\'' +

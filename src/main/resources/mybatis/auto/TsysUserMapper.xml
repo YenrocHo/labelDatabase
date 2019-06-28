@@ -8,11 +8,9 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="number" jdbcType="VARCHAR" property="number"/>
         <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
-
         <result column="items" jdbcType="VARCHAR" property="items"/>
         <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber"/>
         <result column="sex" jdbcType="VARCHAR" property="sex"/>
-
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
@@ -348,9 +346,9 @@
     </select>
     <select id="selectLogin" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+       <include refid="Base_Column_List"></include>
         from t_sys_user
-        where number = #{number}
+        WHERE number = #{number}
     </select>
     <select id="selectAllUser" resultMap="BaseResultMap">
         select

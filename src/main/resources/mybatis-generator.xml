@@ -71,7 +71,7 @@
                enableSelectByExample="false"
                selectByExampleQueryId="false">
         </table>
-<<<<<<< HEAD
+
          <table tableName="t_sys_role" domainObjectName="TsysRole" enableCountByExample="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
@@ -84,9 +84,6 @@
         <table tableName="t_sys_learn_file" domainObjectName="TSysLearnFile" enableCountByExample="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
-=======
-
->>>>>>> b9cd7a6eec07e2acf6f92c02b42e7a64b095bdf9
 
     </context>
 </generatorConfiguration>

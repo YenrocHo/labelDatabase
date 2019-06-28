@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.aden.mapper.auto.process.TSysWeightMapper">
+  <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysWeight">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="item_id" jdbcType="VARCHAR" property="item_id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, number, unit,item_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_weight
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_weight
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysWeight">
+    insert into t_sys_weight (id, number, unit,item_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR},#{item_id,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysWeight">
+    insert into t_sys_weight
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="item_id != null">
+        item_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="item_id != null">
+        #{item_id,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysWeight">
+    update t_sys_weight
+    <set>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="item_id != null">
+        item_id = #{item_id,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.TSysWeight">
+    update t_sys_weight
+    set number = #{number,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      item_id = #{item_id} ,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectWeightList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_weight
+    <where>
+      <if test="keyword != null">
+        unit like #{keyword,jdbcType=VARCHAR}
+      </if>
+      <if test="itemId != null">
+        and item_id like #{itemId,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+</mapper>

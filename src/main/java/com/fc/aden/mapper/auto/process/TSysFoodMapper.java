@@ -27,6 +27,8 @@ public interface TSysFoodMapper {
 
     List<TSysFood> selectFoodList(@Param("itemId") String itemId,@Param("keyword") String keyword);
 
+    int updateStatusById(@Param("id") String id, @Param("status") Integer status);
+
 
 
 

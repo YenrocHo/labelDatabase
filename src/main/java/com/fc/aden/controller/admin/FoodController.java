@@ -6,9 +6,12 @@ import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.TSysFood;
+import com.fc.aden.model.custom.process.TSysStore;
+import com.fc.aden.service.SysFoodService2;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -25,7 +28,7 @@ public class FoodController extends BaseController {
     //跳转页面参数
     private String prefix = "admin/food";
 
-    private String imgPrefix = "https://www.desmart.com.cn/image/";
+
     /**
      * @Author Noctis
      * @Description //TODO 查看视频图片
@@ -36,9 +39,9 @@ public class FoodController extends BaseController {
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") String id, ModelMap mmap){
         TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
-        String[] strings = tSysFood.getPicture().split("/");
-        mmap.put("imagrUrl",imgPrefix+strings[strings.length-2]+"/"+strings[strings.length-1]);
-        mmap.put("foodName",tSysFood.getFoodName());
+        String imagrUrl = tSysFood.getPicture();
+        mmap.put("imagrUrl",imagrUrl);
+        mmap.put("foodName",tSysFood.getFood());
         mmap.put("name",tSysFood.getName());
         mmap.put("EnglishName",tSysFood.getEnglishName());
         return prefix + "/detail";
@@ -146,5 +149,18 @@ public class FoodController extends BaseController {
     public String edit(@PathVariable("id") String id, HttpServletRequest request, ModelMap mmap){
         TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
         return prefix + "/edit";
+    }
+    @Autowired
+    private SysFoodService2 sysFoodService2;
+    @PostMapping("/freeze")
+    @ResponseBody
+    public AjaxResult updateStatus(@RequestParam String id) {
+        TSysFood tSysFood_status = sysFoodService.selectByPrimaryKey(id);
+        TSysFood food = sysFoodService2.updateStatus(tSysFood_status);
+        if (food != null) {
+            return retobject(1,food);
+        }else{
+            return error(0,"修改失败");
+        }
     }
 }

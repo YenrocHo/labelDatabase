@@ -147,7 +147,11 @@
             }, {
                 field: 'id',
                 title: '编号'
-            }, {
+            },{
+                field: 'itemId',
+                title: '项目点'
+            }
+             ,{
                 field: 'foodName',
                 title: '食品名称'
             }, {
@@ -187,9 +191,8 @@
         oTab.Init();
     });
     function freeze(id) {
-        alert(id);
         $.ajax({
-            url: "",    //请求的url地址
+            url: "/FoodController/freeze",    //请求的url地址
             dataType: "json",   //返回格式为json
             async: true,//请求是否异步，默认为异步，这也是ajax重要特性
             data: {

@@ -6,9 +6,11 @@ import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.TSysStage;
+import com.fc.aden.service.SysStageService2;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -120,6 +122,20 @@ public class StageController extends BaseController {
             return success();
         }else{
             return error();
+        }
+    }
+
+    @Autowired
+    private SysStageService2 sysStageService2;
+    @PostMapping("/freeze")
+    @ResponseBody
+    public AjaxResult updateStatus(@RequestParam String id) {
+        TSysStage tSysStage = sysStageService.selectByPrimaryKey(id);
+        TSysStage stage = sysStageService2.updateStatus(tSysStage);
+        if (stage != null) {
+            return retobject(1,stage);
+        }else{
+            return error(0,"修改失败");
         }
     }
 }

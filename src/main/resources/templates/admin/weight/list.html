@@ -2,25 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="admin/common/html/head :: head(~{::title},~{::link},~{::style})">
+    <meta charset="UTF-8">
     <title th:text=${title}></title>
-    <!-- 这儿引用单独的css link -->
-    <!-- Ladda for Bootstrap 3按钮加载进度插件 -->
-    <link rel="stylesheet" th:href="@{/static/admin/assets/js/button/ladda/ladda.min.css}">
-    <!-- bootstrap-table表单样式 -->
-    <link th:href="@{/static/admin/assets/js/bootstrap/css/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
-
-    <style type="text/css">
-        /**
-        *这里写单独的css样式
-        */
-        .select-list ul li{
-            list-style-type: none;
-            float: left;
-        }
-    </style>
 </head>
 <body>
-<!-- ###############################代码编写出############################### -->
+<!-- Ladda for Bootstrap 3按钮加载进度插件 -->
+<link rel="stylesheet" th:href="@{/static/admin/assets/js/button/ladda/ladda.min.css}">
+<!-- bootstrap-table表单样式 -->
+<link th:href="@{/static/admin/assets/js/bootstrap/css/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+<style type="text/css">
+    /**
+    *这里写单独的css样式
+    */
+    .select-list ul li{
+        list-style-type: none;
+        float: left;
+    }
+</style>
 <!-- 右边内容 -->
 <div class="wrap-fluid">
     <div class="container-fluid paper-wrap bevel tlbr">
@@ -48,13 +46,12 @@
                                 </a>
                             </div>
                         </div>
-
                         <div class="body-nest" id="search_div">
                             <div class="form_left">
                                 <form role="form" class="form-inline">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail2" class="sr-only">存储条件名字</label>
-                                        <input type="text" name="searchTxt" placeholder="存储条件名字"class="form-control">
+                                        <label for="exampleInputEmail2" class="sr-only">阶段</label>
+                                        <input type="text" name="stage" placeholder="阶段"class="form-control">
                                     </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
                                 </form>
@@ -77,15 +74,17 @@
                                 </a>
                             </div>
                         </div>
+
                         <div class="body-nest" id="Blank_Page_Content">
                             <!-- 工具条 -->
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                                 <button onclick="$.operate.add()" type="button" class="btn btn-primary">
-                                    <span class="entypo-plus-squared"></span>&nbsp;&nbsp;新增
+                                    <span class="entypo-plus-squared"></span>&nbsp;&nbsp;新增阶段
                                 </button>
                                 <button onclick="$.operate.batRemove()" type="button" class="btn btn-info">
                                     <span class="entypo-trash"></span>&nbsp;&nbsp;删除
                                 </button>
+
                             </div>
                             <!-- 工具条 end-->
                             <table id="dataTable" class="table-striped footable-res footable metro-blue" data-page-size="6">
@@ -105,11 +104,13 @@
 </div>
 <!-- 结束右边内容 -->
 <!-- ###############################代码编写出############################### -->
+
 <!-- 右侧隐藏滑块内容 -->
 <div th:include="admin/common/html/rightHide :: rightHide">
 
 </div>
 <!-- END 右侧隐藏滑块内容-->
+
 <!-- 通用js -->
 <div th:include="admin/common/html/js :: onload_js">
 
@@ -127,55 +128,43 @@
 <!-- 遮罩层 -->
 <script th:src="@{/static/admin/assets/js/blockUI/jquery.blockUI.js}" type="text/javascript"></script>
 <script type="text/javascript">
-    var dataUrl  =window.rootPath+"/StoreController/list";
-    var removeUrl=window.rootPath+"/StoreController/remove";
-    var createUrl=window.rootPath+"/StoreController/add";
-    var updateUrl=window.rootPath+"/StoreController/edit/{id}";
-    var freezeUrl=window.rootPath+"/StoreController/freeze";
+    var dataUrl=window.rootPath+"";
+    var createUrl=window.rootPath+"";
+    var updateUrl=window.rootPath+"";
+    var removeUrl=window.rootPath+"";
     var options = {
         dataUrl: dataUrl,
-        createUrl: createUrl,
-        updateUrl: updateUrl,
+        createUrl:createUrl,
+        updateUrl:updateUrl,
         removeUrl:removeUrl,
-        freezeUrl:freezeUrl,
-        sortName: "storeSort",
-        modalName: "存储条件",
+        sortName: "weight",
+        modalName: "分量",
         search: false,
         dataColumns: [
             {
                 checkbox: true
-            },{
+            }, {
                 field: 'id',
                 title: '编号'
             },{
                 field: 'itemId',
                 title: '项目点'
-            },{
-                field: 'store',
-                title: '条件'
-            },{
+            }, {
+                field: 'stage',
+                title: '阶段'
+            }, {
                 field: 'name',
-                title: '条件中文名'
+                title: '中文名'
             },{
                 field: 'englishName',
-                title: '条件英文名'
-            },{
-                field: 'temperature',
-                title: '温度中文名'
-            },{
+                title: '英文名'
+            }, {
                 title: '操作',
                 formatter: function (value, row, index) {
                     var id = row.id;
                     var actions = [];
-                    if(row.status == 0){
-                        actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\'  href="#" onclick="$.operate.edit(\'' + id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')" ><i class="fa fa-remove"></i>删除</a>');
-                        actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\'  href="#" onclick="freeze(\'' + id + '\')" style="background-color: #87CEFA;margin-left: 3px;color: white;width: 50px"><i class="fa fa-check"></i>解冻</a>');
-                    }else {
-                        actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\' href="#" onclick="$.operate.edit(\'' + id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')"><i class="fa fa-remove"></i>删除</a>');
-                        actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\' href="#" onclick="freeze(\'' + id + '\')" style="background-color: #F08080;margin-left: 3px;color: white;width: 50px"><i class="fa fa-ban"></i>冻结</a>');
-                    }
+                    actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\'  href="#" onclick="$.operate.edit(\'' + id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
+                    actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')" ><i class="fa fa-remove"></i>删除</a>');
                     return actions.join('');
                 }
             }]
@@ -184,32 +173,7 @@
         var oTab=$.table.oTableInit(options);
         oTab.Init();
     });
-    function freeze(id,status) {
-        $.ajax({
-            url:"/StoreController/freeze",    //请求的url地址
-            dataType:"json",   //返回格式为json
-            async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-            data:{
-                "id":id
-            },    //参数值
-            type:"POST",   //请求方式
-            success:function(result){
-                var status = result.data.status;
-                if( status == 1){
-                    $("#"+id).html("<i class=\"fa fa-ban\"></i>冻结</a>").css("background-color","#F08080");
-                    $("a[name='"+id+"']").attr("disabled",false);
-                }
-                if (status == 0){
-                    $("#"+id).html("<i class=\"fa fa-check\"></i>解冻</a>").css("background-color","#87CEFA");
-                    $("a[name='"+id+"']").attr("disabled",true);
-                }
-            },
-            error:function(result){
-                alert(result.message);
-                location.reload();
-            }
-        });
-    }
+
 </script>
 </body>
 </html>

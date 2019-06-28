@@ -31,4 +31,8 @@ public interface TSysItemsMapper {
 
     List<TSysItems> selectByItems(String items);
     int deleteByItems(List<TSysItems> example);
+
+    TSysItems selectItemByUserNumber(@Param("number")String number);
+
+    List<TSysItems> selectItemList(@Param("keyword")String keyword);
 }

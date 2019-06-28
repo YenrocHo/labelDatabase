@@ -190,6 +190,23 @@
             <if test="keyword != null">
                 stage like #{keyword,jdbcType=VARCHAR}
             </if>
+            <if test="itemId != null">
+                and item_id like #{itemId,jdbcType=VARCHAR}
+            </if>
         </where>
     </select>
+
+    <update id="updateStatusById" parameterType="map">
+        update t_sys_stage
+        set
+        <choose>
+            <when test="status == 1">
+                status = 0
+            </when>
+            <when test="status == 0">
+                status = 1
+            </when>
+        </choose>
+        where id = #{id}
+    </update>
 </mapper>
