@@ -95,7 +95,7 @@ public class LoginController  extends BaseController {
      * @Param [itemId, keyword, type, statusToken, number]
      * @return com.fc.aden.common.domain.AjaxResult
      **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/test")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/selectOne")
     @ResponseBody
     public AjaxResult test(@RequestParam(value = "itemId", required = false) String itemId,
                            @RequestParam(value = "keyword", required = false) String keyword,
