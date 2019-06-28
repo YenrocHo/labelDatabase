@@ -2,10 +2,10 @@ package com.fc.aden.controller.admin;
 
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
-import com.fc.aden.model.custom.TSysTag;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
+import com.fc.aden.model.custom.process.TSysTag;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Controller
 @Api(value = "标签记录")

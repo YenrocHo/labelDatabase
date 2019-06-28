@@ -12,13 +12,15 @@ import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.process.*;
 import com.fc.aden.service.AndroidService;
+import com.fc.aden.util.SnowflakeIdWorker;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static com.fc.aden.common.domain.AjaxResult.AJAX_DATA;
 @Service
@@ -37,6 +39,8 @@ public class AndroidServiceImpl implements AndroidService {
     private TsysUserMapper tsysUserMapper;
     @Autowired
     private TSysItemsMapper tSysItemsMapper;
+    @Autowired
+    private TSysTagMapper tSysTagMapper;
 
     @Override
     public AjaxResult login(String number){
@@ -124,9 +128,9 @@ public class AndroidServiceImpl implements AndroidService {
             if (searchResult.size() == 0){
 
             }else if(searchResult.get(0).equals("参数错误")){
-                listResult = AjaxResult.success(Const.CodeEnum.wrongParam.getCode(),Const.CodeEnum.wrongParam.getValue());
+                listResult = AjaxResult.error(Const.CodeEnum.wrongParam.getCode(),Const.CodeEnum.wrongParam.getValue());
             }else if(searchResult.get(0).equals("SQL错误")){
-                listResult = AjaxResult.success(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
+                listResult = AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
             }else {
                 listResult = AjaxResult.success(Const.CodeEnum.success.getCode(),Const.CodeEnum.success.getValue());
             }
@@ -135,6 +139,46 @@ public class AndroidServiceImpl implements AndroidService {
         }
         return ajaxResult;
     }
+
+    @Override
+    public AjaxResult submit(String jsonString){
+        JSONArray jsonStr = new JSONArray(jsonString);
+        JSONObject jsonObject = jsonStr.getJSONObject(0);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+
+        TSysTag tSysTag = new TSysTag();
+        tSysTag.setId(SnowflakeIdWorker.getUUID());
+        tSysTag.setStage(jsonObject.getString("stage"));
+        tSysTag.setFood(jsonObject.getString("food"));
+        tSysTag.setProduct(jsonObject.getString("product"));
+        tSysTag.setStore(jsonObject.getString("store"));
+        tSysTag.setPrintUser(jsonObject.getString("userName"));
+        tSysTag.setOriginalId(jsonObject.getString("original_Id"));
+        tSysTag.setCreatTime(new Date());
+
+        int printCount = 0;
+
+        try{
+            printCount = tSysTagMapper.selectCountByOriginalId(jsonObject.getString("original_Id"));
+            tSysTag.setItems(tSysItemsMapper.selectByPrimaryKey(jsonObject.getString("itemId")).getItems());
+            date.setTime(Long.parseLong(jsonObject.getString("printTime")));
+            Date printTime=simpleDateFormat.parse(simpleDateFormat.format(date));
+            tSysTag.setPrintTime(printTime);
+            int insertSelective = tSysTagMapper.insertSelective(tSysTag);
+            if (insertSelective>0){
+                return AjaxResult.success(Const.CodeEnum.success.getCode(),Const.CodeEnum.success.getValue()).put("last",printCount).put("now",printCount+1);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return AjaxResult.error("操作失败").put("last",printCount);
+    }
+
+
+
+
+
     private boolean token(String number,String statusToken){
         if (StringUtils.isBlank(statusToken)) {
             return false;

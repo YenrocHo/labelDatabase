@@ -1,17 +1,16 @@
-package com.fc.aden.mapper.auto;
+package com.fc.aden.mapper.auto.process;
 
-import com.fc.aden.model.custom.TSysTag;
-import com.fc.aden.model.custom.TSysTagExample;
+import com.fc.aden.model.custom.process.TSysTag;
+import com.fc.aden.model.custom.process.TSysTagExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 public interface TSysTagMapper {
-    int countByExample(TSysTagExample example);
+    long countByExample(TSysTagExample example);
 
     int deleteByExample(TSysTagExample example);
 
-    int deleteByPrimaryKey(String ids);
+    int deleteByPrimaryKey(String id);
 
     int insert(TSysTag record);
 
@@ -28,4 +27,6 @@ public interface TSysTagMapper {
     int updateByPrimaryKeySelective(TSysTag record);
 
     int updateByPrimaryKey(TSysTag record);
+
+    int selectCountByOriginalId(String original_Id);
 }

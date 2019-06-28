@@ -3,6 +3,7 @@ package com.fc.aden.common.base;
 public class Const {
     public enum CodeEnum{
         success(200,"操作成功"),
+        error(300,"操作失败"),
         noExistent(301,"账号不存在"),
         ban(302,"账号被禁用"),
         noRegist(305,"用户未注册"),

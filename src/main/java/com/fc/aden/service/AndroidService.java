@@ -10,4 +10,6 @@ public interface AndroidService {
     AjaxResult login(String number);
 
     AjaxResult AllUserList(String statusToken,String number);
+
+    AjaxResult submit(String jsonString);
 }

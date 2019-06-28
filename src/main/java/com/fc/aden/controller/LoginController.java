@@ -7,14 +7,14 @@ import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
-import com.fc.aden.model.custom.process.TSysFood;
-import com.fc.aden.model.custom.process.TSysProduct;
-import com.fc.aden.model.custom.process.TSysStage;
-import com.fc.aden.model.custom.process.TSysStore;
+import com.fc.aden.model.custom.process.*;
 import com.fc.aden.service.*;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,9 +120,7 @@ public class LoginController  extends BaseController {
     @ResponseBody
 
     public AjaxResult submit(@RequestBody String jsonString){
-        System.out.println(jsonString);
-
-        return null;
+        return androidService.submit(jsonString);
     }
 
 

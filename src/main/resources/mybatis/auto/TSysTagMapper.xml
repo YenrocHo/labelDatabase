@@ -1,23 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fc.aden.mapper.auto.TSysTagMapper" >
-  <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.TSysTag" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="stage" property="stage" jdbcType="VARCHAR" />
-    <result column="variety" property="variety" jdbcType="VARCHAR" />
-    <result column="product_Name" property="productName" jdbcType="VARCHAR" />
-    <result column="expiration" property="expiration" jdbcType="INTEGER" />
-    <result column="items" property="items" jdbcType="VARCHAR" />
-    <result column="store" property="store" jdbcType="VARCHAR" />
-    <result column="print_User" property="printUser" jdbcType="VARCHAR" />
-    <result column="print_Time" property="printTime" jdbcType="TIMESTAMP" />
-    <result column="end_Time" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="put_Time" property="putTime" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.aden.mapper.auto.process.TSysTagMapper">
+  <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysTag">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="original_Id" jdbcType="VARCHAR" property="originalId" />
+    <result column="items" jdbcType="VARCHAR" property="items" />
+    <result column="stage" jdbcType="VARCHAR" property="stage" />
+    <result column="food" jdbcType="VARCHAR" property="food" />
+    <result column="product" jdbcType="VARCHAR" property="product" />
+    <result column="expiration" jdbcType="VARCHAR" property="expiration" />
+    <result column="store" jdbcType="VARCHAR" property="store" />
+    <result column="print_User" jdbcType="VARCHAR" property="printUser" />
+    <result column="print_Time" jdbcType="TIMESTAMP" property="printTime" />
+    <result column="end_Time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, stage, variety, product_Name, expiration, items,store, print_User, print_Time, end_Time,
-    put_Time
-  </sql>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -47,13 +44,40 @@
       </foreach>
     </where>
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_sys_tag
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.TSysTagExample" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, original_Id, items, stage, food, product, expiration, store, print_User, print_Time, 
+    end_Time, creat_time
+  </sql>
+  <select id="selectByExample" parameterType="com.fc.aden.model.custom.process.TSysTagExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -67,141 +91,244 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_tag
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_sys_tag
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.fc.aden.model.custom.TSysTag" >
-    insert into t_sys_tag (id, stage, variety, 
-      product_Name, expiration, items, store,
-      print_User, print_Time, end_Time, 
-      put_Time)
-    values (#{id,jdbcType=VARCHAR}, #{stage,jdbcType=VARCHAR}, #{variety,jdbcType=VARCHAR}, 
-      #{productName,jdbcType=VARCHAR}, #{expiration,jdbcType=INTEGER}, #{items,jdbcType=VARCHAR},#{store,jdbcType=VARCHAR},
-      #{printUser,jdbcType=VARCHAR}, #{printTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
-      #{putTime,jdbcType=TIMESTAMP})
+  <delete id="deleteByExample" parameterType="com.fc.aden.model.custom.process.TSysTagExample">
+    delete from t_sys_tag
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysTag">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sys_tag (id,original_Id, items, stage,
+      food, product, expiration, 
+      store, print_User, print_Time, 
+      end_Time, creat_time)
+    values (#{id,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR}, #{items,jdbcType=VARCHAR}, #{stage,jdbcType=VARCHAR},
+      #{food,jdbcType=VARCHAR}, #{product,jdbcType=VARCHAR}, #{expiration,jdbcType=VARCHAR}, 
+      #{store,jdbcType=VARCHAR}, #{printUser,jdbcType=VARCHAR}, #{printTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, now())
   </insert>
-  <insert id="insertSelective" parameterType="com.fc.aden.model.custom.TSysTag" >
+  <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysTag">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into t_sys_tag
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="stage != null" >
-        stage,
+      <if test="originalId != null">
+        original_Id,
       </if>
-      <if test="variety != null" >
-        variety,
-      </if>
-      <if test="productName != null" >
-        product_Name,
-      </if>
-      <if test="expiration != null" >
-        expiration,
-      </if>
-      <if test="items != null" >
+      <if test="items != null">
         items,
       </if>
-      <if test="store != null" >
-      store,
+      <if test="stage != null">
+        stage,
       </if>
-      <if test="printUser != null" >
+      <if test="food != null">
+        food,
+      </if>
+      <if test="product != null">
+        product,
+      </if>
+      <if test="expiration != null">
+        expiration,
+      </if>
+      <if test="store != null">
+        store,
+      </if>
+      <if test="printUser != null">
         print_User,
       </if>
-      <if test="printTime != null" >
+      <if test="printTime != null">
         print_Time,
       </if>
-      <if test="endTime != null" >
+      <if test="endTime != null">
         end_Time,
       </if>
-      <if test="putTime != null" >
-        put_Time,
+      <if test="creatTime != null">
+        creat_time,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="stage != null" >
-        #{stage,jdbcType=VARCHAR},
+      <if test="originalId != null">
+        #{originalId,jdbcType=VARCHAR},
       </if>
-      <if test="variety != null" >
-        #{variety,jdbcType=VARCHAR},
-      </if>
-      <if test="productName != null" >
-        #{productName,jdbcType=VARCHAR},
-      </if>
-      <if test="expiration != null" >
-        #{expiration,jdbcType=INTEGER},
-      </if>
-      <if test="items != null" >
+      <if test="items != null">
         #{items,jdbcType=VARCHAR},
       </if>
-      <if test="store != null" >
+      <if test="stage != null">
+        #{stage,jdbcType=VARCHAR},
+      </if>
+      <if test="food != null">
+        #{food,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null">
+        #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="expiration != null">
+        #{expiration,jdbcType=VARCHAR},
+      </if>
+      <if test="store != null">
         #{store,jdbcType=VARCHAR},
       </if>
-      <if test="printUser != null" >
+      <if test="printUser != null">
         #{printUser,jdbcType=VARCHAR},
       </if>
-      <if test="printTime != null" >
+      <if test="printTime != null">
         #{printTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endTime != null" >
+      <if test="endTime != null">
         #{endTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="putTime != null" >
-        #{putTime,jdbcType=TIMESTAMP},
+      <if test="creatTime != null">
+        now(),
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.TSysTag" >
+  <select id="countByExample" parameterType="com.fc.aden.model.custom.process.TSysTagExample" resultType="java.lang.Long">
+    select count(*) from t_sys_tag
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
     update t_sys_tag
-    <set >
-      <if test="stage != null" >
-        stage = #{stage,jdbcType=VARCHAR},
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="variety != null" >
-        variety = #{variety,jdbcType=VARCHAR},
+      <if test="record.originalId != null">
+        original_Id = #{record.originalId,jdbcType=VARCHAR},
       </if>
-      <if test="productName != null" >
-        product_Name = #{productName,jdbcType=VARCHAR},
+      <if test="record.items != null">
+        items = #{record.items,jdbcType=VARCHAR},
       </if>
-      <if test="expiration != null" >
-        expiration = #{expiration,jdbcType=INTEGER},
+      <if test="record.stage != null">
+        stage = #{record.stage,jdbcType=VARCHAR},
       </if>
-      <if test="items != null" >
+      <if test="record.food != null">
+        food = #{record.food,jdbcType=VARCHAR},
+      </if>
+      <if test="record.product != null">
+        product = #{record.product,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expiration != null">
+        expiration = #{record.expiration,jdbcType=VARCHAR},
+      </if>
+      <if test="record.store != null">
+        store = #{record.store,jdbcType=VARCHAR},
+      </if>
+      <if test="record.printUser != null">
+        print_User = #{record.printUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.printTime != null">
+        print_Time = #{record.printTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        end_Time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creatTime != null">
+        creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_sys_tag
+    set id = #{record.id,jdbcType=VARCHAR},
+      original_Id = #{record.originalId,jdbcType=VARCHAR},
+      items = #{record.items,jdbcType=VARCHAR},
+      stage = #{record.stage,jdbcType=VARCHAR},
+      food = #{record.food,jdbcType=VARCHAR},
+      product = #{record.product,jdbcType=VARCHAR},
+      expiration = #{record.expiration,jdbcType=VARCHAR},
+      store = #{record.store,jdbcType=VARCHAR},
+      print_User = #{record.printUser,jdbcType=VARCHAR},
+      print_Time = #{record.printTime,jdbcType=TIMESTAMP},
+      end_Time = #{record.endTime,jdbcType=TIMESTAMP},
+      creat_time = #{record.creatTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysTag">
+    update t_sys_tag
+    <set>
+      <if test="originalId != null">
+        original_Id = #{originalId,jdbcType=VARCHAR},
+      </if>
+      <if test="items != null">
         items = #{items,jdbcType=VARCHAR},
       </if>
-      <if test="store != null" >
+      <if test="stage != null">
+        stage = #{stage,jdbcType=VARCHAR},
+      </if>
+      <if test="food != null">
+        food = #{food,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null">
+        product = #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="expiration != null">
+        expiration = #{expiration,jdbcType=VARCHAR},
+      </if>
+      <if test="store != null">
         store = #{store,jdbcType=VARCHAR},
       </if>
-      <if test="printUser != null" >
+      <if test="printUser != null">
         print_User = #{printUser,jdbcType=VARCHAR},
       </if>
-      <if test="printTime != null" >
+      <if test="printTime != null">
         print_Time = #{printTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endTime != null" >
+      <if test="endTime != null">
         end_Time = #{endTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="putTime != null" >
-        put_Time = #{putTime,jdbcType=TIMESTAMP},
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.TSysTag" >
+  <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.TSysTag">
     update t_sys_tag
-    set stage = #{stage,jdbcType=VARCHAR},
-      variety = #{variety,jdbcType=VARCHAR},
-      product_Name = #{productName,jdbcType=VARCHAR},
-      expiration = #{expiration,jdbcType=INTEGER},
+    set original_Id = #{originalId,jdbcType=VARCHAR},
       items = #{items,jdbcType=VARCHAR},
+      stage = #{stage,jdbcType=VARCHAR},
+      food = #{food,jdbcType=VARCHAR},
+      product = #{product,jdbcType=VARCHAR},
+      expiration = #{expiration,jdbcType=VARCHAR},
       store = #{store,jdbcType=VARCHAR},
       print_User = #{printUser,jdbcType=VARCHAR},
       print_Time = #{printTime,jdbcType=TIMESTAMP},
       end_Time = #{endTime,jdbcType=TIMESTAMP},
-      put_Time = #{putTime,jdbcType=TIMESTAMP}
+      creat_time = #{creatTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <select id="selectCountByOriginalId" parameterType="string" resultType="integer">
+    select count(1)
+    from t_sys_tag
+    where original_Id = #{original_Id,jdbcType=VARCHAR}
+  </select>
+  
 </mapper>

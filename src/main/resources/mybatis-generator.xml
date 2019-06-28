@@ -39,9 +39,9 @@
         <!-- 数据库链接地址账号密码 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://localhost:3306/demo"
+                connectionURL="jdbc:mysql://139.196.193.182:8306/adenlabel"
                 userId="root"
-                password="123456789">
+                password="DecentSmart2016">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -59,31 +59,31 @@
         <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件的代码
             type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
             type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.fc.aden.mapper.auto.process.TSysFoodMapper" targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.fc.aden.mapper.auto.process" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="t_sys_store"
+        <!--<table tableName="t_sys_store"
                domainObjectName="TSysStore"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                selectByExampleQueryId="false">
-        </table>
+        </table>-->
 
-         <table tableName="t_sys_role" domainObjectName="TsysRole" enableCountByExample="true">
+         <table tableName="t_sys_tag" domainObjectName="TSysTag" enableCountByExample="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
-        <table tableName="t_sys_premission" domainObjectName="TsysPremission" enableCountByExample="true">
+        <!--<table tableName="t_sys_premission" domainObjectName="TsysPremission" enableCountByExample="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
          <table tableName="t_sys_role_user" domainObjectName="TSysRoleUser" enableCountByExample="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>-->
+        </table>&ndash;&gt;
         <table tableName="t_sys_learn_file" domainObjectName="TSysLearnFile" enableCountByExample="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+        </table>-->
 
     </context>
 </generatorConfiguration>

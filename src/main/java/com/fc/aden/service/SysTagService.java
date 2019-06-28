@@ -1,10 +1,12 @@
 package com.fc.aden.service;
 
 import com.fc.aden.common.base.BaseService;
-import com.fc.aden.mapper.auto.TSysTagMapper;
-import com.fc.aden.model.custom.TSysTag;
-import com.fc.aden.model.custom.TSysTagExample;
+import com.fc.aden.mapper.auto.process.TSysTagMapper;
+
+
 import com.fc.aden.model.custom.Tablepar;
+import com.fc.aden.model.custom.process.TSysTag;
+import com.fc.aden.model.custom.process.TSysTagExample;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

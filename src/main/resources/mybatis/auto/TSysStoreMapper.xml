@@ -136,14 +136,14 @@
   </update>
   <select id="selectList" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_sys_store
   </select>
   <delete id="delectStoreByIds" parameterType="map">
     delete
     from t_sys_store
     where id in
-    <foreach collection="storeIdlist" item="item" index="index" open="(" separator="," close=")">
+    <foreach close=")" collection="storeIdlist" index="index" item="item" open="(" separator=",">
       #{item}
     </foreach>
   </delete>
@@ -163,13 +163,13 @@
 
   <select id="selectListBycQuery" parameterType="string" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_sys_store
     where store like #{searchTxt} or name like #{searchTxt} or english_name like #{searchTxt}
   </select>
   <select id="selectStoreList" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_sys_store
     <where>
       <if test="keyword != null">

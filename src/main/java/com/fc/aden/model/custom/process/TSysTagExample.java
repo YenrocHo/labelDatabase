@@ -1,5 +1,4 @@
-package com.fc.aden.model.custom;
-
+package com.fc.aden.model.custom.process;
 import java.util.ArrayList;
 import java.util.List;
 
