@@ -160,19 +160,18 @@ public class AndroidServiceImpl implements AndroidService {
         int printCount = 0;
 
         try{
-            printCount = tSysTagMapper.selectCountByOriginalId(jsonObject.getString("original_Id"));
             tSysTag.setItems(tSysItemsMapper.selectByPrimaryKey(jsonObject.getString("itemId")).getItems());
             date.setTime(Long.parseLong(jsonObject.getString("printTime")));
             Date printTime=simpleDateFormat.parse(simpleDateFormat.format(date));
             tSysTag.setPrintTime(printTime);
             int insertSelective = tSysTagMapper.insertSelective(tSysTag);
             if (insertSelective>0){
-                return AjaxResult.success(Const.CodeEnum.success.getCode(),Const.CodeEnum.success.getValue()).put("last",printCount).put("now",printCount+1);
+                return AjaxResult.success(Const.CodeEnum.success.getCode(),Const.CodeEnum.success.getValue());
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return AjaxResult.error("操作失败").put("last",printCount);
+        return AjaxResult.error("操作失败");
     }
 
 
