@@ -116,13 +116,26 @@ public class LoginController  extends BaseController {
      * @Param [jsonString]
      * @return com.fc.aden.common.domain.AjaxResult
      **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submittext")
     @ResponseBody
 
     public AjaxResult submit(@RequestBody String jsonString){
         return androidService.submit(jsonString);
     }
+    /***
+     * @Author Noctis
+     * @Description //提交
+     * @Date 2019/6/27 14:56
+     * @Param [jsonString]
+     * @return com.fc.aden.common.domain.AjaxResult
+     **/
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
+    @ResponseBody
 
+    public AjaxResult submit2(@RequestBody String jsonString){
+        System.out.println(jsonString);
+        return null;
+    }
 
 
 
