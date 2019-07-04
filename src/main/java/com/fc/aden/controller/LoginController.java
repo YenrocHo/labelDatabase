@@ -9,9 +9,14 @@ import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.*;
 import com.fc.aden.service.*;
+import com.fc.aden.util.DateUtils;
+import com.fc.aden.util.IDGenerator;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.fc.aden.common.domain.AjaxResult.AJAX_DATA;
@@ -30,7 +37,8 @@ import static com.fc.aden.common.domain.AjaxResult.AJAX_DATA;
 public class LoginController  extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-
+    @Autowired
+    private PrintHistoryService printHistoryService;
 
 
 
@@ -122,10 +130,44 @@ public class LoginController  extends BaseController {
 
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
     @ResponseBody
-
     public AjaxResult submit2(@RequestBody String jsonString){
-        System.out.println(jsonString);
-        return null;
+        logger.debug("打印历史记录：" + jsonString);
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray printDataJsonArr = jsonObject.getJSONArray("printData");
+            // 打印历史记录集合
+            List<PrintHistory> printHistoryList = new ArrayList<>();
+            for (int i = 0; i < printDataJsonArr.length(); i++) {
+                JSONObject printData = printDataJsonArr.optJSONObject(i);
+                PrintHistory printHistory = new PrintHistory();
+                printHistory.setId(IDGenerator.getUUID());
+                printHistory.setItemId(printData.getString("itemId"));
+                printHistory.setOriginalId(printData.getString("originalId"));
+                printHistory.setPrintLableId(printData.getString("printLableId"));
+                printHistory.setProductName(printData.getString("product"));
+                printHistory.setProductCategory(printData.getString("productCategeroy"));
+                printHistory.setProductWeight(printData.getString("weight"));
+                printHistory.setCorrectStage(printData.getString("correctStage"));
+                printHistory.setCorrectStorage(printData.getString("correctStorage"));
+                printHistory.setEmployerName(printData.getString("employerName"));
+                printHistory.setPrintTime(DateUtils.parseStrToDate(printData.getString("printTime"), "yyyy-MM-dd HH:mm:ss"));
+                // 添加到集合
+                printHistoryList.add(printHistory);
+            }
+            // 执行批量保存
+            printHistoryService.insertBatch(printHistoryList);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return AjaxResult.error(414, "参数错误");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return AjaxResult.error(414, "参数错误：printTime格式错误。期望格式：yyyy-MM-dd HH:mm:ss");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.error(900, "操作失败：系统错误");
+        }
+
+        return AjaxResult.success(AjaxResult.CODE_SUCCESS, "操作成功");
     }
 
 
