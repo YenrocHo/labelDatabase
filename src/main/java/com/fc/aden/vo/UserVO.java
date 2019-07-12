@@ -1,10 +1,10 @@
-package com.fc.aden.model.auto;
+package com.fc.aden.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 
-public class TsysUser implements Serializable {
+public class UserVO{
     private String id;
 
     private String username;
@@ -24,6 +24,7 @@ public class TsysUser implements Serializable {
     /**
      * 项目点
      */
+    private String items;
     private String itemId;
     /**
      * 手机号
@@ -37,22 +38,22 @@ public class TsysUser implements Serializable {
      * 更新时间
      */
     private String statusToken;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+
     private String updateTime;
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String createTime;
     private static final long serialVersionUID = 1L;
 
-    public TsysUser(String id, String username, String name, String password, String number, String englishName, String itemId, String phoneNumber, String sex, String updateTime, String createTime) {
+    public UserVO(String id, String username, String name, String password, String number, String englishName, String items, String itemId, String phoneNumber, String sex, String updateTime, String createTime) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.password = password;
         this.number = number;
         this.englishName = englishName;
+        this.items = items;
         this.itemId = itemId;
         this.phoneNumber = phoneNumber;
         this.sex = sex;
@@ -60,7 +61,7 @@ public class TsysUser implements Serializable {
         this.createTime = createTime;
     }
 
-    public TsysUser() {
+    public UserVO() {
     }
 
     public String getId() {
@@ -109,6 +110,14 @@ public class TsysUser implements Serializable {
 
     public void setEnglishName(String englishName) {
         this.englishName = englishName;
+    }
+
+    public String getItems() {
+        return items;
+    }
+
+    public void setItems(String items) {
+        this.items = items;
     }
 
     public String getItemId() {
@@ -172,6 +181,7 @@ public class TsysUser implements Serializable {
                 ", password='" + password + '\'' +
                 ", number='" + number + '\'' +
                 ", englishName='" + englishName + '\'' +
+                ", items='" + items + '\'' +
                 ", itemId='" + itemId + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", sex='" + sex + '\'' +

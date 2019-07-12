@@ -8,7 +8,6 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="number" jdbcType="VARCHAR" property="number"/>
         <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
-        <result column="items" jdbcType="VARCHAR" property="items"/>
         <result column="itemId" jdbcType="VARCHAR" property="itemId"/>
         <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber"/>
         <result column="sex" jdbcType="VARCHAR" property="sex"/>
@@ -76,7 +75,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, username,name,password, number, english_name, items,itemId, phone_number, sex,update_time,
+    id, username,name,password, number, english_name,itemId, phone_number, sex,update_time,
     create_time
   </sql>
     <select id="selectByExample" parameterType="com.fc.aden.model.auto.TsysUserExample" resultMap="BaseResultMap">
@@ -140,12 +139,12 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into t_sys_user (username,name, password, number,
-        english_name, items, itemId,phone_number,
+        english_name,  itemId,phone_number,
         sex,update_time,
         create_time)
         values (#{username,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
         #{number,jdbcType=VARCHAR},
-        #{englishName,jdbcType=VARCHAR}, #{items,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR} ,#{phoneNumber,jdbcType=VARCHAR},
+        #{englishName,jdbcType=VARCHAR},  #{itemId,jdbcType=VARCHAR} ,#{phoneNumber,jdbcType=VARCHAR},
         #{sex,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
         #{createTime,jdbcType=TIMESTAMP})
     </insert>
@@ -173,9 +172,6 @@
 
             <if test="englishName != null">
                 english_name,
-            </if>
-            <if test="items != null">
-                items,
             </if>
             <if test="itemId != null">
                 itemId,
@@ -211,9 +207,6 @@
             </if>
             <if test="englishName != null">
                 #{englishName,jdbcType=VARCHAR},
-            </if>
-            <if test="items != null">
-                #{items,jdbcType=VARCHAR},
             </if>
             <if test="itemId != null">
                 #{itemId,jdbcType=VARCHAR},
@@ -259,11 +252,8 @@
             <if test="record.englishName != null">
                 english_name = #{record.englishName,jdbcType=VARCHAR},
             </if>
-            <if test="record.items != null">
-                items = #{record.items,jdbcType=VARCHAR},
-            </if>
             <if test="record.itemId != null">
-                items = #{record.itemId} ,jdbcType=VARCHAR},
+                itemId = #{record.itemId} ,jdbcType=VARCHAR},
             </if>
             <if test="record.phoneNumber != null">
                 phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
@@ -290,7 +280,6 @@
         password = #{record.password,jdbcType=VARCHAR},
         number = #{record.number,jdbcType=VARCHAR},
         english_name = #{record.englishName,jdbcType=VARCHAR},
-        items = #{record.items,jdbcType=VARCHAR},
         itemId = #{record.itemId,jdbcType=VARCHAR} ,
         phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
         sex = #{record.sex,jdbcType=VARCHAR},
@@ -318,9 +307,6 @@
             <if test="englishName != null">
                 english_name = #{englishName,jdbcType=VARCHAR},
             </if>
-            <if test="items != null">
-                items = #{items,jdbcType=VARCHAR},
-            </if>
             <if test="itemId != null">
                 itemId = #{itemId,jdbcType=VARCHAR},
             </if>
@@ -346,7 +332,6 @@
       password = #{password,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
       english_name = #{englishName,jdbcType=VARCHAR},
-      items = #{items,jdbcType=VARCHAR},
       itemId = #{itemId,jdbcType=VARCHAR},
       phone_number = #{phoneNumber,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},

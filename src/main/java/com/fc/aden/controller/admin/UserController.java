@@ -1,9 +1,12 @@
 package com.fc.aden.controller.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.*;
+import com.fc.aden.vo.ItemsVO;
+import com.fc.aden.vo.UserVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,8 +48,8 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:list")
     @ResponseBody
     public Object list(Tablepar tablepar, String username, String number, String name) {
-        PageInfo<TsysUser> page = sysUserService.list(tablepar, username, number, name);
-        TableSplitResult<TsysUser> result = new TableSplitResult<TsysUser>(page.getPageNum(), page.getTotal(), page.getList());
+        PageInfo<UserVO> page = sysUserService.list(tablepar, username, number, name);
+        TableSplitResult<UserVO> result = new TableSplitResult<UserVO>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
 
@@ -57,9 +60,16 @@ public class UserController extends BaseController {
     public String add(ModelMap modelMap) {
         //添加角色列表
         List<TsysRole> tsysRoleList = sysRoleService.queryList();
-        List<TSysItems> tSysItems = sysItemsService.queryItems();
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        List<ItemsVO> itemsVOS = new ArrayList<>();
+        for(TSysItems tSysItems:tSysItemsList){
+            ItemsVO itemsVO = new ItemsVO();
+            itemsVO.setItemsId(tSysItems.getId());
+            itemsVO.setItems(tSysItems.getItems());
+            itemsVOS.add(itemsVO);
+        }
         modelMap.put("tsysRoleList", tsysRoleList);
-        modelMap.put("tSysItems", tSysItems);
+        modelMap.put("tSysItems", itemsVOS);
         return prefix + "/add";
     }
 
@@ -141,12 +151,13 @@ public class UserController extends BaseController {
         //查询所有角色
         List<RoleVo> roleVos = sysUserService.getUserIsRole(id);
         TsysUser user = sysUserService.selectByPrimaryKey(id);
-        String ite = user.getItems();
+        String ite = user.getItemId();
+        TSysItems tSysItem = sysItemsService.selectByPrimaryKey(ite);
         List<TSysItems> tSysItems = sysItemsService.queryItems();
         mmap.put("roleVos", roleVos);
         mmap.put("TsysUser", sysUserService.selectByPrimaryKey(id));
         mmap.put("tSysItems", tSysItems);
-        mmap.put("ite", ite);
+        mmap.put("ite", tSysItem.getItems());
         return prefix + "/edit";
     }
 
@@ -199,10 +210,20 @@ public class UserController extends BaseController {
     }
 
 
-    @PostMapping("/uploadFile")
+  /*  @PostMapping("/uploadFile")
     public String uploadFile(MultipartFile myFile, Model model) {
         ImportUserDTO importUserDTO = sysUserService.importValid(myFile);
         List<TsysUser> tsysUsers = sysUserService.getSuccessTSysItems(importUserDTO.gettSysUser());
+        sysUserService.saveSysUser(tsysUsers);
+        model.addAttribute("importUserDTO", importUserDTO);
+        return prefix+"/user_valid";
+    }
+*/
+
+    @PostMapping("/uploadFile")
+    public String uploadFile(MultipartFile myFile, Model model) {
+        ImportUserDTO importUserDTO = sysUserService.importValid(myFile);
+        List<UserVO> tsysUsers = sysUserService.getSuccessTSysItems(importUserDTO.gettSysUser());
         sysUserService.saveSysUser(tsysUsers);
         model.addAttribute("importUserDTO", importUserDTO);
         return prefix+"/user_valid";

@@ -8,7 +8,6 @@ import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.TsysUserMapper;
 import com.fc.aden.mapper.auto.process.*;
 
-import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.process.*;
 import com.fc.aden.service.AndroidService;
@@ -42,6 +41,11 @@ public class AndroidServiceImpl implements AndroidService {
     @Autowired
     private TSysTagMapper tSysTagMapper;
 
+    /**
+     * 登录接口
+     * @param number
+     * @return
+     */
     @Override
     public AjaxResult login(String number){
         int resultCount = tsysUserMapper.checkNumber(number);

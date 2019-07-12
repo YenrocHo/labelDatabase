@@ -9,6 +9,7 @@ import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.*;
 import com.fc.aden.service.*;
+import com.fc.aden.vo.UserVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;
@@ -29,15 +30,6 @@ import static com.fc.aden.common.domain.AjaxResult.AJAX_DATA;
 @RequestMapping("/androidController")
 public class LoginController  extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
-
-
-
-
-
-
-
-
-
 
     /*李源*/
     @Autowired
@@ -115,81 +107,16 @@ public class LoginController  extends BaseController {
      **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submittext")
     @ResponseBody
-
     public AjaxResult submit(@RequestBody String jsonString){
         return androidService.submit(jsonString);
     }
 
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
     @ResponseBody
-
     public AjaxResult submit2(@RequestBody String jsonString){
         System.out.println(jsonString);
         return null;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     ////////////////////////////////////////基础信息提交接口//////////////////////////
 
@@ -327,8 +254,8 @@ public class LoginController  extends BaseController {
     @ResponseBody
     public AjaxResult list(Tablepar tablepar, String username, String number, String name) {
         logger.info("登录员工信息接口---------------");
-        PageInfo<TsysUser> page = sysUserService.list(tablepar, username, number, name);
-        TableSplitResult<TsysUser> result = new TableSplitResult<TsysUser>(page.getPageNum(), page.getTotal(),page.getList());
+        PageInfo<UserVO> page = sysUserService.list(tablepar, username, number, name);
+        TableSplitResult<UserVO> result = new TableSplitResult<UserVO>(page.getPageNum(), page.getTotal(),page.getList());
         AjaxResult ajaxResult = AjaxResult.success("读取成功");
         ajaxResult.put(AJAX_DATA,result);
         return ajaxResult;

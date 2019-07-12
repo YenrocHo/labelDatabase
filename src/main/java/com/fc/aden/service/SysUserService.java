@@ -7,9 +7,10 @@ import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.model.auto.*;
 import com.fc.aden.model.custom.ImportItemsDTO;
 import com.fc.aden.model.custom.ImportUserDTO;
-import com.fc.aden.util.ExcelUtils;
+import com.fc.aden.util.*;
 import com.fc.aden.vo.ImportTSysItemsDTO;
 import com.fc.aden.vo.ImportTSysUserDTO;
+import com.fc.aden.vo.UserVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,6 @@ import com.fc.aden.mapper.auto.TsysUserMapper;
 import com.fc.aden.mapper.custom.RoleDao;
 import com.fc.aden.model.custom.RoleVo;
 import com.fc.aden.model.custom.Tablepar;
-import com.fc.aden.util.MD5Util;
-import com.fc.aden.util.SnowflakeIdWorker;
-import com.fc.aden.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,7 +66,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      *
      * @return
      */
-    public PageInfo<TsysUser> list(Tablepar tablepar, String username,String number,String name) {
+    public PageInfo<UserVO> list(Tablepar tablepar, String username, String number, String name) {
         TsysUserExample testExample = new TsysUserExample();
         testExample.setOrderByClause("id+0 desc");
         if (username != null && !"".equals(username)) {
@@ -84,7 +82,15 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
         List<TsysUser> list = tsysUserMapper.selectByExample(testExample);
-        PageInfo<TsysUser> pageInfo = new PageInfo<TsysUser>(list);
+        List<UserVO> userVOList = new ArrayList<>();
+        for(TsysUser tsysUser:list){
+            UserVO userVO = new UserVO();
+            BeanCopierEx.copy(tsysUser,userVO);
+            TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tsysUser.getItemId());
+            userVO.setItems(tSysItems.getItems());
+            userVOList.add(userVO);
+        }
+        PageInfo<UserVO> pageInfo = new PageInfo<UserVO>(userVOList);
         return  pageInfo;
     }
 
@@ -333,11 +339,18 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             }else{
                 importTSysUserDTO.setSex(sex);
             }
-            List<TSysItems> tSysItems = tSysItemsMapper.selectByItems(items);
+            List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(items);
+            String item = "";
+            for(TSysItems tSysItems:tSysItemsList){
+                item = tSysItems.getId();//获取项目点id
+                logger.info(items);
+                logger.info(item);
+            }
             if(StringUtils.isEmpty(items)){
                 errorMessage.append("项目点不为空；");
                 pass = false;
-            }else if(tSysItems != null && tSysItems.size() > 0){
+            }else if(tSysItemsList != null && tSysItemsList.size() > 0){
+                importTSysUserDTO.setItemId(item);//存入id
                 importTSysUserDTO.setItems(items);
             }else {
                 errorMessage.append("项目点不存在；");
@@ -354,28 +367,28 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             importTSysUserDTO.setPhoneNumber(phone);
             importTSysUserDTO.setMessages(errorMessage.toString());
             importTSysUserDTOs.add(importTSysUserDTO);
-
         }
         importUserDTO.setErrorNumber(errNumber);
         importUserDTO.setSuccessNumber(successNumber);
         importUserDTO.settSysUser(importTSysUserDTOs);
         return importUserDTO;
-
     }
 
     /**
      * 导入文件
-     * @param tsysUserList
+     * @param userVOList
      */
-    public void saveSysUser(List<TsysUser> tsysUserList){
-        for (TsysUser tsysUser : tsysUserList) {
+ public void saveSysUser(List<UserVO> userVOList){
+        for (UserVO userVO : userVOList) {
+            TsysUser tsysUser = new TsysUser();
+            BeanCopierEx.copy(userVO,tsysUser);
             tsysUserMapper.insertSelective(tsysUser);
         }
     }
 
-    public List<TsysUser> getSuccessTSysItems(List<ImportTSysUserDTO> importTSysUserDTOS){
+    public List<UserVO> getSuccessTSysItems(List<ImportTSysUserDTO> importTSysUserDTOS){
         if(importTSysUserDTOS ==null) return new ArrayList<>();
-        List<TsysUser> tsysUsers = new ArrayList<>();
+        List<UserVO> tsysUsers = new ArrayList<>();
         for (ImportTSysUserDTO importTSysUserDTO : importTSysUserDTOS) {
             if(importTSysUserDTO.getPass()){
                 tsysUsers.add(loadByDTO(importTSysUserDTO));
@@ -389,21 +402,23 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      * @param dto
      * @return
      */
-    private TsysUser loadByDTO(ImportTSysUserDTO dto){
-        TsysUser tsysUser = new TsysUser();
-        tsysUser.setId(dto.getId());
-        tsysUser.setNumber(dto.getNumber());
-        tsysUser.setUsername(dto.getUsername());
-        tsysUser.setItems(dto.getItems());
-        tsysUser.setName(dto.getName());
-        tsysUser.setEnglishName(dto.getEnglishName());
-        tsysUser.setCreateTime(dto.getCreateTime());
-        tsysUser.setUpdateTime(dto.getUpdateTime());
-        tsysUser.setSex(dto.getSex());
-        tsysUser.setPhoneNumber(dto.getPhoneNumber());
+    private UserVO loadByDTO(ImportTSysUserDTO dto){
+        UserVO userVO = new UserVO();
         //密码默认使用登录名称
         String pw = MD5Util.encode(dto.getUsername());
-        tsysUser.setPassword(pw);
-        return tsysUser;
+        userVO.setId(dto.getId());
+        userVO.setItemId(dto.getItemId());
+        userVO.setName(dto.getName());
+        userVO.setPhoneNumber(dto.getPhoneNumber());
+        userVO.setEnglishName(dto.getEnglishName());
+        userVO.setItems(dto.getItems());
+        userVO.setNumber(dto.getNumber());
+        userVO.setSex(dto.getSex());
+        userVO.setUsername(dto.getUsername());
+        userVO.setUpdateTime(dto.getUpdateTime());
+        userVO.setCreateTime(dto.getCreateTime());
+        userVO.setPassword(pw);
+        return userVO;
     }
+
 }

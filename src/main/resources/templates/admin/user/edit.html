@@ -70,9 +70,9 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label ">项目点：</label>
 								<div class="col-sm-8">
-									<select class="form-control" id="items" name="items" >
+									<select class="form-control" id="items" name="itemId" >
 										<option><h3 th:text="${ite}"></h3></option>
-										<option th:each="m : ${tSysItems}" th:value="${m.items}"><h3 th:text="${m.items}"></h3></option>
+										<option th:each="m : ${tSysItems}" th:value="${m.id}"><h3 th:text="${m.items}"></h3></option>
 									</select>
 								</div>
 							</div>
