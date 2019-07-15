@@ -1,6 +1,7 @@
 package com.fc.aden.util;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -40,5 +41,16 @@ public class DateUtils {
         Date date = new Date(time);
         DateFormat df = new SimpleDateFormat(pattern);
         return df.format(date);
+    }
+
+    /**
+     * 字符串转时间
+     *
+     * @return Date
+     * @author Created by zc on 2019/7/4
+     */
+    public static Date parseStrToDate(String dateStr, String pattern) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.parse(dateStr);
     }
 }
