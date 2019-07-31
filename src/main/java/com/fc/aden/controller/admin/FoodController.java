@@ -8,6 +8,7 @@ import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysFoodService2;
+import com.fc.aden.vo.FoodVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -66,8 +67,8 @@ public class FoodController extends BaseController {
     @RequiresPermissions("system:food:list")
     @ResponseBody
     public Object list(Tablepar tablepar, String foodName){
-        PageInfo<TSysFood> page=sysFoodService.sysFoodList(tablepar,foodName);
-        TableSplitResult<TSysFood> result=new TableSplitResult<TSysFood>(page.getPageNum(), page.getTotal(), page.getList());
+        PageInfo<FoodVO> page=sysFoodService.sysFoodList(tablepar,foodName);
+        TableSplitResult<FoodVO> result=new TableSplitResult<FoodVO>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
 

@@ -43,22 +43,22 @@ public class AndroidServiceImpl implements AndroidService {
 
     /**
      * 登录接口
-     * @param number
+     * @param username
      * @return
      */
     @Override
-    public AjaxResult login(String number){
-        int resultCount = tsysUserMapper.checkNumber(number);
+    public AjaxResult login(String username){
+        int resultCount = tsysUserMapper.checkUserName(username);
         if (resultCount == 0) {
             AjaxResult ajaxResult = AjaxResult.error(Const.CodeEnum.noExistent.getCode(),Const.CodeEnum.noExistent.getValue());
             return ajaxResult;
         }
-        TsysUser tsysUser = tsysUserMapper.selectLogin(number);
+        TsysUser tsysUser = tsysUserMapper.selectLogin(username);
         if(tsysUser == null){
             return AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
         }
         String statusToken = UUID.randomUUID().toString();
-        TokenCache.setKey(TokenCache.TOKRN_PREFIX + number, statusToken);
+        TokenCache.setKey(TokenCache.TOKRN_PREFIX + username, statusToken);
         tsysUser.setStatusToken(statusToken);
         AjaxResult ajaxResult = AjaxResult.success(Const.CodeEnum.success.getCode(),Const.CodeEnum.success.getValue());
         ajaxResult.put("data",tsysUser);
@@ -66,8 +66,8 @@ public class AndroidServiceImpl implements AndroidService {
     }
 
     @Override
-    public AjaxResult AllUserList(String statusToken,String number){
-        if (!token(number,statusToken)){
+    public AjaxResult AllUserList(String statusToken,String username){
+        if (!token(username,statusToken)){
             return AjaxResult.success(Const.CodeEnum.noToken.getCode(),Const.CodeEnum.noToken.getValue());
         }
         List<TsysUser> tsysUserList;
@@ -82,8 +82,8 @@ public class AndroidServiceImpl implements AndroidService {
     }
 
     @Override
-    public AjaxResult selectAllList(String itemId,String keyword,String statusToken,String number){
-        if (!token(number,statusToken)){
+    public AjaxResult selectAllList(String itemId,String keyword,String statusToken,String username){
+        if (!token(username,statusToken)){
             return AjaxResult.success(Const.CodeEnum.noToken.getCode(),Const.CodeEnum.noToken.getValue());
         }
         AjaxResult ajaxResult = new AjaxResult();
@@ -116,8 +116,8 @@ public class AndroidServiceImpl implements AndroidService {
 
     }
     @Override
-    public AjaxResult selectOneList(String itemId, String keyword,String statusToken,String type,String number){
-        if (!token(number,statusToken)){
+    public AjaxResult selectOneList(String itemId, String keyword,String statusToken,String type,String username){
+        if (!token(username,statusToken)){
             return AjaxResult.success(Const.CodeEnum.noToken.getCode(),Const.CodeEnum.noToken.getValue());
         }
         if (StringUtils.isNotBlank(keyword)) {

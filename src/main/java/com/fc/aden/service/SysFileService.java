@@ -33,8 +33,8 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 	
 	/**
 	 * 分页查询
-	 * @param pageNum
-	 * @param pageSize
+	 * @param tablepar
+	 * @param searchTxt
 	 * @return
 	 */
 	 public PageInfo<TsysFile> list(Tablepar tablepar,String searchTxt){

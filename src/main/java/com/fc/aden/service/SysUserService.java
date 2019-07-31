@@ -119,13 +119,14 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      */
     @Transactional
     public int insertUserRoles(TsysUser record, List<String> roles) {
-        String userid = SnowflakeIdWorker.getUUID();
+        String userid = SnowflakeIdWorker.getUUID().toString();
         record.setId(userid);
         record.setCreateTime(df.format(new Date()));
         record.setUpdateTime(df.format(new Date()));
+        record.setNumber(record.getUsername());
         if (StringUtils.isNotEmpty(roles)) {
             for (String rolesid : roles) {
-                TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID(), userid, rolesid);
+                TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userid, rolesid);
                 tSysRoleUserMapper.insertSelective(roleUser);
             }
         }
@@ -188,12 +189,12 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      * @param tsysUser
      * @return
      */
-    public int checkNumberUnique(TsysUser tsysUser) {
+ /*   public int checkNumberUnique(TsysUser tsysUser) {
         TsysUserExample example = new TsysUserExample();
         example.createCriteria().andNumberEqualTo(tsysUser.getNumber());
         List<TsysUser> list = tsysUserMapper.selectByExample(example);
         return list.size();
-    }
+    }*/
 
     /**
      * 获取所有权限 并且增加是否有权限字段
@@ -285,11 +286,9 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
         int errNumber = 0;
         int successNumber = 0;
         for (Map<String, String> row : dataList) {
-            String number = row.get(ImportUserDTO.NUMBER);
             String loginName = row.get(ImportUserDTO.LOGIN_NAME);
             String chineseName = row.get(ImportUserDTO.CHINESE_NAME);
             String englishName = row.get(ImportUserDTO.ENGLISH_NAME);
-            String sex = row.get(ImportUserDTO.SEX);
             String items = row.get(ImportUserDTO.ITEMS);
             String phone = row.get(ImportUserDTO.PHONE);
 
@@ -300,28 +299,15 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             importTSysUserDTO.setUpdateTime(df.format(new Date()));
             importTSysUserDTO.setId(UUID.randomUUID().toString());
 
-            List<TsysUser> users = tsysUserMapper.selectByNumber(number);
-             if(StringUtils.isEmpty(number)){
-                errorMessage.append("工号名称不能为空；");
-                pass = false;
-            }else if(projectNames.contains(number)){
-                errorMessage.append("工号名称不能重复；");
-                pass = false;
-            }else if(users!=null && users.size()>0) {
-                 errorMessage.append("工号名称不能重复；");
-                 pass = false;
-            }else {
-                importTSysUserDTO.setNumber(number);
-            }
             List<TsysUser> userlist = tsysUserMapper.selectByName(loginName);
             if(StringUtils.isEmpty(loginName)){
-                errorMessage.append("登录名称不能为空；");
+                errorMessage.append("工号名称不能为空；");
                 pass = false;
             }else if(projectNames.contains(loginName)){
-                errorMessage.append("登录名称不能重复；");
+                errorMessage.append("工号名称不能重复；");
                 pass = false;
             }else if(userlist!=null && userlist.size()>0) {
-                errorMessage.append("登录名称不能重复；");
+                errorMessage.append("工号名称不能重复；");
                 pass = false;
             }else {
                 importTSysUserDTO.setUsername(loginName);
@@ -333,18 +319,10 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             }else{
                 importTSysUserDTO.setName(chineseName);
             }
-            if(!sex.equals("男") && !sex.equals("女")){
-                errorMessage.append("性别不正确；");
-                pass = false;
-            }else{
-                importTSysUserDTO.setSex(sex);
-            }
             List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(items);
             String item = "";
             for(TSysItems tSysItems:tSysItemsList){
                 item = tSysItems.getId();//获取项目点id
-                logger.info(items);
-                logger.info(item);
             }
             if(StringUtils.isEmpty(items)){
                 errorMessage.append("项目点不为空；");
@@ -412,11 +390,10 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
         userVO.setPhoneNumber(dto.getPhoneNumber());
         userVO.setEnglishName(dto.getEnglishName());
         userVO.setItems(dto.getItems());
-        userVO.setNumber(dto.getNumber());
-        userVO.setSex(dto.getSex());
         userVO.setUsername(dto.getUsername());
         userVO.setUpdateTime(dto.getUpdateTime());
         userVO.setCreateTime(dto.getCreateTime());
+        userVO.setNumber(dto.getUsername());
         userVO.setPassword(pw);
         return userVO;
     }

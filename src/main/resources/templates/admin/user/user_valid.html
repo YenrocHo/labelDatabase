@@ -27,21 +27,17 @@
                 <td>状态</td>
                 <td>消息</td>
                 <td>工号</td>
-                <td>登录名</td>
                 <td>中文名</td>
                 <td>英文名</td>
-                <td>性别</td>
                 <td>项目点</td>
                 <td>手机号</td>
             </tr>
             <tr th:each="tsysUser : ${importUserDTO.tSysUser}" class="data">
                 <td th:text="${tsysUser.pass}"></td>
                 <td th:text="${tsysUser.messages}"></td>
-                <td th:text="${tsysUser.number}"></td>
                 <td th:text="${tsysUser.username}"></td>
                 <td th:text="${tsysUser.name}"></td>
                 <td th:text="${tsysUser.englishName}"></td>
-                <td th:text="${tsysUser.sex}"></td>
                 <td th:text="${tsysUser.items}"></td>
                 <td th:text="${tsysUser.phoneNumber}"></td>
             </tr>

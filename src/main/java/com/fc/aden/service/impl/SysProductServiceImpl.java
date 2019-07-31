@@ -1,17 +1,22 @@
 package com.fc.aden.service.impl;
 
 import com.fc.aden.common.support.Convert;
+import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.process.TSysProductMapper;
+import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.TSysProduct;
 import com.fc.aden.service.SysProductService;
+import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.SnowflakeIdWorker;
 import com.fc.aden.util.StringUtils;
+import com.fc.aden.vo.ProductVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 /**
@@ -35,6 +40,8 @@ import java.util.List;
 public class SysProductServiceImpl implements SysProductService {
     @Autowired
     private TSysProductMapper tSysProductMapper;
+    @Autowired
+    private TSysItemsMapper tSysItemsMapper;
     /**
      * @Author Noctis
      * @Description // 产品分页展示
@@ -43,7 +50,7 @@ public class SysProductServiceImpl implements SysProductService {
      * @return com.github.pagehelper.PageInfo<com.fc.aden.model.custom.process.TSysProduct>
      **/
     @Override
-    public PageInfo<TSysProduct> list(Tablepar tablepar,String searchTxt){
+    public PageInfo<ProductVO> list(Tablepar tablepar, String searchTxt){
         List<TSysProduct> tSysProductList = null;
         if (StringUtils.isEmpty(searchTxt)){
             if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
@@ -57,7 +64,15 @@ public class SysProductServiceImpl implements SysProductService {
             searchTxt = "%"+searchTxt+"%";
             tSysProductList = tSysProductMapper.selectListBycNameOreName(searchTxt);
         }
-        PageInfo<TSysProduct> pageInfo = new PageInfo<TSysProduct>(tSysProductList);
+        List<ProductVO> productVOList = new ArrayList<>();
+        for(TSysProduct tSysProduct:tSysProductList){
+            ProductVO productVO = new ProductVO();
+            TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tSysProduct.getItemId());
+            productVO.setItem(tSysItems.getItems());
+            BeanCopierEx.copy(tSysProduct, productVO);
+            productVOList.add(productVO);
+        }
+        PageInfo<ProductVO> pageInfo = new PageInfo<ProductVO>(productVOList);
         return pageInfo;
     }
 
@@ -82,7 +97,7 @@ public class SysProductServiceImpl implements SysProductService {
     @Override
     public int insertProduct(TSysProduct tSysProduct){
         TSysProduct product = new TSysProduct();
-        String productId = SnowflakeIdWorker.getUUID();
+        String productId = SnowflakeIdWorker.getUUID().toString();
         product.setId(productId);
         product.setProduct(tSysProduct.getProduct());
         product.setName(tSysProduct.getName());

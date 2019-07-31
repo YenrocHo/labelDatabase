@@ -2,11 +2,14 @@ package com.fc.aden.controller.admin;
 
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
+import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysStoreService;
+import com.fc.aden.vo.ItemsVO;
+import com.fc.aden.vo.StoreVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,6 +20,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
 
 * @Description:    java类作用描述
@@ -59,13 +65,27 @@ public class StoreController extends BaseController {
 
     @GetMapping("/add")
     public String add(ModelMap modelMap) {
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        List<ItemsVO> itemsVOS = new ArrayList<>();
+        for(TSysItems tSysItems:tSysItemsList){
+            ItemsVO itemsVO = new ItemsVO();
+            itemsVO.setItemsId(tSysItems.getId());
+            itemsVO.setItems(tSysItems.getItems());
+            itemsVOS.add(itemsVO);
+        }
+        modelMap.put("tSysItems", itemsVOS);
         return prefix + "/add";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") String id, HttpServletRequest request) {
+    public String edit(@PathVariable("id") String id, HttpServletRequest request,ModelMap mmap) {
         TSysStore tSysStore = sysStoreService.selectStoreById(id);
+        String ite = tSysStore.getItemId();
+        TSysItems tSysItem = sysItemsService.selectByPrimaryKey(ite);
+        List<TSysItems> tSysItems = sysItemsService.queryItems();
         request.getSession().setAttribute("tSysStore", tSysStore);
+        mmap.put("tSysItems", tSysItems);
+        mmap.put("ite", tSysItem.getItems());
         return prefix + "/edit";
     }
 
@@ -81,8 +101,8 @@ public class StoreController extends BaseController {
     @RequiresPermissions("system:store:list")
     @ResponseBody
     public Object list(Tablepar tablepar, String searchTxt) {
-        PageInfo<TSysStore> page = sysStoreService.list(tablepar, searchTxt);
-        TableSplitResult<TSysStore> result = new TableSplitResult<TSysStore>(page.getPageNum(), page.getTotal(), page.getList());
+        PageInfo<StoreVO> page = sysStoreService.list(tablepar, searchTxt);
+        TableSplitResult<StoreVO> result = new TableSplitResult<StoreVO>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
     /**

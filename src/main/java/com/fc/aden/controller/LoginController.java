@@ -53,8 +53,8 @@ public class LoginController  extends BaseController {
      **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/login")
     @ResponseBody
-    public AjaxResult login(String number, HttpServletRequest request) {
-        AjaxResult result = androidService.login(number);
+    public AjaxResult login(String username, HttpServletRequest request) {
+        AjaxResult result = androidService.login(username);
         System.out.println(result.get("data"));
         request.getSession().setAttribute("current_user",result.get("data"));
         return result;

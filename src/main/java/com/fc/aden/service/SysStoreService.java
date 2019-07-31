@@ -2,10 +2,11 @@ package com.fc.aden.service;
 
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.TSysStore;
+import com.fc.aden.vo.StoreVO;
 import com.github.pagehelper.PageInfo;
 
 public interface SysStoreService  {
-    public PageInfo<TSysStore> list(Tablepar tablepar, String searchTxt);
+    public PageInfo<StoreVO> list(Tablepar tablepar, String searchTxt);
 
     public int removeStore (String ids);
 

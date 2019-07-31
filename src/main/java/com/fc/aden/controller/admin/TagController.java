@@ -6,6 +6,7 @@ import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.TSysTag;
+import com.fc.aden.vo.TagVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -13,6 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Controller
@@ -31,10 +36,11 @@ public class TagController extends BaseController {
 
     /**
      * 文件列表
+     *
      * @param tablepar
      * @param stage
-     * @param variety
-     * @param productName
+     * @param food
+     * @param product
      * @param items
      * @param printUser
      * @return
@@ -42,9 +48,22 @@ public class TagController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:tag:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String stage,String variety,String productName,String items,String printUser) {
-        PageInfo<TSysTag> page = sysTagService.sysTagList(tablepar, stage,variety,productName,items,printUser);
-        TableSplitResult<TSysTag> result = new TableSplitResult<TSysTag>(page.getPageNum(), page.getTotal(), page.getList());
+    public Object list(Tablepar tablepar, String stage, String food, String product, String items, String printUser, String startTime, String endTime) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date start = null;
+        Date end = null;
+        try {
+            if (startTime != null && !"".equals(startTime)) {
+                start = dateFormat.parse(startTime);
+            }
+            if (endTime != null && !"".equals(endTime)) {
+                end = dateFormat.parse(endTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        PageInfo<TagVO> page = sysTagService.sysTagList(tablepar, stage, food, product, items, printUser, start, end);
+        TableSplitResult<TagVO> result = new TableSplitResult<TagVO>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
 
@@ -69,9 +88,10 @@ public class TagController extends BaseController {
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") String id, ModelMap modelMap) {
         TSysTag tag = sysTagService.selectByPrimaryKey(id);
-        modelMap.put("tag",tag);
-        return  prefix + "/details";
+        modelMap.put("tag", tag);
+        return prefix + "/details";
     }
+
     @GetMapping("/details")
     @RequiresPermissions("system:tag:details")
     public String upload(TSysTag tSysTag) {

@@ -127,7 +127,7 @@ public class UserController extends BaseController {
      * @param tsysUser
      * @return
      */
-    @PostMapping("checkNumberUnique")
+/*    @PostMapping("checkNumberUnique")
     @ResponseBody
     public int checkNumberUnique(TsysUser tsysUser) {
         int b = sysUserService.checkNumberUnique(tsysUser);
@@ -136,7 +136,7 @@ public class UserController extends BaseController {
         } else {
             return 0;
         }
-    }
+    }*/
 
 
     /**
@@ -208,17 +208,6 @@ public class UserController extends BaseController {
     public String upload(TSysItems tSysItems) {
         return prefix + "/upload";
     }
-
-
-  /*  @PostMapping("/uploadFile")
-    public String uploadFile(MultipartFile myFile, Model model) {
-        ImportUserDTO importUserDTO = sysUserService.importValid(myFile);
-        List<TsysUser> tsysUsers = sysUserService.getSuccessTSysItems(importUserDTO.gettSysUser());
-        sysUserService.saveSysUser(tsysUsers);
-        model.addAttribute("importUserDTO", importUserDTO);
-        return prefix+"/user_valid";
-    }
-*/
 
     @PostMapping("/uploadFile")
     public String uploadFile(MultipartFile myFile, Model model) {

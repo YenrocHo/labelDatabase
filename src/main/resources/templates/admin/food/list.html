@@ -81,10 +81,6 @@
                                 <button onclick="$.operate.add()" type="button" class="btn btn-primary">
                                     <span class="entypo-plus-squared"></span>&nbsp;&nbsp;添加
                                 </button>
-                                <button onclick="$.operate.batRemove()" type="button" class="btn btn-info">
-                                    <span class="entypo-trash"></span>&nbsp;&nbsp;删除
-                                </button>
-
                             </div>
                             <!-- 工具条 end-->
                             <table id="dataTable" class="table-striped footable-res footable metro-blue" data-page-size="6">
@@ -142,17 +138,14 @@
         modalName: "图片",
         search: false,
         dataColumns: [
-            {
+           /* {
                 checkbox: true
-            }, {
-                field: 'id',
-                title: '编号'
-            },{
-                field: 'itemId',
+            },*/{
+                field: 'item',
                 title: '项目点'
             }
              ,{
-                field: 'foodName',
+                field: 'food',
                 title: '食品名称'
             }, {
                 field: 'name',

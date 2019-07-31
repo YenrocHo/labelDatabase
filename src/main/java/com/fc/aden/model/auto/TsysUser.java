@@ -7,15 +7,16 @@ import java.io.Serializable;
 public class TsysUser implements Serializable {
     private String id;
 
+    /**
+     * 员工工号
+     */
     private String username;
     /**
      * 员工姓名
      */
     private String name;
     private String password;
-    /**
-     * 员工工号
-     */
+
     private String number;
     /**
      * 英文名
@@ -30,13 +31,11 @@ public class TsysUser implements Serializable {
      */
     private String phoneNumber;
     /**
-     * 性别
-     */
-    private String sex;
-    /**
      * 更新时间
      */
     private String statusToken;
+
+    private int admin;//‘0’ admin所有管理员权限  ‘1’  项目点管理员权限
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String updateTime;
     /**
@@ -46,7 +45,7 @@ public class TsysUser implements Serializable {
     private String createTime;
     private static final long serialVersionUID = 1L;
 
-    public TsysUser(String id, String username, String name, String password, String number, String englishName, String itemId, String phoneNumber, String sex, String updateTime, String createTime) {
+    public TsysUser(String id, String username, String name, String password, String number, String englishName, String itemId, String phoneNumber,  String updateTime, String createTime,int admin) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -55,9 +54,9 @@ public class TsysUser implements Serializable {
         this.englishName = englishName;
         this.itemId = itemId;
         this.phoneNumber = phoneNumber;
-        this.sex = sex;
         this.updateTime = updateTime;
         this.createTime = createTime;
+        this.admin = admin;
     }
 
     public TsysUser() {
@@ -127,14 +126,6 @@ public class TsysUser implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
     public String getUpdateTime() {
         return updateTime;
     }
@@ -163,6 +154,14 @@ public class TsysUser implements Serializable {
         this.statusToken = token;
     }
 
+    public int getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
+
     @Override
     public String toString() {
         return "TsysUser{" +
@@ -174,10 +173,10 @@ public class TsysUser implements Serializable {
                 ", englishName='" + englishName + '\'' +
                 ", itemId='" + itemId + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", sex='" + sex + '\'' +
                 ", statusToken='" + statusToken + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 ", createTime='" + createTime + '\'' +
+                ", admin='" + admin + '\'' +
                 '}';
     }
 }

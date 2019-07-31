@@ -3,7 +3,7 @@ package com.fc.aden.model.custom.process;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TSysTag implements Serializable {
+public  class TSysTag implements Serializable {
     private String id;
 
     private String labelId;

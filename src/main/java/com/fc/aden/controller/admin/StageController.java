@@ -7,6 +7,7 @@ import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.service.SysStageService2;
+import com.fc.aden.vo.StageVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -45,8 +46,8 @@ public class StageController extends BaseController {
     @RequiresPermissions("system:stage:list")
     @ResponseBody
     public Object list(Tablepar tablepar, String stage) {
-        PageInfo<TSysStage> page = sysStageService.sysStageList(tablepar, stage);
-        TableSplitResult<TSysStage> result = new TableSplitResult<TSysStage>(page.getPageNum(), page.getTotal(), page.getList());
+        PageInfo<StageVO> page = sysStageService.sysStageList(tablepar, stage);
+        TableSplitResult<StageVO> result = new TableSplitResult<StageVO>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
 

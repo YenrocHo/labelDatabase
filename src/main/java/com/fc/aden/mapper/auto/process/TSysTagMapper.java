@@ -2,6 +2,8 @@ package com.fc.aden.mapper.auto.process;
 
 import com.fc.aden.model.custom.process.TSysTag;
 import com.fc.aden.model.custom.process.TSysTagExample;
+
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,5 +30,7 @@ public interface TSysTagMapper {
 
     int updateByPrimaryKey(TSysTag record);
 
-    int selectCountByOriginalId(String original_Id);
+    List<TSysTag> selectList();
+
+    List<TSysTag> selectByTag(String stage, String food, String product, String items, String printUser, Date start, Date end);
 }

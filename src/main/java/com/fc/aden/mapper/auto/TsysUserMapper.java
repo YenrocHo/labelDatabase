@@ -29,10 +29,10 @@ public interface TsysUserMapper {
     int updateByPrimaryKey(TsysUser record);
 
     List<TsysUser> selectByName(String name);
-    List<TsysUser> selectByNumber(String number);
+
     List<TsysUser> selectAllUser();
 
-    int checkNumber(String number);
+    int checkUserName(String username);
 
     TsysUser selectLogin(String number);
 }

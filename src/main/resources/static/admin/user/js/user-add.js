@@ -72,6 +72,7 @@ function add() {
 			$.modal.alertError("系统错误");
 		},
 		success : function(data) {
+
 			$.operate.saveSuccess(data);
 		}
 	});

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class TSysStore implements Serializable {
+
     private String id;
 
     private String itemId;
@@ -16,6 +17,9 @@ public class TSysStore implements Serializable {
 
     private String temperature;
 
+    /**
+     * 0 冻结   1  正常
+     */
     private Integer status;
 
     private Date creatTime;

@@ -7,6 +7,7 @@ import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.TSysProduct;
 import com.fc.aden.service.SysProductService;
+import com.fc.aden.vo.ProductVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -84,8 +85,8 @@ public class ProductController extends BaseController {
     @RequiresPermissions("system:product:list")
     @ResponseBody
     public Object list(Tablepar tablepar,String searchTxt){
-        PageInfo<TSysProduct> page = sysProductService.list(tablepar,searchTxt) ;
-        TableSplitResult<TSysProduct> result = new TableSplitResult<TSysProduct>(page.getPageNum(),page.getTotal(),page.getList());
+        PageInfo<ProductVO> page = sysProductService.list(tablepar,searchTxt) ;
+        TableSplitResult<ProductVO> result = new TableSplitResult<ProductVO>(page.getPageNum(),page.getTotal(),page.getList());
         return result;
     }
     /**

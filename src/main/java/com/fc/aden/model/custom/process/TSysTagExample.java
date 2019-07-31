@@ -183,10 +183,21 @@ public class TSysTagExample {
             addCriterion("product_name like", value, "productName");
             return (Criteria) this;
         }
+        public Criteria andStartLike(String value) {
+            addCriterion(" print_Time >= ", value, "start");
+            return (Criteria) this;
+        }
+        public Criteria andEndLike(String value) {
+            addCriterion(" print_Time <= ", value, "end");
+            return (Criteria) this;
+        }
+
         public Criteria andStageLike(String value) {
             addCriterion("stage like", value, "stage");
             return (Criteria) this;
         }
+
+
         public Criteria andVarietyLike(String value) {
             addCriterion("variety like", value, "variety");
             return (Criteria) this;

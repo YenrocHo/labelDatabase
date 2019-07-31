@@ -11,7 +11,7 @@ fuce:
   profile: E:/Aden_label/profile/
 #tomcat config
 server :
-  port : 8080
+  port : 8090
   ##项目名字配置
   #servlet : 
   #  context-path : /demo

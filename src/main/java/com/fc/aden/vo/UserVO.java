@@ -31,10 +31,6 @@ public class UserVO{
      */
     private String phoneNumber;
     /**
-     * 性别
-     */
-    private String sex;
-    /**
      * 更新时间
      */
     private String statusToken;
@@ -56,7 +52,6 @@ public class UserVO{
         this.items = items;
         this.itemId = itemId;
         this.phoneNumber = phoneNumber;
-        this.sex = sex;
         this.updateTime = updateTime;
         this.createTime = createTime;
     }
@@ -136,14 +131,6 @@ public class UserVO{
         this.phoneNumber = phoneNumber;
     }
 
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
     public String getUpdateTime() {
         return updateTime;
     }
@@ -184,7 +171,6 @@ public class UserVO{
                 ", items='" + items + '\'' +
                 ", itemId='" + itemId + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", sex='" + sex + '\'' +
                 ", statusToken='" + statusToken + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 ", createTime='" + createTime + '\'' +

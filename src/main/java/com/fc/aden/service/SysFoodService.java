@@ -1,10 +1,13 @@
 package com.fc.aden.service;
 
 import com.fc.aden.common.conf.V2Config;
+import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.TsysDatasMapper;
 import com.fc.aden.mapper.auto.process.TSysFoodPictureMapper;
+import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysDatas;
 import com.fc.aden.model.custom.process.TSysFoodPicture;
+import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.FileUtils;
 import com.fc.aden.util.StringUtils;
 
@@ -16,12 +19,14 @@ import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysFoodExample;
 import com.fc.aden.util.SnowflakeIdWorker;
+import com.fc.aden.vo.FoodVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -60,7 +65,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
     @Override
     public int insertSelective(TSysFood tSysFood){
         //添加主键id
-        String id= SnowflakeIdWorker.getUUID();
+        String id= SnowflakeIdWorker.getUUID().toString();
         tSysFood.setId(id);
         tSysFood.setCreateTime(new Date());//保存创建时间
         tSysFood.setUpdateTime(new Date());//保存更新时间
@@ -140,7 +145,8 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
     public int deleteByExample(TSysFoodExample tSysFoodExample){
         return tSysFoodMapper.deleteByExample(tSysFoodExample);
     }
-
+    @Autowired
+    private TSysItemsMapper tSysItemsMapper;
 
     /**
      * 标签管理
@@ -149,7 +155,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      * @param
      * @return
      */
-    public PageInfo<TSysFood> sysFoodList(Tablepar tablepar, String foodName){
+    public PageInfo<FoodVO> sysFoodList(Tablepar tablepar, String foodName){
         TSysFoodExample tSysFoodExample = new TSysFoodExample();
         tSysFoodExample.setOrderByClause("id+0 desc");
         if(foodName!=null&&!"".equals(foodName)){
@@ -159,7 +165,15 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
         List<TSysFood> list= selectByExample(tSysFoodExample);
-        PageInfo<TSysFood> pageInfo = new PageInfo<TSysFood>(list);
+        List<FoodVO> foodVOList = new ArrayList<>();
+        for(TSysFood tSysFood:list){
+            FoodVO foodVO = new FoodVO();
+            TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tSysFood.getItemId());
+            foodVO.setItem(tSysItems.getItems());
+            BeanCopierEx.copy(tSysFood, foodVO);
+            foodVOList.add(foodVO);
+        }
+        PageInfo<FoodVO> pageInfo = new PageInfo<FoodVO>(foodVOList);
         return  pageInfo;
     }
 

@@ -30,7 +30,7 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
     }
 
     /**
-     * 新增制作阶段
+     * 新增项目点
      * @param record
      * @return
      */
@@ -75,7 +75,7 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
     }
 
     /**
-     * 阶段管理列表
+     * 项目点管理列表
      * @param tablepar
      * @param items
      * @return
