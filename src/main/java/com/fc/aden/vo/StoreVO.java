@@ -7,6 +7,7 @@ public class StoreVO {
     private String id;
     private String itemId;
     private String item;
+    private String itemsCode;
 
     private String store;
 
@@ -100,5 +101,13 @@ public class StoreVO {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getItemsCode() {
+        return itemsCode;
+    }
+
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
     }
 }

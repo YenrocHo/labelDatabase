@@ -2,6 +2,7 @@ package com.fc.aden.controller.admin;
 
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
+import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
@@ -17,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * 制作阶段
@@ -30,7 +33,9 @@ public class StageController extends BaseController {
 
     @GetMapping("/view")
     @RequiresPermissions("system:stage:view")
-    public String view(Model model) {
+    public String view(Model model,ModelMap mp) {
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        mp.put("tSysItems", tSysItemsList);
         setTitle(model, new TitleVo("制作阶段", "阶段列表", false, "欢迎进入图片页面", false, false));
         return prefix + "/list";
     }
@@ -45,14 +50,17 @@ public class StageController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:stage:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String stage) {
-        PageInfo<StageVO> page = sysStageService.sysStageList(tablepar, stage);
-        TableSplitResult<StageVO> result = new TableSplitResult<StageVO>(page.getPageNum(), page.getTotal(), page.getList());
+    public Object list(Tablepar tablepar, String stage,String itemsCode) {
+        PageInfo<TSysStage> page = sysStageService.sysStageList(tablepar, stage,itemsCode);
+        TableSplitResult<TSysStage> result = new TableSplitResult<TSysStage>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
 
     @GetMapping("/add")
-    public String add() {
+    public String add(ModelMap modelMap) {
+        //获取所有项目点编号
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        modelMap.put("tSysItems", tSysItemsList);
         return prefix + "/add";
     }
 
@@ -95,12 +103,16 @@ public class StageController extends BaseController {
     {
         //查询所有角色
        TSysStage tSysStageList = sysStageService.selectByPrimaryKey(id);
+        String ite = tSysStageList.getItemsCode();//获取当前用户的项目点编号
+        List<TSysItems> tSysItems = sysItemsService.queryItems();//获取所有编号
+        mmap.put("tSysItems", tSysItems);
+        mmap.put("ite",ite);//项目点编号
         mmap.put("tSysStageList",tSysStageList);
         return prefix + "/edit";
     }
 
     /**
-     * 修改保存用户
+     * 修改保存
      */
     @RequiresPermissions("system:stage:edit")
     @PostMapping("/edit")
@@ -111,7 +123,7 @@ public class StageController extends BaseController {
     }
 
     /**
-     * 删除用户
+     * 删除
      * @return
      */
     @PostMapping("/remove")

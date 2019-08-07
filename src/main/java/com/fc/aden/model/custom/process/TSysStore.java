@@ -7,7 +7,7 @@ public class TSysStore implements Serializable {
 
     private String id;
 
-    private String itemId;
+    private String itemsCode;
 
     private String store;
 
@@ -26,9 +26,9 @@ public class TSysStore implements Serializable {
 
     private Date updateTime;
 
-    public TSysStore(String id, String itemId, String store, String name, String englishName, String temperature, Integer status, Date creatTime, Date updateTime) {
+    public TSysStore(String id, String itemsCode, String store, String name, String englishName, String temperature, Integer status, Date creatTime, Date updateTime) {
         this.id = id;
-        this.itemId = itemId;
+        this.itemsCode = itemsCode;
         this.store = store;
         this.name = name;
         this.englishName = englishName;
@@ -49,12 +49,12 @@ public class TSysStore implements Serializable {
         this.id = id;
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getItemsCode() {
+        return itemsCode;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
     }
 
     public String getStore() {
@@ -117,7 +117,7 @@ public class TSysStore implements Serializable {
     public String toString() {
         return "TSysStore{" +
                 "id='" + id + '\'' +
-                ", itemId='" + itemId + '\'' +
+                ", itemsCode='" + itemsCode + '\'' +
                 ", store='" + store + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +

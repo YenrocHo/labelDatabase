@@ -3,7 +3,7 @@
 <mapper namespace="com.fc.aden.mapper.auto.process.TSysStageMapper">
     <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysStage">
         <id column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="item_id" property="itemId" jdbcType="VARCHAR"/>
+        <result column="items_code" property="itemsCode" jdbcType="VARCHAR"/>
         <result column="stage" property="stage" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="english_name" property="englishName" jdbcType="VARCHAR"/>
@@ -12,7 +12,7 @@
         <result column="update_Time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id,item_id, stage, name, english_name, status,create_Time, update_Time
+    id,items_code, stage, name, english_name, status,create_Time, update_Time
     </sql>
     <sql id="Example_Where_Clause">
         <where>
@@ -76,10 +76,10 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
     <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysStage">
-    insert into t_sys_stage (id,item_id, stage, name,
+    insert into t_sys_stage (id,items_code, stage, name,
         english_name, status,create_Time, update_Time
       )
-    values (#{id,jdbcType=VARCHAR},#{itemId,jdbcType=VARCHAR} ,#{stage,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR} ,#{stage,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{englishName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},now(), now()
       )
   </insert>
@@ -89,8 +89,8 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="itemId != null">
-                item_id,
+            <if test="itemsCode != null">
+                items_code,
             </if>
             <if test="stage != null">
                 stage,
@@ -115,8 +115,8 @@
             <if test="id != null">
                 #{id,jdbcType=VARCHAR},
             </if>
-            <if test="itemId != null">
-                #{itemId,jdbcType=VARCHAR},
+            <if test="itemsCode != null">
+                #{itemsCode,jdbcType=VARCHAR},
             </if>
             <if test="stage != null">
                 #{stage,jdbcType=VARCHAR},
@@ -144,8 +144,8 @@
             <if test="id != null">
                 id = #{id,jdbcType=VARCHAR},
             </if>
-            <if test="itemId != null">
-                item_id = #{itemId,jdbcType=VARCHAR},
+            <if test="itemsCode != null">
+                items_code = #{itemsCode,jdbcType=VARCHAR},
             </if>
             <if test="stage != null">
                 stage = #{stage,jdbcType=VARCHAR},
@@ -172,7 +172,7 @@
     update t_sys_stage
     set
       id = #{id,jdbcType=VARCHAR},
-      item_id = #{itemId,jdbcType=VARCHAR},
+      items_code = #{itemsCode,jdbcType=VARCHAR},
       stage = #{stage,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       english_name = #{englishName,jdbcType=VARCHAR},
@@ -190,8 +190,8 @@
             <if test="keyword != null">
                 stage like #{keyword,jdbcType=VARCHAR}
             </if>
-            <if test="itemId != null">
-                and item_id like #{itemId,jdbcType=VARCHAR}
+            <if test="itemsCode != null">
+                and items_code like #{itemsCode,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

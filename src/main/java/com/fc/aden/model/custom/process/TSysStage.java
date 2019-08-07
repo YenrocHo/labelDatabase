@@ -5,7 +5,7 @@ import java.util.Date;
 public class TSysStage {
     private String id;
 
-    private String itemId;
+    private String itemsCode;
 
     private String stage;
 
@@ -19,9 +19,9 @@ public class TSysStage {
 
     private Date updateTime;
 
-    public TSysStage(String id, String itemId, String stage, String name, String englishName, Integer status, Date createTime, Date updateTime) {
+    public TSysStage(String id, String itemsCode, String stage, String name, String englishName, Integer status, Date createTime, Date updateTime) {
         this.id = id;
-        this.itemId = itemId;
+        this.itemsCode = itemsCode;
         this.stage = stage;
         this.name = name;
         this.englishName = englishName;
@@ -41,12 +41,12 @@ public class TSysStage {
         this.id = id;
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getItemsCode() {
+        return itemsCode;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
     }
 
     public String getStage() {
@@ -101,7 +101,7 @@ public class TSysStage {
     public String toString() {
         return "TSysStage{" +
                 "id='" + id + '\'' +
-                ", itemId='" + itemId + '\'' +
+                ", itemsCode='" + itemsCode + '\'' +
                 ", stage='" + stage + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +

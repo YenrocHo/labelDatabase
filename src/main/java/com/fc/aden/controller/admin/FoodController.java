@@ -59,8 +59,9 @@ public class FoodController extends BaseController {
 
     @GetMapping("/view")
     @RequiresPermissions("system:food:view")
-    public String view(Model model)
-    {
+    public String view(Model model,ModelMap mp) {
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        mp.put("tSysItems", tSysItemsList);
         setTitle(model, new TitleVo("食品管理", "食品列表", false,"欢迎进入图片页面", false, false));
         return prefix + "/list";
     }
@@ -75,8 +76,8 @@ public class FoodController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:food:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String foodName){
-        PageInfo<FoodVO> page=sysFoodService.sysFoodList(tablepar,foodName);
+    public Object list(Tablepar tablepar, String foodName,String itemsCode){
+        PageInfo<FoodVO> page=sysFoodService.sysFoodList(tablepar,foodName,itemsCode);
         TableSplitResult<FoodVO> result=new TableSplitResult<FoodVO>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }

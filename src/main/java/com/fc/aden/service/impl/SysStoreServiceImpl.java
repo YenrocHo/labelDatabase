@@ -38,9 +38,9 @@ public class SysStoreServiceImpl implements SysStoreService {
      * @Param [tablepar, searchTxt]
      **/
     @Override
-    public PageInfo<StoreVO> list(Tablepar tablepar, String searchTxt) {
+    public PageInfo<TSysStore> list(Tablepar tablepar, String searchTxt,String itemsCode) {
         List<TSysStore> tSysStores = null;
-        if (StringUtils.isEmpty(searchTxt)) {
+        if (StringUtils.isEmpty(searchTxt)&& StringUtils.isEmpty(itemsCode)) {
             if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
                 PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
@@ -49,18 +49,23 @@ public class SysStoreServiceImpl implements SysStoreService {
             if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
                 PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
-            searchTxt = "%" + searchTxt + "%";
-            tSysStores = tSysStoreMapper.selectListBycQuery(searchTxt);
+            if (searchTxt != null || !searchTxt.equals("")){
+                searchTxt = "%"+searchTxt+"%";
+            }
+            if (itemsCode != null || !itemsCode.equals("")){
+                itemsCode = "%"+itemsCode+"%";
+            }
+            tSysStores = tSysStoreMapper.selectListBycQuery(searchTxt,itemsCode);
         }
-        List<StoreVO> storeVOS = new ArrayList<>();
+    /*    List<StoreVO> storeVOS = new ArrayList<>();
         for(TSysStore tSysStore:tSysStores){
             StoreVO storeVO = new StoreVO();
             TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tSysStore.getItemId());
             storeVO.setItem(tSysItems.getItemsCode());
             BeanCopierEx.copy(tSysStore, storeVO);
             storeVOS.add(storeVO);
-        }
-        PageInfo<StoreVO> pageInfo = new PageInfo<StoreVO>(storeVOS);
+        }*/
+        PageInfo<TSysStore> pageInfo = new PageInfo<TSysStore>(tSysStores);
         return pageInfo;
     }
 

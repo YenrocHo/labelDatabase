@@ -53,6 +53,14 @@
                                         <label for="exampleInputEmail2" class="sr-only">阶段</label>
                                         <input type="text" name="stage" placeholder="阶段" class="form-control">
                                     </div>
+                                    <div class="form-group">
+                                        <label>项目点编号</label>
+<!--                                        <input type="text" name="itemsCode" placeholder="项目点编号" class="form-control">-->
+                                        <select class="form-control"  name="itemsCode" >
+                                            <option></option>
+                                            <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
+                                        </select>
+                                    </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
                                             class="fa fa-search"></i>&nbsp;搜索
                                     </button>
@@ -144,14 +152,11 @@
         search: false,
         dataColumns: [
             {
-                field: 'item',
+                field: 'itemsCode',
                 title: '项目点'
             }, {
                 field: 'stage',
                 title: '阶段'
-            }, {
-                field: 'name',
-                title: '中文名'
             }, {
                 field: 'englishName',
                 title: '英文名'

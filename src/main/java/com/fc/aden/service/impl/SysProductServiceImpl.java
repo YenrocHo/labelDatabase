@@ -81,18 +81,13 @@ public class SysProductServiceImpl implements SysProductService {
                 itemsCode = "%"+itemsCode+"%";
             }
             tSysProductList = tSysProductMapper.selectListBycNameOreName(searchTxt,itemsCode);
-            System.out.println(tSysProductList.size());
         }
         List<ProductVO> productVOList = new ArrayList<>();
         for(TSysProduct tSysProduct:tSysProductList){
             ProductVO productVO = new ProductVO();
             TSysFood tSysFood = tSysFoodMapper.selectByPrimaryKey(tSysProduct.getFoodName());
-            productVO.setId(tSysProduct.getId());
+            BeanCopierEx.copy(tSysProduct,productVO);
             productVO.setFoodName(tSysFood.getFood());
-            productVO.setItemsCode(tSysProduct.getItemsCode());
-            productVO.setEnglishName(tSysProduct.getEnglishName());
-            productVO.setShelfLife(tSysProduct.getShelfLife());
-            productVO.setProduct(tSysProduct.getProduct());
             productVOList.add(productVO);
         }
         PageInfo<ProductVO> pageInfo = new PageInfo<ProductVO>(productVOList);

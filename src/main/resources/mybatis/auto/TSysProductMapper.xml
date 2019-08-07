@@ -94,7 +94,7 @@
       shelf_life = #{shelfLife,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectList" resultMap="BaseResultMap">
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.fc.aden.vo.ProductVO">
     select
     <include refid="Base_Column_List"/>
     from t_sys_product
@@ -113,7 +113,7 @@
       #{item}
     </foreach>
   </delete>
-  <select id="selectListBycNameOreName"  parameterType="com.fc.aden.model.custom.process.TSysProduct" resultMap="BaseResultMap">
+  <select id="selectListBycNameOreName" parameterType="com.fc.aden.vo.ProductVO" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_sys_product

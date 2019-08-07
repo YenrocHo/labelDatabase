@@ -45,6 +45,7 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
         //添加主键id
         String id= SnowflakeIdWorker.getUUID().toString();
         record.setId(id);
+        record.setName(record.getStage());
         record.setCreateTime(new Date());//保存创建时间
         record.setUpdateTime(new Date());//保存更新时间
         return tSysStageMapper.insertSelective(record);
@@ -86,25 +87,20 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
      * @param stage
      * @return
      */
-    public PageInfo<StageVO> sysStageList(Tablepar tablepar, String stage){
+    public PageInfo<TSysStage> sysStageList(Tablepar tablepar, String stage,String itemsCode){
         TSysStageExample tSysStageExample = new TSysStageExample();
         tSysStageExample.setOrderByClause("id+0 desc");
         if(stage!=null&&!"".equals(stage)){
             tSysStageExample.createCriteria().andStageLike("%"+stage+"%");
         }
+        if(itemsCode!=null&&!"".equals(itemsCode)){
+            tSysStageExample.createCriteria().andItemsLike("%"+itemsCode+"%");
+        }
         if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
         List<TSysStage> list= selectByExample(tSysStageExample);
-        List<StageVO> stageVOS = new ArrayList<>();
-        for(TSysStage tSysStage:list){
-            StageVO stageVO = new StageVO();
-            TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tSysStage.getItemId());
-            stageVO.setItem(tSysItems.getItemsCode());
-            BeanCopierEx.copy(tSysStage, stageVO);
-            stageVOS.add(stageVO);
-        }
-        PageInfo<StageVO> pageInfo = new PageInfo<StageVO>(stageVOS);
+        PageInfo<TSysStage> pageInfo = new PageInfo<TSysStage>(list);
         return  pageInfo;
     }
 

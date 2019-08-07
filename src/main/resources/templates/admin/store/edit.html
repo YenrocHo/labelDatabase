@@ -26,18 +26,7 @@
                 <div class="body-nest" id="element">
                     <div class="panel-body">
                         <form class="form-horizontal m" id="form-edit" th:object="${session.tSysStore}">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label ">产品编号：</label>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" id="number" disabled="disabled" th:value="*{id}" name="number"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label ">条件：</label>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" id="store"  th:value="*{store}" name="store"/>
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label ">条件中文名：</label>
                                 <div class="col-sm-8">
@@ -50,18 +39,18 @@
                                     <input class="form-control" type="text" id="englishName" name="englishName" th:value="*{englishName}"/>
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label class="col-sm-3 control-label ">温度：</label>
+                                <label class="col-sm-3 control-label ">存储条件：</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" type="text" id="temperature" name="temperature" th:value="*{temperature}"/>
+                                    <input class="form-control" type="text" id="store"  th:value="*{store}" name="store"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label ">项目点：</label>
+                                <label class="col-sm-3 control-label ">项目点编号：</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" id="items" name="itemId" >
-                                        <option><h3 th:text="${ite}"></h3></option>
-                                        <option th:each="m : ${tSysItems}" th:value="${m.id}"><h3 th:text="${m.items}"></h3></option>
+                                    <select class="form-control" th:value="*{itemsCode}"  name="itemsCode" >
+                                        <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
                                     </select>
                                 </div>
                             </div>

@@ -6,7 +6,7 @@ import com.fc.aden.vo.StoreVO;
 import com.github.pagehelper.PageInfo;
 
 public interface SysStoreService  {
-    public PageInfo<StoreVO> list(Tablepar tablepar, String searchTxt);
+    public PageInfo<TSysStore> list(Tablepar tablepar, String searchTxt,String itemsCode);
 
     public int removeStore (String ids);
 

@@ -162,11 +162,14 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      * @param
      * @return
      */
-    public PageInfo<FoodVO> sysFoodList(Tablepar tablepar, String foodName) {
+    public PageInfo<FoodVO> sysFoodList(Tablepar tablepar, String foodName,String itemsCode) {
         TSysFoodExample tSysFoodExample = new TSysFoodExample();
         tSysFoodExample.setOrderByClause("id+0 desc");
         if (foodName != null && !"".equals(foodName)) {
             tSysFoodExample.createCriteria().andfoodNameLike("%" + foodName + "%");
+        }
+        if (itemsCode != null && !"".equals(itemsCode)) {
+            tSysFoodExample.createCriteria().andItemLike("%" + itemsCode + "%");
         }
         if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
@@ -176,7 +179,6 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         for (TSysFood tSysFood : list) {
             FoodVO foodVO = new FoodVO();
             TSysItems tSysItems = tSysItemsMapper.selectByItemCode(tSysFood.getItemsCode());
-            foodVO.setId(tSysFood.getId());
             foodVO.setItemsCode(tSysItems.getItemsCode());
             BeanCopierEx.copy(tSysFood, foodVO);
             foodVOList.add(foodVO);

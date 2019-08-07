@@ -53,6 +53,13 @@
                                         <label for="exampleInputEmail2" class="sr-only">食品名称</label>
                                         <input type="text" name="foodName" placeholder="食品名称"class="form-control">
                                     </div>
+                                    <div class="form-group">
+                                        <label >项目点编号</label>
+                                        <select class="form-control"  name="itemsCode" >
+                                            <option></option>
+                                            <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
+                                        </select>
+                                    </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
                                 </form>
                             </div>

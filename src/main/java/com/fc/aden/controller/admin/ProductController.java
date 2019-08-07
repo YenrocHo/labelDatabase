@@ -62,7 +62,9 @@ public class ProductController extends BaseController {
      **/
     @GetMapping("view")
     @RequiresPermissions("system:product:view")
-    public String view(Model model) {
+    public String view(Model model,ModelMap mp) {
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        mp.put("tSysItems", tSysItemsList);
         setTitle(model, new TitleVo("产品列表", "产品管理", false, "欢迎进入产品页面", false, false));
         return prefix + "/list";
     }
@@ -71,21 +73,14 @@ public class ProductController extends BaseController {
     public String add(ModelMap modelMap) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         List<TSysFood> tSysFoods = sysFoodService.queryFood();
-        List<ItemsVO> itemsVOS = new ArrayList<>();
         List<FoodVO> foodVOList = new ArrayList<>();
-        for (TSysItems tSysItems : tSysItemsList) {//获取项目点
-            ItemsVO itemsVO = new ItemsVO();
-            itemsVO.setItemsCode(tSysItems.getItemsCode());//项目点编号
-            itemsVO.setName(tSysItems.getName());
-            itemsVOS.add(itemsVO);
-        }
         for (TSysFood tSysFood : tSysFoods) {//获取食品种类
             FoodVO foodVO = new FoodVO();
             foodVO.setId(tSysFood.getId());
             foodVO.setFood(tSysFood.getFood());
             foodVOList.add(foodVO);
         }
-        modelMap.put("tSysItems", itemsVOS);
+        modelMap.put("tSysItems", tSysItemsList);
         modelMap.put("foodVOList", foodVOList);
         return prefix + "/add";
     }

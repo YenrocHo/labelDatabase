@@ -3,7 +3,7 @@
 <mapper namespace="com.fc.aden.mapper.auto.process.TSysStoreMapper">
   <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysStore">
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="items_code" jdbcType="VARCHAR" property="itemsCode" />
     <result column="store" jdbcType="VARCHAR" property="store" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="english_name" jdbcType="VARCHAR" property="englishName" />
@@ -13,7 +13,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id,item_id,store,name,english_name,temperature, status,creat_time, update_time
+    id,items_code,store,name,english_name,temperature, status,creat_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -26,8 +26,8 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysStore">
-    insert into t_sys_store (id,item_id,store,name,english_name,temperature, status,creat_time, update_time)
-    values (#{id,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR} ,#{store,jdbcType=VARCHAR},
+    insert into t_sys_store (id,items_code,store,name,english_name,temperature, status,creat_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{itemsCode,jdbcType=VARCHAR} ,#{store,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},
       now(), now())
   </insert>
@@ -37,8 +37,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="itemId != null">
-        item_id,
+      <if test="itemsCode != null">
+        items_code,
       </if>
       <if test="store != null">
         store,
@@ -66,8 +66,8 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="itemId != null">
-        #{itemId,jdbcType=VARCHAR},
+      <if test="itemsCode != null">
+        #{itemsCode,jdbcType=VARCHAR},
       </if>
       <if test="store != null">
         #{store,jdbcType=INTEGER},
@@ -95,8 +95,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysStore">
     update t_sys_store
     <set>
-      <if test="itemId != null">
-        item_id = #{itemId,jdbcType=VARCHAR},
+      <if test="itemsCode != null">
+        items_code = #{itemsCode,jdbcType=VARCHAR},
       </if>
       <if test="store != null">
         store = #{store,jdbcType=VARCHAR},
@@ -124,7 +124,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.TSysStore">
     update t_sys_store
-    set item_id = #{query,jdbcType=VARCHAR},
+    set items_code = #{query,jdbcType=VARCHAR},
       store = #{cCondition,jdbcType=VARCHAR},
       name = #{eCondition,jdbcType=VARCHAR},
       english_name = #{englishName,jdbcType=VARCHAR},
@@ -161,11 +161,18 @@
     where id = #{id}
   </update>
 
-  <select id="selectListBycQuery" parameterType="string" resultMap="BaseResultMap">
+  <select id="selectListBycQuery" parameterType="com.fc.aden.model.custom.process.TSysStore" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_sys_store
-    where store like #{searchTxt} or name like #{searchTxt} or english_name like #{searchTxt}
+    <where>
+    <if test="searchTxt != null and searchTxt !='%%'">
+        and store like #{searchTxt} or name like #{searchTxt} or english_name like #{searchTxt}
+    </if>
+    <if test="itemsCode != null  and itemsCode !='%%'">
+        and items_code like #{itemsCode,jdbcType=VARCHAR}
+    </if>
+    </where>
   </select>
   <select id="selectStoreList" resultMap="BaseResultMap">
     select
@@ -175,8 +182,8 @@
       <if test="keyword != null">
         name like #{keyword,jdbcType=VARCHAR}
       </if>
-      <if test="itemId != null">
-        and item_id like #{itemId,jdbcType=VARCHAR}
+      <if test="itemsCode != null">
+        and items_code like #{itemsCode,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

@@ -58,7 +58,9 @@ public class StoreController extends BaseController {
      **/
     @GetMapping("/view")
     @RequiresPermissions("system:store:view")
-    public String view(Model model) {
+    public String view(Model model,ModelMap mp) {
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        mp.put("tSysItems", tSysItemsList);
         setTitle(model, new TitleVo("存储条件列表", "存储条件", false, "欢迎进入存储条件页面", false, false));
         return prefix + "/list";
     }
@@ -66,26 +68,16 @@ public class StoreController extends BaseController {
     @GetMapping("/add")
     public String add(ModelMap modelMap) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
-        List<ItemsVO> itemsVOS = new ArrayList<>();
-        for(TSysItems tSysItems:tSysItemsList){
-            ItemsVO itemsVO = new ItemsVO();
-            itemsVO.setItemsId(tSysItems.getId());
-            itemsVO.setItems(tSysItems.getItemsCode());
-            itemsVOS.add(itemsVO);
-        }
-        modelMap.put("tSysItems", itemsVOS);
+        modelMap.put("tSysItems", tSysItemsList);
         return prefix + "/add";
     }
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, HttpServletRequest request,ModelMap mmap) {
         TSysStore tSysStore = sysStoreService.selectStoreById(id);
-        String ite = tSysStore.getItemId();
-        TSysItems tSysItem = sysItemsService.selectByPrimaryKey(ite);
         List<TSysItems> tSysItems = sysItemsService.queryItems();
         request.getSession().setAttribute("tSysStore", tSysStore);
         mmap.put("tSysItems", tSysItems);
-        mmap.put("ite", tSysItem.getItemsCode());
         return prefix + "/edit";
     }
 
@@ -100,9 +92,9 @@ public class StoreController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:store:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String searchTxt) {
-        PageInfo<StoreVO> page = sysStoreService.list(tablepar, searchTxt);
-        TableSplitResult<StoreVO> result = new TableSplitResult<StoreVO>(page.getPageNum(), page.getTotal(), page.getList());
+    public Object list(Tablepar tablepar, String searchTxt,String itemsCode) {
+        PageInfo<TSysStore> page = sysStoreService.list(tablepar, searchTxt,itemsCode);
+        TableSplitResult<TSysStore> result = new TableSplitResult<TSysStore>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
     /**

@@ -42,7 +42,9 @@ public class UserController extends BaseController {
 
     @GetMapping("view")
     @RequiresPermissions("system:user:view")
-    public String view(Model model) {
+    public String view(Model model,ModelMap mp) {
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        mp.put("tSysItems", tSysItemsList);
         setTitle(model, new TitleVo("用户列表", "用户管理", true, "欢迎进入用户页面", true, false));
         return prefix + "/list";
     }
@@ -67,8 +69,8 @@ public class UserController extends BaseController {
         List<TsysRole> tsysRoleList = sysRoleService.queryList();
         //获取所有项目点编号
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
-        modelMap.put("tsysRoleList", tsysRoleList);
         modelMap.put("tSysItems", tSysItemsList);
+        modelMap.put("tsysRoleList", tsysRoleList);
         return prefix + "/add";
     }
 

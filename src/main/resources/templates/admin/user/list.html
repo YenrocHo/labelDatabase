@@ -59,12 +59,16 @@
                                         <input type="text" name="username" placeholder="工号" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail2" class="sr-only">项目点编号</label>
-                                        <input type="text" name="itemsCode" placeholder="项目点编号" class="form-control">
-                                    </div>
-                                    <div class="form-group">
                                         <label for="exampleInputEmail2" class="sr-only">用户姓名</label>
                                         <input type="text" name="name" placeholder="用户姓名" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >项目点编号</label>
+<!--                                        <input type="text" name="itemsCode" placeholder="项目点编号" class="form-control">-->
+                                        <select class="form-control"  name="itemsCode" >
+                                            <option></option>
+                                            <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
+                                        </select>
                                     </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
                                             class="fa fa-search"></i>&nbsp;搜索

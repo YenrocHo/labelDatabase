@@ -53,8 +53,16 @@
                             <div class="form_left">
                                 <form role="form" class="form-inline">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail2" class="sr-only">存储条件名字</label>
-                                        <input type="text" name="searchTxt" placeholder="存储条件名字"class="form-control">
+                                        <label for="exampleInputEmail2" class="sr-only">存储条件名称</label>
+                                        <input type="text" name="searchTxt" placeholder="存储条件名称" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >项目点编号</label>
+                                       <!-- <input type="text" name="itemsCode" placeholder="项目点编号" class="form-control">-->
+                                            <select class="form-control"  name="itemsCode" >
+                                                <option></option>
+                                                <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
+                                            </select>
                                     </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
                                 </form>
@@ -140,11 +148,8 @@
         search: false,
         dataColumns: [
            {
-                field: 'item',
+                field: 'itemsCode',
                 title: '项目点'
-            },{
-                field: 'store',
-                title: '条件'
             },{
                 field: 'name',
                 title: '条件中文名'
@@ -152,8 +157,8 @@
                 field: 'englishName',
                 title: '条件英文名'
             },{
-                field: 'temperature',
-                title: '温度中文名'
+                field: 'store',
+                title: '存储条件'
             },{
                 title: '操作',
                 formatter: function (value, row, index) {
