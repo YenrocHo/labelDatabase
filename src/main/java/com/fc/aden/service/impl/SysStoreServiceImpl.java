@@ -56,7 +56,7 @@ public class SysStoreServiceImpl implements SysStoreService {
         for(TSysStore tSysStore:tSysStores){
             StoreVO storeVO = new StoreVO();
             TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tSysStore.getItemId());
-            storeVO.setItem(tSysItems.getItems());
+            storeVO.setItem(tSysItems.getItemsCode());
             BeanCopierEx.copy(tSysStore, storeVO);
             storeVOS.add(storeVO);
         }

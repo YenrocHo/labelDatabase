@@ -56,6 +56,10 @@
                                         <label for="exampleInputEmail2" class="sr-only">产品名字</label>
                                         <input type="text" name="searchTxt" placeholder="产品名字" class="form-control">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail2" class="sr-only">项目点编号</label>
+                                        <input type="text" name="itemsCode" placeholder="项目点编号" class="form-control">
+                                    </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
                                             class="fa fa-search"></i>&nbsp;搜索
                                     </button>
@@ -84,6 +88,9 @@
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                                 <button onclick="$.operate.add()" type="button" class="btn btn-primary">
                                     <span class="entypo-plus-squared"></span>&nbsp;&nbsp;新增
+                                </button>
+                                <button onclick="productUpload()" type="button" class="btn btn-primary">
+                                    <span class="entypo-plus-squared"></span>&nbsp;&nbsp;批量导入
                                 </button>
                             </div>
                             <!-- 工具条 end-->
@@ -135,27 +142,35 @@
     var removeUrl = window.rootPath + "/ProductController/remove";
     var createUrl = window.rootPath + "/ProductController/add";
     var updateUrl = window.rootPath + "/ProductController/edit/{id}";
+    var downUrl = window.rootPath+"/ProductController/upload";
     var options = {
         dataUrl: dataUrl,
         createUrl: createUrl,
         updateUrl: updateUrl,
         removeUrl: removeUrl,
-        sortName: "productSort",
+        downUrl:downUrl,
+        sortName: "id",
         modalName: "产品",
         search: false,
         dataColumns: [
-           /* {
-                checkbox: true
-            },*/ {
-                field: 'item',
+            {
+                field: 'id',
+                title: '编号',
+                visible:false
+
+            },{
+                field: 'itemsCode',
                 title: '项目点'
             },
             {
                 field: 'product',
                 title: '产品'
             }, {
-                field: 'name',
-                title: '中文名'
+                field: 'shelfLife',
+                title: '保质期'
+            },{
+                field: 'foodName',
+                title: '食品种类'
             }, {
                 field: 'englishName',
                 title: '英文名'
@@ -180,6 +195,15 @@
     $(function () {
         var oTab = $.table.oTableInit(options);
         oTab.Init();
+/*
+        //获取隐藏列的值的方法
+        $("#dataTable").on("click", "#testButton", function () {
+            //获取行
+            var row = $("table#table_id tr").index($(this).closest("tr"));
+
+            alert(id)
+        });*/
+
     });
 
     function freeze(id) {
@@ -208,6 +232,12 @@
             }
         });
     }
+
+        function productUpload() {
+            var url = $.table._option.downUrl;
+            $.modal.open("导入" + $.table._option.modalName, url);
+        }
+
 </script>
 </body>
 </html>

@@ -35,12 +35,6 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label ">登录名称：</label>
-								<div class="col-sm-8">
-									<input class="form-control" disabled="disabled" type="text" id="username" name="username" th:value="*{username}"/>
-								</div>
-							</div>
-							<div class="form-group">
 								<label class="col-sm-3 control-label ">姓名：</label>
 								<div class="col-sm-8">
 									<input class="form-control" type="text" id="name" name="name" th:value="*{name}"/>
@@ -58,21 +52,11 @@
 									<input class="form-control" type="text" id="phoneNumber" name="phoneNumber" th:value="*{phoneNumber}"/>
 								</div>
 							</div>
-							<!--<div class="form-group">
-								<label class="col-sm-3 control-label ">性别 ：</label>
-								<div class="col-sm-8">
-									<input type="radio" name="sex" value="男" th:checked="*{sex ==  '男'}" >男
-									<input type="radio" name="sex" value="女" th:checked="*{sex ==  '女'}" >女
-								</div>
-							</div>
--->
-
 							<div class="form-group">
 								<label class="col-sm-3 control-label ">项目点：</label>
 								<div class="col-sm-8">
-									<select class="form-control" id="items" name="itemId" >
-										<option><h3 th:text="${ite}"></h3></option>
-										<option th:each="m : ${tSysItems}" th:value="${m.id}"><h3 th:text="${m.items}"></h3></option>
+									<select class="form-control" th:value="*{itemsCode}" name="itemsCode" >
+										<option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
 									</select>
 								</div>
 							</div>

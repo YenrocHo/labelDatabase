@@ -226,8 +226,8 @@ public class TsysUserExample {
             addCriterion("name like", value, "name");
             return (Criteria) this;
         }
-        public Criteria andNumberLike(String value) {
-            addCriterion("number like", value, "number");
+        public Criteria andItemsCodeLike(String value) {
+            addCriterion("items_code like", value, "itemsCode");
             return (Criteria) this;
         }
 

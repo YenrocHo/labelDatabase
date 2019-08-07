@@ -22,9 +22,13 @@ public interface TSysProductMapper {
 
     int selectProductBycName(String product);
 
+    int deleteByFoodId(String foodName);
+
+    List<TSysProduct> selectByProduct(String product);
+
     int deleteProductByIds(@Param("productIdList") List<String> productIdList);
 
-    List<TSysProduct> selectListBycNameOreName(String searchTxt);
+    List<TSysProduct> selectListBycNameOreName(String searchTxt,String itemsCode);
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 

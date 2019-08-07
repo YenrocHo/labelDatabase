@@ -17,9 +17,9 @@
 <div class="wrap-fluid">
     <div class="container-fluid paper-wrap bevel tlbr">
         <div class="massage">
-            校验成功：<span id="success" th:text="${importItemsDTO.successNumber}"></span>&nbsp;条
+            校验成功：<span id="success" th:text="${importFoodDTO.successNumber}"></span>&nbsp;条
             &nbsp;&nbsp;
-            校验失败：<span id="error" th:text="${importItemsDTO.errorNumber}"></span>&nbsp;条
+            校验失败：<span id="error" th:text="${importFoodDTO.errorNumber}"></span>&nbsp;条
         </div>
         <hr/>
         <div class="content">
@@ -27,16 +27,16 @@
                 <tr class="title">
                     <th>状态</th>
                     <th>消息</th>
-                    <th>项目名</th>
-                    <th>中文名</th>
+                    <th>食品种类</th>
                     <th>英文名</th>
+                    <th>项目点编号</th>
                 </tr>
-                <tr th:each="tSysItem : ${importItemsDTO.tSysItems}" class="data">
-                    <td th:text="${tSysItem.pass}"></td>
-                    <td th:text="${tSysItem.messages}"></td>
-                    <td th:text="${tSysItem.items}"></td>
-                    <td th:text="${tSysItem.name}"></td>
-                    <td th:text="${tSysItem.englishName}"></td>
+                <tr th:each="tSysfood : ${importFoodDTO.importFoodDTOS}" class="data">
+                    <td th:text="${tSysfood.pass}"></td>
+                    <td th:text="${tSysfood.messages}"></td>
+                    <td th:text="${tSysfood.food}"></td>
+                    <td th:text="${tSysfood.englishName}"></td>
+                    <td th:text="${tSysfood.itemsCode}"></td>
                 </tr>
             </table>
         </div>

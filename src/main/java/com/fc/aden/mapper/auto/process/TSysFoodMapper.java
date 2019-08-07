@@ -1,6 +1,7 @@
 package com.fc.aden.mapper.auto.process;
 
 
+import com.fc.aden.model.auto.TsysFile;
 import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysFoodExample;
 import org.apache.ibatis.annotations.Param;
@@ -29,11 +30,12 @@ public interface TSysFoodMapper {
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
-
-
-
     long countByExample(TSysFoodExample example);
     int updateByExampleSelective(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
     int updateByExample(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
+
+    List<TSysFood> findByFood(String food);
+
+    TSysFood findByFoodId(String food);
 
 }

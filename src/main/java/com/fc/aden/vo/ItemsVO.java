@@ -4,6 +4,8 @@ public class ItemsVO {
 
     private String itemsId;
     private String items;
+    private String itemsCode;
+    private String name;
 
     public String getItemsId() {
         return itemsId;
@@ -19,5 +21,21 @@ public class ItemsVO {
 
     public void setItems(String items) {
         this.items = items;
+    }
+
+    public String getItemsCode() {
+        return itemsCode;
+    }
+
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

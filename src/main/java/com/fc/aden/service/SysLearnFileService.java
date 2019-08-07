@@ -150,7 +150,7 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
                         logger.error("名称不能为空");
                         continue;
                     }
-                    tSysItem.setItems(column.get(ITEM_MODE_TITLE[0]));
+                    tSysItem.setItemsCode(column.get(ITEM_MODE_TITLE[0]));
                     tSysItem.setName(column.get(ITEM_MODE_TITLE[1]));
                     tSysItem.setEnglishName(column.get(ITEM_MODE_TITLE[2]));
                     tSysItems.add(tSysItem);
@@ -174,7 +174,7 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
                 for (int i = 0; i < tSysItems.size(); i++) {
                     TSysItems tSysItem = tSysItems.get(i);
                     // 通过项目点查询是否有数据，有则删除该数据
-                    List<TSysItems> tSysItemsList = selectByItems(tSysItem.getItems());
+                    List<TSysItems> tSysItemsList = selectByItems(tSysItem.getItemsCode());
                     tSysItemsMapper.deleteByItems(tSysItemsList);
                 }
                 for (int i = 0; i < tSysItems.size(); i++) {
@@ -234,7 +234,7 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
                 errorMessage.append("项目点名称不能重复；");
                 pass = false;
             }else{
-                importTSysItemsDTO.setItems(projectName);
+                importTSysItemsDTO.setItemsCode(projectName);
             }
             if(StringUtils.isEmpty(chineseName)){
                 errorMessage.append("中文名称不能为空；");

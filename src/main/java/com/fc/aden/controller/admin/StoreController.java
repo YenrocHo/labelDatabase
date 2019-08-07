@@ -70,7 +70,7 @@ public class StoreController extends BaseController {
         for(TSysItems tSysItems:tSysItemsList){
             ItemsVO itemsVO = new ItemsVO();
             itemsVO.setItemsId(tSysItems.getId());
-            itemsVO.setItems(tSysItems.getItems());
+            itemsVO.setItems(tSysItems.getItemsCode());
             itemsVOS.add(itemsVO);
         }
         modelMap.put("tSysItems", itemsVOS);
@@ -85,7 +85,7 @@ public class StoreController extends BaseController {
         List<TSysItems> tSysItems = sysItemsService.queryItems();
         request.getSession().setAttribute("tSysStore", tSysStore);
         mmap.put("tSysItems", tSysItems);
-        mmap.put("ite", tSysItem.getItems());
+        mmap.put("ite", tSysItem.getItemsCode());
         return prefix + "/edit";
     }
 

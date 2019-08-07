@@ -5,7 +5,7 @@ public class FoodVO {
     private String id;
 
     private String itemId;
-    private String item;
+    private String itemsCode;
 
     private String food;
 
@@ -35,14 +35,6 @@ public class FoodVO {
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
-    }
-
-    public String getItem() {
-        return item;
-    }
-
-    public void setItem(String item) {
-        this.item = item;
     }
 
     public String getFood() {
@@ -99,5 +91,13 @@ public class FoodVO {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getItemsCode() {
+        return itemsCode;
+    }
+
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
     }
 }

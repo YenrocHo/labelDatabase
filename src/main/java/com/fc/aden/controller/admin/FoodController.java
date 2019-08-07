@@ -2,16 +2,22 @@ package com.fc.aden.controller.admin;
 
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
+import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
+import com.fc.aden.model.custom.process.ImportFoodDTO;
 import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysFoodService2;
+import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.FoodVO;
+import com.fc.aden.vo.ItemsVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Api(value = "食品记录")
@@ -28,7 +37,7 @@ import javax.servlet.http.HttpSession;
 public class FoodController extends BaseController {
     //跳转页面参数
     private String prefix = "admin/food";
-
+    private static Logger logger = LoggerFactory.getLogger(FoodController.class);
 
     /**
      * @Author Noctis
@@ -73,7 +82,16 @@ public class FoodController extends BaseController {
     }
 
     @GetMapping("/add")
-    public String add() {
+    public String add(ModelMap modelMap) {
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        List<ItemsVO> itemsVOS = new ArrayList<>();
+        for (TSysItems tSysItems : tSysItemsList) {//获取项目点
+            ItemsVO itemsVO = new ItemsVO();
+            itemsVO.setItemsCode(tSysItems.getItemsCode());//项目点编号
+            itemsVO.setName(tSysItems.getName());
+            itemsVOS.add(itemsVO);
+        }
+        modelMap.put("tSysItems", itemsVOS);
         return prefix + "/add";
     }
 
@@ -115,7 +133,7 @@ public class FoodController extends BaseController {
         }
     }
     /**
-     * 验证阶段是否重名
+     * 验证食品种类是否重名
      * @param sysFood
      * @return
      */
@@ -145,12 +163,26 @@ public class FoodController extends BaseController {
             return error();
         }
     }
-    @GetMapping("/edit")
-    @ResponseBody
+
+    /**
+     * 编辑页面
+     * @param id
+     * @param request
+     * @param mmap
+     * @return
+     */
+    @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, HttpServletRequest request, ModelMap mmap){
         TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
+        String items = tSysFood.getItemsCode();
+        List<TSysItems> tSysItems = sysItemsService.queryItems();
+        request.getSession().setAttribute("tSysFood", tSysFood);
+        mmap.addAttribute("items",items);
+        mmap.addAttribute("tSysItems",tSysItems);
         return prefix + "/edit";
     }
+
+
     @Autowired
     private SysFoodService2 sysFoodService2;
     @PostMapping("/freeze")
@@ -163,5 +195,31 @@ public class FoodController extends BaseController {
         }else{
             return error(0,"修改失败");
         }
+    }
+
+    @GetMapping("/upload")
+    public String upload() {
+        return prefix + "/upload";
+    }
+
+   /* @PostMapping("/upload")
+    public String uploadFood() {
+        return prefix + "/upload";
+    }*/
+    @PostMapping("/uploadFile")
+    public String uploadFile(Model model, MultipartFile myFile) {
+        List<Map<String, String>> dataList;
+        try {
+            dataList = ExcelUtils.getExcelData(myFile, ImportFoodDTO.IMPORT_TABLE_HEADER);
+        } catch (Exception e) {
+            logger.warn("数据异常，重新导入", e);
+            //文件解析异常
+            return prefix + "/import_error";
+        }
+        ImportFoodDTO importFoodDTO = sysFoodService.importValid(dataList);
+        List<FoodVO> foodVOList = sysFoodService.getSuccessTSysProduct (importFoodDTO.getImportFoodDTOS());
+        sysFoodService.saveSysFood(foodVOList);
+        model.addAttribute("importFoodDTO", importFoodDTO);
+        return prefix + "/food_valid";
     }
 }

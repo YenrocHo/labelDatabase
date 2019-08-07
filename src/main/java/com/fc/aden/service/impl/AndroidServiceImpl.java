@@ -161,7 +161,7 @@ public class AndroidServiceImpl implements AndroidService {
         tSysTag.setOriginalId(jsonObject.getString("original_Id"));
         tSysTag.setLabelId(jsonObject.getString("labelId"));
         try{
-            tSysTag.setItems(tSysItemsMapper.selectByPrimaryKey(jsonObject.getString("itemId")).getItems());
+            tSysTag.setItems(tSysItemsMapper.selectByPrimaryKey(jsonObject.getString("itemId")).getItemsCode());
             date.setTime(Long.parseLong(jsonObject.getString("printTime")));
             Date printTime=simpleDateFormat.parse(simpleDateFormat.format(date));
             tSysTag.setPrintTime(printTime);

@@ -2,23 +2,30 @@ package com.fc.aden.service.impl;
 
 import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
+import com.fc.aden.mapper.auto.process.TSysFoodMapper;
 import com.fc.aden.mapper.auto.process.TSysProductMapper;
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.Tablepar;
+import com.fc.aden.model.custom.process.ImportProductDTO;
+import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysProduct;
+import com.fc.aden.model.custom.process.TSysTagExample;
 import com.fc.aden.service.SysProductService;
 import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.SnowflakeIdWorker;
 import com.fc.aden.util.StringUtils;
+import com.fc.aden.vo.ImportTSysProductDTO;
 import com.fc.aden.vo.ProductVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 /**
 
 * @Description:    产品的server层实现
@@ -42,6 +49,10 @@ public class SysProductServiceImpl implements SysProductService {
     private TSysProductMapper tSysProductMapper;
     @Autowired
     private TSysItemsMapper tSysItemsMapper;
+    @Autowired
+    private TSysFoodMapper tSysFoodMapper;
+
+    private static Logger logger = LoggerFactory.getLogger(SysProductServiceImpl.class);
     /**
      * @Author Noctis
      * @Description // 产品分页展示
@@ -50,9 +61,11 @@ public class SysProductServiceImpl implements SysProductService {
      * @return com.github.pagehelper.PageInfo<com.fc.aden.model.custom.process.TSysProduct>
      **/
     @Override
-    public PageInfo<ProductVO> list(Tablepar tablepar, String searchTxt){
+    public PageInfo<ProductVO> list(Tablepar tablepar, String searchTxt,String itemsCode){
+        TSysTagExample tSysTagExample = new TSysTagExample();
+        tSysTagExample.setOrderByClause("id+0 desc");
         List<TSysProduct> tSysProductList = null;
-        if (StringUtils.isEmpty(searchTxt)){
+        if (StringUtils.isEmpty(searchTxt) && StringUtils.isEmpty(itemsCode)){
             if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
                 PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
@@ -61,15 +74,25 @@ public class SysProductServiceImpl implements SysProductService {
             if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
                 PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
-            searchTxt = "%"+searchTxt+"%";
-            tSysProductList = tSysProductMapper.selectListBycNameOreName(searchTxt);
+            if (searchTxt != null || !searchTxt.equals("")){
+                searchTxt = "%"+searchTxt+"%";
+            }
+            if (itemsCode != null || !itemsCode.equals("")){
+                itemsCode = "%"+itemsCode+"%";
+            }
+            tSysProductList = tSysProductMapper.selectListBycNameOreName(searchTxt,itemsCode);
+            System.out.println(tSysProductList.size());
         }
         List<ProductVO> productVOList = new ArrayList<>();
         for(TSysProduct tSysProduct:tSysProductList){
             ProductVO productVO = new ProductVO();
-            TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tSysProduct.getItemId());
-            productVO.setItem(tSysItems.getItems());
-            BeanCopierEx.copy(tSysProduct, productVO);
+            TSysFood tSysFood = tSysFoodMapper.selectByPrimaryKey(tSysProduct.getFoodName());
+            productVO.setId(tSysProduct.getId());
+            productVO.setFoodName(tSysFood.getFood());
+            productVO.setItemsCode(tSysProduct.getItemsCode());
+            productVO.setEnglishName(tSysProduct.getEnglishName());
+            productVO.setShelfLife(tSysProduct.getShelfLife());
+            productVO.setProduct(tSysProduct.getProduct());
             productVOList.add(productVO);
         }
         PageInfo<ProductVO> pageInfo = new PageInfo<ProductVO>(productVOList);
@@ -100,11 +123,19 @@ public class SysProductServiceImpl implements SysProductService {
         String productId = SnowflakeIdWorker.getUUID().toString();
         product.setId(productId);
         product.setProduct(tSysProduct.getProduct());
-        product.setName(tSysProduct.getName());
+        product.setName(tSysProduct.getProduct());
+        product.setItemsCode(tSysProduct.getItemsCode());
+        product.setFoodName(tSysProduct.getFoodName());
         product.setEnglishName(tSysProduct.getEnglishName());
+        product.setStatus(1);
+        if(tSysProduct.getShelfLife()==null||"".equals(tSysProduct.getShelfLife())){
+            product.setShelfLife("看包装");
+        }else {
+            product.setShelfLife(tSysProduct.getShelfLife()+"小时");
+        }
         product.setCreateTime(new Date());
         product.setUpdateTime(new Date());
-        return tSysProductMapper.insertSelective(product);
+        return tSysProductMapper.insert(product);
     }
     
     /**
@@ -170,6 +201,124 @@ public class SysProductServiceImpl implements SysProductService {
             return null;
         }
     }
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 
+    /**
+     * 验证文件，数据导入到DTO
+     * @param dataList
+     * @return
+     */
+    public ImportProductDTO importValid(List<Map<String, String>> dataList){
+        List<String> projectNames = new ArrayList<>();
+        ImportProductDTO importProductDTO = new ImportProductDTO();
+        List<ImportTSysProductDTO> importTSysProductDTOS = new ArrayList<ImportTSysProductDTO>();
+        int errNumber = 0;
+        int successNumber = 0;
+        for (Map<String, String> row : dataList) {
+            String productName = row.get(ImportProductDTO.PRODUCT_NAME);
+            String englishName = row.get(ImportProductDTO.ENGLISH_NAME);
+            String shelfLife = row.get(ImportProductDTO.SHELF_LIFE);
+            String foodName = row.get(ImportProductDTO.FOOD_NAME);
+            String items = row.get(ImportProductDTO.ITEM);
+
+            StringBuffer errorMessage = new StringBuffer();
+            boolean pass = true;
+            ImportTSysProductDTO importTSysProductDTO = new ImportTSysProductDTO();
+            importTSysProductDTO.setCreateTime(df.format(new Date()));
+            importTSysProductDTO.setUpdateTime(df.format(new Date()));
+            importTSysProductDTO.setStatus(1);
+            importTSysProductDTO.setId(UUID.randomUUID().toString());
+
+            List<TSysProduct> productList = tSysProductMapper.selectByProduct(productName);
+            if(StringUtils.isEmpty(productName)){
+                errorMessage.append("产品名称不能为空；");
+                pass = false;
+            }else if(projectNames.contains(productName)){
+                errorMessage.append("产品名称不能重复；");
+                pass = false;
+            }else if(productList!=null && productList.size()>0) {
+                errorMessage.append("产品名称不能重复；");
+                pass = false;
+            }else {
+                importTSysProductDTO.setProduct(productName);
+                importTSysProductDTO.setName(productName);
+            }
+            //判断项目点
+            List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(items);
+            if(StringUtils.isEmpty(items)){
+                errorMessage.append("项目点不为空；");
+                pass = false;
+            }else if(tSysItemsList != null && tSysItemsList.size() > 0){
+                importTSysProductDTO.setItemsCode(items);
+            }else {
+                errorMessage.append("项目点不存在；");
+                pass = false;
+            }
+            if(pass){
+                errorMessage.append("成功！");
+                successNumber++;
+            }else {
+                errNumber++;
+            }
+            //保质期
+            if (StringUtils.isEmpty(shelfLife)){
+                importTSysProductDTO.setShelfLife("见包装");
+            }else {
+                importTSysProductDTO.setShelfLife(shelfLife);
+            }
+            //食品种类 可以为null  如果不为空数据库必须存在
+            List<TSysFood> tSysFood = tSysFoodMapper.findByFood(foodName);
+            if(tSysFood != null && tSysFood.size() > 0){
+                importTSysProductDTO.setFoodName(foodName);
+            }else {
+                errorMessage.append("食品种类不存在；");
+                pass = false;
+            }
+
+            importTSysProductDTO.setEnglishName(englishName);
+            importTSysProductDTO.setPass(pass);
+            importTSysProductDTO.setMessages(errorMessage.toString());
+            importTSysProductDTOS.add(importTSysProductDTO);
+        }
+        importProductDTO.setErrorNumber(errNumber);
+        importProductDTO.setSuccessNumber(successNumber);
+        importProductDTO.settSysProductDTOS(importTSysProductDTOS);
+        return importProductDTO;
+    }
+
+    public List<ProductVO> getSuccessTSysProduct(List<ImportTSysProductDTO> importProductDTOS){
+        if(importProductDTOS ==null) return new ArrayList<>();
+        List<ProductVO> tsysUsers = new ArrayList<>();
+        for (ImportTSysProductDTO importTSysProductDTO : importProductDTOS) {
+            if(importTSysProductDTO.getPass()){
+                tsysUsers.add(loadByDTO(importTSysProductDTO));
+            }
+        }
+        return tsysUsers;
+    }
+
+   public ProductVO loadByDTO(ImportTSysProductDTO importTSysProductDTO){
+       ProductVO productVO = new ProductVO();
+       BeanCopierEx.copy(importTSysProductDTO,productVO);
+       return productVO;
+   }
+
+    /**
+     * 导入文件到数据库
+     * @param productVOS
+     */
+    public void saveSysProduct(List<ProductVO> productVOS){
+
+        for (ProductVO productVO : productVOS) {
+            TSysFood tSysFood = tSysFoodMapper.findByFoodId(productVO.getFoodName());
+            TSysProduct tSysProduct = new TSysProduct();
+            String id= tSysFood.getId();
+            productVO.setFoodName(id);
+            tSysProduct.setUpdateTime(new Date());
+            tSysProduct.setCreateTime(new Date());
+            BeanCopierEx.copy(productVO,tSysProduct);
+            tSysProductMapper.insertSelective(tSysProduct);
+        }
+    }
 
 }

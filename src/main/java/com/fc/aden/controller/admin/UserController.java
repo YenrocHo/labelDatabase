@@ -2,12 +2,16 @@ package com.fc.aden.controller.admin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.*;
+import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.ItemsVO;
 import com.fc.aden.vo.UserVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -34,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController extends BaseController {
 
     private String prefix = "admin/user";
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("view")
     @RequiresPermissions("system:user:view")
@@ -47,9 +52,9 @@ public class UserController extends BaseController {
     @PostMapping("list")
     @RequiresPermissions("system:user:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String username, String number, String name) {
-        PageInfo<UserVO> page = sysUserService.list(tablepar, username, number, name);
-        TableSplitResult<UserVO> result = new TableSplitResult<UserVO>(page.getPageNum(), page.getTotal(), page.getList());
+    public Object list(Tablepar tablepar, String username, String itemsCode,String number, String name) {
+        PageInfo<TsysUser> page = sysUserService.list(tablepar, username, itemsCode,number, name);
+        TableSplitResult<TsysUser> result = new TableSplitResult<TsysUser>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
 
@@ -60,16 +65,10 @@ public class UserController extends BaseController {
     public String add(ModelMap modelMap) {
         //添加角色列表
         List<TsysRole> tsysRoleList = sysRoleService.queryList();
+        //获取所有项目点编号
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
-        List<ItemsVO> itemsVOS = new ArrayList<>();
-        for(TSysItems tSysItems:tSysItemsList){
-            ItemsVO itemsVO = new ItemsVO();
-            itemsVO.setItemsId(tSysItems.getId());
-            itemsVO.setItems(tSysItems.getItems());
-            itemsVOS.add(itemsVO);
-        }
         modelMap.put("tsysRoleList", tsysRoleList);
-        modelMap.put("tSysItems", itemsVOS);
+        modelMap.put("tSysItems", tSysItemsList);
         return prefix + "/add";
     }
 
@@ -151,13 +150,12 @@ public class UserController extends BaseController {
         //查询所有角色
         List<RoleVo> roleVos = sysUserService.getUserIsRole(id);
         TsysUser user = sysUserService.selectByPrimaryKey(id);
-        String ite = user.getItemId();
-        TSysItems tSysItem = sysItemsService.selectByPrimaryKey(ite);
-        List<TSysItems> tSysItems = sysItemsService.queryItems();
+        String ite = user.getItemsCode();//获取当前用户的项目点编号
+        List<TSysItems> tSysItems = sysItemsService.queryItems();//获取所有编号
         mmap.put("roleVos", roleVos);
         mmap.put("TsysUser", sysUserService.selectByPrimaryKey(id));
         mmap.put("tSysItems", tSysItems);
-        mmap.put("ite", tSysItem.getItems());
+        mmap.put("ite",ite);//项目点编号
         return prefix + "/edit";
     }
 
@@ -205,13 +203,22 @@ public class UserController extends BaseController {
 
     @PostMapping("/upload")
     @RequiresPermissions("system:user:upload")
-    public String upload(TSysItems tSysItems) {
+    public String uploadUser() {
         return prefix + "/upload";
     }
 
+
     @PostMapping("/uploadFile")
     public String uploadFile(MultipartFile myFile, Model model) {
-        ImportUserDTO importUserDTO = sysUserService.importValid(myFile);
+        List<Map<String, String>> dataList;
+        try {
+            dataList = ExcelUtils.getExcelData(myFile, ImportUserDTO.IMPORT_TABLE_HEADER);
+        } catch (Exception e) {
+            logger.warn("数据异常，重新导入", e);
+            //文件解析异常
+            return null;
+        }
+        ImportUserDTO importUserDTO = sysUserService.importValid(dataList);
         List<UserVO> tsysUsers = sysUserService.getSuccessTSysItems(importUserDTO.gettSysUser());
         sysUserService.saveSysUser(tsysUsers);
         model.addAttribute("importUserDTO", importUserDTO);

@@ -1,6 +1,6 @@
 package com.fc.aden.vo;
 
-public class ImportTSysUserDTO extends UserVO {
+public class ImportTSysFoodDTO extends FoodVO {
 
     //是否校验通过
     private Boolean pass;

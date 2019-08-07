@@ -5,7 +5,7 @@ import java.util.Date;
 public class TSysFood {
     private String id;
 
-    private String itemId;
+    private String itemsCode;
 
     private String food;
 
@@ -21,9 +21,9 @@ public class TSysFood {
 
     private Integer status;
 
-    public TSysFood(String id, String itemId, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
+    public TSysFood(String id, String itemsCode, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
         this.id = id;
-        this.itemId = itemId;
+        this.itemsCode = itemsCode;
         this.food = food;
         this.name = name;
         this.englishName = englishName;
@@ -44,12 +44,12 @@ public class TSysFood {
         this.id = id;
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getItemsCode() {
+        return itemsCode;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
     }
 
     public String getFood() {
@@ -112,7 +112,7 @@ public class TSysFood {
     public String toString() {
         return "TSysFood{" +
                 "id='" + id + '\'' +
-                ", itemId='" + itemId + '\'' +
+                ", itemsCode='" + itemsCode + '\'' +
                 ", food='" + food + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +

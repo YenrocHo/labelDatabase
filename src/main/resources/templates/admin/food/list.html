@@ -81,6 +81,9 @@
                                 <button onclick="$.operate.add()" type="button" class="btn btn-primary">
                                     <span class="entypo-plus-squared"></span>&nbsp;&nbsp;添加
                                 </button>
+                                <button onclick="foodUpload()" type="button" class="btn btn-primary">
+                                    <span class="entypo-plus-squared"></span>&nbsp;&nbsp;批量导入
+                                </button>
                             </div>
                             <!-- 工具条 end-->
                             <table id="dataTable" class="table-striped footable-res footable metro-blue" data-page-size="6">
@@ -126,30 +129,33 @@
 <script type="text/javascript">
     var dataUrl=window.rootPath+"/FoodController/list";
     var createUrl=window.rootPath+"/FoodController/add";
+    var updateUrl=window.rootPath+"/FoodController/edit/{id}";
     var removeUrl=window.rootPath+"/FoodController/remove";
     var detailUrl=window.rootPath+"/FoodController/detail/{id}";
-
+    var downUrl = window.rootPath+"/FoodController/upload";
     var options = {
         dataUrl: dataUrl,
         createUrl: createUrl,
         removeUrl:removeUrl,
+        updateUrl:updateUrl,
         detailURL:detailUrl,
+        downUrl:downUrl,
         sortName: "foodName",
         modalName: "图片",
         search: false,
         dataColumns: [
-           /* {
-                checkbox: true
-            },*/{
-                field: 'item',
+            {
+                field: 'id',
+                title: '编号',
+                visible:false
+
+            },{
+                field: 'itemsCode',
                 title: '项目点'
             }
              ,{
                 field: 'food',
                 title: '食品名称'
-            }, {
-                field: 'name',
-                title: '中文名'
             }, {
                 field: 'englishName',
                 title: '英文名'
@@ -168,11 +174,11 @@
                     var actions = [];
                     if (row.status == 0) {
                         actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\'  href="#" onclick="$.operate.edit(\'' + id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')" ><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="deleteFood(\'' + id + '\')" ><i class="fa fa-remove"></i>删除</a>');
                         actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\'  href="#" onclick="freeze(\'' + id + '\')" style="background-color: #87CEFA;margin-left: 3px;color: white;width: 50px"><i class="fa fa-check"></i>解冻</a>');
                     } else {
                         actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\' href="#" onclick="$.operate.edit(\'' + id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="deleteFood(\'' + id + '\')"><i class="fa fa-remove"></i>删除</a>');
                         actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\' href="#" onclick="freeze(\'' + id + '\')" style="background-color: #F08080;margin-left: 3px;color: white;width: 50px"><i class="fa fa-ban"></i>冻结</a>');
                     }
                     return actions.join('');
@@ -213,10 +219,33 @@
         var url = $.table._option.detailURL.replace("{id}", id);
         $.modal.open("查看" + $.table._option.modalName, url);
     }
+    function deleteFood(id){
+       if(confirm("确定删除食品种类以及下面的产品吗？")){
+           $.ajax({
+               url: "/FoodController/remove",    //请求的url地址
+               dataType: "json",   //返回格式为json
+               async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+               data: {
+                   "ids": id
+               },
+               type: "POST",
+               success: function (result) {
+                   alert("删除成功");
+                   location.reload();
+               },
+               error:function (result) {
+                   alert("数据异常");
+               }
+           });
+       }
+    }
+
 </script>
 <script type="text/javascript">
-
-
+    function foodUpload() {
+        var url = $.table._option.downUrl
+        $.modal.open("导入" + $.table._option.modalName, url);
+    }
 </script>
 </body>
 </html>

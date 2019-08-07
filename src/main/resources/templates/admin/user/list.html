@@ -56,11 +56,11 @@
                                 <form role="form" class="form-inline">
                                     <div class="form-group">
                                         <label for="exampleInputEmail2" class="sr-only">工号</label>
-                                        <input type="text" name="number" placeholder="工号" class="form-control">
+                                        <input type="text" name="username" placeholder="工号" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail2" class="sr-only">登录账号</label>
-                                        <input type="text" name="username" placeholder="登录名" class="form-control">
+                                        <label for="exampleInputEmail2" class="sr-only">项目点编号</label>
+                                        <input type="text" name="itemsCode" placeholder="项目点编号" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail2" class="sr-only">用户姓名</label>
@@ -95,10 +95,7 @@
                                 <button onclick="$.operate.add()" type="button" class="btn btn-primary">
                                     <span class="entypo-plus-squared"></span>&nbsp;&nbsp;新增
                                 </button>
-                                <button onclick="updatePwd()" type="button" class="btn btn-danger">
-                                    <span class="entypo-tools"></span>&nbsp;&nbsp;修改密码
-                                </button>
-                                <button onclick="UserUpload()" type="button" class="btn btn-primary">
+                                <button onclick="UserUpload()" type="button" class="btn btn-danger">
                                     <span class="entypo-plus-squared"></span>&nbsp;&nbsp;批量导入
                                 </button>
                             </div>
@@ -169,7 +166,7 @@
                 field: 'englishName',
                 title: '英文名'
             }, {
-                field: 'items',
+                field: 'itemsCode',
                 title: '项目点'
             }, {
                 field: 'phoneNumber',
@@ -180,12 +177,14 @@
                     var id = row.id;
                     var actions = [];
                     if(row.username=="admin"){
-                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')" disabled="disabled"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')" disabled="disabled"><i class="fa fa-remove"></i>删除</a>&nbsp;');
+                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updatePwd(\'' + row.id + '\')"><i class="fa fa-edit"></i>重置密码</a> ');
                     }else{
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
-                     }
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>&nbsp;');
+                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updatePwd(\'' + row.id + '\')"><i class="fa fa-edit"></i>重置密码</a> ');
+                    }
                     return actions.join('');
                 }
             }]
@@ -197,20 +196,8 @@
 </script>
 <script type="text/javascript">
     var editPwdUrl = window.rootPath + "/UserController/editPwd/{id}";
-
-    function updatePwd() {
-        var rows = $.common.isEmpty($.table._option.id) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.id);
-        if (rows.length == 0) {
-            $.modal.alertWarning("请至少选择一条记录");
-            return
-        } else if (rows.length > 1) {
-            $.modal.alertWarning("请选择一条记录");
-            return
-        }
-        var url = editPwdUrl.replace("{id}", rows.join());
-        var data = {
-            "id": rows.join()
-        };
+    function updatePwd(id) {
+        var url = editPwdUrl.replace("{id}",id);
         $.modal.open("修改密码", url);
     }
 </script>

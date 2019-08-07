@@ -37,14 +37,14 @@ public class ItemsController extends BaseController {
      * 阶段列表
      *
      * @param tablepar
-     * @param items 搜索字符
+     * @param itemsCode 搜索字符
      * @return
      */
     @PostMapping("/list")
     @RequiresPermissions("system:items:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String items) {
-        PageInfo<TSysItems> page = sysItemsService.sysIteamsList(tablepar, items);
+    public Object list(Tablepar tablepar, String itemsCode) {
+        PageInfo<TSysItems> page = sysItemsService.sysIteamsList(tablepar, itemsCode);
         TableSplitResult<TSysItems> result = new TableSplitResult<TSysItems>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }

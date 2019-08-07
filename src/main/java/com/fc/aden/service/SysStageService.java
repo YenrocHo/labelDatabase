@@ -100,7 +100,7 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
         for(TSysStage tSysStage:list){
             StageVO stageVO = new StageVO();
             TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tSysStage.getItemId());
-            stageVO.setItem(tSysItems.getItems());
+            stageVO.setItem(tSysItems.getItemsCode());
             BeanCopierEx.copy(tSysStage, stageVO);
             stageVOS.add(stageVO);
         }

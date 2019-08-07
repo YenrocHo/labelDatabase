@@ -25,7 +25,7 @@ public class TsysUser implements Serializable {
     /**
      * 项目点
      */
-    private String itemId;
+    private String itemsCode;
     /**
      * 手机号
      */
@@ -36,6 +36,7 @@ public class TsysUser implements Serializable {
     private String statusToken;
 
     private int admin;//‘0’ admin所有管理员权限  ‘1’  项目点管理员权限
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String updateTime;
     /**
@@ -45,14 +46,14 @@ public class TsysUser implements Serializable {
     private String createTime;
     private static final long serialVersionUID = 1L;
 
-    public TsysUser(String id, String username, String name, String password, String number, String englishName, String itemId, String phoneNumber,  String updateTime, String createTime,int admin) {
+    public TsysUser(String id, String username, String name, String password, String number, String englishName, String itemsCode, String phoneNumber,  String updateTime, String createTime,int admin) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.password = password;
         this.number = number;
         this.englishName = englishName;
-        this.itemId = itemId;
+        this.itemsCode = itemsCode;
         this.phoneNumber = phoneNumber;
         this.updateTime = updateTime;
         this.createTime = createTime;
@@ -110,12 +111,12 @@ public class TsysUser implements Serializable {
         this.englishName = englishName;
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getItemsCode() {
+        return itemsCode;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
     }
 
     public String getPhoneNumber() {
@@ -171,7 +172,7 @@ public class TsysUser implements Serializable {
                 ", password='" + password + '\'' +
                 ", number='" + number + '\'' +
                 ", englishName='" + englishName + '\'' +
-                ", itemId='" + itemId + '\'' +
+                ", itemsCode='" + itemsCode + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", statusToken='" + statusToken + '\'' +
                 ", updateTime='" + updateTime + '\'' +

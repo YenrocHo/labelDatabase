@@ -27,27 +27,42 @@
                     <div class="panel-body">
                         <form class="form-horizontal m" id="form-edit" th:object="${session.tSysProduct}">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label ">产品编号：</label>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" id="id" disabled="disabled" th:value="*{id}" name="id"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-sm-3 control-label ">产品名：</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" type="text" id="product"  th:value="*{product}" name="product"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label ">中文名：</label>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" id="name" name="name" th:value="*{name}"/>
+                                    <input class="form-control" type="text" id="product" name="product" th:value="*{product}"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label ">英文名：</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" type="text" id="englishName" name="englishName" th:value="*{englishName}"/>
+                                    <input class="form-control" type="text"  name="englishName" th:value="*{englishName}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label ">保质期：</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" name="shelfLife" th:value="*{shelfLife}" oninput = "value=value.replace(/[^\d]/g,'')"/>
+                                    <span style="color: red;">只能输入数字，以小时为单位。例：24 小时(不输入则默认‘看包装’)</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label ">项目点编号：</label>
+                                <div class="col-sm-8">
+
+                                        <select class="form-control" id="items" name="itemsCode" >
+                                            <option><h3 th:text="${items}"></h3></option>
+                                            <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
+                                        </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label ">食品种类：</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="food" name="foodName" >
+                                        <option th:value="${tSysFood.id}"><h3 th:text="${tSysFood.food}"></h3></option>
+                                        <option th:each="m : ${tSysFoodList}" th:value="${m.id}"><h3 th:text="${m.food}"></h3></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">

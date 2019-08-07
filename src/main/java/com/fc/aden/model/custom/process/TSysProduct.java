@@ -7,7 +7,7 @@ public class TSysProduct implements Serializable {
     //产品Id
     private String id;
 
-    private String itemId;
+    private String itemsCode;
 
     //产品名
     private String product;
@@ -18,7 +18,13 @@ public class TSysProduct implements Serializable {
     //产品英文名
     private String englishName;
 
-    //食品状态
+    //食品名称
+    private String foodName;
+
+    //保质期
+    private String shelfLife;
+
+    //产品状态
     private Integer status;
 
     //产品创建时间
@@ -27,14 +33,16 @@ public class TSysProduct implements Serializable {
     //产品更新时间
     private Date updateTime;
 
-    public TSysProduct(String id, String itemId, String product, String name, String englishName, Integer status, Date createTime, Date updateTime) {
+    public TSysProduct(String id, String itemsCode, String product, String name, String englishName, Integer status,String shelfLife,String foodName, Date createTime, Date updateTime) {
         this.id = id;
-        this.itemId = itemId;
+        this.itemsCode = itemsCode;
         this.product = product;
         this.name = name;
         this.englishName = englishName;
         this.status = status;
         this.createTime = createTime;
+        this.shelfLife = shelfLife;
+        this.foodName = foodName;
         this.updateTime = updateTime;
     }
 
@@ -49,12 +57,12 @@ public class TSysProduct implements Serializable {
         this.id = id;
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getItemsCode() {
+        return itemsCode;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
     }
 
     public String getProduct() {
@@ -105,16 +113,34 @@ public class TSysProduct implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
+    }
+
+    public String getShelfLife() {
+        return shelfLife;
+    }
+
+    public void setShelfLife(String shelfLife) {
+        this.shelfLife = shelfLife;
+    }
+
     @Override
     public String toString() {
         return "TSysProduct{" +
                 "id='" + id + '\'' +
-                ", itemId='" + itemId + '\'' +
+                ", itemsCode='" + itemsCode + '\'' +
                 ", product='" + product + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +
                 ", status=" + status +
                 ", createTime=" + createTime +
+                ", foodName=" + foodName +
+                ", shelfLife=" + shelfLife +
                 ", updateTime=" + updateTime +
                 '}';
     }

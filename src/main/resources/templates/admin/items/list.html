@@ -51,7 +51,7 @@
                                 <form role="form" class="form-inline">
                                     <div class="form-group">
                                         <label for="exampleInputEmail2" class="sr-only">项目点</label>
-                                        <input type="text" name="items" placeholder="项目点"class="form-control">
+                                        <input type="text" name="itemsCode" placeholder="项目点编号"class="form-control">
                                     </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
                                 </form>
@@ -142,8 +142,8 @@
         modalName: "项目点",
         search: false,
         dataColumns: [ {
-                field: 'items',
-                title: '项目点'
+                field: 'itemsCode',
+                title: '项目点编号'
             }, {
                 field: 'name',
                 title: '中文名'

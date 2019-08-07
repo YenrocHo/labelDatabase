@@ -48,6 +48,7 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
     public TSysItems selectByPrimaryKey(String id){
         return tSysItemsMapper.selectByPrimaryKey(id);
     }
+
     @Override
     public int updateByPrimaryKeySelective(TSysItems record){
         record.setUpdateTime(new Date());//更新时间
@@ -77,14 +78,14 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
     /**
      * 项目点管理列表
      * @param tablepar
-     * @param items
+     * @param itemsCode
      * @return
      */
-    public PageInfo<TSysItems> sysIteamsList(Tablepar tablepar, String items){
+    public PageInfo<TSysItems> sysIteamsList(Tablepar tablepar, String itemsCode){
         TSysItemsExample tSysItemsExample = new TSysItemsExample();
         tSysItemsExample.setOrderByClause("id+0 desc");
-        if(items!=null&&!"".equals(items)){
-            tSysItemsExample.createCriteria().andItemsLike("%"+items+"%");
+        if(itemsCode!=null&&!"".equals(itemsCode)){
+            tSysItemsExample.createCriteria().andItemsLike("%"+itemsCode+"%");
         }
         if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
@@ -101,7 +102,7 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
      */
     public int checkIteamsUnique(TSysItems tSysItems){
         TSysItemsExample example = new TSysItemsExample();
-        example.createCriteria().andItemsEqualTo(tSysItems.getItems());
+        example.createCriteria().andItemsEqualTo(tSysItems.getItemsCode());
         List<TSysItems> list = selectByExample(example);
         return list.size();
     }

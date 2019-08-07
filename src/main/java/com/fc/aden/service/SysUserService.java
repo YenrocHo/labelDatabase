@@ -66,14 +66,14 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      *
      * @return
      */
-    public PageInfo<UserVO> list(Tablepar tablepar, String username, String number, String name) {
+    public PageInfo<TsysUser> list(Tablepar tablepar, String username, String itemsCode,String number,String name) {
         TsysUserExample testExample = new TsysUserExample();
         testExample.setOrderByClause("id+0 desc");
         if (username != null && !"".equals(username)) {
             testExample.createCriteria().andUsernameLike("%" + username + "%");
         }
-        if (number != null && !"".equals(number)) {
-            testExample.createCriteria().andNumberLike("%" + number + "%");
+        if (itemsCode != null && !"".equals(itemsCode)) {
+            testExample.createCriteria().andItemsCodeLike("%" + itemsCode + "%");
         }
         if (name != null && !"".equals(name)) {
             testExample.createCriteria().andNameLike("%" + name + "%");
@@ -82,15 +82,8 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
         List<TsysUser> list = tsysUserMapper.selectByExample(testExample);
-        List<UserVO> userVOList = new ArrayList<>();
-        for(TsysUser tsysUser:list){
-            UserVO userVO = new UserVO();
-            BeanCopierEx.copy(tsysUser,userVO);
-            TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tsysUser.getItemId());
-            userVO.setItems(tSysItems.getItems());
-            userVOList.add(userVO);
-        }
-        PageInfo<UserVO> pageInfo = new PageInfo<UserVO>(userVOList);
+
+        PageInfo<TsysUser> pageInfo = new PageInfo<TsysUser>(list);
         return  pageInfo;
     }
 
@@ -268,21 +261,14 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
 
     /**
      * 验证文件，数据导入到DTO
-     * @param excelFile
+     * @param dataList
      * @return
      */
-    public ImportUserDTO importValid(MultipartFile excelFile){
-        List<Map<String, String>> dataList;
+    public ImportUserDTO importValid(List<Map<String, String>> dataList){
         List<String> projectNames = new ArrayList<>();
         ImportUserDTO importUserDTO = new ImportUserDTO();
         List<ImportTSysUserDTO> importTSysUserDTOs = new ArrayList<>();
-        try {
-            dataList = ExcelUtils.getExcelData(excelFile, ImportUserDTO.IMPORT_TABLE_HEADER);
-        } catch (Exception e) {
-            logger.warn("数据异常，重新导入", e);
-            //文件解析异常
-            return null;
-        }
+
         int errNumber = 0;
         int successNumber = 0;
         for (Map<String, String> row : dataList) {
@@ -359,7 +345,10 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
  public void saveSysUser(List<UserVO> userVOList){
         for (UserVO userVO : userVOList) {
             TsysUser tsysUser = new TsysUser();
+            //权限存入管理员
+            TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userVO.getId(), "488243256161730560");
             BeanCopierEx.copy(userVO,tsysUser);
+            tSysRoleUserMapper.insertSelective(roleUser);
             tsysUserMapper.insertSelective(tsysUser);
         }
     }

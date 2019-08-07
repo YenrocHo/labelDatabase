@@ -13,10 +13,11 @@ public interface TSysFoodPictureMapper {
     int insertSelective(TSysFoodPicture record);
 
     TSysFoodPicture selectByPrimaryKey(String id);
+    List<TSysFoodPicture> selectByFoodId(String foodId);
 
     int updateByPrimaryKeySelective(TSysFoodPicture record);
 
     int updateByPrimaryKey(TSysFoodPicture record);
 
-    int deleteByFoodIds(@Param("lista") List<String> lista);
+    int deleteByFoodIds(String foodId);
 }

@@ -3,7 +3,7 @@
 <mapper namespace="com.fc.aden.mapper.auto.TSysItemsMapper">
   <resultMap id="BaseResultMap" type="com.fc.aden.model.auto.TSysItems">
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="items" jdbcType="VARCHAR" property="items" />
+    <result column="items_code" jdbcType="VARCHAR" property="itemsCode" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="english_name" jdbcType="VARCHAR" property="englishName" />
     <result column="create_Time" jdbcType="TIMESTAMP" property="createTime" />
@@ -68,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, items, name, english_name, create_Time, update_Time
+    id, items_code, name, english_name, create_Time, update_Time
   </sql>
   <select id="selectByExample" parameterType="com.fc.aden.model.auto.TSysItemsExample" resultMap="BaseResultMap">
     select
@@ -81,20 +81,26 @@
       <include refid="Example_Where_Clause" />
     </if>
     <if test="orderByClause != null">
-      order by ${orderByClause}
+      order by update_Time desc
     </if>
   </select>
   <select id="selectByItems" parameterType="com.fc.aden.model.auto.TSysItems" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_sys_items
-    where items = #{items,jdbcType=VARCHAR}
+    where items_code = #{itemsCode,jdbcType=VARCHAR}
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_sys_items
     where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByItemCode"  parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_items
+    where items_code = #{itemsCode,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_sys_items
@@ -108,15 +114,15 @@
   </delete>
   <delete id="deleteByItems" parameterType="com.fc.aden.model.auto.TSysItems">
     delete from t_sys_items
-   where items = #{items,jdbcType=VARCHAR}
+   where items_code = #{itemsCode,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.auto.TSysItems">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_sys_items (items, name, english_name, 
+    insert into t_sys_items (items_code, name, english_name,
       create_Time, update_Time)
-    values (#{items,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, 
+    values (#{itemsCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.auto.TSysItems">
@@ -125,8 +131,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="items != null">
-        items,
+      <if test="itemsCode != null">
+        items_code,
       </if>
       <if test="name != null">
         name,
@@ -145,8 +151,8 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="items != null">
-        #{items,jdbcType=VARCHAR},
+      <if test="itemsCode != null">
+        #{itemsCode,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -171,8 +177,8 @@
   <update id="updateByExampleSelective" parameterType="map">
     update t_sys_items
     <set>
-      <if test="record.items != null">
-        items = #{record.items,jdbcType=VARCHAR},
+      <if test="record.itemsCode != null">
+        items_code = #{record.itemsCode,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
@@ -194,7 +200,7 @@
   <update id="updateByExample" parameterType="map">
     update t_sys_items
     set id = #{record.id,jdbcType=VARCHAR},
-      items = #{record.items,jdbcType=VARCHAR},
+    items_code = #{record.itemsCode,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       english_name = #{record.englishName,jdbcType=VARCHAR},
       create_Time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -206,8 +212,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.auto.TSysItems">
     update t_sys_items
     <set>
-      <if test="items != null">
-        items = #{items,jdbcType=VARCHAR},
+      <if test="itemsCode != null">
+        items_code = #{itemsCode,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -226,7 +232,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.auto.TSysItems">
     update t_sys_items
-    set items = #{items,jdbcType=VARCHAR},
+    set items_code = #{itemsCode,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       english_name = #{englishName,jdbcType=VARCHAR},
       create_Time = #{createTime,jdbcType=TIMESTAMP},
@@ -235,8 +241,8 @@
   </update>
   <select id="selectItemByUserNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        u.items,i.id as 'id',i.name,i.english_name,i.create_Time,i.update_Time
-        from t_sys_user u left join t_sys_items i on u.items = i.items
+        u.items_code,i.id as 'id',i.name,i.english_name,i.create_Time,i.update_Time
+        from t_sys_user u left join t_sys_items i on u.items_code = i.items_code
         WHERE u.number = #{number}
     </select>
 
@@ -246,7 +252,7 @@
     from t_sys_items
     <where>
       <if test="keyword != null">
-        items like #{keyword,jdbcType=VARCHAR} or name like #{keyword,jdbcType=VARCHAR} or english_name like #{keyword,jdbcType=VARCHAR}
+        items_code like #{keyword,jdbcType=VARCHAR} or name like #{keyword,jdbcType=VARCHAR} or english_name like #{keyword,jdbcType=VARCHAR}
       </if>
       <if test="itemId != null">
         id = #{itemId,jdbcType=VARCHAR}

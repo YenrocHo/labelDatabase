@@ -25,6 +25,7 @@ public class UserVO{
      * 项目点
      */
     private String items;
+    private String itemsCode;
     private String itemId;
     /**
      * 手机号
@@ -42,7 +43,7 @@ public class UserVO{
     private String createTime;
     private static final long serialVersionUID = 1L;
 
-    public UserVO(String id, String username, String name, String password, String number, String englishName, String items, String itemId, String phoneNumber, String sex, String updateTime, String createTime) {
+    public UserVO(String id, String username, String name, String password,String itemsCode, String number, String englishName, String items, String itemId, String phoneNumber, String sex, String updateTime, String createTime) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -51,6 +52,7 @@ public class UserVO{
         this.englishName = englishName;
         this.items = items;
         this.itemId = itemId;
+        this.itemsCode = itemsCode;
         this.phoneNumber = phoneNumber;
         this.updateTime = updateTime;
         this.createTime = createTime;
@@ -159,6 +161,14 @@ public class UserVO{
         this.statusToken = token;
     }
 
+    public String getItemsCode() {
+        return itemsCode;
+    }
+
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
+    }
+
     @Override
     public String toString() {
         return "TsysUser{" +
@@ -170,6 +180,7 @@ public class UserVO{
                 ", englishName='" + englishName + '\'' +
                 ", items='" + items + '\'' +
                 ", itemId='" + itemId + '\'' +
+                ", itemsCode='" + itemsCode + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", statusToken='" + statusToken + '\'' +
                 ", updateTime='" + updateTime + '\'' +
