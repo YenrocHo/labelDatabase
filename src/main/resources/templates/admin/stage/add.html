@@ -83,6 +83,15 @@
             rules: {
                 stage: {
                     required: true,
+                    remote:{
+                        url:rootPath + "/StageController/checkStageUnique",
+                        type:"post",
+                        dataType:"json",
+                        dataFilter: function (data, type) {
+                            if (data == "0") return true;
+                            else return false;
+                        }
+                    },
                 }
             }, submitHandler: function (form) {
                 add();

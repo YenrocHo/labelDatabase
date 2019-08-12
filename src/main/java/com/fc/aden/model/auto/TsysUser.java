@@ -5,6 +5,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 
 public class TsysUser implements Serializable {
+
+    /**
+     * 用户管理员
+     */
+    public static final Integer USER_MANAGE = 0;
+    /**
+     * 普通员工
+     */
+    public static final Integer EMPLOYEES = 1;
+
+
     private String id;
 
     /**
@@ -35,7 +46,7 @@ public class TsysUser implements Serializable {
      */
     private String statusToken;
 
-    private int admin;//‘0’ admin所有管理员权限  ‘1’  项目点管理员权限
+    private Integer admin;//‘0’ admin所有管理员权限  ‘1’  项目点管理员权限
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String updateTime;
@@ -46,7 +57,7 @@ public class TsysUser implements Serializable {
     private String createTime;
     private static final long serialVersionUID = 1L;
 
-    public TsysUser(String id, String username, String name, String password, String number, String englishName, String itemsCode, String phoneNumber,  String updateTime, String createTime,int admin) {
+    public TsysUser(String id, String username, String name, String password, String number, String englishName, String itemsCode, String phoneNumber,  String updateTime, String createTime,Integer admin) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -155,11 +166,11 @@ public class TsysUser implements Serializable {
         this.statusToken = token;
     }
 
-    public int getAdmin() {
+    public Integer getAdmin() {
         return admin;
     }
 
-    public void setAdmin(int admin) {
+    public void setAdmin(Integer admin) {
         this.admin = admin;
     }
 

@@ -6,19 +6,25 @@ import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
+import com.fc.aden.model.custom.process.ImportStageDTO;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.service.SysStageService2;
+import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.StageVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -31,12 +37,14 @@ public class StageController extends BaseController {
     //跳转页面参数
     private String prefix = "admin/stage";
 
+    private static Logger logger = LoggerFactory.getLogger(StageController.class);
+
     @GetMapping("/view")
     @RequiresPermissions("system:stage:view")
     public String view(Model model,ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
-        setTitle(model, new TitleVo("制作阶段", "阶段列表", false, "欢迎进入图片页面", false, false));
+        setTitle(model, new TitleVo("阶段列表", "制作阶段", false, "欢迎进入图片页面", false, false));
         return prefix + "/list";
     }
 
@@ -151,4 +159,39 @@ public class StageController extends BaseController {
             return error(0,"修改失败");
         }
     }
+
+    /**
+     * 跳转导入页面
+     * @return
+     */
+    @GetMapping("/upload")
+    public String upload() {
+        return prefix + "/upload";
+    }
+
+    /**
+     * 提交文件
+     * @param myFile
+     * @param model
+     * @return
+     */
+    @PostMapping("/uploadFile")
+    public String uploadFile(MultipartFile myFile, Model model) {
+        List<Map<String, String>> dataList;
+        try {
+            //解析文件
+            dataList = ExcelUtils.getExcelData(myFile, ImportStageDTO.IMPORT_TABLE_HEADER);
+        } catch (Exception e) {
+            logger.warn("数据异常，重新导入", e);
+            //文件解析异常
+            return  "admin/import_error";
+        }
+        ImportStageDTO importStageDTO = sysStageService.importValid(dataList);
+        List<StageVO> stageVOS = sysStageService.getSuccessTSysItems(importStageDTO.gettSysStageDTOS());
+        sysStageService.saveStage(stageVOS);
+        model.addAttribute("importStageDTO", importStageDTO);
+        return prefix+"/stage_valid";
+    }
+
+
 }

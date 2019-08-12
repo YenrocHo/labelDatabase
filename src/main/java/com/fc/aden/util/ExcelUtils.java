@@ -57,12 +57,16 @@ public class ExcelUtils {
                     for (int cellNum = firstCellNum; cellNum < lastCellNum; cellNum++) {
                         // 获取表头用于组装数据
                         if (rowNum == 0) {
-                            // Cell cell = row.getCell(cellNum);
-                            // cellTr[cellNum] = getCellValue(cell);
                             continue;
                         } else {
-                            Cell cell = row.getCell(cellNum);
-                            map.put(title[cellNum], getCellValue(cell).replace("\\", "/").trim());
+                            try {
+                                if(title.length>cellNum) {
+                                    Cell  cell = row.getCell(cellNum);
+                                    map.put(title[cellNum], getCellValue(cell).replace("\\", "/").trim());
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                     if (rowNum > 0) {

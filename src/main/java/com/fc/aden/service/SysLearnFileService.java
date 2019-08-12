@@ -195,25 +195,21 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
 
     /**
      * 验证文件，数据导入到DTO
-     * @param excelFile
+     * @param dataList
      * @return
      */
-    public ImportItemsDTO importValid(MultipartFile excelFile){
-        List<Map<String, String>> dataList;
+    public ImportItemsDTO importValid(List<Map<String, String>> dataList){
+
         List<String> projectNames = new ArrayList<>();
         ImportItemsDTO importItemsDTO = new ImportItemsDTO();
         List<ImportTSysItemsDTO> importTSysItemsDTOS = new ArrayList<>();
-        try {
-            dataList = ExcelUtils.getExcelData(excelFile, ImportItemsDTO.IMPORT_TABLE_HEADER);
-        } catch (Exception e) {
-            logger.warn("数据异常，重新导入", e);
-            //文件解析异常
-            return null;
-        }
+
         int errNumber = 0;
         int successNumber = 0;
-        for (Map<String, String> row : dataList) {
-            String projectName = row.get(ImportItemsDTO.PROJECT_NAME);
+        // for (Map<String, String> row : dataList) {
+        for (int i = 1; i < dataList.size(); i++) {
+            Map<String, String> row = dataList.get(i);
+            String itemsCode = row.get(ImportItemsDTO.PROJECT_NAME);
             String chineseName = row.get(ImportItemsDTO.CHINESE_NAME);
             String englishName = row.get(ImportItemsDTO.ENGLISH_NAME);
             StringBuffer errorMessage = new StringBuffer();
@@ -223,18 +219,15 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
             importTSysItemsDTO.setUpdateTime(new Date());
             importTSysItemsDTO.setId(UUID.randomUUID().toString());
 
-            List<TSysItems> items = tSysItemsMapper.selectByItems(projectName);
-            if(StringUtils.isEmpty(projectName)){
-                errorMessage.append("项目点名称不能为空；");
+            List<TSysItems> items = tSysItemsMapper.selectByItems(itemsCode);
+            if(StringUtils.isEmpty(itemsCode)){
+                errorMessage.append("项目点编号不能为空；");
                 pass = false;
-            }else if(projectNames.contains(projectName)){
-                errorMessage.append("项目点名称不能重复；");
+            }else if(projectNames.contains(itemsCode)||items!=null&&items.size()>0){
+                errorMessage.append("项目点编号不能重复；");
                 pass = false;
-            }else if(items!=null&&items.size()>0) {
-                errorMessage.append("项目点名称不能重复；");
-                pass = false;
-            }else{
-                importTSysItemsDTO.setItemsCode(projectName);
+            }else {
+                importTSysItemsDTO.setItemsCode(itemsCode);
             }
             if(StringUtils.isEmpty(chineseName)){
                 errorMessage.append("中文名称不能为空；");

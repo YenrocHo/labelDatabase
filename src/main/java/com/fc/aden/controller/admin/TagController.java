@@ -30,7 +30,7 @@ public class TagController extends BaseController {
     @GetMapping("/view")
     @RequiresPermissions("system:tag:view")
     public String view(Model model) {
-        setTitle(model, new TitleVo("标签管理", "标签列表", false, "欢迎进入图片页面", false, false));
+        setTitle(model, new TitleVo("标签列表", "标签管理", false, "欢迎进入图片页面", false, false));
         return prefix + "/list";
     }
 

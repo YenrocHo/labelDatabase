@@ -2,12 +2,14 @@ package com.fc.aden.controller.admin;
 
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.ImportItemsDTO;
+import com.fc.aden.util.ExcelUtils;
 import io.swagger.annotations.Api;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -211,7 +213,15 @@ public class FileController extends BaseController {
 
     @PostMapping("/uploadFile")
     public String uploadFile(MultipartFile myFile, Model model) {
-        ImportItemsDTO importItemsDTO = sysLearnFileService.importValid(myFile);
+        List<Map<String, String>> dataList;
+        try {
+            dataList = ExcelUtils.getExcelData(myFile, ImportItemsDTO.IMPORT_TABLE_HEADER);
+        } catch (Exception e) {
+            logger.warn("数据异常，重新导入", e);
+            //文件解析异常
+            return "admin/import_error";
+        }
+        ImportItemsDTO importItemsDTO = sysLearnFileService.importValid(dataList);
         List<TSysItems> tSysItems = sysLearnFileService.getSuccessTSysItems(importItemsDTO.gettSysItems());
         sysLearnFileService.saveSysItems(tSysItems);
         model.addAttribute("importItemsDTO", importItemsDTO);

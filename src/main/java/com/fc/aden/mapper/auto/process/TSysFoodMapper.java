@@ -35,6 +35,7 @@ public interface TSysFoodMapper {
     int updateByExample(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
 
     List<TSysFood> findByFood(String food);
+    List<TSysFood> findByFoodCode(String foodCode);
 
     TSysFood findByFoodId(String food);
 

@@ -29,7 +29,7 @@ public class ItemsController extends BaseController {
     @GetMapping("/view")
     @RequiresPermissions("system:items:view")
     public String view(Model model) {
-        setTitle(model, new TitleVo("制作阶段", "阶段列表", false, "欢迎进入图片页面", false, false));
+        setTitle(model, new TitleVo("项目点列表", "项目点管理", false, "欢迎进入图片页面", false, false));
         return prefix + "/list";
     }
 

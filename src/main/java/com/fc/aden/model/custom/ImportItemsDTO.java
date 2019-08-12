@@ -5,8 +5,8 @@ import com.fc.aden.vo.ImportTSysItemsDTO;
 import java.util.List;
 
 public class ImportItemsDTO {
-    public static final String PROJECT_NAME="项目点名称（必填）";
-    public static final String CHINESE_NAME="中文名";
+    public static final String PROJECT_NAME="项目点编号（必填）";
+    public static final String CHINESE_NAME="项目点名称（必填）";
     public static final String ENGLISH_NAME="英文名";
 
     public static final String[] IMPORT_TABLE_HEADER = new String[]{PROJECT_NAME, CHINESE_NAME, ENGLISH_NAME};

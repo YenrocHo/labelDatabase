@@ -1,13 +1,11 @@
 package com.fc.aden.controller.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.*;
 import com.fc.aden.util.ExcelUtils;
-import com.fc.aden.vo.ItemsVO;
 import com.fc.aden.vo.UserVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -123,24 +121,6 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 检查用户工号
-     *
-     * @param tsysUser
-     * @return
-     */
-/*    @PostMapping("checkNumberUnique")
-    @ResponseBody
-    public int checkNumberUnique(TsysUser tsysUser) {
-        int b = sysUserService.checkNumberUnique(tsysUser);
-        if (b > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }*/
-
-
-    /**
      * 修改用户
      *
      * @param id
@@ -218,7 +198,7 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             logger.warn("数据异常，重新导入", e);
             //文件解析异常
-            return null;
+            return "admin/import_error";
         }
         ImportUserDTO importUserDTO = sysUserService.importValid(dataList);
         List<UserVO> tsysUsers = sysUserService.getSuccessTSysItems(importUserDTO.gettSysUser());

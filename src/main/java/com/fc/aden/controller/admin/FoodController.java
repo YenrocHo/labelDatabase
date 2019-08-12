@@ -62,7 +62,7 @@ public class FoodController extends BaseController {
     public String view(Model model,ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
-        setTitle(model, new TitleVo("食品管理", "食品列表", false,"欢迎进入图片页面", false, false));
+        setTitle(model, new TitleVo("食品列表", "食品管理", false,"欢迎进入图片页面", false, false));
         return prefix + "/list";
     }
 
@@ -148,6 +148,23 @@ public class FoodController extends BaseController {
             return 0;
         }
     }
+
+    /**
+     * 验证食品编号是否重名
+     * @param sysFood
+     * @return
+     */
+    @PostMapping("/checkFoodCodeUnique")
+    @ResponseBody
+    public int checkFoodCodeUnique(TSysFood sysFood){
+        int b = sysFoodService.checkFoodCodeUnique(sysFood);
+        if(b>0){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
     /**
      * 删除食物
      * @param ids
@@ -203,10 +220,6 @@ public class FoodController extends BaseController {
         return prefix + "/upload";
     }
 
-   /* @PostMapping("/upload")
-    public String uploadFood() {
-        return prefix + "/upload";
-    }*/
     @PostMapping("/uploadFile")
     public String uploadFile(Model model, MultipartFile myFile) {
         List<Map<String, String>> dataList;
@@ -215,7 +228,7 @@ public class FoodController extends BaseController {
         } catch (Exception e) {
             logger.warn("数据异常，重新导入", e);
             //文件解析异常
-            return prefix + "/import_error";
+            return "admin/import_error";
         }
         ImportFoodDTO importFoodDTO = sysFoodService.importValid(dataList);
         List<FoodVO> foodVOList = sysFoodService.getSuccessTSysProduct (importFoodDTO.getImportFoodDTOS());

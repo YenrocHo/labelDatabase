@@ -123,9 +123,9 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
                 tSysRoleUserMapper.insertSelective(roleUser);
             }
         }
-        //密码加密
-        record.setPassword(MD5Util.encode(record.getPassword()));
-        return tsysUserMapper.insertSelective(record);
+            //密码加密
+            record.setPassword(MD5Util.encode("123456"));
+            return tsysUserMapper.insertSelective(record);
     }
 
     @Override

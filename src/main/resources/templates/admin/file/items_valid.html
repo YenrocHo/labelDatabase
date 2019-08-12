@@ -27,14 +27,14 @@
                 <tr class="title">
                     <th>状态</th>
                     <th>消息</th>
-                    <th>项目名</th>
-                    <th>中文名</th>
+                    <th>项目点编号</th>
+                    <th>项目点名称</th>
                     <th>英文名</th>
                 </tr>
                 <tr th:each="tSysItem : ${importItemsDTO.tSysItems}" class="data">
                     <td th:text="${tSysItem.pass}"></td>
                     <td th:text="${tSysItem.messages}"></td>
-                    <td th:text="${tSysItem.items}"></td>
+                    <td th:text="${tSysItem.itemsCode}"></td>
                     <td th:text="${tSysItem.name}"></td>
                     <td th:text="${tSysItem.englishName}"></td>
                 </tr>

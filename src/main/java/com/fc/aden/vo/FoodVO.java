@@ -6,6 +6,7 @@ public class FoodVO {
 
     private String itemId;
     private String itemsCode;
+    private String foodCode;
 
     private String food;
 
@@ -99,5 +100,13 @@ public class FoodVO {
 
     public void setItemsCode(String itemsCode) {
         this.itemsCode = itemsCode;
+    }
+
+    public String getFoodCode() {
+        return foodCode;
+    }
+
+    public void setFoodCode(String foodCode) {
+        this.foodCode = foodCode;
     }
 }

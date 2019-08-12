@@ -8,6 +8,7 @@ public class TSysFood {
     private String itemsCode;
 
     private String food;
+    private String foodCode;
 
     private String name;
 
@@ -21,9 +22,10 @@ public class TSysFood {
 
     private Integer status;
 
-    public TSysFood(String id, String itemsCode, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
+    public TSysFood(String id, String itemsCode, String foodCode, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
         this.id = id;
         this.itemsCode = itemsCode;
+        this.foodCode = foodCode;
         this.food = food;
         this.name = name;
         this.englishName = englishName;
@@ -108,11 +110,20 @@ public class TSysFood {
         this.status = status;
     }
 
+    public String getFoodCode() {
+        return foodCode;
+    }
+
+    public void setFoodCode(String foodCode) {
+        this.foodCode = foodCode;
+    }
+
     @Override
     public String toString() {
         return "TSysFood{" +
                 "id='" + id + '\'' +
                 ", itemsCode='" + itemsCode + '\'' +
+                ", foodCode='" + foodCode + '\'' +
                 ", food='" + food + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +

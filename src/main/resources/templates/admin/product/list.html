@@ -92,7 +92,7 @@
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                                 <button onclick="$.operate.add()" type="button" class="btn btn-primary">
                                     <span class="entypo-plus-squared"></span>&nbsp;&nbsp;新增
-                                </button>
+                                </button>&nbsp;&nbsp;
                                 <button onclick="productUpload()" type="button" class="btn btn-primary">
                                     <span class="entypo-plus-squared"></span>&nbsp;&nbsp;批量导入
                                 </button>
@@ -199,15 +199,6 @@
     $(function () {
         var oTab = $.table.oTableInit(options);
         oTab.Init();
-/*
-        //获取隐藏列的值的方法
-        $("#dataTable").on("click", "#testButton", function () {
-            //获取行
-            var row = $("table#table_id tr").index($(this).closest("tr"));
-
-            alert(id)
-        });*/
-
     });
 
     function freeze(id) {

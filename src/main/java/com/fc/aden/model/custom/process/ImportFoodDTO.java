@@ -6,11 +6,12 @@ import com.fc.aden.vo.ImportTSysProductDTO;
 import java.util.List;
 
 public class ImportFoodDTO {
-    public static final String FOOD_NAME="食品种类（必填）";
-    public static final String ENGLISH_NAME="英文名(English Name)";
-    public static final String ITEM="项目点";
+    public static final String ITEM="项目点编号(必填)";
+    public static final String FOOD_CODE="食品种类编号(必填)";
+    public static final String ENGLISH_NAME="食品种类英文名(非必填)";
+    public static final String FOOD_NAME="食品种类中文名(必填)";
 
-    public static final String[] IMPORT_TABLE_HEADER = new String[]{FOOD_NAME, ENGLISH_NAME,ITEM};
+    public static final String[] IMPORT_TABLE_HEADER = new String[]{ITEM,FOOD_CODE,ENGLISH_NAME,FOOD_NAME};
 
     /**
      * 成功导入数量

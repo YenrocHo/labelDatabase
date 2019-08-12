@@ -71,13 +71,14 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         tSysFood.setId(id);
         tSysFood.setCreateTime(new Date());//保存创建时间
         tSysFood.setUpdateTime(new Date());//保存更新时间
-        String newPath = insertFoodPictureAndGetNewPath(tSysFood);
-        if (StringUtils.isNotEmpty(newPath)) {
-            tSysFood.setPicture(newPath);
-            return tSysFoodMapper.insertSelective(tSysFood);
-        } else {
-            return 0;
+        tSysFood.setName(tSysFood.getFood());//保存更新时间
+        if(tSysFood.getPicture()!=null&&!"".equals(tSysFood.getPicture())){
+            String newPath = insertFoodPictureAndGetNewPath(tSysFood);
+            if (StringUtils.isNotEmpty(newPath)) {
+                tSysFood.setPicture(newPath);
+            }
         }
+        return tSysFoodMapper.insertSelective(tSysFood);
     }
 
     private String insertFoodPictureAndGetNewPath(TSysFood tSysFood) {
@@ -188,14 +189,26 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
     }
 
     /**
-     * 检查阶段名称是否重名
+     * 检查食品名称是否重名
      *
      * @param tSysFood
      * @return
      */
     public int checkFoodUnique(TSysFood tSysFood) {
         TSysFoodExample example = new TSysFoodExample();
-        example.createCriteria().andStageEqualTo(tSysFood.getFood());
+        example.createCriteria().andFoodEqualTo(tSysFood.getFood());
+        List<TSysFood> list = selectByExample(example);
+        return list.size();
+    }
+    /**
+     * 检查食品编号是否重复
+     *
+     * @param tSysFood
+     * @return
+     */
+    public int checkFoodCodeUnique(TSysFood tSysFood) {
+        TSysFoodExample example = new TSysFoodExample();
+        example.createCriteria().andFoodCodeEqualTo(tSysFood.getFoodCode());
         List<TSysFood> list = selectByExample(example);
         return list.size();
     }
@@ -219,11 +232,13 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         List<ImportTSysFoodDTO> importTSysFoodDTOS = new ArrayList<ImportTSysFoodDTO>();
         int errNumber = 0;
         int successNumber = 0;
-        for (Map<String, String> row : dataList) {
+//        for (Map<String, String> row : dataList) {
+        for (int i = 1; i < dataList.size(); i++) {
+            Map<String, String> row = dataList.get(i);
             String foodName = row.get(ImportFoodDTO.FOOD_NAME);
+            String foodCode = row.get(ImportFoodDTO.FOOD_CODE);
             String englishName = row.get(ImportFoodDTO.ENGLISH_NAME);
             String items = row.get(ImportFoodDTO.ITEM);
-
             StringBuffer errorMessage = new StringBuffer();
             boolean pass = true;
             ImportTSysFoodDTO importTSysFoodDTO = new ImportTSysFoodDTO();
@@ -235,24 +250,35 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
             if (StringUtils.isEmpty(foodName)) {
                 errorMessage.append("食品种类不能为空；");
                 pass = false;
-            } else if(projectNames.contains(foodName)){
+            } else if(projectNames.contains(foodName)||tSysFoodList!=null && tSysFoodList.size()>0){
+                importTSysFoodDTO.setFood(foodName);
                 errorMessage.append("食品种类不能重复；");
                 pass = false;
-            }else if(tSysFoodList!=null && tSysFoodList.size()>0) {
-                errorMessage.append("食品种类不能重复；");
-                pass = false;
-            }else{
+            }else {
                 importTSysFoodDTO.setFood(foodName);
                 importTSysFoodDTO.setName(foodName);
+            }
+            //判断食品编号
+            List<TSysFood> tSysFoodCode = tSysFoodMapper.findByFoodCode(foodCode);
+            if (StringUtils.isEmpty(foodName)) {
+                errorMessage.append("食品种类编号不能为空；");
+                pass = false;
+            } else if(projectNames.contains(foodName)||tSysFoodCode!=null && tSysFoodCode.size()>0){
+                importTSysFoodDTO.setFoodCode(foodCode);
+                errorMessage.append("食品种类编号不能重复；");
+                pass = false;
+            }else {
+                importTSysFoodDTO.setFoodCode(foodCode);
             }
             //判断项目点
             List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(items);
             if (StringUtils.isEmpty(items)) {
                 errorMessage.append("项目点不为空；");
                 pass = false;
-            } else if (tSysItemsList != null && tSysItemsList.size() > 0) {
+            } else if (tSysItemsList != null || tSysItemsList.size() > 0) {
                 importTSysFoodDTO.setItemsCode(items);
             } else {
+                importTSysFoodDTO.setItemsCode(items);
                 errorMessage.append("项目点不存在；");
                 pass = false;
             }

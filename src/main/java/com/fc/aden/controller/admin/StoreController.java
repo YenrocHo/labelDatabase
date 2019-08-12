@@ -61,7 +61,7 @@ public class StoreController extends BaseController {
     public String view(Model model,ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
-        setTitle(model, new TitleVo("存储条件列表", "存储条件", false, "欢迎进入存储条件页面", false, false));
+        setTitle(model, new TitleVo("条件列表", "存储条件", false, "欢迎进入存储条件页面", false, false));
         return prefix + "/list";
     }
 

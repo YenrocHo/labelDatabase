@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysProduct">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="items_code" jdbcType="VARCHAR" property="itemsCode" />
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
     <result column="product" jdbcType="VARCHAR" property="product" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="english_name" jdbcType="VARCHAR" property="englishName" />
@@ -14,7 +15,7 @@
     <result column="shelf_life" jdbcType="VARCHAR" property="shelfLife" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, items_code,product,name,english_name,status,create_time, update_time,food_name,shelf_life
+    id, items_code,product_code,product,name,english_name,status,create_time, update_time,food_name,shelf_life
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -38,15 +39,15 @@
     where food_name = #{foodName,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysProduct">
-    insert into t_sys_product (id, items_code,product,name,english_name, status,create_time, update_time,food_name,shelf_life)
-    values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
+    insert into t_sys_product (id, items_code,product_code,product,name,english_name, status,create_time, update_time,food_name,shelf_life)
+    values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
     #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=INTEGER},#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
      #{updateTime,jdbcType=TIMESTAMP},#{foodName,jdbcType=INTEGER},#{shelfLife,jdbcType=INTEGER})
      order by update_time desc
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysProduct">
-    insert into t_sys_product (id,items_code,product, name,english_name,status,create_time, update_time, food_name,
-     shelf_life) values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
+    insert into t_sys_product (id,items_code,product_code,product, name,english_name,status,create_time, update_time, food_name,
+     shelf_life) values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
     #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=INTEGER},#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
      #{updateTime,jdbcType=TIMESTAMP},#{foodName,jdbcType=INTEGER},#{shelfLife,jdbcType=INTEGER})
   </insert>
@@ -55,6 +56,9 @@
     <set>
       <if test="itemsCode != null">
         items_code = #{itemsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        product_code = #{itemsCode,jdbcType=VARCHAR},
       </if>
       <if test="product != null">
         product = #{product,jdbcType=VARCHAR},
@@ -84,6 +88,7 @@
     update t_sys_product
     set
       items_code = #{itemsCode,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR},
       product = #{product,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       english_name = #{englishName,jdbcType=VARCHAR},

@@ -1,6 +1,5 @@
 package com.fc.aden.vo;
 
-import java.util.Date;
 
 public class StageVO {
 
@@ -8,6 +7,7 @@ public class StageVO {
 
     private String itemId;
     private String item;
+    private String itemsCode;
 
     private String stage;
 
@@ -91,5 +91,13 @@ public class StageVO {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getItemsCode() {
+        return itemsCode;
+    }
+
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
     }
 }

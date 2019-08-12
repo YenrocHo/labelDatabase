@@ -185,15 +185,19 @@ public class TSysFoodExample {
             }
 
             public Criteria andfoodNameLike(String value) {
-                addCriterion("food_name like", value, "foodName");
+                addCriterion("food like", value, "food");
                 return (Criteria) this;
             }
             public Criteria andItemLike(String value) {
                 addCriterion("items_code like", value, "itemsCode");
                 return (Criteria) this;
             }
-            public Criteria andStageEqualTo(String value) {
-                addCriterion("food_name =", value, "food_name");
+            public Criteria andFoodEqualTo(String value) {
+                addCriterion("food =", value, "food");
+                return (Criteria) this;
+            }
+            public Criteria andFoodCodeEqualTo(String value) {
+                addCriterion("food_code =", value, "foodCode");
                 return (Criteria) this;
             }
         }

@@ -5,7 +5,7 @@ public class ProductVO {
     private String id;
 
     private String itemsCode;
-
+    private String productCode;
     //产品名
     private String product;
 
@@ -35,9 +35,10 @@ public class ProductVO {
     }
 
 
-    public ProductVO(String id, String itemsCode, String product, String name, String englishName, String foodName, String shelfLife, Integer status, String createTime, String updateTime) {
+    public ProductVO(String id, String itemsCode, String productCode, String product, String name, String englishName, String foodName, String shelfLife, Integer status, String createTime, String updateTime) {
         this.id = id;
         this.itemsCode = itemsCode;
+        this.productCode = productCode;
         this.product = product;
         this.name = name;
         this.englishName = englishName;
@@ -128,11 +129,20 @@ public class ProductVO {
         this.shelfLife = shelfLife;
     }
 
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
     @Override
     public String toString() {
         return "ProductVO{" +
                 "id='" + id + '\'' +
                 ", itemsCode='" + itemsCode + '\'' +
+                ", productCode='" + productCode + '\'' +
                 ", product='" + product + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +

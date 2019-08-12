@@ -211,7 +211,7 @@ public class SysProductServiceImpl implements SysProductService {
         int successNumber = 0;
         for (Map<String, String> row : dataList) {
             String productName = row.get(ImportProductDTO.PRODUCT_NAME);
-            String englishName = row.get(ImportProductDTO.ENGLISH_NAME);
+            String productCode = row.get(ImportProductDTO.PRODUCT_CODE);
             String shelfLife = row.get(ImportProductDTO.SHELF_LIFE);
             String foodName = row.get(ImportProductDTO.FOOD_NAME);
             String items = row.get(ImportProductDTO.ITEM);
@@ -228,10 +228,7 @@ public class SysProductServiceImpl implements SysProductService {
             if(StringUtils.isEmpty(productName)){
                 errorMessage.append("产品名称不能为空；");
                 pass = false;
-            }else if(projectNames.contains(productName)){
-                errorMessage.append("产品名称不能重复；");
-                pass = false;
-            }else if(productList!=null && productList.size()>0) {
+            }else if(projectNames.contains(productName)||productList!=null && productList.size()>0){
                 errorMessage.append("产品名称不能重复；");
                 pass = false;
             }else {
@@ -249,12 +246,6 @@ public class SysProductServiceImpl implements SysProductService {
                 errorMessage.append("项目点不存在；");
                 pass = false;
             }
-            if(pass){
-                errorMessage.append("成功！");
-                successNumber++;
-            }else {
-                errNumber++;
-            }
             //保质期
             if (StringUtils.isEmpty(shelfLife)){
                 importTSysProductDTO.setShelfLife("见包装");
@@ -269,8 +260,13 @@ public class SysProductServiceImpl implements SysProductService {
                 errorMessage.append("食品种类不存在；");
                 pass = false;
             }
-
-            importTSysProductDTO.setEnglishName(englishName);
+            if(pass){
+                errorMessage.append("成功！");
+                successNumber++;
+            }else {
+                errNumber++;
+            }
+            importTSysProductDTO.setProductCode(productCode);
             importTSysProductDTO.setPass(pass);
             importTSysProductDTO.setMessages(errorMessage.toString());
             importTSysProductDTOS.add(importTSysProductDTO);
@@ -303,7 +299,6 @@ public class SysProductServiceImpl implements SysProductService {
      * @param productVOS
      */
     public void saveSysProduct(List<ProductVO> productVOS){
-
         for (ProductVO productVO : productVOS) {
             TSysFood tSysFood = tSysFoodMapper.findByFoodId(productVO.getFoodName());
             TSysProduct tSysProduct = new TSysProduct();

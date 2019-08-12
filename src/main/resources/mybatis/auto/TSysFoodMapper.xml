@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.TSysFood" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="items_code" property="itemsCode" jdbcType="VARCHAR"/>
+    <result column="food_code" property="foodCode" jdbcType="VARCHAR" />
     <result column="food" property="food" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="english_name" property="englishName" jdbcType="VARCHAR" />
@@ -13,7 +14,7 @@
     <result column="update_Time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, items_code,food, name, english_name, picture, status,create_Time, update_Time
+    id, items_code,food_code,food, name, english_name, picture, status,create_Time, update_Time
   </sql>
   <sql id="Example_Where_Clause">
     <where>
@@ -75,10 +76,10 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysFood" >
-    insert into t_sys_food (id, items_code,food, name,
+    insert into t_sys_food (id, items_code,food_code,food, name,
       english_name, picture, status,create_Time,
       update_Time)
-    values (#{id,jdbcType=VARCHAR}, #{itemsCode ,jdbcType=VARCHAR} ,#{food,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR}, #{itemsCode ,jdbcType=VARCHAR}, #{foodCode ,jdbcType=VARCHAR} ,#{food,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{englishName,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER} ,now(),
       now())
   </insert>
@@ -90,6 +91,9 @@
       </if>
       <if test="itemsCode != null" >
         items_code,
+      </if>
+      <if test="foodCode != null" >
+        food_code,
       </if>
       <if test="food != null" >
         food,
@@ -120,6 +124,9 @@
       <if test="itemsCode != null" >
         #{itemsCode,jdbcType=INTEGER},
       </if>
+      <if test="foodCode != null" >
+        #{foodCode,jdbcType=INTEGER},
+      </if>
       <if test="food != null" >
         #{food,jdbcType=VARCHAR},
       </if>
@@ -149,6 +156,9 @@
       <if test="food != null" >
         food = #{food,jdbcType=VARCHAR},
       </if>
+      <if test="foodCode != null" >
+        food_code = #{foodCode,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -175,6 +185,7 @@
     set
       items_code = #{itemsCode,jdbcType=VARCHAR},
       food = #{food,jdbcType=VARCHAR},
+      food_code = #{foodCode,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       english_name = #{englishName,jdbcType=VARCHAR},
       picture = #{picture,jdbcType=VARCHAR},
@@ -216,6 +227,12 @@
     <include refid="Base_Column_List"/>
     from t_sys_food
     where food like #{food,jdbcType=VARCHAR}
+  </select>
+  <select id="findByFoodCode" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_food
+    where food_code like #{foodCode,jdbcType=VARCHAR}
   </select>
 
   <select id="findByFoodId" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
