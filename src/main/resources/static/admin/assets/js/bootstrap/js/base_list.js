@@ -33,7 +33,7 @@
 			           // height: 460,            //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 			            uniqueId: "id",           //每一行的唯一标识，一般为主键列
 			            queryParamsType: "",//参数类型  为null 后台用pageHelp  默认为limit
-			            search: !0,
+			            //search: !0,
 			            showRefresh: !0,//刷新按钮
 			            showToggle: !0,//排版按钮
 			            showColumns: !0,//显示列按钮
