@@ -17,6 +17,9 @@ public interface TsysUserMapper {
     int insertSelective(TsysUser record);
 
     List<TsysUser> selectByExample(TsysUserExample example);
+    //根据项目点编号查询
+    List<TsysUser> selectByListUser(String itemsCode);
+    List<TsysUser> queryByUser(String items,String name,String username,String itemsCode);
 
     TsysUser selectByPrimaryKey(String id);
 
@@ -28,11 +31,15 @@ public interface TsysUserMapper {
 
     int updateByPrimaryKey(TsysUser record);
 
+    //查询工号
     List<TsysUser> selectByName(String name);
 
+    //查询全部
     List<TsysUser> selectAllUser();
 
+    //唯一标识
     int checkUserName(String username);
 
+    //查询工号
     TsysUser selectLogin(String number);
 }

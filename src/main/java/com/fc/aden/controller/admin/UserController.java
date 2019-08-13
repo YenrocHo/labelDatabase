@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.custom.*;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.UserVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -76,7 +77,7 @@ public class UserController extends BaseController {
     @PostMapping("/add")
     @RequiresPermissions("system:user:add")
     @ResponseBody
-    public AjaxResult add(TsysUser user, @RequestParam(value = "roles", required = false) List<String> roles) {
+    public AjaxResult add(TsysUser user, @RequestParam(value = "roles", required = false) String roles) {
         int b = sysUserService.insertUserRoles(user, roles);
         if (b > 0) {
             return success();
@@ -112,12 +113,7 @@ public class UserController extends BaseController {
     @PostMapping("checkLoginNameUnique")
     @ResponseBody
     public int checkLoginNameUnique(TsysUser tsysUser) {
-        int b = sysUserService.checkLoginNameUnique(tsysUser);
-        if (b > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return sysUserService.checkLoginNameUnique(tsysUser);
     }
 
     /**

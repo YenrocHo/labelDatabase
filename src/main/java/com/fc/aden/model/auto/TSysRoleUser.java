@@ -45,6 +45,5 @@ public class TSysRoleUser implements Serializable {
 		this.sysUserId = sysUserId;
 		this.sysRoleId = sysRoleId;
 	}
-    
-    
+
 }

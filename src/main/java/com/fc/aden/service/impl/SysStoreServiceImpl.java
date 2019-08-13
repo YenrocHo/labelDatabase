@@ -57,14 +57,6 @@ public class SysStoreServiceImpl implements SysStoreService {
             }
             tSysStores = tSysStoreMapper.selectListBycQuery(searchTxt,itemsCode);
         }
-    /*    List<StoreVO> storeVOS = new ArrayList<>();
-        for(TSysStore tSysStore:tSysStores){
-            StoreVO storeVO = new StoreVO();
-            TSysItems tSysItems = tSysItemsMapper.selectByPrimaryKey(tSysStore.getItemId());
-            storeVO.setItem(tSysItems.getItemsCode());
-            BeanCopierEx.copy(tSysStore, storeVO);
-            storeVOS.add(storeVO);
-        }*/
         PageInfo<TSysStore> pageInfo = new PageInfo<TSysStore>(tSysStores);
         return pageInfo;
     }

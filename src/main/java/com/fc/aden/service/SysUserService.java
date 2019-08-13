@@ -5,10 +5,9 @@ import java.util.*;
 
 import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.model.auto.*;
-import com.fc.aden.model.custom.ImportItemsDTO;
 import com.fc.aden.model.custom.ImportUserDTO;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.*;
-import com.fc.aden.vo.ImportTSysItemsDTO;
 import com.fc.aden.vo.ImportTSysUserDTO;
 import com.fc.aden.vo.UserVO;
 import org.slf4j.Logger;
@@ -27,7 +26,6 @@ import com.fc.aden.model.custom.RoleVo;
 import com.fc.aden.model.custom.Tablepar;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 系统用户
@@ -67,26 +65,26 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      * @return
      */
     public PageInfo<TsysUser> list(Tablepar tablepar, String username, String itemsCode,String number,String name) {
-        TsysUserExample testExample = new TsysUserExample();
-        testExample.setOrderByClause("id+0 desc");
-        if (username != null && !"".equals(username)) {
-            testExample.createCriteria().andUsernameLike("%" + username + "%");
+        TsysUser tsysUser = ShiroUtils.getUser();
+        List<TsysUser> tSysUsers = null;
+        if (username != null && itemsCode != null && name != null) {
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            }
+            username = "%" + username + "%";
+            itemsCode =  "%" + itemsCode + "%";
+            name = "%" + name + "%";
+            tSysUsers = tsysUserMapper.queryByUser(itemsCode,name,username,tsysUser.getItemsCode());
+        }else{
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            }
+            //查询全部
+                tSysUsers = tsysUserMapper.selectByListUser(tsysUser.getItemsCode());
         }
-        if (itemsCode != null && !"".equals(itemsCode)) {
-            testExample.createCriteria().andItemsCodeLike("%" + itemsCode + "%");
-        }
-        if (name != null && !"".equals(name)) {
-            testExample.createCriteria().andNameLike("%" + name + "%");
-        }
-        if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
-        }
-        List<TsysUser> list = tsysUserMapper.selectByExample(testExample);
-
-        PageInfo<TsysUser> pageInfo = new PageInfo<TsysUser>(list);
+        PageInfo<TsysUser> pageInfo = new PageInfo<TsysUser>(tSysUsers);
         return  pageInfo;
     }
-
     @Override
     public int deleteByPrimaryKey(String ids) {
         List<String> lista = Convert.toListStrArray(ids);
@@ -103,6 +101,11 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
         return tsysUserMapper.insertSelective(record);
     }
 
+
+    public TsysUser selectLogin(String number){
+        return tsysUserMapper.selectLogin(number);
+    }
+
     /**
      * 添加用户跟角色信息
      *
@@ -111,17 +114,16 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      * @return
      */
     @Transactional
-    public int insertUserRoles(TsysUser record, List<String> roles) {
-        String userid = SnowflakeIdWorker.getUUID().toString();
-        record.setId(userid);
+    public int insertUserRoles(TsysUser record, String roles) {
+        String userId = SnowflakeIdWorker.getUUID().toString();
+        record.setId(userId);
         record.setCreateTime(df.format(new Date()));
         record.setUpdateTime(df.format(new Date()));
         record.setNumber(record.getUsername());
+        record.setRoles(roles);
         if (StringUtils.isNotEmpty(roles)) {
-            for (String rolesid : roles) {
-                TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userid, rolesid);
+                TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userId, roles);
                 tSysRoleUserMapper.insertSelective(roleUser);
-            }
         }
             //密码加密
             record.setPassword(MD5Util.encode("123456"));
@@ -171,24 +173,13 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      * @return
      */
     public int checkLoginNameUnique(TsysUser tsysUser) {
-        TsysUserExample example = new TsysUserExample();
-        example.createCriteria().andUsernameEqualTo(tsysUser.getUsername());
-        List<TsysUser> list = tsysUserMapper.selectByExample(example);
-        return list.size();
+        int list = tsysUserMapper.checkUserName(tsysUser.getUsername());
+        if (list > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
-    /**
-     * 检查用户name
-     *
-     * @param tsysUser
-     * @return
-     */
- /*   public int checkNumberUnique(TsysUser tsysUser) {
-        TsysUserExample example = new TsysUserExample();
-        example.createCriteria().andNumberEqualTo(tsysUser.getNumber());
-        List<TsysUser> list = tsysUserMapper.selectByExample(example);
-        return list.size();
-    }*/
-
     /**
      * 获取所有权限 并且增加是否有权限字段
      *

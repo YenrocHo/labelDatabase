@@ -39,11 +39,6 @@ $("#form-add").validate({
 		deptName:{
 			required:true,
 		},
-		password:{
-			required:true,
-			minlength: 5,
-			maxlength: 20
-		},
 	},
 	messages: {
         "username": {

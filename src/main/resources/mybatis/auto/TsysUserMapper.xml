@@ -12,6 +12,7 @@
         <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="roles" jdbcType="VARCHAR" property="roles"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -75,7 +76,7 @@
     </sql>
     <sql id="Base_Column_List">
         id, username,name,password, number, english_name,items_code, phone_number, update_time,
-        create_time
+        create_time,roles
   </sql>
     <select id="selectByExample" parameterType="com.fc.aden.model.auto.TsysUserExample" resultMap="BaseResultMap">
         select
@@ -85,6 +86,31 @@
             <include refid="Example_Where_Clause"/>
         </if>
          order by update_time desc
+    </select>
+
+    <select id="selectByListUser" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+        where items_code = #{itemsCode}
+        order by update_time desc
+    </select>
+    <select id="queryByUser" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+        where 1=1
+        <if test="items != null and items != '%%'">
+           and items_code like #{items}
+        </if>
+        <if test="name != null and name != '%%'">
+           and name like #{name} or english_name like #{name}
+        </if>
+        <if test="username != null and username != '%%'">
+           and username like #{username}
+        </if>
+        and items_code = #{itemsCode}
+        order by update_time desc
     </select>
     <select id="selectByNameOrNumber" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">
         select
@@ -128,13 +154,10 @@
         </selectKey>
         insert into t_sys_user (username,name, password, number,
         english_name,  items_code,phone_number,
-        update_time,
-        create_time)
+        update_time,  create_time,roles)
         values (#{username,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-        #{number,jdbcType=VARCHAR},
-        #{englishName,jdbcType=VARCHAR},  #{itemsCode,jdbcType=VARCHAR} ,#{phoneNumber,jdbcType=VARCHAR},
-        #{updateTime,jdbcType=TIMESTAMP},
-        #{createTime,jdbcType=TIMESTAMP})
+        #{number,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR},  #{itemsCode,jdbcType=VARCHAR} ,#{phoneNumber,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{roles,jdbcType=TIMESTAMP})
     </insert>
     <insert id="insertSelective" parameterType="com.fc.aden.model.auto.TsysUser">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
@@ -173,6 +196,9 @@
             <if test="createTime != null">
                 create_time,
             </if>
+             <if test="roles != null">
+                 roles,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -204,6 +230,9 @@
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="roles != null">
+                #{roles,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -246,6 +275,9 @@
             <if test="record.createTime != null">
                 create_time = #{record.createTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="record.roles != null">
+                roles = #{record.roles,jdbcType=TIMESTAMP},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -262,7 +294,8 @@
         items_code = #{record.itemsCode,jdbcType=VARCHAR} ,
         phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-        create_time = #{record.createTime,jdbcType=TIMESTAMP}
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        roles = #{record.roles,jdbcType=TIMESTAMP}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -297,6 +330,9 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="roles != null">
+                roles = #{roles,jdbcType=TIMESTAMP},
+            </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
@@ -310,7 +346,8 @@
           items_code = #{itemsCode,jdbcType=VARCHAR},
           phone_number = #{phoneNumber,jdbcType=VARCHAR},
           update_time = #{updateTime,jdbcType=TIMESTAMP},
-          create_time = #{createTime,jdbcType=TIMESTAMP}
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+          roles = #{roles,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=VARCHAR}
   </update>
     <select id="checkUserName"  parameterType="java.lang.String" resultType="int">
@@ -322,7 +359,7 @@
         select
        <include refid="Base_Column_List"></include>
         from t_sys_user
-        WHERE number = #{username}
+        WHERE username = #{username}
     </select>
     <select id="selectAllUser" resultMap="BaseResultMap">
         select

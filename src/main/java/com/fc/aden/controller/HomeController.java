@@ -81,35 +81,37 @@ public class HomeController extends BaseController{
 	@PostMapping("login")
 	public ModelAndView login(TsysUser user,RedirectAttributes redirectAttributes,boolean rememberMe,HttpServletRequest request) {
 		 ModelAndView view =new ModelAndView();
-		 //判断验证码
 			 String userName = user.getUsername();
-			 Subject currentUser = SecurityUtils.getSubject();
-			 if(!currentUser.isAuthenticated()) {
-				 UsernamePasswordToken token =new UsernamePasswordToken(userName,user.getPassword());
-				 try {
-					 if(rememberMe) {
-						 token.setRememberMe(true);
+			 TsysUser tsysUser = sysUserService.selectLogin(userName);
+			 if("1".equals(tsysUser.getRoles())) {
+				 Subject currentUser = SecurityUtils.getSubject();
+				 if (!currentUser.isAuthenticated()) {
+					 UsernamePasswordToken token = new UsernamePasswordToken(userName, user.getPassword());
+					 try {
+						 if (rememberMe) {
+							 token.setRememberMe(true);
+						 }
+						 //存入用户
+						 currentUser.login(token);
+					 } catch (UnknownAccountException uae) {
+						 logger.info("对用户[" + userName + "]进行登录验证..验证未通过,未知账户");
+						 redirectAttributes.addFlashAttribute("message", "未知账户");
+					 } catch (IncorrectCredentialsException ice) {
+						 logger.info("对用户[" + userName + "]进行登录验证..验证未通过,错误的凭证");
+						 redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
+					 } catch (LockedAccountException lae) {
+						 logger.info("对用户[" + userName + "]进行登录验证..验证未通过,账户已锁定");
+						 redirectAttributes.addFlashAttribute("message", "账户已锁定");
+					 } catch (ExcessiveAttemptsException eae) {
+						 logger.info("对用户[" + userName + "]进行登录验证..验证未通过,错误次数过多");
+						 redirectAttributes.addFlashAttribute("message", "用户名或密码错误次数过多");
+					 } catch (AuthenticationException ae) {
+						 //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景
+						 logger.info("对用户[" + userName + "]进行登录验证..验证未通过,堆栈轨迹如下");
+						 ae.printStackTrace();
+						 redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
 					 }
-					 //存入用户
-					 currentUser.login(token);
-				 }catch (UnknownAccountException uae) {
-			            logger.info("对用户[" + userName + "]进行登录验证..验证未通过,未知账户");
-			            redirectAttributes.addFlashAttribute("message", "未知账户");
-			        } catch (IncorrectCredentialsException ice) {
-			            logger.info("对用户[" + userName + "]进行登录验证..验证未通过,错误的凭证");
-			            redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
-			        } catch (LockedAccountException lae) {
-			            logger.info("对用户[" + userName + "]进行登录验证..验证未通过,账户已锁定");
-			            redirectAttributes.addFlashAttribute("message", "账户已锁定");
-			        } catch (ExcessiveAttemptsException eae) {
-			            logger.info("对用户[" + userName + "]进行登录验证..验证未通过,错误次数过多");
-			            redirectAttributes.addFlashAttribute("message", "用户名或密码错误次数过多");
-			        } catch (AuthenticationException ae) {
-			            //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景
-			            logger.info("对用户[" + userName + "]进行登录验证..验证未通过,堆栈轨迹如下");
-			            ae.printStackTrace();
-			            redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
-			        }
+				 }
 			 }
 		 BootstrapThree bootstrapThree=sysPremissionService.getbooBootstrapThreePerm();
      	 request.getSession().setAttribute("bootstrapThree", bootstrapThree);

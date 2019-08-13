@@ -25,6 +25,8 @@ public interface TSysStageMapper {
     int deleteByExample(TSysStageExample example);
 
     List<TSysStage> selectStageList(@Param("itemId")String itemId,@Param("keyword")String keyword);
+    List<TSysStage> selectStage(String itemsCode);
+    List<TSysStage> findByStageOrItems(String items,String stage,String itemsCode);
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
     List<TSysStage> findByStage(String stage);

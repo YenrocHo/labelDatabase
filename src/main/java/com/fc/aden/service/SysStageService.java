@@ -5,10 +5,12 @@ import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.process.TSysStageMapper;
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.ImportStageDTO;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.model.custom.process.TSysStageExample;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.SnowflakeIdWorker;
 import com.fc.aden.util.StringUtils;
@@ -100,6 +102,26 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
      * @return
      */
     public PageInfo<TSysStage> sysStageList(Tablepar tablepar, String stage, String itemsCode) {
+        TsysUser tsysUser = ShiroUtils.getUser();
+        List<TSysStage> sysStages = null;
+        if (stage != null && itemsCode != null ) {
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            }
+            stage = "%" + stage + "%";
+            itemsCode = "%" + itemsCode + "%";
+            sysStages = tSysStageMapper.findByStageOrItems(itemsCode,stage,tsysUser.getItemsCode());
+        }else {
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            }
+            sysStages = tSysStageMapper.selectStage(tsysUser.getItemsCode());
+        }
+        PageInfo<TSysStage> pageInfo = new PageInfo<TSysStage>(sysStages);
+        return pageInfo;
+    }
+
+    /* public PageInfo<TSysStage> sysStageList(Tablepar tablepar, String stage, String itemsCode) {
         TSysStageExample tSysStageExample = new TSysStageExample();
         tSysStageExample.setOrderByClause("id+0 desc");
         if (stage != null && !"".equals(stage)) {
@@ -114,7 +136,7 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
         List<TSysStage> list = selectByExample(tSysStageExample);
         PageInfo<TSysStage> pageInfo = new PageInfo<TSysStage>(list);
         return pageInfo;
-    }
+    }*/
 
     /**
      * 检查阶段名称是否重名

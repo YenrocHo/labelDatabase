@@ -267,26 +267,6 @@ public class LoginController  extends BaseController {
     }
 
     /**
-     * 员工接口
-     * 所传参数 add-user?number=工号&&username=登录名&&name=姓名&&password=密码&&englishName=英文名&&phoneNumber=手机号&&sex=性别&&items=项目点&&roles=权限Id
-     * @param user
-     * @param roles
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "add-user")
-    @ResponseBody
-    public AjaxResult addUser(TsysUser user, @RequestParam(value = "roles", required = false) List<String> roles) {
-        int b = sysUserService.insertUserRoles(user, roles);
-        if (b > 0) {
-            return success();
-        } else {
-            return error();
-        }
-    }
-
-
-
-    /**
      * 获取登录员工信息接口
      * @param tablepar
      * @param username

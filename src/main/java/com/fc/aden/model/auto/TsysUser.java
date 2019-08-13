@@ -9,11 +9,11 @@ public class TsysUser implements Serializable {
     /**
      * 用户管理员
      */
-    public static final Integer USER_MANAGE = 0;
+    public static final Integer USER_MANAGE = 1;
     /**
      * 普通员工
      */
-    public static final Integer EMPLOYEES = 1;
+    public static final Integer EMPLOYEES = 0;
 
 
     private String id;
@@ -46,7 +46,7 @@ public class TsysUser implements Serializable {
      */
     private String statusToken;
 
-    private Integer admin;//‘0’ admin所有管理员权限  ‘1’  项目点管理员权限
+    private String roles;//1 admin所有管理员权限  0  项目点管理员权限
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String updateTime;
@@ -57,7 +57,7 @@ public class TsysUser implements Serializable {
     private String createTime;
     private static final long serialVersionUID = 1L;
 
-    public TsysUser(String id, String username, String name, String password, String number, String englishName, String itemsCode, String phoneNumber,  String updateTime, String createTime,Integer admin) {
+    public TsysUser(String id, String username, String name, String password, String number, String englishName, String itemsCode, String phoneNumber,  String updateTime, String createTime,String roles) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -68,7 +68,7 @@ public class TsysUser implements Serializable {
         this.phoneNumber = phoneNumber;
         this.updateTime = updateTime;
         this.createTime = createTime;
-        this.admin = admin;
+        this.roles = roles;
     }
 
     public TsysUser() {
@@ -166,13 +166,13 @@ public class TsysUser implements Serializable {
         this.statusToken = token;
     }
 
-    public Integer getAdmin() {
-        return admin;
+    public String getRoles() {
+        return roles;
     }
 
-    public void setAdmin(Integer admin) {
-        this.admin = admin;
-    }
+    public void setRoles(String roles) {
+        this.roles = roles;
+}
 
     @Override
     public String toString() {
@@ -188,7 +188,7 @@ public class TsysUser implements Serializable {
                 ", statusToken='" + statusToken + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 ", createTime='" + createTime + '\'' +
-                ", admin='" + admin + '\'' +
+                ", roles='" + roles + '\'' +
                 '}';
     }
 }
