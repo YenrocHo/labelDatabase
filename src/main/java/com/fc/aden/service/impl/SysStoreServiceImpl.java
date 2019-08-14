@@ -5,10 +5,12 @@ import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.process.TSysStoreMapper;
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
 
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysStoreService;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.SnowflakeIdWorker;
 import com.fc.aden.util.StringUtils;
@@ -39,12 +41,13 @@ public class SysStoreServiceImpl implements SysStoreService {
      **/
     @Override
     public PageInfo<TSysStore> list(Tablepar tablepar, String searchTxt,String itemsCode) {
+        TsysUser tsysUser = ShiroUtils.getUser();
         List<TSysStore> tSysStores = null;
         if (StringUtils.isEmpty(searchTxt)&& StringUtils.isEmpty(itemsCode)) {
             if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
                 PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
-            tSysStores = tSysStoreMapper.selectList();
+            tSysStores = tSysStoreMapper.selectList(tsysUser.getItemsCode());
         } else {
             if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
                 PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
@@ -55,7 +58,7 @@ public class SysStoreServiceImpl implements SysStoreService {
             if (itemsCode != null || !itemsCode.equals("")){
                 itemsCode = "%"+itemsCode+"%";
             }
-            tSysStores = tSysStoreMapper.selectListBycQuery(searchTxt,itemsCode);
+            tSysStores = tSysStoreMapper.selectListBycQuery(searchTxt,itemsCode,tsysUser.getItemsCode());
         }
         PageInfo<TSysStore> pageInfo = new PageInfo<TSysStore>(tSysStores);
         return pageInfo;

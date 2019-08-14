@@ -138,6 +138,7 @@
     select
     <include refid="Base_Column_List" />
     from t_sys_store
+    where items_code = #{itemsCode}
   </select>
   <delete id="delectStoreByIds" parameterType="map">
     delete
@@ -165,14 +166,15 @@
     select
     <include refid="Base_Column_List" />
     from t_sys_store
-    <where>
+    where 1=1
     <if test="searchTxt != null and searchTxt !='%%'">
         and store like #{searchTxt} or name like #{searchTxt} or english_name like #{searchTxt}
     </if>
-    <if test="itemsCode != null  and itemsCode !='%%'">
-        and items_code like #{itemsCode,jdbcType=VARCHAR}
+    <if test="items != null  and items !='%%'">
+        and items_code like #{items,jdbcType=VARCHAR}
     </if>
-    </where>
+        and items_code = #{itemsCode}
+        order by update_time desc
   </select>
   <select id="selectStoreList" resultMap="BaseResultMap">
     select

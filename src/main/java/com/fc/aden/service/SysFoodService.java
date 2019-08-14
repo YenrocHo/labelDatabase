@@ -7,7 +7,9 @@ import com.fc.aden.mapper.auto.process.TSysFoodPictureMapper;
 import com.fc.aden.mapper.auto.process.TSysProductMapper;
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysDatas;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.process.*;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.FileUtils;
 import com.fc.aden.util.StringUtils;
@@ -159,32 +161,41 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      * 标签管理
      *
      * @param tablepar
-     * @param foodName
+     * @param tSysFood
      * @param
      * @return
      */
-    public PageInfo<FoodVO> sysFoodList(Tablepar tablepar, String foodName,String itemsCode) {
-        TSysFoodExample tSysFoodExample = new TSysFoodExample();
-        tSysFoodExample.setOrderByClause("id+0 desc");
-        if (foodName != null && !"".equals(foodName)) {
-            tSysFoodExample.createCriteria().andfoodNameLike("%" + foodName + "%");
-        }
-        if (itemsCode != null && !"".equals(itemsCode)) {
-            tSysFoodExample.createCriteria().andItemLike("%" + itemsCode + "%");
+    public PageInfo<TSysFood> sysFoodList(Tablepar tablepar,TSysFood tSysFood) {
+        TSysFoodExample example = new TSysFoodExample();
+        example.setOrderByClause("id+0 desc");
+        TsysUser tsysUser = ShiroUtils.getUser();
+        List<TSysFood> tSysFoodList = null;
+        if (tSysFood.getItemsCode() != null || tSysFood.getFood()!=null) {//模糊搜索
+            TSysFood tSysFood1 = new TSysFood();
+            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())){
+                //如果是项目管理员 根据项目编号搜索所有数据
+                tSysFood1.setFood(tSysFood.getFood());
+                tSysFood1.setEnglishName(tSysFood.getEnglishName());
+                tSysFoodList = tSysFoodMapper.findByFoodItems(tSysFood1, tsysUser.getItemsCode());
+            }else {
+                //如果是后台管理员则按条件搜索所有数据
+                tSysFood1.setFood(tSysFood.getFood());
+                tSysFood1.setEnglishName(tSysFood.getEnglishName());
+                tSysFood1.setItemsCode(tSysFood.getItemsCode());
+                tSysFoodList = tSysFoodMapper.queryByFood(tSysFood1);
+            }
+        }else {//根据用户所在的项目点查询
+            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())){
+                tSysFoodList = tSysFoodMapper.findByFoodItems(tSysFood,tsysUser.getItemsCode());
+            }else {
+                //如果是后台管理员则查询所有数据
+                tSysFoodList = tSysFoodMapper.queryByFood(tSysFood);
+            }
         }
         if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
-        List<TSysFood> list = selectByExample(tSysFoodExample);
-        List<FoodVO> foodVOList = new ArrayList<>();
-        for (TSysFood tSysFood : list) {
-            FoodVO foodVO = new FoodVO();
-            TSysItems tSysItems = tSysItemsMapper.selectByItemCode(tSysFood.getItemsCode());
-            foodVO.setItemsCode(tSysItems.getItemsCode());
-            BeanCopierEx.copy(tSysFood, foodVO);
-            foodVOList.add(foodVO);
-        }
-        PageInfo<FoodVO> pageInfo = new PageInfo<FoodVO>(foodVOList);
+        PageInfo<TSysFood> pageInfo = new PageInfo<TSysFood>(tSysFoodList);
         return pageInfo;
     }
 
