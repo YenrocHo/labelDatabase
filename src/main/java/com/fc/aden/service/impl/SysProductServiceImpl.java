@@ -5,12 +5,13 @@ import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.process.TSysFoodMapper;
 import com.fc.aden.mapper.auto.process.TSysProductMapper;
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.ImportProductDTO;
 import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysProduct;
-import com.fc.aden.model.custom.process.TSysTagExample;
 import com.fc.aden.service.SysProductService;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.SnowflakeIdWorker;
 import com.fc.aden.util.StringUtils;
@@ -18,8 +19,6 @@ import com.fc.aden.vo.ImportTSysProductDTO;
 import com.fc.aden.vo.ProductVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +51,6 @@ public class SysProductServiceImpl implements SysProductService {
     @Autowired
     private TSysFoodMapper tSysFoodMapper;
 
-    private static Logger logger = LoggerFactory.getLogger(SysProductServiceImpl.class);
     /**
      * @Author Noctis
      * @Description // 产品分页展示
@@ -62,25 +60,25 @@ public class SysProductServiceImpl implements SysProductService {
      **/
     @Override
     public PageInfo<ProductVO> list(Tablepar tablepar, String searchTxt,String itemsCode){
-        TSysTagExample tSysTagExample = new TSysTagExample();
-        tSysTagExample.setOrderByClause("id+0 desc");
+        TsysUser tsysUser = ShiroUtils.getUser();
         List<TSysProduct> tSysProductList = null;
         if (StringUtils.isEmpty(searchTxt) && StringUtils.isEmpty(itemsCode)){
-            if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())) {
+                //如果是项目管理员 根据项目编号搜索所有数据
+                tSysProductList = tSysProductMapper.selectListByItems(searchTxt,tsysUser.getItemsCode());
+            }else{
+                tSysProductList = tSysProductMapper.findByProduct(searchTxt,itemsCode);
             }
-            tSysProductList = tSysProductMapper.selectList();
         }else {
-            if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())) {
+                //如果是项目管理员 根据项目编号搜索所有数据
+                tSysProductList = tSysProductMapper.selectListByItems(searchTxt,tsysUser.getItemsCode());
+            }else{
+                tSysProductList = tSysProductMapper.findByProduct(searchTxt,itemsCode);
             }
-            if (searchTxt != null || !searchTxt.equals("")){
-                searchTxt = "%"+searchTxt+"%";
-            }
-            if (itemsCode != null || !itemsCode.equals("")){
-                itemsCode = "%"+itemsCode+"%";
-            }
-            tSysProductList = tSysProductMapper.selectListBycNameOreName(searchTxt,itemsCode);
+        }
+        if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
         List<ProductVO> productVOList = new ArrayList<>();
         for(TSysProduct tSysProduct:tSysProductList){

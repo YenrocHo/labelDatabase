@@ -36,9 +36,9 @@ public interface TSysFoodMapper {
     //根据食品名称查询
     List<TSysFood> findByFood(String food);
     //根据项目点搜索
-    List<TSysFood> findByFoodItems(TSysFood tSysFood,String itemsCode);
+    List<TSysFood> findByFoodItems(String food,String itemsCode);
     //查询所有数据
-    List<TSysFood> queryByFood(TSysFood tSysFood);
+    List<TSysFood> queryByFood(String food,String itemsCode);
     //根据食品种类编号查询
     List<TSysFood> findByFoodCode(String foodCode);
     //根据食品种类id查询

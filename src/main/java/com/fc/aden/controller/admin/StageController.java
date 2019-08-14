@@ -3,12 +3,14 @@ package com.fc.aden.controller.admin;
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.ImportStageDTO;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.service.SysStageService2;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.StageVO;
 import com.github.pagehelper.PageInfo;
@@ -44,6 +46,8 @@ public class StageController extends BaseController {
     public String view(Model model,ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
+        TsysUser tsysUser = ShiroUtils.getUser();
+        mp.put("tsysUser", tsysUser);
         setTitle(model, new TitleVo("阶段列表", "制作阶段", false, "欢迎进入图片页面", false, false));
         return prefix + "/list";
     }
@@ -69,6 +73,8 @@ public class StageController extends BaseController {
         //获取所有项目点编号
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         modelMap.put("tSysItems", tSysItemsList);
+        TsysUser tsysUser = ShiroUtils.getUser();
+        modelMap.put("tsysUser", tsysUser);
         return prefix + "/add";
     }
 

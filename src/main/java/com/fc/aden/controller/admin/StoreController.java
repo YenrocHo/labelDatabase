@@ -3,13 +3,13 @@ package com.fc.aden.controller.admin;
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysStoreService;
-import com.fc.aden.vo.ItemsVO;
-import com.fc.aden.vo.StoreVO;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -20,7 +20,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,6 +60,8 @@ public class StoreController extends BaseController {
     public String view(Model model,ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
+        TsysUser tsysUser = ShiroUtils.getUser();
+        mp.put("tsysUser", tsysUser);
         setTitle(model, new TitleVo("条件列表", "存储条件", false, "欢迎进入存储条件页面", false, false));
         return prefix + "/list";
     }
@@ -69,6 +70,8 @@ public class StoreController extends BaseController {
     public String add(ModelMap modelMap) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         modelMap.put("tSysItems", tSysItemsList);
+        TsysUser tsysUser = ShiroUtils.getUser();
+        modelMap.put("tsysUser", tsysUser);
         return prefix + "/add";
     }
 

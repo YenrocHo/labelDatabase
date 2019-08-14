@@ -56,7 +56,7 @@
                                         <label for="exampleInputEmail2" class="sr-only">产品名字</label>
                                         <input type="text" name="searchTxt" placeholder="产品名字" class="form-control">
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" th:if="${tsysUser.roles} eq '2'">
                                         <label >项目点编号</label>
 <!--                                        <input type="text" name="itemsCode" placeholder="项目点编号" class="form-control">-->
                                         <select class="form-control"  name="itemsCode" >

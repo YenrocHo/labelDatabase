@@ -26,7 +26,7 @@
 				</div>
 				<div class="body-nest" id="element">
 					<div class="panel-body">
-						<form  class="form-horizontal m" id="form-edit" th:object="${TsysUser}">
+						<form  class="form-horizontal m" id="form-edit" th:object="${TsysUsers}">
 							<input id="id" name="id" type="hidden" th:field="*{id}"/>
 							<div class="form-group">
 								<label class="col-sm-3 control-label ">工号：</label>
@@ -54,8 +54,12 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label ">项目点：</label>
-								<div class="col-sm-8">
+								<div class="col-sm-8" th:if="${tsysUser.roles} ne '2'">
+									<input class="form-control" type="text" name="itemsCode" disabled="disabled" th:value="${tsysUser.itemsCode}"/>
+								</div>
+								<div class="col-sm-8" th:if="${tsysUser.roles} eq '2'">
 									<select class="form-control" th:value="*{itemsCode}" name="itemsCode" >
+										<option></option>
 										<option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
 									</select>
 								</div>
@@ -64,10 +68,26 @@
 								<label class="col-sm-3 control-label ">权限授权：</label>
 								<div class="col-sm-8">
 									<div class="icheckbox-blue">
-										<label th:each="m : ${roleVos}">
-											<input class="sqcheckbox" name="roles"  th:value="${m.id}"  type="checkbox" th:checked="${m.ischeck}">
-											<b th:text="${m.name}"></b>
-										</label>
+										<div class="icheckbox-blue">
+											<label th:if="${tsysUser.roles} eq '2' and ${TsysUsers.roles} eq '2' " >
+												<input name="roles" value="2" checked type="radio"><b>超级管理员</b>
+											</label>
+											<label th:if="${tsysUser.roles} eq '2' and ${TsysUsers.roles} ne '2' " >
+												<input name="roles" value="2" type="radio"><b>超级管理员</b>
+											</label>
+											<label th:if="${TsysUsers.roles} eq '1' ">
+												<input name="roles" value="1" checked type="radio"><b>项目点管理员</b>
+											</label>
+											<label th:if="${TsysUsers.roles} ne '1' ">
+												<input name="roles" value="1" type="radio"><b>项目点管理员</b>
+											</label>
+											<label th:if="${TsysUsers.roles} ne '0' ">
+												<input name="roles" value="0" type="radio"><b>普通员工</b>
+											</label>
+											<label th:if="${TsysUsers.roles} eq '0' ">
+												<input name="roles" value="0" checked type="radio"><b>普通员工</b>
+											</label>
+										</div>
 									</div>
 								</div>
 							</div>

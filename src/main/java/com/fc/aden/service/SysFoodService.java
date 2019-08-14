@@ -161,35 +161,27 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      * 标签管理
      *
      * @param tablepar
-     * @param tSysFood
-     * @param
+     * @param foodName
+     * @param itemsCode
      * @return
      */
-    public PageInfo<TSysFood> sysFoodList(Tablepar tablepar,TSysFood tSysFood) {
-        TSysFoodExample example = new TSysFoodExample();
-        example.setOrderByClause("id+0 desc");
+    public PageInfo<TSysFood> sysFoodList(Tablepar tablepar,String foodName,String itemsCode) {
         TsysUser tsysUser = ShiroUtils.getUser();
         List<TSysFood> tSysFoodList = null;
-        if (tSysFood.getItemsCode() != null || tSysFood.getFood()!=null) {//模糊搜索
-            TSysFood tSysFood1 = new TSysFood();
+        if (itemsCode != null || foodName!=null) {//模糊搜索
             if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())){
                 //如果是项目管理员 根据项目编号搜索所有数据
-                tSysFood1.setFood(tSysFood.getFood());
-                tSysFood1.setEnglishName(tSysFood.getEnglishName());
-                tSysFoodList = tSysFoodMapper.findByFoodItems(tSysFood1, tsysUser.getItemsCode());
+                tSysFoodList = tSysFoodMapper.findByFoodItems(foodName, tsysUser.getItemsCode());
             }else {
                 //如果是后台管理员则按条件搜索所有数据
-                tSysFood1.setFood(tSysFood.getFood());
-                tSysFood1.setEnglishName(tSysFood.getEnglishName());
-                tSysFood1.setItemsCode(tSysFood.getItemsCode());
-                tSysFoodList = tSysFoodMapper.queryByFood(tSysFood1);
+                tSysFoodList = tSysFoodMapper.queryByFood(foodName,itemsCode);
             }
         }else {//根据用户所在的项目点查询
             if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())){
-                tSysFoodList = tSysFoodMapper.findByFoodItems(tSysFood,tsysUser.getItemsCode());
+                tSysFoodList = tSysFoodMapper.findByFoodItems(foodName,tsysUser.getItemsCode());
             }else {
                 //如果是后台管理员则查询所有数据
-                tSysFoodList = tSysFoodMapper.queryByFood(tSysFood);
+                tSysFoodList = tSysFoodMapper.queryByFood(foodName,itemsCode);
             }
         }
         if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {

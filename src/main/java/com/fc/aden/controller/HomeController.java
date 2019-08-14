@@ -83,7 +83,7 @@ public class HomeController extends BaseController{
 		 ModelAndView view =new ModelAndView();
 			 String userName = user.getUsername();
 			 TsysUser tsysUser = sysUserService.selectLogin(userName);
-			 if("1".equals(tsysUser.getRoles())) {
+			 if("1".equals(tsysUser.getRoles())||"2".equals(tsysUser.getRoles())) {
 				 Subject currentUser = SecurityUtils.getSubject();
 				 if (!currentUser.isAuthenticated()) {
 					 UsernamePasswordToken token = new UsernamePasswordToken(userName, user.getPassword());

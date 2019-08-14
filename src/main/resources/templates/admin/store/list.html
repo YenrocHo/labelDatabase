@@ -56,9 +56,9 @@
                                         <label for="exampleInputEmail2" class="sr-only">存储条件名称</label>
                                         <input type="text" name="searchTxt" placeholder="存储条件名称" class="form-control">
                                     </div>
-                                    <div class="form-group">
+
+                                    <div class="form-group" th:if="${tsysUser.roles} eq '2'">
                                         <label >项目点编号</label>
-                                       <!-- <input type="text" name="itemsCode" placeholder="项目点编号" class="form-control">-->
                                             <select class="form-control"  name="itemsCode" >
                                                 <option></option>
                                                 <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>

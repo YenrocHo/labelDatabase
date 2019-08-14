@@ -4,17 +4,14 @@ package com.fc.aden.service.impl;
 import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.process.TSysStoreMapper;
-import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
 
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysStoreService;
 import com.fc.aden.shiro.util.ShiroUtils;
-import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.SnowflakeIdWorker;
 import com.fc.aden.util.StringUtils;
-import com.fc.aden.vo.StoreVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,21 +41,22 @@ public class SysStoreServiceImpl implements SysStoreService {
         TsysUser tsysUser = ShiroUtils.getUser();
         List<TSysStore> tSysStores = null;
         if (StringUtils.isEmpty(searchTxt)&& StringUtils.isEmpty(itemsCode)) {
-            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())) {
+                //如果是项目管理员 根据项目编号搜索所有数据
+                tSysStores = tSysStoreMapper.selectListByItems(searchTxt,tsysUser.getItemsCode());
+            }else{
+                tSysStores = tSysStoreMapper.selectList(itemsCode,searchTxt);
             }
-            tSysStores = tSysStoreMapper.selectList(tsysUser.getItemsCode());
         } else {
-            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())) {
+                //如果是项目管理员 根据项目编号搜索所有数据
+                tSysStores = tSysStoreMapper.selectListByItems(searchTxt,tsysUser.getItemsCode());
+            }else{
+                tSysStores = tSysStoreMapper.selectList(itemsCode,searchTxt);
             }
-            if (searchTxt != null || !searchTxt.equals("")){
-                searchTxt = "%"+searchTxt+"%";
-            }
-            if (itemsCode != null || !itemsCode.equals("")){
-                itemsCode = "%"+itemsCode+"%";
-            }
-            tSysStores = tSysStoreMapper.selectListBycQuery(searchTxt,itemsCode,tsysUser.getItemsCode());
+        }
+        if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
         PageInfo<TSysStore> pageInfo = new PageInfo<TSysStore>(tSysStores);
         return pageInfo;
@@ -109,6 +107,11 @@ public class SysStoreServiceImpl implements SysStoreService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public TSysStore findByStore(String itemsCode){
+       return tSysStoreMapper.findByStore(itemsCode);
     }
 
     /**

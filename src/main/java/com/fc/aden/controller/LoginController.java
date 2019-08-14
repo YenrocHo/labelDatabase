@@ -276,9 +276,9 @@ public class LoginController  extends BaseController {
      */
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/user-list")
     @ResponseBody
-    public AjaxResult list(Tablepar tablepar, String username, String itemsCode,String number, String name) {
+    public AjaxResult list(Tablepar tablepar, String username, String itemsCode,String number, String name,String phone) {
         logger.info("登录员工信息接口---------------");
-        PageInfo<TsysUser> page = sysUserService.list(tablepar, username,itemsCode, number, name);
+        PageInfo<TsysUser> page = sysUserService.list(tablepar, username,itemsCode, number, name,phone);
         TableSplitResult<TsysUser> result = new TableSplitResult<TsysUser>(page.getPageNum(), page.getTotal(),page.getList());
         AjaxResult ajaxResult = AjaxResult.success("读取成功");
         ajaxResult.put(AJAX_DATA,result);

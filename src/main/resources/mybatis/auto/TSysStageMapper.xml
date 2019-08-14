@@ -206,7 +206,13 @@
         select
         <include refid="Base_Column_List"/>
         from t_sys_stage
-        where items_code = #{itemsCode}
+        where 1=1
+        <if test="itemsCode != null and itemsCode != ''">
+            and items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="stage != null and  stage !=''">
+            and stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
+        </if>
         order by update_time desc
     </select>
 
@@ -215,11 +221,8 @@
         <include refid="Base_Column_List"/>
         from t_sys_stage
         where 1=1
-        <if test="items != null and items != '%%'">
-            and items_code like #{items}
-        </if>
-        <if test="stage != null and stage != '%%'">
-            and stage like #{stage} or stage like #{stage}
+        <if test="stage != null and  stage !=''">
+            and stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
         </if>
         and items_code = #{itemsCode}
         order by update_time desc

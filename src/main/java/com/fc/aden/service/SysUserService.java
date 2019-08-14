@@ -64,23 +64,24 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      *
      * @return
      */
-    public PageInfo<TsysUser> list(Tablepar tablepar, String username, String itemsCode,String number,String name) {
+    public PageInfo<TsysUser> list(Tablepar tablepar, String username, String itemsCode,String number,String name,String phone) {
         TsysUser tsysUser = ShiroUtils.getUser();
         List<TsysUser> tSysUsers = null;
-        if (username != null && itemsCode != null && name != null) {
-            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        if (username != null || itemsCode != null || name != null || phone != null ) {
+            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())){
+                tSysUsers = tsysUserMapper.selectByUserItems(name,phone,username,tsysUser.getItemsCode());
+            }else{
+                tSysUsers = tsysUserMapper.queryByUser(itemsCode,name,phone,username);
             }
-            username = "%" + username + "%";
-            itemsCode =  "%" + itemsCode + "%";
-            name = "%" + name + "%";
-            tSysUsers = tsysUserMapper.queryByUser(itemsCode,name,username,tsysUser.getItemsCode());
         }else{
-            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())){
+                tSysUsers = tsysUserMapper.selectByUserItems(name,phone,username,tsysUser.getItemsCode());
+            }else{
+                tSysUsers = tsysUserMapper.queryByUser(itemsCode,name,phone,username);
             }
-            //查询全部
-                tSysUsers = tsysUserMapper.selectByListUser(tsysUser.getItemsCode());
+        }
+        if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
         PageInfo<TsysUser> pageInfo = new PageInfo<TsysUser>(tSysUsers);
         return  pageInfo;

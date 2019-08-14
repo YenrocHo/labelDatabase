@@ -138,7 +138,13 @@
     select
     <include refid="Base_Column_List" />
     from t_sys_store
-    where items_code = #{itemsCode}
+    where 1=1
+    <if test="itemsCode != null and itemsCode != ''">
+      and items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
+    </if>
+     <if test="searchTxt != null and searchTxt != ''">
+      and store like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%')
+    </if>
   </select>
   <delete id="delectStoreByIds" parameterType="map">
     delete
@@ -162,19 +168,16 @@
     where id = #{id}
   </update>
 
-  <select id="selectListBycQuery" parameterType="com.fc.aden.model.custom.process.TSysStore" resultMap="BaseResultMap">
+  <select id="selectListByItems" parameterType="com.fc.aden.model.custom.process.TSysStore" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_sys_store
     where 1=1
-    <if test="searchTxt != null and searchTxt !='%%'">
-        and store like #{searchTxt} or name like #{searchTxt} or english_name like #{searchTxt}
+    <if test="searchTxt != null and searchTxt != ''">
+      and store like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%')
     </if>
-    <if test="items != null  and items !='%%'">
-        and items_code like #{items,jdbcType=VARCHAR}
-    </if>
-        and items_code = #{itemsCode}
-        order by update_time desc
+       and items_code = #{itemsCode}
+       order by update_time desc
   </select>
   <select id="selectStoreList" resultMap="BaseResultMap">
     select
@@ -188,5 +191,11 @@
         and items_code like #{itemsCode,jdbcType=VARCHAR}
       </if>
     </where>
+  </select>
+  <select id="findByStore" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_store
+    where items_code = #{itemsCode}
   </select>
 </mapper>

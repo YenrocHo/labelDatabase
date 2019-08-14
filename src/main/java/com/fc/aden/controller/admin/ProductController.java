@@ -3,6 +3,7 @@ package com.fc.aden.controller.admin;
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
@@ -10,6 +11,7 @@ import com.fc.aden.model.custom.process.ImportProductDTO;
 import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysProduct;
 import com.fc.aden.service.SysProductService;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.FoodVO;
 import com.fc.aden.vo.ImportTSysUserDTO;
@@ -65,6 +67,8 @@ public class ProductController extends BaseController {
     public String view(Model model,ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
+        TsysUser tsysUser = ShiroUtils.getUser();
+        mp.put("tsysUser", tsysUser);
         setTitle(model, new TitleVo("产品列表", "产品管理", false, "欢迎进入产品页面", false, false));
         return prefix + "/list";
     }
@@ -80,6 +84,8 @@ public class ProductController extends BaseController {
             foodVO.setFood(tSysFood.getFood());
             foodVOList.add(foodVO);
         }
+        TsysUser tsysUser = ShiroUtils.getUser();
+        modelMap.put("tsysUser", tsysUser);
         modelMap.put("tSysItems", tSysItemsList);
         modelMap.put("foodVOList", foodVOList);
         return prefix + "/add";

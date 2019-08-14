@@ -27,7 +27,10 @@
                         <form class="form-horizontal m" id="form-add">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label ">项目点编号：</label>
-                                <div class="col-sm-8">
+                                    <div class="col-sm-8" th:if="${tsysUser.roles} ne '2'">
+                                        <input class="form-control" type="text" name="itemsCode" disabled="disabled" th:value="${tsysUser.itemsCode}"/>
+                                    </div>
+                                    <div class="col-sm-8" th:if="${tsysUser.roles} eq '2'">
                                     <select class="form-control" id="itemsCode" name="itemsCode" >
                                         <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
                                     </select>
