@@ -76,11 +76,16 @@ public class FoodController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:food:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String foodName,String itemsCode){
-        PageInfo<FoodVO> page=sysFoodService.sysFoodList(tablepar,foodName,itemsCode);
-        TableSplitResult<FoodVO> result=new TableSplitResult<FoodVO>(page.getPageNum(), page.getTotal(), page.getList());
+    public Object list(Tablepar tablepar, TSysFood tSysFood){
+        PageInfo<TSysFood> page=sysFoodService.sysFoodList(tablepar,tSysFood);
+        TableSplitResult<TSysFood> result=new TableSplitResult<TSysFood>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
+    /* public Object list(Tablepar tablepar, String foodName,String itemsCode){
+        PageInfo<TSysFood> page=sysFoodService.sysFoodList(tablepar,foodName,itemsCode);
+        TableSplitResult<TSysFood> result=new TableSplitResult<TSysFood>(page.getPageNum(), page.getTotal(), page.getList());
+        return result;
+    }*/
 
     @GetMapping("/add")
     public String add(ModelMap modelMap) {
