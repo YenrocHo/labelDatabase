@@ -117,6 +117,9 @@
         <if test="username != null and  username !=''">
             and username like CONCAT('%', #{username, jdbcType=VARCHAR}, '%')
         </if>
+        <if test="phone != null and  phone !=''">
+            and phone_number like CONCAT('%', #{phone, jdbcType=VARCHAR}, '%')
+        </if>
         <if test="name != null and  name !=''">
             and name like CONCAT('%', #{name, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{name, jdbcType=VARCHAR}, '%')
         </if>
