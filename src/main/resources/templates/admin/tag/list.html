@@ -18,6 +18,19 @@
         list-style-type: none;
         float: left;
     }
+
+    .clearfix {
+        float: left;
+        width: 20%;
+    }
+
+    .form-control {
+        width: 80%;
+
+    }
+    .clear .btn-success{
+        clear: left;
+    }
 </style>
 <!-- 右边内容 -->
 <div class="wrap-fluid">
@@ -39,86 +52,87 @@
                                 <a class="gone" href="#inlineClose">
                                     <span class="entypo-cancel"></span>
                                 </a>
+                            </div>
+                            <div class="titleToggle">
+                                <a class="nav-toggle-alt" href="#search_div">
+                                    <span class="entypo-up-open"></span>
+                                </a>
+                            </div>
                         </div>
-                        <div class="titleToggle">
-                            <a class="nav-toggle-alt" href="#search_div">
-                                <span class="entypo-up-open"></span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="body-nest" id="search_div">
-                        <div class="form_left">
-                            <form role="form" class="form-inline">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail2" class="sr-only">阶段</label>
-                                    <input type="text" name="stage" placeholder="阶段" class="form-control">&nbsp;&nbsp;
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail2" class="sr-only">食品</label>
-                                    <input type="text" name="food" placeholder="食品" class="form-control">&nbsp;&nbsp;
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail2" class="sr-only">产品</label>
-                                    <input type="text" name="product" placeholder="产品" class="form-control">&nbsp;&nbsp;
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail2" class="sr-only">项目点</label>
-                                    <input type="text" name="items" placeholder="项目点" class="form-control">&nbsp;&nbsp;
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail2" class="sr-only">打印人</label>
-                                    <input type="text" name="printUser" placeholder="打印人" class="form-control">&nbsp;&nbsp;
-                                </div>
-                                <div class="form-group">
-                                    <label>打印时间范围:&nbsp;&nbsp;</label>
-                                    <input value="" type="date" name="startTime" id="bTime"
-                                           class="form-control"/>-
-                                    <input value="" type="date" name="endTime" id="eTime"
-                                           class="form-control"/>
-                                </div>
-                                <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
-                                        class="fa fa-search"></i>&nbsp;搜索
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- END搜索条件 -->
-                <!-- 空白页开始-->
-                <div class="nest" id="Blank_PageClose">
-                    <div class="title-alt">
-                        <h6>表单</h6>
-                        <div class="titleClose">
-                            <a class="gone" href="#Blank_PageClose">
-                                <span class="entypo-cancel"></span>
-                            </a>
-                        </div>
-                        <div class="titleToggle">
-                            <a class="nav-toggle-alt" href="#Blank_Page_Content">
-                                <span class="entypo-up-open"></span>
-                            </a>
-                        </div>
-                    </div>
+                        <div class="body-nest" id="search_div">
+                            <div class="form_left">
+                                <form role="form" class="">
+                                    <div>
+                                        <div class="clearfix">
+                                            <input type="text" name="stage" placeholder="阶段" class="form-control ">
+                                        </div>
+                                        <div class="clearfix">
+                                            <input type="text" name="food" placeholder="食品种类" class="form-control">
+                                        </div>
+                                        <div class="clearfix">
+                                            <input type="text" name="product" placeholder="产品" class="form-control">
+                                        </div>
+                                        <div class="clearfix">
+                                            <input type="text" name="items" placeholder="项目点编号" class="form-control">
+                                        </div>
 
-                    <div class="body-nest" id="Blank_Page_Content">
-                        <!-- 工具条 -->
-                        <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
+                                        <div class="clearfix clear">
+                                            <input type="text" name="items" placeholder="项目点名称" class="form-control">
+                                        </div>
+                                        <div class="clearfix">
+                                            <input type="text" name="printUser" placeholder="打印人" class="form-control">
+                                        </div>
+                                        <div class="clearfix">
+                                            <input type="date" name="startTime" id="bTime" class="form-control" placeholder="开始时间"/>
+                                        </div>
+                                        <div class="clearfix">
+                                            <input type="date" name="endTime" id="eTime" class="form-control" placeholder="结束时间"/>
+                                        </div>
+                                    </div>
+                                    <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
+                                            class="fa fa-search"></i>&nbsp;搜索
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                        <!-- 工具条 end-->
-                        <table id="dataTable" class="table-striped footable-res footable metro-blue" data-page-size="6">
-                        </table>
+                    </div>
+                    <!-- END搜索条件 -->
+                    <!-- 空白页开始-->
+                    <div class="nest" id="Blank_PageClose">
+                        <div class="title-alt">
+                            <h6>表单</h6>
+                            <div class="titleClose">
+                                <a class="gone" href="#Blank_PageClose">
+                                    <span class="entypo-cancel"></span>
+                                </a>
+                            </div>
+                            <div class="titleToggle">
+                                <a class="nav-toggle-alt" href="#Blank_Page_Content">
+                                    <span class="entypo-up-open"></span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="body-nest" id="Blank_Page_Content">
+                            <!-- 工具条 -->
+                            <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
+                            </div>
+                            <!-- 工具条 end-->
+                            <table id="dataTable" class="table-striped footable-res footable metro-blue"
+                                   data-page-size="6">
+                            </table>
+                        </div>
                     </div>
                 </div>
+                <!-- 空白页结束 -->
             </div>
-            <!-- 空白页结束 -->
+            <!-- 结束内容 -->
+            <!-- 页脚 通用-->
+            <div th:replace="admin/common/html/footer :: footer">
+            </div>
+            <!-- 结束页脚通用 -->
         </div>
-        <!-- 结束内容 -->
-        <!-- 页脚 通用-->
-        <div th:replace="admin/common/html/footer :: footer">
-        </div>
-        <!-- 结束页脚通用 -->
     </div>
-</div>
 </div>
 <!-- 结束右边内容 -->
 <!-- ###############################代码编写出############################### -->

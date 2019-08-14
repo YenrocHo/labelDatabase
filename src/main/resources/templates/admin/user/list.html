@@ -63,6 +63,10 @@
                                         <input type="text" name="name" placeholder="用户姓名" class="form-control">
                                     </div>
                                     <div class="form-group" th:if="${tsysUser.roles} eq '2'">
+                                    <div class="form-group">
+                                        <input type="text" name="mobile" placeholder="手机号" class="form-control">
+                                    </div>
+                                    <div class="form-group">
                                         <label >项目点编号</label>
                                         <select class="form-control"  name="itemsCode" >
                                             <option></option>
