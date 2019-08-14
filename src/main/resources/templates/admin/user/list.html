@@ -62,12 +62,12 @@
                                         <label for="exampleInputEmail2" class="sr-only">用户姓名</label>
                                         <input type="text" name="name" placeholder="用户姓名" class="form-control">
                                     </div>
+                                    <div class="form-group" th:if="${tsysUser.roles} eq '2'">
                                     <div class="form-group">
                                         <input type="text" name="mobile" placeholder="手机号" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label >项目点编号</label>
-<!--                                        <input type="text" name="itemsCode" placeholder="项目点编号" class="form-control">-->
                                         <select class="form-control"  name="itemsCode" >
                                             <option></option>
                                             <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
@@ -179,11 +179,24 @@
                 field: 'phoneNumber',
                 title: '手机号'
             }, {
+                title: '员工状态',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    if(row.roles=="0"){
+                        actions.push('普通员工');
+                    }else if(row.roles=="1"){
+                        actions.push('项目点管理员');
+                    }else{
+                        actions.push('超级管理员');
+                    }
+                   return actions.join('');
+                }
+            }, {
                 title: '操作',
                 formatter: function (value, row, index) {
                     var id = row.id;
                     var actions = [];
-                    if(row.username=="admin"){
+                    if(row.roles=="2"){
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')" disabled="disabled"><i class="fa fa-remove"></i>删除</a>&nbsp;');
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updatePwd(\'' + row.id + '\')"><i class="fa fa-edit"></i>重置密码</a> ');

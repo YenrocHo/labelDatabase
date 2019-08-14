@@ -52,26 +52,27 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 <!--根据所在项目点查询所有列表-->
-  <select id="findByFoodItems" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood" >
+  <select id="findByFoodItems" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from t_sys_food
-    <if test="food != null and  food !='' ">
+    where 1=1
+    <if test="food != null and  food !=''">
       and food like CONCAT('%', #{food, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
     </if>
-        and items_code = #{itemsCode}
+    and items_code = #{itemsCode}
     order by update_time desc
   </select>
-  <!--查询所有数据-->
+  <!--管理员查询所有数据-->
   <select id="queryByFood" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood" >
     select
     <include refid="Base_Column_List" />
     from t_sys_food
     where 1=1
-    <if test="itemsCode != null and itemsCode != '' ">
+    <if test="itemsCode != null and itemsCode != ''">
       and items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
     </if>
-    <if test="food != null and  food !='' ">
+    <if test="food != null and  food !=''">
       and food like CONCAT('%', #{food, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
     </if>
       order by update_time desc

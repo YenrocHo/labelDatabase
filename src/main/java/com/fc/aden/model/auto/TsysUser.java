@@ -46,7 +46,7 @@ public class TsysUser implements Serializable {
      */
     private String statusToken;
 
-    private String roles;//1 admin所有管理员权限  0  项目点管理员权限
+    private String roles;//1 admin所有管理员权限  0  项目点管理员权限 2 admin管理员
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String updateTime;

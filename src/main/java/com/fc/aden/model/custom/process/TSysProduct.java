@@ -11,6 +11,7 @@ public class TSysProduct implements Serializable {
 
     //产品名
     private String product;
+    private String productCode;
 
     //产品中文名
     private String name;
@@ -33,10 +34,11 @@ public class TSysProduct implements Serializable {
     //产品更新时间
     private Date updateTime;
 
-    public TSysProduct(String id, String itemsCode, String product, String name, String englishName, Integer status,String shelfLife,String foodName, Date createTime, Date updateTime) {
+    public TSysProduct(String id, String itemsCode, String product,String productCode, String name, String englishName, Integer status,String shelfLife,String foodName, Date createTime, Date updateTime) {
         this.id = id;
         this.itemsCode = itemsCode;
         this.product = product;
+        this.productCode = productCode;
         this.name = name;
         this.englishName = englishName;
         this.status = status;
@@ -129,12 +131,21 @@ public class TSysProduct implements Serializable {
         this.shelfLife = shelfLife;
     }
 
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
     @Override
     public String toString() {
         return "TSysProduct{" +
                 "id='" + id + '\'' +
                 ", itemsCode='" + itemsCode + '\'' +
                 ", product='" + product + '\'' +
+                ", productCode='" + productCode + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +
                 ", status=" + status +

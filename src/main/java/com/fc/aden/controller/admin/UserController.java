@@ -44,6 +44,8 @@ public class UserController extends BaseController {
     public String view(Model model,ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
+        TsysUser tsysUser = ShiroUtils.getUser();
+        mp.put("tsysUser", tsysUser);
         setTitle(model, new TitleVo("用户列表", "用户管理", true, "欢迎进入用户页面", true, false));
         return prefix + "/list";
     }
@@ -53,8 +55,8 @@ public class UserController extends BaseController {
     @PostMapping("list")
     @RequiresPermissions("system:user:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String username, String itemsCode,String number, String name) {
-        PageInfo<TsysUser> page = sysUserService.list(tablepar, username, itemsCode,number, name);
+    public Object list(Tablepar tablepar, String username, String itemsCode,String number, String name,String phone) {
+        PageInfo<TsysUser> page = sysUserService.list(tablepar, username, itemsCode,number, name,phone);
         TableSplitResult<TsysUser> result = new TableSplitResult<TsysUser>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
@@ -68,6 +70,8 @@ public class UserController extends BaseController {
         List<TsysRole> tsysRoleList = sysRoleService.queryList();
         //获取所有项目点编号
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        TsysUser tsysUser = ShiroUtils.getUser();
+        modelMap.put("tsysUser", tsysUser);
         modelMap.put("tSysItems", tSysItemsList);
         modelMap.put("tsysRoleList", tsysRoleList);
         return prefix + "/add";
@@ -130,8 +134,10 @@ public class UserController extends BaseController {
         TsysUser user = sysUserService.selectByPrimaryKey(id);
         String ite = user.getItemsCode();//获取当前用户的项目点编号
         List<TSysItems> tSysItems = sysItemsService.queryItems();//获取所有编号
+        TsysUser tsysUser = ShiroUtils.getUser();
+        mmap.put("tsysUser", tsysUser);
         mmap.put("roleVos", roleVos);
-        mmap.put("TsysUser", sysUserService.selectByPrimaryKey(id));
+        mmap.put("TsysUsers", sysUserService.selectByPrimaryKey(id));
         mmap.put("tSysItems", tSysItems);
         mmap.put("ite",ite);//项目点编号
         return prefix + "/edit";

@@ -3,6 +3,7 @@ package com.fc.aden.controller.admin;
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
@@ -10,6 +11,7 @@ import com.fc.aden.model.custom.process.ImportFoodDTO;
 import com.fc.aden.model.custom.process.TSysFood;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysFoodService2;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.FoodVO;
 import com.fc.aden.vo.ItemsVO;
@@ -62,6 +64,8 @@ public class FoodController extends BaseController {
     public String view(Model model,ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
+        TsysUser tsysUser = ShiroUtils.getUser();
+        mp.put("tsysUser", tsysUser);
         setTitle(model, new TitleVo("食品列表", "食品管理", false,"欢迎进入图片页面", false, false));
         return prefix + "/list";
     }
@@ -76,28 +80,18 @@ public class FoodController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:food:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, TSysFood tSysFood){
-        PageInfo<TSysFood> page=sysFoodService.sysFoodList(tablepar,tSysFood);
-        TableSplitResult<TSysFood> result=new TableSplitResult<TSysFood>(page.getPageNum(), page.getTotal(), page.getList());
-        return result;
-    }
-    /* public Object list(Tablepar tablepar, String foodName,String itemsCode){
+     public Object list(Tablepar tablepar, String foodName,String itemsCode){
         PageInfo<TSysFood> page=sysFoodService.sysFoodList(tablepar,foodName,itemsCode);
         TableSplitResult<TSysFood> result=new TableSplitResult<TSysFood>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
-    }*/
+    }
 
     @GetMapping("/add")
     public String add(ModelMap modelMap) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
-        List<ItemsVO> itemsVOS = new ArrayList<>();
-        for (TSysItems tSysItems : tSysItemsList) {//获取项目点
-            ItemsVO itemsVO = new ItemsVO();
-            itemsVO.setItemsCode(tSysItems.getItemsCode());//项目点编号
-            itemsVO.setName(tSysItems.getName());
-            itemsVOS.add(itemsVO);
-        }
-        modelMap.put("tSysItems", itemsVOS);
+        TsysUser tsysUser = ShiroUtils.getUser();
+        modelMap.put("tsysUser", tsysUser);
+        modelMap.put("tSysItems", tSysItemsList);
         return prefix + "/add";
     }
 

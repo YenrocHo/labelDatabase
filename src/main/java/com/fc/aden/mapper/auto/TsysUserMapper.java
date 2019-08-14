@@ -18,8 +18,9 @@ public interface TsysUserMapper {
 
     List<TsysUser> selectByExample(TsysUserExample example);
     //根据项目点编号查询
-    List<TsysUser> selectByListUser(String itemsCode);
-    List<TsysUser> queryByUser(String items,String name,String username,String itemsCode);
+    List<TsysUser> selectByUserItems(String name,String phone,String username,String itemsCode);
+    //管理员查询
+    List<TsysUser> queryByUser(String itemsCode,String name,String phone,String username);
 
     TsysUser selectByPrimaryKey(String id);
 

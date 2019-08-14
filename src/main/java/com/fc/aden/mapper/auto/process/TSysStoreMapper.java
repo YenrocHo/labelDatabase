@@ -14,18 +14,19 @@ public interface TSysStoreMapper {
     int insertSelective(TSysStore record);
 
     TSysStore selectByPrimaryKey(String id);
+    TSysStore findByStore(String itemsCode);
 
     int updateByPrimaryKeySelective(TSysStore record);
 
     int updateByPrimaryKey(TSysStore record);
 
-    List<TSysStore> selectList(String itemsCode);
+    List<TSysStore> selectList(String itemsCode,String searchTxt);
 
     int delectStoreByIds(@Param("storeIdlist") List<String> storeIdlist);
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
-    List<TSysStore> selectListBycQuery(String searchTxt,String items,String itemsCode);
+    List<TSysStore> selectListByItems(String searchTxt,String itemsCode);
 
     List<TSysStore> selectStoreList(@Param("itemId") String itemId, @Param("keyword") String keyword);
 }

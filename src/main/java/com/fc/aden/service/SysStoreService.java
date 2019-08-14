@@ -13,6 +13,7 @@ public interface SysStoreService  {
     public int insertStore(TSysStore tSysStore);
 
     public TSysStore selectStoreById(String id);
+    public TSysStore findByStore(String itemsCode);
 
     public int updateStoreById(TSysStore tSysStore);
 

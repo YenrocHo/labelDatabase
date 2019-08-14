@@ -88,28 +88,38 @@
          order by update_time desc
     </select>
 
-    <select id="selectByListUser" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">
+    <select id="selectByUserItems" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_sys_user
-        where items_code = #{itemsCode}
+        where 1=1
+        <if test="username != null and  username !=''">
+            and username like CONCAT('%', #{username, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="phone != null and  phone !=''">
+            and phone_number like CONCAT('%', #{phone, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="name != null and  name !=''">
+            and name like CONCAT('%', #{name, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{name, jdbcType=VARCHAR}, '%')
+        </if>
+         and items_code = #{itemsCode}
         order by update_time desc
     </select>
+
     <select id="queryByUser" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_sys_user
         where 1=1
-        <if test="items != null and items != '%%'">
-           and items_code like #{items}
+        <if test="itemsCode != null and itemsCode != ''">
+            and items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
         </if>
-        <if test="name != null and name != '%%'">
-           and name like #{name} or english_name like #{name}
+        <if test="username != null and  username !=''">
+            and username like CONCAT('%', #{username, jdbcType=VARCHAR}, '%')
         </if>
-        <if test="username != null and username != '%%'">
-           and username like #{username}
+        <if test="name != null and  name !=''">
+            and name like CONCAT('%', #{name, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{name, jdbcType=VARCHAR}, '%')
         </if>
-        and items_code = #{itemsCode}
         order by update_time desc
     </select>
     <select id="selectByNameOrNumber" parameterType="com.fc.aden.model.auto.TsysUser" resultMap="BaseResultMap">

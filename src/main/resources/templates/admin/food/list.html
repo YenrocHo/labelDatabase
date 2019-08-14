@@ -53,7 +53,7 @@
                                         <label for="exampleInputEmail2" class="sr-only">食品名称</label>
                                         <input type="text" name="foodName" placeholder="食品名称"class="form-control">
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" th:if="${tsysUser.roles} eq '2'">
                                         <label >项目点编号</label>
                                         <select class="form-control"  name="itemsCode" >
                                             <option></option>

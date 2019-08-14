@@ -55,8 +55,12 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label ">项目点：</label>
-								<div class="col-sm-8">
+								<div class="col-sm-8" th:if="${tsysUser.roles} ne '2'">
+									<input class="form-control" type="text" name="itemsCode" disabled="disabled" th:value="${tsysUser.itemsCode}"/>
+								</div>
+								<div class="col-sm-8" th:if="${tsysUser.roles} eq '2'">
 									<select class="form-control" id="itemsCode" name="itemsCode" >
+										<option></option>
 										<option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
 									</select>
 								</div>
@@ -65,8 +69,11 @@
 								<label class="col-sm-3 control-label ">权限授权：</label>
 								<div class="col-sm-8">
 									<div class="icheckbox-blue">
-										<label th:each="m : ${tsysRoleList}">
-											<input name="roles"  th:value="${m.id}"  type="radio"><b th:text="${m.name}"></b>
+										<label th:if="${tsysUser.roles} eq '2'">
+											<input name="roles" value="2" type="radio"><b>超级管理员</b>
+										</label>
+										<label>
+											<input name="roles" value="1"  type="radio">项目点管理员</b>
 										</label>
 										<label>
 											<input name="roles" value="0" type="radio"><b>普通员工</b>

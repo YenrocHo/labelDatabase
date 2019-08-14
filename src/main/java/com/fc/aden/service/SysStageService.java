@@ -104,39 +104,27 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
     public PageInfo<TSysStage> sysStageList(Tablepar tablepar, String stage, String itemsCode) {
         TsysUser tsysUser = ShiroUtils.getUser();
         List<TSysStage> sysStages = null;
-        if (stage != null && itemsCode != null ) {
-            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        if (stage != null && itemsCode != null) {
+            if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
+                //根据项目点编号搜索
+                sysStages = tSysStageMapper.findByStageOrItems(stage, tsysUser.getItemsCode());
+            } else {
+                //管理员全部搜索
+                sysStages = tSysStageMapper.selectStage(itemsCode, stage);
             }
-            stage = "%" + stage + "%";
-            itemsCode = "%" + itemsCode + "%";
-            sysStages = tSysStageMapper.findByStageOrItems(itemsCode,stage,tsysUser.getItemsCode());
-        }else {
-            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        } else {
+            if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
+                sysStages = tSysStageMapper.findByStageOrItems(stage, tsysUser.getItemsCode());
+            } else {
+                sysStages = tSysStageMapper.selectStage(itemsCode, stage);
             }
-            sysStages = tSysStageMapper.selectStage(tsysUser.getItemsCode());
-        }
-        PageInfo<TSysStage> pageInfo = new PageInfo<TSysStage>(sysStages);
-        return pageInfo;
-    }
-
-    /* public PageInfo<TSysStage> sysStageList(Tablepar tablepar, String stage, String itemsCode) {
-        TSysStageExample tSysStageExample = new TSysStageExample();
-        tSysStageExample.setOrderByClause("id+0 desc");
-        if (stage != null && !"".equals(stage)) {
-            tSysStageExample.createCriteria().andStageLike("%" + stage + "%");
-        }
-        if (itemsCode != null && !"".equals(itemsCode)) {
-            tSysStageExample.createCriteria().andItemsLike("%" + itemsCode + "%");
         }
         if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
-        List<TSysStage> list = selectByExample(tSysStageExample);
-        PageInfo<TSysStage> pageInfo = new PageInfo<TSysStage>(list);
+        PageInfo<TSysStage> pageInfo = new PageInfo<TSysStage>(sysStages);
         return pageInfo;
-    }*/
+    }
 
     /**
      * 检查阶段名称是否重名
@@ -155,6 +143,7 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
 
     /**
      * 验证文件，数据导入到DTO
+     *
      * @param dataList
      * @return
      */
@@ -184,11 +173,11 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
             if (StringUtils.isEmpty(stageName)) {
                 errorMessage.append("阶段名称名称不能为空；");
                 pass = false;
-            } else if(projectNames.contains(stageName)||stages!=null && stages.size()>0){
+            } else if (projectNames.contains(stageName) || stages != null && stages.size() > 0) {
                 importTSysStageDTO.setStage(stageName);
                 errorMessage.append("阶段名称名称不能重复；");
                 pass = false;
-            }else {
+            } else {
                 importTSysStageDTO.setName(stageName);
                 importTSysStageDTO.setStage(stageName);
             }
@@ -224,9 +213,10 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
 
     /**
      * 导入文件到数据库
+     *
      * @param stageVOS
      */
-    public void saveStage(List<StageVO> stageVOS){
+    public void saveStage(List<StageVO> stageVOS) {
         for (StageVO stageVO : stageVOS) {
             TSysStage tSysStage = new TSysStage();
             tSysStage.setUpdateTime(new Date());
@@ -236,11 +226,11 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
         }
     }
 
-    public List<StageVO> getSuccessTSysItems(List<ImportTSysStageDTO> importTSysStageDTOS){
-        if(importTSysStageDTOS ==null) return new ArrayList<>();
+    public List<StageVO> getSuccessTSysItems(List<ImportTSysStageDTO> importTSysStageDTOS) {
+        if (importTSysStageDTOS == null) return new ArrayList<>();
         List<StageVO> stageVOS = new ArrayList<>();
         for (ImportTSysStageDTO importTSysUserDTO : importTSysStageDTOS) {
-            if(importTSysUserDTO.getPass()){
+            if (importTSysUserDTO.getPass()) {
                 stageVOS.add(loadByDTO(importTSysUserDTO));
             }
         }
@@ -249,12 +239,13 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
 
     /**
      * 确认导入数据
+     *
      * @param dto
      * @return
      */
     private StageVO loadByDTO(ImportTSysStageDTO dto) {
         StageVO stageVO = new StageVO();
-        BeanCopierEx.copy(dto,stageVO);
+        BeanCopierEx.copy(dto, stageVO);
         return stageVO;
     }
 }
