@@ -28,10 +28,12 @@
     }
 
     .clearfix {
-        float: left;
+
         width: 20%;
     }
-
+    .float_l{
+        float: left;
+    }
     .form-control ,.layui-form-select{
         width: 80%;
 
@@ -84,13 +86,13 @@
                             <div class="form_left">
                                 <form role="form" class="layui-form">
                                     <div class="search_one">
-                                        <div class="clearfix">
+                                        <div class="clearfix float_l">
                                             <input type="text" name="stage" placeholder="阶段" class="form-control ">
                                         </div>
-                                        <div class="clearfix">
+                                        <div class="clearfix float_l">
                                             <input type="text" name="food" placeholder="食品种类" class="form-control">
                                         </div>
-                                        <div class="clearfix">
+                                        <div class="clearfix float_l">
                                             <input type="text" name="product" placeholder="产品" class="form-control">
                                         </div>
                                         <div class="layui-input-inline clearfix">
@@ -103,17 +105,17 @@
                                     </div>
                                     <div class="m_clear"></div>
                                     <div class="search_two">
-                                        <div class="clearfix clear">
+                                        <div class="clearfix clear  float_l">
                                             <input type="text" name="items" placeholder="项目点名称" class="form-control">
                                         </div>
-                                        <div class="clearfix">
+                                        <div class="clearfix float_l">
                                             <input type="text" name="printUser" placeholder="打印人" class="form-control">
                                         </div>
-                                        <div class="clearfix">
+                                        <div class="clearfix float_l">
                                             <input type="text" class="form-control" name="startTime" placeholder="开始时间"
                                                    id="startTime">
                                         </div>
-                                        <div class="clearfix">
+                                        <div class="clearfix float_l">
                                             <input type="text" class="form-control" name="endTime" placeholder="结束时间"
                                                    id="endTime">
                                         </div>
