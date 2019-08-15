@@ -31,7 +31,7 @@ public interface TSysStageMapper {
     List<TSysStage> findByStageOrItems(String stage,String itemsCode);
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
-    List<TSysStage> findByStage(String stage);
+    List<TSysStage> findByStage(String stage,String itemsCode);
     long countByExample(TSysStageExample example);
     int updateByExampleSelective(@Param("record") TSysStage record, @Param("example") TSysStageExample example);
     int updateByExample(@Param("record") TSysStage record, @Param("example") TSysStageExample example);

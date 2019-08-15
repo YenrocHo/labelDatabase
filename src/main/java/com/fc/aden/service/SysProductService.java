@@ -14,7 +14,7 @@ public interface SysProductService {
 
     PageInfo list(Tablepar tablepar,String searchTxt,String itemsCode);
 
-    int checkcNameUnique(TSysProduct tSysProduct);
+    int checkcNameUnique(String product,String itemsCode);
 
     int insertProduct(TSysProduct tSysProduct);
 

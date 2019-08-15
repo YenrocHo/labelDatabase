@@ -127,16 +127,14 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
     }
 
     /**
-     * 检查阶段名称是否重名
+     * 根据项目点编号检查阶段名称是否重名
      *
-     * @param tSysStage
+     * @param stage  itemsCode
      * @return
      */
-    public int checkStageUnique(TSysStage tSysStage) {
-        TSysStageExample example = new TSysStageExample();
-        example.createCriteria().andStageEqualTo(tSysStage.getStage());
-        List<TSysStage> list = selectByExample(example);
-        return list.size();
+    public int checkStageUnique(String stage,String itemsCode) {
+        List<TSysStage> list = tSysStageMapper.findByStage(stage,itemsCode);
+         return list.size();
     }
 
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -169,7 +167,7 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
             importTSysStageDTO.setId(UUID.randomUUID().toString());
             importTSysStageDTO.setStatus(1);
 
-            List<TSysStage> stages = tSysStageMapper.findByStage(stageName);
+            List<TSysStage> stages = tSysStageMapper.findByStage(stageName,items);
             if (StringUtils.isEmpty(stageName)) {
                 errorMessage.append("阶段名称名称不能为空；");
                 pass = false;

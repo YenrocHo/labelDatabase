@@ -81,6 +81,7 @@ public class ProductController extends BaseController {
         for (TSysFood tSysFood : tSysFoods) {//获取食品种类
             FoodVO foodVO = new FoodVO();
             foodVO.setId(tSysFood.getId());
+            foodVO.setFoodCode(tSysFood.getFoodCode());
             foodVO.setFood(tSysFood.getFood());
             foodVOList.add(foodVO);
         }
@@ -153,8 +154,15 @@ public class ProductController extends BaseController {
      **/
     @PostMapping("/checkcNameUnique")
     @ResponseBody
-    public int checkcNameUnique(TSysProduct tSysProduct) {
-        return sysProductService.checkcNameUnique(tSysProduct);
+    public AjaxResult checkcNameUnique(HttpServletRequest request) {
+        String product = request.getParameter("product");
+        String itemsCode = request.getParameter("itemsCode");
+        int b = sysProductService.checkcNameUnique(product,itemsCode);
+        if(b>0){
+            return error();
+        }else{
+            return success();
+        }
     }
 
     /***

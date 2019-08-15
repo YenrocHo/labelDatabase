@@ -199,7 +199,13 @@
         select
         <include refid="Base_Column_List"/>
         from t_sys_stage
-        where stage = #{stage}
+        where 1=1
+        <if test="stage!=null and stage!=''">
+            and stage = #{stage}
+        </if>
+        <if test="itemsCode!=null and itemsCode!=''">
+            and items_code = #{itemsCode}
+        </if>
     </select>
 
     <select id="selectStage" resultMap="BaseResultMap" parameterType="string">

@@ -107,7 +107,13 @@
     select
     count(1)
     from t_sys_product
-    where product = #{product,jdbcType=VARCHAR}
+    where 1=1
+        <if test="product!=null and product!=''">
+            and product = #{product,jdbcType=VARCHAR}
+        </if>
+        <if test="itemsCode!=null and itemsCode!=''">
+            and items_code = #{itemsCode,jdbcType=VARCHAR}
+        </if>
   </select>
     <delete id="deleteProductByIds" parameterType="map">
         delete

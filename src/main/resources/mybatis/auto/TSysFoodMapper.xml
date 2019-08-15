@@ -253,9 +253,15 @@
   </update>
   <select id="findByFood" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
     select
-    <include refid="Base_Column_List"/>
-    from t_sys_food
-    where food like #{food,jdbcType=VARCHAR}
+     <include refid="Base_Column_List"/>
+     from t_sys_food
+     where 1=1
+      <if test="food!=null and food!=''">
+        and food = #{food,jdbcType=VARCHAR}
+      </if>
+      <if test="itemsCode!=null and itemsCode!=''">
+        and items_code = #{itemsCode,jdbcType=VARCHAR}
+      </if>
   </select>
   <select id="findByFoodCode" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
     select
@@ -268,7 +274,7 @@
     select
     <include refid="Base_Column_List"/>
     from t_sys_food
-     where   food like #{food,jdbcType=VARCHAR}
+     where   food_code like #{foodCode,jdbcType=VARCHAR}
   </select>
 
 </mapper>

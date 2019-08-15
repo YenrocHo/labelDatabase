@@ -116,6 +116,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      */
     @Transactional
     public int insertUserRoles(TsysUser record, String roles) {
+
         String userId = SnowflakeIdWorker.getUUID().toString();
         record.setId(userId);
         record.setCreateTime(df.format(new Date()));

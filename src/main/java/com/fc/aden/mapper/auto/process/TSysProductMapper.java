@@ -20,7 +20,7 @@ public interface TSysProductMapper {
 
     List<TSysProduct> selectList();
 
-    int selectProductBycName(String product);
+    int selectProductBycName(String product,String itemsCode);
 
     int deleteByFoodId(String foodName);
 

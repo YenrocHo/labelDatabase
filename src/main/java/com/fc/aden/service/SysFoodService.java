@@ -197,10 +197,8 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      * @param tSysFood
      * @return
      */
-    public int checkFoodUnique(TSysFood tSysFood) {
-        TSysFoodExample example = new TSysFoodExample();
-        example.createCriteria().andFoodEqualTo(tSysFood.getFood());
-        List<TSysFood> list = selectByExample(example);
+    public int checkFoodUnique(String food,String itemsCode) {
+        List<TSysFood> list = tSysFoodMapper.findByFood(food,itemsCode);
         return list.size();
     }
     /**
@@ -235,7 +233,6 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         List<ImportTSysFoodDTO> importTSysFoodDTOS = new ArrayList<ImportTSysFoodDTO>();
         int errNumber = 0;
         int successNumber = 0;
-//        for (Map<String, String> row : dataList) {
         for (int i = 1; i < dataList.size(); i++) {
             Map<String, String> row = dataList.get(i);
             String foodName = row.get(ImportFoodDTO.FOOD_NAME);
@@ -249,7 +246,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
             importTSysFoodDTO.setUpdateTime(df.format(new Date()));
             importTSysFoodDTO.setStatus(1);
             importTSysFoodDTO.setId(UUID.randomUUID().toString());
-            List<TSysFood> tSysFoodList = tSysFoodMapper.findByFood(foodName);
+            List<TSysFood> tSysFoodList = tSysFoodMapper.findByFood(foodName,items);
             if (StringUtils.isEmpty(foodName)) {
                 errorMessage.append("食品种类不能为空；");
                 pass = false;

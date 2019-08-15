@@ -33,15 +33,15 @@ public interface TSysFoodMapper {
     long countByExample(TSysFoodExample example);
     int updateByExampleSelective(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
     int updateByExample(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
-    //根据食品名称查询
-    List<TSysFood> findByFood(String food);
+
+    List<TSysFood> findByFood(String food,String itemsCode);
     //根据项目点搜索
     List<TSysFood> findByFoodItems(String food,String itemsCode);
     //查询所有数据
     List<TSysFood> queryByFood(String food,String itemsCode);
     //根据食品种类编号查询
     List<TSysFood> findByFoodCode(String foodCode);
-    //根据食品种类id查询
-    TSysFood findByFoodId(String food);
+    //根据食品种类编号查询
+    TSysFood findByFoodId(String foodCode);
 
 }

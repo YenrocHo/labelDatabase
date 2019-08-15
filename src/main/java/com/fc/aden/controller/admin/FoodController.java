@@ -134,17 +134,19 @@ public class FoodController extends BaseController {
     }
     /**
      * 验证食品种类是否重名
-     * @param sysFood
+     * @param request
      * @return
      */
     @PostMapping("/checkFoodUnique")
     @ResponseBody
-    public int checkStageUnique(TSysFood sysFood){
-        int b = sysFoodService.checkFoodUnique(sysFood);
+    public AjaxResult checkStageUnique(HttpServletRequest request){
+        String food = request.getParameter("food");
+        String itemsCode = request.getParameter("itemsCode");
+        int b = sysFoodService.checkFoodUnique(food,itemsCode);
         if(b>0){
-            return 1;
+            return error();
         }else{
-            return 0;
+            return success();
         }
     }
 

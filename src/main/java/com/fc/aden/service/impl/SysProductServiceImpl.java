@@ -83,7 +83,7 @@ public class SysProductServiceImpl implements SysProductService {
         List<ProductVO> productVOList = new ArrayList<>();
         for(TSysProduct tSysProduct:tSysProductList){
             ProductVO productVO = new ProductVO();
-            TSysFood tSysFood = tSysFoodMapper.selectByPrimaryKey(tSysProduct.getFoodName());
+            TSysFood tSysFood = tSysFoodMapper.findByFoodId(tSysProduct.getFoodName());
             BeanCopierEx.copy(tSysProduct,productVO);
             productVO.setFoodName(tSysFood.getFood());
             productVOList.add(productVO);
@@ -100,8 +100,8 @@ public class SysProductServiceImpl implements SysProductService {
      * @return int
      **/
     @Override
-    public int checkcNameUnique(TSysProduct tSysProduct){
-        return tSysProductMapper.selectProductBycName(tSysProduct.getName());
+    public int checkcNameUnique(String product,String itemsCode){
+        return tSysProductMapper.selectProductBycName(product,itemsCode);
     }
     /**
      * @Author Noctis
@@ -251,7 +251,7 @@ public class SysProductServiceImpl implements SysProductService {
                 importTSysProductDTO.setShelfLife(shelfLife);
             }
             //食品种类 可以为null  如果不为空数据库必须存在
-            List<TSysFood> tSysFood = tSysFoodMapper.findByFood(foodName);
+            List<TSysFood> tSysFood = tSysFoodMapper.findByFood(foodName,items);
             if(tSysFood != null && tSysFood.size() > 0){
                 importTSysProductDTO.setFoodName(foodName);
             }else {
@@ -298,6 +298,7 @@ public class SysProductServiceImpl implements SysProductService {
      */
     public void saveSysProduct(List<ProductVO> productVOS){
         for (ProductVO productVO : productVOS) {
+            //根据编号查询
             TSysFood tSysFood = tSysFoodMapper.findByFoodId(productVO.getFoodName());
             TSysProduct tSysProduct = new TSysProduct();
             String id= tSysFood.getId();

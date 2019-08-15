@@ -25,6 +25,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -92,17 +93,19 @@ public class StageController extends BaseController {
 
     /**
      * 验证阶段是否重名
-     * @param tSysStage
+     * @param request
      * @return
      */
     @PostMapping("/checkStageUnique")
     @ResponseBody
-    public int checkStageUnique(TSysStage tSysStage){
-        int b = sysStageService.checkStageUnique(tSysStage);
+    public AjaxResult checkStageUnique(HttpServletRequest request){
+        String stage = request.getParameter("stage");
+        String itemsCode = request.getParameter("itemsCode");
+        int b = sysStageService.checkStageUnique(stage,itemsCode);
         if(b>0){
-            return 1;
+            return error();
         }else{
-            return 0;
+            return success();
         }
     }
 

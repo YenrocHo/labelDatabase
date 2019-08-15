@@ -1,5 +1,4 @@
 $("#form-edit").validate({
-
 	submitHandler : function(form) {
 		edit();
 	}
