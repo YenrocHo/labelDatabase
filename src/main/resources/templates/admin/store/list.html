@@ -8,7 +8,8 @@
     <link rel="stylesheet" th:href="@{/static/admin/assets/js/button/ladda/ladda.min.css}">
     <!-- bootstrap-table表单样式 -->
     <link th:href="@{/static/admin/assets/js/bootstrap/css/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
-
+    <!--layui 修改原文件后的搜索下拉框 -->
+    <link rel="stylesheet" th:href="@{/static/admin/layui/css/layui.css}" media="all"/>
     <style type="text/css">
         /**
         *这里写单独的css样式
@@ -51,18 +52,18 @@
 
                         <div class="body-nest" id="search_div">
                             <div class="form_left">
-                                <form role="form" class="form-inline">
+                                <form role="form" class="form-inline layui-form">
                                     <div class="form-group">
                                         <label for="exampleInputEmail2" class="sr-only">存储条件名称</label>
                                         <input type="text" name="searchTxt" placeholder="存储条件名称" class="form-control">
                                     </div>
 
-                                    <div class="form-group" th:if="${tsysUser.roles} eq '2'">
-                                        <label >项目点编号</label>
-                                            <select class="form-control"  name="itemsCode" >
-                                                <option></option>
-                                                <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
-                                            </select>
+                                    <div class="layui-input-inline" th:if="${tsysUser.roles} eq '2'">
+                                        <select name="itemsCode" lay-verify="required" lay-search="">
+                                            <option value="">项目点编号</option>
+                                            <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3
+                                                    th:text="${m.itemsCode}"></h3></option>
+                                        </select>
                                     </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
                                 </form>
@@ -131,6 +132,8 @@
 <script th:src="@{/static/admin/assets/js/layer/layer.js}" type="text/javascript"></script>
 <!-- 遮罩层 -->
 <script th:src="@{/static/admin/assets/js/blockUI/jquery.blockUI.js}" type="text/javascript"></script>
+<!-- layui 修改原文件后的搜索下拉框-->
+<script th:src="@{/static/admin/layui/layui.js}" charset="utf-8" type="text/javascript"></script>
 <script type="text/javascript">
     var dataUrl  =window.rootPath+"/StoreController/list";
     var removeUrl=window.rootPath+"/StoreController/remove";
@@ -207,6 +210,11 @@
             }
         });
     }
+</script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form
+    });
 </script>
 </body>
 </html>
