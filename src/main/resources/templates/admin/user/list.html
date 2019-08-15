@@ -2,13 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="admin/common/html/head :: head(~{::title},~{::link},~{::style})">
-
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title th:text=${title}></title>
     <!-- 这儿引用单独的css link -->
     <!-- Ladda for Bootstrap 3按钮加载进度插件 -->
     <link rel="stylesheet" th:href="@{/static/admin/assets/js/button/ladda/ladda.min.css}">
     <!-- bootstrap-table表单样式 -->
     <link th:href="@{/static/admin/assets/js/bootstrap/css/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+    <!--layui 修改原文件后的搜索下拉框 -->
+    <link rel="stylesheet" th:href="@{/static/admin/layui/css/layui.css}" media="all"/>
     <style type="text/css">
         /**
         *这里写单独的css样式
@@ -18,6 +22,7 @@
             float: left;
         }
     </style>
+
 
 </head>
 
@@ -53,25 +58,27 @@
 
                         <div class="body-nest" id="search_div">
                             <div class="form_left">
-                                <form role="form" class="form-inline">
+                                <form role="form" class="form-inline layui-form">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail2" class="sr-only">工号</label>
                                         <input type="text" name="username" placeholder="工号" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail2" class="sr-only">用户姓名</label>
                                         <input type="text" name="name" placeholder="用户姓名" class="form-control">
                                     </div>
-                                    <div class="form-group">
-                                        <input type="text" name="phone" placeholder="手机号" class="form-control">
-                                    </div>
                                     <div class="form-group" th:if="${tsysUser.roles} eq '2'">
-                                        <label >项目点编号</label>
-                                        <select class="form-control"  name="itemsCode" >
-                                            <option></option>
-                                            <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
+                                        <div class="form-group">
+                                            <input type="text" name="mobile" placeholder="手机号" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-input-inline">
+                                        <select name="itemsCode" lay-verify="required" lay-search="">
+                                            <option value="">项目点编号</option>
+                                            <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3
+                                                    th:text="${m.itemsCode}"></h3></option>
                                         </select>
                                     </div>
+
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
                                             class="fa fa-search"></i>&nbsp;搜索
                                     </button>
@@ -143,7 +150,8 @@
 <script th:src="@{/static/admin/assets/js/layer/layer.js}" type="text/javascript"></script>
 <!-- 遮罩层 -->
 <script th:src="@{/static/admin/assets/js/blockUI/jquery.blockUI.js}" type="text/javascript"></script>
-
+<!-- layui 修改原文件后的搜索下拉框-->
+<script th:src="@{/static/admin/layui/layui.js}" charset="utf-8" type="text/javascript"></script>
 <script type="text/javascript">
     var dataUrl = window.rootPath + "/UserController/list";
     var removeUrl = window.rootPath + "/UserController/remove";
@@ -181,25 +189,25 @@
                 title: '员工状态',
                 formatter: function (value, row, index) {
                     var actions = [];
-                    if(row.roles=="0"){
+                    if (row.roles == "0") {
                         actions.push('普通员工');
-                    }else if(row.roles=="1"){
+                    } else if (row.roles == "1") {
                         actions.push('项目点管理员');
-                    }else{
+                    } else {
                         actions.push('超级管理员');
                     }
-                   return actions.join('');
+                    return actions.join('');
                 }
             }, {
                 title: '操作',
                 formatter: function (value, row, index) {
                     var id = row.id;
                     var actions = [];
-                    if(row.roles=="2"){
+                    if (row.roles == "2") {
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')" disabled="disabled"><i class="fa fa-remove"></i>删除</a>&nbsp;');
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updatePwd(\'' + row.id + '\')"><i class="fa fa-edit"></i>重置密码</a> ');
-                    }else{
+                    } else {
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>&nbsp;');
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updatePwd(\'' + row.id + '\')"><i class="fa fa-edit"></i>重置密码</a> ');
@@ -215,8 +223,9 @@
 </script>
 <script type="text/javascript">
     var editPwdUrl = window.rootPath + "/UserController/editPwd/{id}";
+
     function updatePwd(id) {
-        var url = editPwdUrl.replace("{id}",id);
+        var url = editPwdUrl.replace("{id}", id);
         $.modal.open("修改密码", url);
     }
 </script>
@@ -225,6 +234,14 @@
         var url = $.table._option.downUrl;
         $.modal.open("导入" + $.table._option.modalName, url);
     }
+</script>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+    });
 </script>
 </body>
 </html>

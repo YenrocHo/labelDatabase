@@ -1711,6 +1711,7 @@ output {
 }
 .form-control:-moz-placeholder {
   color: black;
+
 }
 .form-control::-moz-placeholder {
   color: rgba(0, 0, 0, 0.3);
@@ -1718,9 +1719,10 @@ output {
 }
 .form-control:-ms-input-placeholder {
   color: black;
+
 }
 .form-control::-webkit-input-placeholder {
-  color: black;
+  color: rgba(0, 0, 0, 0.3);
 }
 .form-control[disabled],
 .form-control[readonly],
