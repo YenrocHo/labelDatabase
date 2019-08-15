@@ -192,6 +192,8 @@
 <script th:src="@{/static/admin/assets/js/layer/layer.js}" type="text/javascript"></script>
 <!-- 遮罩层 -->
 <script th:src="@{/static/admin/assets/js/blockUI/jquery.blockUI.js}" type="text/javascript"></script>
+<!--时间插件-->
+<script th:src="@{/static/admin/laydate/laydate.js}"></script>
 <!-- layui 修改原文件后的搜索下拉框-->
 <script th:src="@{/static/admin/layui/layui.js}" charset="utf-8" type="text/javascript"></script>
 <script type="text/javascript">
@@ -250,7 +252,7 @@
         $.modal.open("查看" + $.table._option.modalName, url);
     }
 </script>
-<script th:src="@{/static/admin/laydate/laydate.js}"></script>
+
 <script>
     //执行一个laydate实例
     laydate.render({
