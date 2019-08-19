@@ -55,7 +55,6 @@ public class LoginController  extends BaseController {
     @ResponseBody
     public AjaxResult login(String username, HttpServletRequest request) {
         AjaxResult result = androidService.login(username);
-        System.out.println(result.get("data"));
         request.getSession().setAttribute("current_user",result.get("data"));
         return result;
     }
@@ -70,14 +69,14 @@ public class LoginController  extends BaseController {
     @ResponseBody
     public AjaxResult MyAllData(@RequestParam(value = "itemId", required = false) String itemId,
                                 @RequestParam(value = "keyword", required = false) String keyword,
-                                @Param("statusToken") String statusToken,
+                                @Param("statusToken") String statusToken,String foodCode,
                                 @Param("number") String number) {
-        AjaxResult ajaxResult = androidService.selectAllList(itemId,keyword,statusToken,number);
+        AjaxResult ajaxResult = androidService.selectAllList(itemId,keyword,statusToken,number,foodCode);
         return ajaxResult;
     }
     /***
      * @Author Noctis
-     * @Description //获取所有用户数据
+     * @Description //根据用户项目点编号 获取所有该项目点下的用户数据
      * @Date 2019/6/28 10:43
      * @Param [statusToken, number]
      * @return com.fc.aden.common.domain.AjaxResult
@@ -91,19 +90,18 @@ public class LoginController  extends BaseController {
 
     /***
      * @Author Noctis
-     * @Description //查找指定类型数据 type【Item Stage Food Product Store（都要大写)】添加itemID和keyword来检索
+     * @Description //查找指定类型数据 type【Item Stage Food Product Store（都要大写）】添加itemID和keyword来检索
      * @Date 2019/6/28 10:41
      * @Param [itemId, keyword, type, statusToken, number]
      * @return com.fc.aden.common.domain.AjaxResult
      **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/selectOne")
     @ResponseBody
-    public AjaxResult test(@RequestParam(value = "itemId", required = false) String itemId,
-                           @RequestParam(value = "keyword", required = false) String keyword,
-                           @Param("type") String type,
+    public AjaxResult test(@RequestParam(value = "keyword", required = false) String keyword,
+                           @Param("type") String type, String foodCode,
                            @Param("statusToken") String statusToken,
-                           @Param("number")String number){
-        AjaxResult ajaxResult = androidService.selectOneList(itemId, keyword, statusToken, type, number);
+                           @Param("username")String username){
+        AjaxResult ajaxResult = androidService.selectOneList(keyword, statusToken, type,foodCode, username);
         return ajaxResult;
     }
 
@@ -133,7 +131,7 @@ public class LoginController  extends BaseController {
                 JSONObject printData = printDataJsonArr.optJSONObject(i);
                 PrintHistory printHistory = new PrintHistory();
                 printHistory.setId(IDGenerator.getUUID());
-                printHistory.setItemId(printData.getString("itemId"));
+                printHistory.setItemId(printData.getString("itemsCode"));
                 printHistory.setOriginalId(printData.getString("originalId"));
                 printHistory.setPrintLableId(printData.getString("printLableId"));
                 printHistory.setProductName(printData.getString("product"));
@@ -211,23 +209,6 @@ public class LoginController  extends BaseController {
         if (b > 0) {
             return success();
         } else {
-            return error();
-        }
-    }
-
-    /**
-     * 产品添加接口
-     * 所传参数  add-product?name=产品名称&&cName=产品中文名12&&eName=英文名称
-     * @param tSysProduct
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "add-product")
-    @ResponseBody
-    public AjaxResult addProduct(TSysProduct tSysProduct){
-        int i = sysProductService.insertProduct(tSysProduct);
-        if(i>0){
-            return success();
-        }else{
             return error();
         }
     }

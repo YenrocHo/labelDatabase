@@ -35,5 +35,5 @@ public interface TSysProductMapper {
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
-    List<TSysProduct> selectProductList(@Param("itemId") String itemId,@Param("keyword") String keyword);
+    List<TSysProduct> selectProductList(@Param("itemsCode") String itemsCode,@Param("keyword") String keyword,@Param("foodCode")String foodCode);
 }

@@ -56,7 +56,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label ">项目点：</label>
 								<div class="col-sm-8" th:if="${tsysUser.roles} ne '2'">
-									<input class="form-control" type="text" name="itemsCode" disabled="disabled" th:value="${tsysUser.itemsCode}"/>
+									<input class="form-control" type="text" name="itemsCode" readonly="readonly" th:value="${tsysUser.itemsCode}"/>
 								</div>
 								<div class="col-sm-8" th:if="${tsysUser.roles} eq '2'">
 									<select class="form-control" id="itemsCode" name="itemsCode" >

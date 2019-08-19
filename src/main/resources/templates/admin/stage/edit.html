@@ -42,9 +42,11 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label ">项目点编号：</label>
 								<div class="col-sm-8">
-									<select class="form-control" th:value="${ite}" name="itemsCode" >
+									<!--<select class="form-control" th:value="${ite}" name="itemsCode" >
 										<option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
-									</select>
+									</select>-->
+									<input class="form-control" type="text" name="itemsCode" readonly="readonly"
+										   th:value="*{itemsCode}"/>
 								</div>
 							</div>
 							<div class="form-group">

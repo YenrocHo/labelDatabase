@@ -72,9 +72,9 @@ public class AndroidServiceImpl implements AndroidService {
         }
         List<TsysUser> tsysUserList;
         try {
-            tsysUserList = tsysUserMapper.selectAllUser();
+            TsysUser tsysUser = tsysUserMapper.selectLogin(username);
+            tsysUserList = tsysUserMapper.selectAllUser(tsysUser.getItemsCode());
         }catch (Exception e){
-            System.out.println(e);
             return AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
         }
         AjaxResult tsysUserListResult = isNull(tsysUserList);
@@ -82,7 +82,7 @@ public class AndroidServiceImpl implements AndroidService {
     }
 
     @Override
-    public AjaxResult selectAllList(String itemId,String keyword,String statusToken,String username){
+    public AjaxResult selectAllList(String itemsCode,String keyword,String statusToken,String username,String foodCode){
         if (!token(username,statusToken)){
             return AjaxResult.success(Const.CodeEnum.noToken.getCode(),Const.CodeEnum.noToken.getValue());
         }
@@ -93,13 +93,12 @@ public class AndroidServiceImpl implements AndroidService {
         List<TSysStore> storeList;
         List<TSysWeight> weightList;
         try{
-            stageList = tSysStageMapper.selectStageList(itemId,keyword);
-            foodList = tSysFoodMapper.selectFoodList(itemId,keyword);
-            productList = tSysProductMapper.selectProductList(itemId,keyword);
-            storeList = tSysStoreMapper.selectStoreList(itemId,keyword);
-            weightList = tSysWeightMapper.selectWeightList(itemId,keyword);
+            stageList = tSysStageMapper.selectStageList(itemsCode,keyword);
+            foodList = tSysFoodMapper.selectFoodList(itemsCode,keyword);
+            productList = tSysProductMapper.selectProductList(itemsCode,keyword,foodCode);
+            storeList = tSysStoreMapper.selectStoreList(itemsCode,keyword);
+            weightList = tSysWeightMapper.selectWeightList(itemsCode,keyword);
         }catch (Exception e){
-            System.out.println(e);
             return AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
         }
         AjaxResult stageListAjaxResult = isNull(stageList);
@@ -116,7 +115,7 @@ public class AndroidServiceImpl implements AndroidService {
 
     }
     @Override
-    public AjaxResult selectOneList(String itemId, String keyword,String statusToken,String type,String username){
+    public AjaxResult selectOneList(String keyword,String statusToken,String type,String foodCode,String username){
         if (!token(username,statusToken)){
             return AjaxResult.success(Const.CodeEnum.noToken.getCode(),Const.CodeEnum.noToken.getValue());
         }
@@ -127,7 +126,8 @@ public class AndroidServiceImpl implements AndroidService {
         AjaxResult ajaxResult = new AjaxResult();
         List<String> typeList = Convert.toListStrArray(type);
         for(String str:typeList){
-            List searchResult = searchList(str, itemId, keyword);
+            TsysUser tsysUser = tsysUserMapper.selectLogin(username);
+            List searchResult = searchList(str, tsysUser.getItemsCode(), keyword,foodCode);
             if (searchResult.size() == 0){
 
             }else if(searchResult.get(0).equals("参数错误")){
@@ -156,12 +156,12 @@ public class AndroidServiceImpl implements AndroidService {
         tSysTag.setFood(jsonObject.getString("food"));
         tSysTag.setProduct(jsonObject.getString("product"));
         tSysTag.setStore(jsonObject.getString("store"));
-        tSysTag.setPrintUser(jsonObject.getString("userName"));
+        tSysTag.setPrintUser(jsonObject.getString("username"));
         tSysTag.setCreatTime(new Date());
         tSysTag.setOriginalId(jsonObject.getString("original_Id"));
         tSysTag.setLabelId(jsonObject.getString("labelId"));
         try{
-            tSysTag.setItems(tSysItemsMapper.selectByPrimaryKey(jsonObject.getString("itemId")).getItemsCode());
+            tSysTag.setItems(tSysItemsMapper.selectByPrimaryKey(jsonObject.getString("itemsCode")).getItemsCode());
             date.setTime(Long.parseLong(jsonObject.getString("printTime")));
             Date printTime=simpleDateFormat.parse(simpleDateFormat.format(date));
             tSysTag.setPrintTime(printTime);
@@ -193,34 +193,33 @@ public class AndroidServiceImpl implements AndroidService {
         return true;
     }
 
-    private List searchList(String type,String itemId,String keyword){
+    private List searchList(String type,String itemsCode,String keyword,String foodCode){
         List list = new ArrayList();
         try {
             switch (type){
                 case "Item"     :
-                    list = tSysItemsMapper.selectItemList(itemId,keyword);
+                    list = tSysItemsMapper.selectItemList(itemsCode,keyword);
                     break;
                 case "Stage"    :
-                    list = tSysStageMapper.selectStageList(itemId,keyword);
+                    list = tSysStageMapper.selectStageList(itemsCode,keyword);
                     break;
                 case "Food"     :
-                    list = tSysFoodMapper.selectFoodList(itemId,keyword);
+                    list = tSysFoodMapper.selectFoodList(itemsCode,keyword);
                     break;
                 case "Product"  :
-                    list = tSysProductMapper.selectProductList(itemId,keyword);
+                    list = tSysProductMapper.selectProductList(itemsCode,keyword,foodCode);
                     break;
                 case "Store"    :
-                    list = tSysStoreMapper.selectStoreList(itemId,keyword);
+                    list = tSysStoreMapper.selectStoreList(itemsCode,keyword);
                     break;
-                case "Weight"    :
-                    list = tSysWeightMapper.selectWeightList(itemId,keyword);
-                    break;
+            /*    case "Weight"    :
+                    list = tSysWeightMapper.selectWeightList(itemsCode,keyword);
+                    break;*/
                 default:
                     list.add("参数错误");
                     break;
             }
         }catch (Exception e){
-            System.out.println(e);
            list.add("SQL出错");
         }
         return list;

@@ -18,5 +18,5 @@ public interface TSysWeightMapper {
 
     int updateByPrimaryKey(TSysWeight record);
 
-    List<TSysWeight> selectWeightList(@Param("itemId")String itemId,@Param("keyword") String keyword);
+    List<TSysWeight> selectWeightList(@Param("itemsCode")String itemsCode,@Param("keyword") String keyword);
 }

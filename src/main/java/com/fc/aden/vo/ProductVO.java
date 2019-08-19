@@ -31,6 +31,9 @@ public class ProductVO {
     private String updateTime;
 
 
+    private Boolean storeId;//选中id
+    private String storeName;//选中id
+    private String noStoreId;//没有选中id
     public ProductVO(){
     }
 
@@ -135,6 +138,30 @@ public class ProductVO {
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
+    }
+
+    public Boolean getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Boolean storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getNoStoreId() {
+        return noStoreId;
+    }
+
+    public void setNoStoreId(String noStoreId) {
+        this.noStoreId = noStoreId;
     }
 
     @Override

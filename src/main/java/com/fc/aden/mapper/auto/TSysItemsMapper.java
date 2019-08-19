@@ -34,7 +34,5 @@ public interface TSysItemsMapper {
 
     int deleteByItems(List<TSysItems> example);
 
-    TSysItems selectByItem();
-
-    List<TSysItems> selectItemList(@Param("itemId") String itemId,@Param("keyword")String keyword);
+    List<TSysItems> selectItemList(@Param("itemsCode") String itemsCode,@Param("keyword")String keyword);
 }

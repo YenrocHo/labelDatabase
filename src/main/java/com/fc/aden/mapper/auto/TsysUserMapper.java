@@ -35,8 +35,8 @@ public interface TsysUserMapper {
     //查询工号
     List<TsysUser> selectByName(String name);
 
-    //查询全部
-    List<TsysUser> selectAllUser();
+    //根据项目点查询全部用户
+    List<TsysUser> selectAllUser(String itemsCode);
 
     //唯一标识
     int checkUserName(String username);

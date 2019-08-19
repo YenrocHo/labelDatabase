@@ -198,4 +198,15 @@
     from t_sys_store
     where items_code = #{itemsCode}
   </select>
+  <select id="findByStoreList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_store
+    where items_code = #{itemsCode}
+  </select>
+  <select id="queryStoreList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_store
+  </select>
 </mapper>

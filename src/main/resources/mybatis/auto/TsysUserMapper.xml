@@ -378,5 +378,6 @@
         select
         <include refid="Base_Column_List"/>
         from t_sys_user
+        where items_code = #{itemsCode}
     </select>
 </mapper>

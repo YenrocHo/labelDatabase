@@ -7,22 +7,17 @@ import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
-import com.fc.aden.model.custom.process.ImportProductDTO;
-import com.fc.aden.model.custom.process.TSysFood;
-import com.fc.aden.model.custom.process.TSysProduct;
-import com.fc.aden.service.SysProductService;
+import com.fc.aden.model.custom.process.*;
 import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.FoodVO;
-import com.fc.aden.vo.ImportTSysUserDTO;
-import com.fc.aden.vo.ItemsVO;
+import com.fc.aden.vo.ProductFoodStoreVO;
 import com.fc.aden.vo.ProductVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -30,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,7 +70,13 @@ public class ProductController extends BaseController {
     @GetMapping("/add")
     public String add(ModelMap modelMap) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
-        List<TSysFood> tSysFoods = sysFoodService.queryFood();
+        List<TSysFood> tSysFoods =null;
+        TsysUser tsysUser = ShiroUtils.getUser();
+        if(tsysUser.getRoles()!="2"&&!"2".equals(tsysUser.getRoles())){
+            tSysFoods = sysFoodService.findByItemCode(tsysUser.getItemsCode());
+        }else{
+            tSysFoods = sysFoodService.queryFood();
+        }
         List<FoodVO> foodVOList = new ArrayList<>();
         for (TSysFood tSysFood : tSysFoods) {//获取食品种类
             FoodVO foodVO = new FoodVO();
@@ -85,7 +85,6 @@ public class ProductController extends BaseController {
             foodVO.setFood(tSysFood.getFood());
             foodVOList.add(foodVO);
         }
-        TsysUser tsysUser = ShiroUtils.getUser();
         modelMap.put("tsysUser", tsysUser);
         modelMap.put("tSysItems", tSysItemsList);
         modelMap.put("foodVOList", foodVOList);
@@ -95,14 +94,25 @@ public class ProductController extends BaseController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, HttpServletRequest request, ModelMap mmap) {
         TSysProduct tSysProduct = sysProductService.selectProductById(id);
-        String items = tSysProduct.getItemsCode();
-        List<TSysItems> tSysItems = sysItemsService.queryItems();
-        TSysFood tSysFood = sysFoodService.selectByPrimaryKey(tSysProduct.getFoodName());
-        List<TSysFood> tSysFoodList = sysFoodService.queryFood();
+        String items = tSysProduct.getItemsCode();//当前用户项目点
+        TsysUser tsysUser = ShiroUtils.getUser();//当前登录用户
+        List<TSysItems> tSysItems = sysItemsService.queryItems();//获取全部项目点
+        TSysFood tSysFood = sysFoodService.findByFoodId(tSysProduct.getFoodName());//当前食品种类
+
+        List<ProductVO> productVOList = sysProductService.findByProductAndStore(id,items);
+
+        List<TSysFood> tSysFoodList =null;
+        if(tsysUser.getRoles()!="2"&&!"2".equals(tsysUser.getRoles())){
+            tSysFoodList = sysFoodService.findByItemCode(tsysUser.getItemsCode());
+        }else{
+            tSysFoodList = sysFoodService.queryFood();
+        }
         mmap.addAttribute("tSysFood",tSysFood);
+        mmap.addAttribute("productVOList",productVOList);
         mmap.addAttribute("tSysFoodList",tSysFoodList);
         mmap.addAttribute("items",items);
         mmap.addAttribute("tSysItems",tSysItems);
+        mmap.put("tsysUser", tsysUser);
         request.getSession().setAttribute("tSysProduct", tSysProduct);
         return prefix + "/edit";
     }
@@ -136,8 +146,8 @@ public class ProductController extends BaseController {
     @PostMapping("/add")
     @RequiresPermissions("system:product:add")
     @ResponseBody
-    public AjaxResult add(TSysProduct tSysProduct) {
-        int i = sysProductService.insertProduct(tSysProduct);
+    public AjaxResult add(TSysProduct tSysProduct,@RequestParam(value="store", required = false)List<String> store) {
+        int i = sysProductService.insertProduct(tSysProduct,store);
         if (i > 0) {
             return success();
         } else {
@@ -157,13 +167,23 @@ public class ProductController extends BaseController {
     public AjaxResult checkcNameUnique(HttpServletRequest request) {
         String product = request.getParameter("product");
         String itemsCode = request.getParameter("itemsCode");
-        int b = sysProductService.checkcNameUnique(product,itemsCode);
-        if(b>0){
-            return error();
-        }else{
-            return success();
-        }
+        String foodCode = request.getParameter("foodName");
+        ProductFoodStoreVO b = sysProductService.checkcNameUnique(product,itemsCode,foodCode);
+        return AjaxResult.successData(200,b);
     }
+
+    /**
+     * 查询存储条件
+     * @param itemsCode
+     * @return
+     */
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/findStore")
+    @ResponseBody
+    public AjaxResult findStore(String itemsCode){
+        List<TSysStore> sysStores = sysStoreService.findByStoreList(itemsCode);
+        return AjaxResult.successData(200,sysStores);
+    }
+
 
     /***
      * @Author Noctis
@@ -196,7 +216,6 @@ public class ProductController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(TSysProduct tSysProduct, HttpServletRequest request) {
         TSysProduct product = (TSysProduct) request.getSession().getAttribute("tSysProduct");
-
         tSysProduct.setId(product.getId());
         tSysProduct.setUpdateTime(new Date());
         tSysProduct.setName(tSysProduct.getProduct());

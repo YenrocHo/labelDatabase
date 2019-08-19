@@ -254,8 +254,8 @@
       <if test="keyword != null">
         items_code like #{keyword,jdbcType=VARCHAR} or name like #{keyword,jdbcType=VARCHAR} or english_name like #{keyword,jdbcType=VARCHAR}
       </if>
-      <if test="itemId != null">
-        id = #{itemId,jdbcType=VARCHAR}
+      <if test="itemsCode != null">
+        items_code = #{itemsCode,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

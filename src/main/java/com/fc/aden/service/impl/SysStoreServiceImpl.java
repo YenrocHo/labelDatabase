@@ -113,6 +113,15 @@ public class SysStoreServiceImpl implements SysStoreService {
     public TSysStore findByStore(String itemsCode){
        return tSysStoreMapper.findByStore(itemsCode);
     }
+    @Override
+    public List<TSysStore> findByStoreList(String itemsCode){
+       return tSysStoreMapper.findByStoreList(itemsCode);
+    }
+
+    @Override
+    public  List<TSysStore> queryStoreList(){
+       return tSysStoreMapper.queryStoreList();
+    }
 
     /**
      * @return int

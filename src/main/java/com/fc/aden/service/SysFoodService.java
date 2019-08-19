@@ -149,6 +149,9 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         return tSysFoodMapper.countByExample(tSysFoodExample);
     }
 
+    public TSysFood findByFoodId(String foodCode){
+        return tSysFoodMapper.findByFoodId(foodCode);
+    }
     @Override
     public int deleteByExample(TSysFoodExample tSysFoodExample) {
         return tSysFoodMapper.deleteByExample(tSysFoodExample);
@@ -194,7 +197,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
     /**
      * 检查食品名称是否重名
      *
-     * @param tSysFood
+     * @param food itemsCode
      * @return
      */
     public int checkFoodUnique(String food,String itemsCode) {
@@ -217,6 +220,9 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
     public List<TSysFood> queryFood() {
         TSysFoodExample example = new TSysFoodExample();
         return selectByExample(example);
+    }
+    public List<TSysFood> findByItemCode(String itemsCode) {
+        return tSysFoodMapper.findByItemCode(itemsCode);
     }
 
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式

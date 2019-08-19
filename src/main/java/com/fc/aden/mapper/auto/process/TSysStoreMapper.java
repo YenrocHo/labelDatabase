@@ -15,7 +15,8 @@ public interface TSysStoreMapper {
 
     TSysStore selectByPrimaryKey(String id);
     TSysStore findByStore(String itemsCode);
-
+    List<TSysStore> findByStoreList(String itemsCode);
+    List<TSysStore> queryStoreList();
     int updateByPrimaryKeySelective(TSysStore record);
 
     int updateByPrimaryKey(TSysStore record);
@@ -28,5 +29,5 @@ public interface TSysStoreMapper {
 
     List<TSysStore> selectListByItems(String searchTxt,String itemsCode);
 
-    List<TSysStore> selectStoreList(@Param("itemId") String itemId, @Param("keyword") String keyword);
+    List<TSysStore> selectStoreList(@Param("itemsCode") String itemsCode, @Param("keyword") String keyword);
 }

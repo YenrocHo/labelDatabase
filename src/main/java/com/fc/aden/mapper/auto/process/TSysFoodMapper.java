@@ -26,7 +26,7 @@ public interface TSysFoodMapper {
 
     int deleteByExample(TSysFoodExample example);
 
-    List<TSysFood> selectFoodList(@Param("itemId") String itemId,@Param("keyword") String keyword);
+    List<TSysFood> selectFoodList(@Param("itemsCode") String itemsCode,@Param("keyword") String keyword);
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
@@ -35,12 +35,15 @@ public interface TSysFoodMapper {
     int updateByExample(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
 
     List<TSysFood> findByFood(String food,String itemsCode);
+    //查询该项目点编号下的食品种类编号
+    List<TSysFood> findByFoodCodeOrItem(String foodCode,String itemsCode);
     //根据项目点搜索
     List<TSysFood> findByFoodItems(String food,String itemsCode);
     //查询所有数据
     List<TSysFood> queryByFood(String food,String itemsCode);
     //根据食品种类编号查询
     List<TSysFood> findByFoodCode(String foodCode);
+    List<TSysFood> findByItemCode(String itemsCode);
     //根据食品种类编号查询
     TSysFood findByFoodId(String foodCode);
 

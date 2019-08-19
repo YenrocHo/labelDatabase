@@ -269,6 +269,22 @@
     from t_sys_food
     where food_code like #{foodCode,jdbcType=VARCHAR}
   </select>
+  <select id="findByItemCode" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_food
+    where items_code like #{itemsCode,jdbcType=VARCHAR}
+  </select>
+  <select id="findByFoodCodeOrItem" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_food
+    where 1=1
+    <if test="foodCode!=null and foodCode != ''">
+        and food_code = #{foodCode}
+    </if>
+    and items_code = #{itemsCode,jdbcType=VARCHAR}
+  </select>
 
   <select id="findByFoodId" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
     select
