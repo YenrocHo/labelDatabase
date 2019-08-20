@@ -46,7 +46,8 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label ">项目点：</label>
                                 <div class="col-sm-8" th:if="${tsysUser.roles} ne '2'">
-                                    <input class="form-control" type="text" name="itemsCode" readonly="readonly" th:value="${tsysUser.itemsCode}"/>
+                                    <input class="form-control" type="text" name="itemsCode" readonly="readonly"
+                                           th:value="${tsysUser.itemsCode}"/>
                                 </div>
                                 <div class="col-sm-8" th:if="${tsysUser.roles} eq '2'">
                                     <select class="form-control" id="itemsCode" name="itemsCode">
@@ -88,16 +89,33 @@
 <!-- jqueryForm序列化 -->
 <script th:src="@{/static/js/jqueryFormSerializeJson.js}" type="text/javascript"></script>
 
-<script type="text/javascript">
-
-    $("#form-add").validate({
-        rules: {
-            store: {
-                required: true,
+<script type="application/javascript">
+    $(function () {
+        $("#form-add").validate({
+            rules: {
+                name: {
+                    required: true,
+                }
             }, submitHandler: function (form) {
-                add();
+                var name = $("#name").val();
+                var itemsCode = $("[name='itemsCode']").val();
+                $.post(rootPath + "/StoreController/checkStoreUnique", {
+                    "name": name,
+                    "itemsCode": itemsCode
+                }, function (data, statusText) {
+                    if ('success' == statusText) {
+                        if (200 == data.code) {
+                            $("#storeSpan").html("此项目点阶段名已存在");
+                            return true;
+                        } else {
+                            $("#storeSpan").html("");
+                            add();
+                        }
+                    } else {
+                        alert("网络返回异常");
+                    }
+                }, "JSON");
             }
-        }
     });
 
     function add() {
@@ -115,6 +133,8 @@
             }
         });
     }
+    })
+    ;
 </script>
 
 </body>

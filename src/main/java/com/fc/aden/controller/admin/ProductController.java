@@ -214,11 +214,12 @@ public class ProductController extends BaseController {
     @RequiresPermissions("system:product:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(TSysProduct tSysProduct, HttpServletRequest request) {
+    public AjaxResult editSave(TSysProduct tSysProduct, HttpServletRequest request,@RequestParam(value="store", required = false)List<String> store) {
         TSysProduct product = (TSysProduct) request.getSession().getAttribute("tSysProduct");
         tSysProduct.setId(product.getId());
         tSysProduct.setUpdateTime(new Date());
         tSysProduct.setName(tSysProduct.getProduct());
+
         return toAjax(sysProductService.updateProduct(tSysProduct));
     }
 

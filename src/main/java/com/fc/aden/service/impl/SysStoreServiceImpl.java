@@ -3,10 +3,12 @@ package com.fc.aden.service.impl;
 
 import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
+import com.fc.aden.mapper.auto.process.ProductStoreMapper;
 import com.fc.aden.mapper.auto.process.TSysStoreMapper;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
 
+import com.fc.aden.model.custom.process.ProductStore;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysStoreService;
 import com.fc.aden.shiro.util.ShiroUtils;
@@ -29,6 +31,8 @@ public class SysStoreServiceImpl implements SysStoreService {
 
     @Autowired
     private TSysItemsMapper tSysItemsMapper;
+    @Autowired
+    private ProductStoreMapper productStoreMapper;
     /**
      * @return com.github.pagehelper.PageInfo<com.fc.test.model.custom.process.TSysStore>
      * @Author Noctis
@@ -73,6 +77,11 @@ public class SysStoreServiceImpl implements SysStoreService {
     public int removeStore(String ids) {
         List<String> storeIdlist = Convert.toListStrArray(ids);
         int i = tSysStoreMapper.delectStoreByIds(storeIdlist);
+        //删除产品关联的存储条件
+        List<ProductStore> productStores = productStoreMapper.findByStoreIdList(ids);
+        if (productStores!=null && productStores.size()>0){
+            productStoreMapper.deleteStoreId(ids);
+        }
         return i;
     }
 
@@ -156,5 +165,10 @@ public class SysStoreServiceImpl implements SysStoreService {
         } else {
             return null;
         }
+    }
+
+    public int checkStore(String name,String itemsCode){
+        List<TSysStore> tSysStores = tSysStoreMapper.checkStoreItems(name,itemsCode);
+        return tSysStores.size();
     }
 }

@@ -54,7 +54,7 @@
                                     <div class="form-group">
                                         <input type="text" name="stage" placeholder="阶段" class="form-control">
                                     </div>
-                                    <div class="layui-input-inline" >
+                                    <div class="layui-input-inline" th:if="${tsysUser.roles} eq '2'">
                                         <select name="itemsCode" lay-verify="required" lay-search="">
                                             <option value="">项目点编号</option>
                                             <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3

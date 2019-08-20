@@ -3,7 +3,7 @@
 <mapper namespace="com.fc.aden.mapper.auto.process.PrintHistoryMapper">
   <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.PrintHistory">
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="items_code" jdbcType="VARCHAR" property="itemsCode" />
     <result column="original_id" jdbcType="VARCHAR" property="originalId" />
     <result column="print_lable_id" jdbcType="VARCHAR" property="printLableId" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, item_id, original_id, print_lable_id, product_name, product_category, product_weight, correct_stage,
+    id, items_code, original_id, print_lable_id, product_name, product_category, product_weight, correct_stage,
     correct_storage, employer_name, print_time, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample" resultMap="BaseResultMap">
@@ -109,12 +109,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.PrintHistory">
-    insert into al_print_history (id, item_id, original_id, 
+    insert into al_print_history (id, items_code, original_id,
       print_lable_id, product_name, product_category, product_weight,
       correct_stage, correct_storage, employer_name, 
       print_time, create_time, update_time
       )
-    values (#{id,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{itemsCode,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR},
       #{printLableId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productCategory,jdbcType=VARCHAR}, #{productWeight,jdbcType=VARCHAR},
       #{correctStage,jdbcType=VARCHAR}, #{correctStorage,jdbcType=VARCHAR}, #{employerName,jdbcType=VARCHAR}, 
       #{printTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
@@ -126,8 +126,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="itemId != null">
-        item_id,
+      <if test="itemsCode != null">
+        items_code,
       </if>
       <if test="originalId != null">
         original_id,
@@ -167,8 +167,8 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="itemId != null">
-        #{itemId,jdbcType=VARCHAR},
+      <if test="itemsCode != null">
+        #{itemsCode,jdbcType=VARCHAR},
       </if>
       <if test="originalId != null">
         #{originalId,jdbcType=VARCHAR},
@@ -217,8 +217,8 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.itemId != null">
-        item_id = #{record.itemId,jdbcType=VARCHAR},
+      <if test="record.itemsCode != null">
+        items_code = #{record.itemsCode,jdbcType=VARCHAR},
       </if>
       <if test="record.originalId != null">
         original_id = #{record.originalId,jdbcType=VARCHAR},
@@ -258,7 +258,7 @@
   <update id="updateByExample" parameterType="map">
     update al_print_history
     set id = #{record.id,jdbcType=VARCHAR},
-      item_id = #{record.itemId,jdbcType=VARCHAR},
+    items_code = #{record.itemsCode,jdbcType=VARCHAR},
       original_id = #{record.originalId,jdbcType=VARCHAR},
       print_lable_id = #{record.printLableId,jdbcType=VARCHAR},
       product_name = #{record.productName,jdbcType=VARCHAR},
@@ -276,8 +276,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.PrintHistory">
     update al_print_history
     <set>
-      <if test="itemId != null">
-        item_id = #{itemId,jdbcType=VARCHAR},
+      <if test="itemsCode != null">
+        items_code = #{itemsCode,jdbcType=VARCHAR},
       </if>
       <if test="originalId != null">
         original_id = #{originalId,jdbcType=VARCHAR},
@@ -317,7 +317,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.PrintHistory">
     update al_print_history
-    set item_id = #{itemId,jdbcType=VARCHAR},
+    set items_code = #{itemsCode,jdbcType=VARCHAR},
       original_id = #{originalId,jdbcType=VARCHAR},
       print_lable_id = #{printLableId,jdbcType=VARCHAR},
       product_name = #{productName,jdbcType=VARCHAR},
@@ -335,7 +335,7 @@
     <insert id="insertBatch" parameterType="java.util.List">
         insert into al_print_history (
             id,
-            item_id,
+            items_code,
             original_id,
             print_lable_id,
             product_name,
@@ -352,7 +352,7 @@
         <foreach collection="printHistoryList" item="item" index="index" separator=",">
             (
             #{item.id,jdbcType=VARCHAR},
-            #{item.itemId,jdbcType=VARCHAR},
+            #{item.itemsCode,jdbcType=VARCHAR},
             #{item.originalId,jdbcType=VARCHAR},
             #{item.printLableId,jdbcType=VARCHAR},
             #{item.productName,jdbcType=VARCHAR},

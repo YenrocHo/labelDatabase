@@ -5,7 +5,9 @@ import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TSysItemsExample;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -82,15 +84,24 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
      * @return
      */
     public PageInfo<TSysItems> sysIteamsList(Tablepar tablepar, String itemsCode){
-        TSysItemsExample tSysItemsExample = new TSysItemsExample();
-        tSysItemsExample.setOrderByClause("id+0 desc");
-        if(itemsCode!=null&&!"".equals(itemsCode)){
-            tSysItemsExample.createCriteria().andItemsLike("%"+itemsCode+"%");
+        TsysUser tsysUser = ShiroUtils.getUser();
+        List<TSysItems> list = null;
+        if(itemsCode!=null ){
+            if("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())){
+                list = tSysItemsMapper.selectByItems(tsysUser.getItemsCode());
+            }else{
+                list = tSysItemsMapper.selectByItemCode(itemsCode);
+            }
+        }else{
+            if("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())){
+                list = tSysItemsMapper.selectByItems(tsysUser.getItemsCode());
+            }else{
+                list = tSysItemsMapper.selectByItemCode(itemsCode);
+            }
         }
         if(tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
-        List<TSysItems> list= selectByExample(tSysItemsExample);
         PageInfo<TSysItems> pageInfo = new PageInfo<TSysItems>(list);
         return  pageInfo;
     }

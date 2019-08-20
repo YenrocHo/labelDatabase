@@ -19,7 +19,7 @@ public interface TSysItemsMapper {
     List<TSysItems> selectByExample(TSysItemsExample example);
 
     TSysItems selectByPrimaryKey(String id);
-    TSysItems selectByItemCode(String itemsCode);
+    List<TSysItems> selectByItemCode(@Param("itemsCode") String itemsCode);
 
     int updateByExampleSelective(@Param("record") TSysItems record, @Param("example") TSysItemsExample example);
 

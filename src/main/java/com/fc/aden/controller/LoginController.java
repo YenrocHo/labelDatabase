@@ -67,11 +67,10 @@ public class LoginController  extends BaseController {
      **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allData")
     @ResponseBody
-    public AjaxResult MyAllData(@RequestParam(value = "itemId", required = false) String itemId,
-                                @RequestParam(value = "keyword", required = false) String keyword,
+    public AjaxResult MyAllData(@RequestParam(value = "keyword", required = false) String keyword,
                                 @Param("statusToken") String statusToken,String foodCode,
-                                @Param("number") String number) {
-        AjaxResult ajaxResult = androidService.selectAllList(itemId,keyword,statusToken,number,foodCode);
+                                @Param("username") String username) {
+        AjaxResult ajaxResult = androidService.selectAllList(keyword,statusToken,username,foodCode);
         return ajaxResult;
     }
     /***
@@ -83,8 +82,8 @@ public class LoginController  extends BaseController {
      **/
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/allUser")
     @ResponseBody
-    public AjaxResult allUserList(String statusToken,String number){
-        AjaxResult result = androidService.AllUserList(statusToken,number);
+    public AjaxResult allUserList(String statusToken,String username){
+        AjaxResult result = androidService.AllUserList(statusToken,username);
         return result;
     }
 
@@ -131,12 +130,12 @@ public class LoginController  extends BaseController {
                 JSONObject printData = printDataJsonArr.optJSONObject(i);
                 PrintHistory printHistory = new PrintHistory();
                 printHistory.setId(IDGenerator.getUUID());
-                printHistory.setItemId(printData.getString("itemsCode"));
+                printHistory.setItemsCode(printData.getString("itemsCode"));
                 printHistory.setOriginalId(printData.getString("originalId"));
                 printHistory.setPrintLableId(printData.getString("printLableId"));
                 printHistory.setProductName(printData.getString("product"));
                 printHistory.setProductCategory(printData.getString("productCategeroy"));
-                printHistory.setProductWeight(printData.getString("weight"));
+//                printHistory.setProductWeight(printData.getString("weight"));
                 printHistory.setCorrectStage(printData.getString("correctStage"));
                 printHistory.setCorrectStorage(printData.getString("correctStorage"));
                 printHistory.setEmployerName(printData.getString("employerName"));

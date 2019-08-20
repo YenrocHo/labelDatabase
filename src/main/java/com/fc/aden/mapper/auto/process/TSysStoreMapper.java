@@ -17,6 +17,7 @@ public interface TSysStoreMapper {
     TSysStore findByStore(String itemsCode);
     List<TSysStore> findByStoreList(String itemsCode);
     List<TSysStore> queryStoreList();
+    List<TSysStore> checkStoreItems(String name,String itemsCode);
     int updateByPrimaryKeySelective(TSysStore record);
 
     int updateByPrimaryKey(TSysStore record);

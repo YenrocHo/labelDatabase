@@ -3,9 +3,11 @@ package com.fc.aden.controller.admin;
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
 import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -28,7 +32,11 @@ public class ItemsController extends BaseController {
 
     @GetMapping("/view")
     @RequiresPermissions("system:items:view")
-    public String view(Model model) {
+    public String view(Model model,ModelMap mmap) {
+        TsysUser tsysUser = ShiroUtils.getUser();
+        mmap.addAttribute("tsysUser",tsysUser);
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        mmap.put("tSysItems", tSysItemsList);
         setTitle(model, new TitleVo("项目点列表", "项目点管理", false, "欢迎进入图片页面", false, false));
         return prefix + "/list";
     }

@@ -22,4 +22,6 @@ public interface SysStoreService  {
     public int updateStoreById(TSysStore tSysStore);
 
     public TSysStore updateStatus(TSysStore tSysStore);
+
+    public int checkStore(String name,String itemsCode);
 }

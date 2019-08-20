@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class PrintHistory extends BaseEntity {
 
-    private String itemId;
+    private String itemsCode;
 
     private String originalId;
 
@@ -34,12 +34,12 @@ public class PrintHistory extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    public String getItemId() {
-        return itemId;
+    public String getItemsCode() {
+        return itemsCode;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId == null ? null : itemId.trim();
+    public void setItemsCode(String itemsCode) {
+        this.itemsCode = itemsCode;
     }
 
     public String getOriginalId() {

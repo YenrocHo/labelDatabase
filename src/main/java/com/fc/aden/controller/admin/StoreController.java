@@ -169,5 +169,17 @@ public class StoreController extends BaseController {
             return error(0,"修改失败");
         }
     }
+    @PostMapping("/checkStoreUnique")
+    @ResponseBody
+    public AjaxResult checkStoreUnique(HttpServletRequest request){
+        String name = request.getParameter("name");
+        String itemsCode = request.getParameter("itemsCode");
+        int s = sysStoreService.checkStore(name,itemsCode);
+        if (s>0){
+            return error();
+        }else{
+            return success();
+        }
+    }
 
 }

@@ -82,7 +82,7 @@ public class AndroidServiceImpl implements AndroidService {
     }
 
     @Override
-    public AjaxResult selectAllList(String itemsCode,String keyword,String statusToken,String username,String foodCode){
+    public AjaxResult selectAllList(String keyword,String statusToken,String username,String foodCode){
         if (!token(username,statusToken)){
             return AjaxResult.success(Const.CodeEnum.noToken.getCode(),Const.CodeEnum.noToken.getValue());
         }
@@ -93,11 +93,12 @@ public class AndroidServiceImpl implements AndroidService {
         List<TSysStore> storeList;
         List<TSysWeight> weightList;
         try{
-            stageList = tSysStageMapper.selectStageList(itemsCode,keyword);
-            foodList = tSysFoodMapper.selectFoodList(itemsCode,keyword);
-            productList = tSysProductMapper.selectProductList(itemsCode,keyword,foodCode);
-            storeList = tSysStoreMapper.selectStoreList(itemsCode,keyword);
-            weightList = tSysWeightMapper.selectWeightList(itemsCode,keyword);
+            TsysUser tsysUser = tsysUserMapper.selectLogin(username);
+            stageList = tSysStageMapper.selectStageList(tsysUser.getItemsCode(),keyword);
+            foodList = tSysFoodMapper.selectFoodList(tsysUser.getItemsCode(),keyword);
+            productList = tSysProductMapper.selectProductList(tsysUser.getItemsCode(),keyword,foodCode);
+            storeList = tSysStoreMapper.selectStoreList(tsysUser.getItemsCode(),keyword);
+//            weightList = tSysWeightMapper.selectWeightList(tsysUser.getItemsCode(),keyword);
         }catch (Exception e){
             return AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
         }
@@ -105,12 +106,12 @@ public class AndroidServiceImpl implements AndroidService {
         AjaxResult foodListAjaxResult = isNull(foodList);
         AjaxResult productListAjaxResult = isNull(productList);
         AjaxResult storeListAjaxResult = isNull(storeList);
-        AjaxResult weightListAjaxResult = isNull(weightList);
+//        AjaxResult weightListAjaxResult = isNull(weightList);
         ajaxResult.put("Stage",stageListAjaxResult);
         ajaxResult.put("Food",foodListAjaxResult);
         ajaxResult.put("Product",productListAjaxResult);
         ajaxResult.put("Store",storeListAjaxResult);
-        ajaxResult.put("Weight",weightListAjaxResult);
+//        ajaxResult.put("Weight",weightListAjaxResult);
         return ajaxResult;
 
     }

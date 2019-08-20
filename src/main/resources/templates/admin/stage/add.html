@@ -90,7 +90,6 @@
                 }
             }, submitHandler: function (form) {
                 var stage = $("#stage").val();
-                // var itemsCode = $("#itemsCode").val();
                 var itemsCode = $("[name='itemsCode']").val();
                 $.post(rootPath + "/StageController/checkStageUnique", {"stage": stage,"itemsCode": itemsCode}, function (data, statusText) {
                    if ('success' == statusText) {
