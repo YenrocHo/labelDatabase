@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fc.aden.mapper.auto.process.ProductStoreMapper" >
+  <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.ProductStore" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR"/>
+    <result column="store_id" property="storeId" jdbcType="VARCHAR" />
+    <result column="create_Time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_Time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_id, store_id,create_Time, update_Time
+  </sql>
+  <insert id="insert" parameterType="com.fc.aden.model.custom.process.ProductStore" >
+    insert into t_sys_product_store (id, product_id, store_id,create_Time,
+      update_Time)
+    values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER} ,now(),
+      now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.ProductStore" >
+    insert into t_sys_product_store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="createTime != null" >
+        create_Time,
+      </if>
+      <if test="updateTime != null" >
+        update_Time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+       now(),
+      </if>
+      <if test="updateTime != null" >
+       now(),
+      </if>
+    </trim>
+  </insert>
+  <select id="findByProductIdList" parameterType="com.fc.aden.model.custom.process.ProductStore" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_product_store
+    where product_id = #{productId}
+  </select>
+  <select id="findByStoreIdList" parameterType="com.fc.aden.model.custom.process.ProductStore" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_product_store
+    where store_id = #{storeId}
+  </select>
+  <delete id="deleteStoreId" parameterType="java.lang.String" >
+    delete from t_sys_product_store
+    where store_id = #{storeId}
+  </delete>
+</mapper>
