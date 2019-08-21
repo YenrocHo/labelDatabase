@@ -1,5 +1,6 @@
 package com.fc.aden.mapper.auto.process;
 
+import com.fc.aden.model.custom.process.PrintHistory;
 import com.fc.aden.model.custom.process.TSysTag;
 import com.fc.aden.model.custom.process.TSysTagExample;
 
@@ -30,7 +31,5 @@ public interface TSysTagMapper {
 
     int updateByPrimaryKey(TSysTag record);
 
-    List<TSysTag> selectList();
 
-    List<TSysTag> selectByTag(String stage, String food, String product, String items, String printUser, Date start, Date end);
 }

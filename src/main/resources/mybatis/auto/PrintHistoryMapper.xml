@@ -7,7 +7,7 @@
     <result column="original_id" jdbcType="VARCHAR" property="originalId" />
     <result column="print_lable_id" jdbcType="VARCHAR" property="printLableId" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
-    <result column="product_category" jdbcType="VARCHAR" property="productCategory" />
+    <result column="food_category" jdbcType="VARCHAR" property="foodCategory" />
     <result column="product_weight" jdbcType="VARCHAR" property="productWeight" />
     <result column="correct_stage" jdbcType="VARCHAR" property="correctStage" />
     <result column="correct_storage" jdbcType="VARCHAR" property="correctStorage" />
@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, items_code, original_id, print_lable_id, product_name, product_category, product_weight, correct_stage,
+    id, items_code, original_id, print_lable_id, product_name, food_category, product_weight, correct_stage,
     correct_storage, employer_name, print_time, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample" resultMap="BaseResultMap">
@@ -110,12 +110,12 @@
   </delete>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.PrintHistory">
     insert into al_print_history (id, items_code, original_id,
-      print_lable_id, product_name, product_category, product_weight,
+      print_lable_id, product_name, food_category, product_weight,
       correct_stage, correct_storage, employer_name, 
       print_time, create_time, update_time
       )
     values (#{id,jdbcType=VARCHAR}, #{itemsCode,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR},
-      #{printLableId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productCategory,jdbcType=VARCHAR}, #{productWeight,jdbcType=VARCHAR},
+      #{printLableId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{foodCategory,jdbcType=VARCHAR}, #{productWeight,jdbcType=VARCHAR},
       #{correctStage,jdbcType=VARCHAR}, #{correctStorage,jdbcType=VARCHAR}, #{employerName,jdbcType=VARCHAR}, 
       #{printTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
@@ -138,8 +138,8 @@
       <if test="productName != null">
         product_name,
       </if>
-      <if test="productCategory != null">
-        product_category,
+      <if test="foodCategory != null">
+        food_category,
       </if>
       <if test="productWeight != null">
         product_weight,
@@ -179,8 +179,8 @@
       <if test="productName != null">
         #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="productCategory != null">
-        #{productCategory,jdbcType=VARCHAR},
+      <if test="foodCategory != null">
+        #{foodCategory,jdbcType=VARCHAR},
       </if>
       <if test="productWeight != null">
         #{productWeight,jdbcType=VARCHAR},
@@ -229,8 +229,8 @@
       <if test="record.productName != null">
         product_name = #{record.productName,jdbcType=VARCHAR},
       </if>
-      <if test="record.productCategory != null">
-        product_category = #{record.productCategory,jdbcType=VARCHAR},
+      <if test="record.foodCategory != null">
+        food_category = #{record.foodCategory,jdbcType=VARCHAR},
       </if>
       <if test="record.correctStage != null">
         correct_stage = #{record.correctStage,jdbcType=VARCHAR},
@@ -262,7 +262,7 @@
       original_id = #{record.originalId,jdbcType=VARCHAR},
       print_lable_id = #{record.printLableId,jdbcType=VARCHAR},
       product_name = #{record.productName,jdbcType=VARCHAR},
-      product_category = #{record.productCategory,jdbcType=VARCHAR},
+    food_category = #{record.foodCategory,jdbcType=VARCHAR},
       correct_stage = #{record.correctStage,jdbcType=VARCHAR},
       correct_storage = #{record.correctStorage,jdbcType=VARCHAR},
       employer_name = #{record.employerName,jdbcType=VARCHAR},
@@ -288,8 +288,8 @@
       <if test="productName != null">
         product_name = #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="productCategory != null">
-        product_category = #{productCategory,jdbcType=VARCHAR},
+      <if test="foodCategory != null">
+        food_category = #{foodCategory,jdbcType=VARCHAR},
       </if>
       <if test="productWeight != null">
         product_weight = #{productWeight,jdbcType=VARCHAR},
@@ -321,7 +321,7 @@
       original_id = #{originalId,jdbcType=VARCHAR},
       print_lable_id = #{printLableId,jdbcType=VARCHAR},
       product_name = #{productName,jdbcType=VARCHAR},
-      product_category = #{productCategory,jdbcType=VARCHAR},
+      food_category = #{foodCategory,jdbcType=VARCHAR},
       product_weight = #{productWeight,jdbcType=VARCHAR},
       correct_stage = #{correctStage,jdbcType=VARCHAR},
       correct_storage = #{correctStorage,jdbcType=VARCHAR},
@@ -339,7 +339,7 @@
             original_id,
             print_lable_id,
             product_name,
-            product_category,
+            food_category,
             product_weight,
             correct_stage,
             correct_storage,
@@ -356,7 +356,7 @@
             #{item.originalId,jdbcType=VARCHAR},
             #{item.printLableId,jdbcType=VARCHAR},
             #{item.productName,jdbcType=VARCHAR},
-            #{item.productCategory,jdbcType=VARCHAR},
+            #{item.foodCategory,jdbcType=VARCHAR},
             #{item.productWeight,jdbcType=VARCHAR},
             #{item.correctStage,jdbcType=VARCHAR},
             #{item.correctStorage,jdbcType=VARCHAR},
@@ -368,5 +368,61 @@
         </foreach>
 
     </insert>
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from al_print_history
+    where 1=1
+    <if test="printUser != null ">
+      and employer_name like CONCAT('%', #{printUser, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="items != null and items != ''">
+      and items_code like CONCAT('%', #{items, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="product != null ">
+      AND product_name like CONCAT('%', #{product, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="food != null ">
+      AND food_category like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="stage != null ">
+      AND correct_stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="start != null ">
+      AND print_Time >= #{start,jdbcType=TIMESTAMP}
+    </if>
+    <if test="end != null ">
+      AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
+    </if>
+    and items_code = #{itemsCode}
+    order by update_time desc
+  </select>
 
+  <select id="selectByTag" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.PrintHistory">
+    select
+    <include refid="Base_Column_List"/>
+    from al_print_history
+    where 1=1
+    <if test="printUser != null ">
+      and employer_name like CONCAT('%', #{printUser, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="itemsCode != null and itemsCode != ''">
+      and items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="product != null ">
+      AND product_name like CONCAT('%', #{product, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="food != null ">
+      AND food_category like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="stage != null ">
+      AND correct_stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="start != null ">
+      AND print_Time >= #{start,jdbcType=TIMESTAMP}
+    </if>
+    <if test="end != null ">
+      AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
+    </if>
+  </select>
 </mapper>

@@ -9,6 +9,7 @@ import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.*;
 import com.fc.aden.service.*;
+import com.fc.aden.vo.PrintHistoryVO;
 import com.fc.aden.vo.UserVO;
 import com.fc.aden.util.DateUtils;
 import com.fc.aden.util.IDGenerator;
@@ -134,8 +135,8 @@ public class LoginController  extends BaseController {
                 printHistory.setOriginalId(printData.getString("originalId"));
                 printHistory.setPrintLableId(printData.getString("printLableId"));
                 printHistory.setProductName(printData.getString("product"));
-                printHistory.setProductCategory(printData.getString("productCategeroy"));
-//                printHistory.setProductWeight(printData.getString("weight"));
+                printHistory.setFoodCategory(printData.getString("productCategeroy"));
+                printHistory.setProductWeight(printData.getString("weight"));
                 printHistory.setCorrectStage(printData.getString("correctStage"));
                 printHistory.setCorrectStorage(printData.getString("correctStorage"));
                 printHistory.setEmployerName(printData.getString("employerName"));
@@ -158,6 +159,24 @@ public class LoginController  extends BaseController {
 
         return AjaxResult.success(AjaxResult.CODE_SUCCESS, "操作成功");
     }
+
+/*    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
+    @ResponseBody
+    public AjaxResult submit2(@RequestBody PrintHistoryVO printHistoryVO){
+        logger.debug("打印历史记录：" + printHistoryVO.toString());
+        try {
+            // 打印历史记录集合
+            List<PrintHistory> printHistoryList = printHistoryVO.getPrintData();
+
+            // 执行批量保存
+            printHistoryService.insertBatch(printHistoryList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.error(900, "操作失败：系统错误");
+        }
+
+        return AjaxResult.success(AjaxResult.CODE_SUCCESS, "操作成功");
+    }*/
 
     ////////////////////////////////////////基础信息提交接口//////////////////////////
 

@@ -51,19 +51,14 @@
                         <div class="body-nest" id="search_div">
                             <div class="form_left">
                                 <form role="form" class="form-inline layui-form">
-                                    <!-- <div class="layui-input-inline" th:if="${tsysUser.roles} eq '2'">
-                                         <select name="itemsCode" lay-verify="required" lay-search="">
-                                             <option value="">项目点编号</option>
-                                             <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3
-                                                     th:text="${m.itemsCode}"></h3></option>
-                                         </select>
-                                     </div>-->
-                                    <div class="form-group" th:if="${tsysUser.roles} eq '2'">
-                                        <input type="text" name="itemsCode" placeholder="项目点" class="form-control">
+                                    <div class="layui-input-inline" th:if="${tsysUser.roles} eq '2'">
+                                        <select name="itemsCode" lay-verify="required" lay-search="">
+                                            <option value="">项目点编号</option>
+                                            <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3
+                                                    th:text="${m.itemsCode}"></h3></option>
+                                        </select>
                                     </div>
-                                    <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
-                                            class="fa fa-search"></i>&nbsp;搜索
-                                    </button>
+                                    <button onclick="$.table.search(this)" th:if="${tsysUser.roles} eq '2'" class="btn btn-success" type="button"><i class="fa fa-search"></i>&nbsp;搜索</button>
                                 </form>
                             </div>
                         </div>

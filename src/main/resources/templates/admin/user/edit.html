@@ -59,7 +59,7 @@
 								</div>
 								<div class="col-sm-8" th:if="${tsysUser.roles} eq '2'">
 									<select class="form-control" name="itemsCode" >
-										<option th:value="${itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
+										<option th:value="*{itemsCode}"><h3 th:text="*{itemsCode}"></h3></option>
 										<option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>
 									</select>
 								</div>

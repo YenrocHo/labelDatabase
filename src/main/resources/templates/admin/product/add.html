@@ -62,19 +62,23 @@
                                     <span id="foodSpan" style="color: red;"></span>
                                 </div>
                             </div>
-                            <div class="form-group">
+                           <!-- <div class="form-group">
                                 <label class="col-sm-3 control-label ">存储条件：</label>
                                 <div class="col-sm-8">
                                     <div class="icheckbox-blue" id="sysStores">
                                     </div>
                                     <span id="storeSpan" style="color: red;"></span>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label ">保质期：</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" type="text" id="shelfLife" name="shelfLife"
-                                           oninput="value=value.replace(/[^\d]/g,'')"/>
+                                    <label id="sysStores">
+<!--                                        <input  name="store"  th:value="${p.id}"  type="hidden" >-->
+<!--                                        <b th:text="${p.storeName}"></b>&nbsp;-->
+                                       <!-- <input class="form-control" type="text" id="shelfLife" name="shelfLife"
+                                               oninput="value=value.replace(/[^\d]/g,'')"/>-->
+                                    </label>
                                     <span style="color: red;">只能输入数字，以小时(h)为单位。例：24 (不输入则默认'见包装')</span>
                                 </div>
                             </div>
@@ -194,11 +198,19 @@
             $("#sysStores").html("");
             $.each(result.data, function (i, d) {
                 var store_str = "";
+                store_str += "<input  name='store' type='hidden'  value='" + d.id + "' >";
+                store_str += "" + d.name + "";
+                store_str += "<input  type=\"text\" id=\"shelfLife\" name=\"shelfLife\"\n" +
+                    "                                               oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
+                $("#sysStores").append(store_str);
+            });
+            /*$.each(result.data, function (i, d) {
+                var store_str = "";
                 store_str += "<label>";
                 store_str += "<input class='sqcheckbox' name='store' value='" + d.id + "' checked type='checkbox'><b>" + d.name + "</b>";
                 store_str += "</label>";
                 $("#sysStores").append(store_str);
-            });
+            });*/
 
         }
     }

@@ -5,6 +5,8 @@ import com.fc.aden.mapper.auto.process.PrintHistoryMapper;
 import com.fc.aden.model.custom.process.PrintHistory;
 import com.fc.aden.model.custom.process.PrintHistoryExample;
 import com.fc.aden.service.PrintHistoryService;
+import com.fc.aden.util.DateUtils;
+import com.fc.aden.util.IDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

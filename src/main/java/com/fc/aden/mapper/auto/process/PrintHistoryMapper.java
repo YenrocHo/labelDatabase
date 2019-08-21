@@ -3,6 +3,8 @@ package com.fc.aden.mapper.auto.process;
 import com.fc.aden.common.base.BaseMapper;
 import com.fc.aden.model.custom.process.PrintHistory;
 import com.fc.aden.model.custom.process.PrintHistoryExample;
+
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -40,4 +42,8 @@ public interface PrintHistoryMapper extends BaseMapper<PrintHistory, PrintHistor
      * @author Created by zc on 2019/7/3
      */
     public int insertBatch(@Param("printHistoryList") List<PrintHistory> printHistoryList);
+
+    List<PrintHistory> selectList(String stage, String food, String product,String items,String printUser,Date start,Date end,String itemsCode);
+
+    List<PrintHistory> selectByTag(String stage, String food, String product, String itemsCode, String printUser, Date start, Date end);
 }

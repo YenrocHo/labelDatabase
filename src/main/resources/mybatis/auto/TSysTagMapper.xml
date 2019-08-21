@@ -350,37 +350,7 @@
     from t_sys_tag
     where original_Id = #{original_Id,jdbcType=VARCHAR}
   </select>
-    <select id="selectList" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_sys_tag
-    </select>
-    <select id="selectByTag" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysTag">
-        select
-        <include refid="Base_Column_List"/>
-        from t_sys_tag
-        where
-        <if test="printUser != null ">
-            print_User like #{printUser,jdbcType=VARCHAR}
-        </if>
-        <if test="items != null ">
-            AND items like #{items,jdbcType=VARCHAR}
-        </if>
-        <if test="product != null ">
-            AND product like #{product,jdbcType=VARCHAR}
-        </if>
-        <if test="food != null ">
-            AND food like #{food,jdbcType=VARCHAR}
-        </if>
-        <if test="stage != null ">
-            AND stage like #{stage,jdbcType=VARCHAR}
-        </if>
-        <if test="start != null ">
-            AND print_Time >= #{start,jdbcType=TIMESTAMP}
-        </if>
-        <if test="end != null ">
-            AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
-        </if>
-    </select>
+
+
 
 </mapper>

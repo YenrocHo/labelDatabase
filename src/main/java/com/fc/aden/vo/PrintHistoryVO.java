@@ -1,16 +1,12 @@
-package com.fc.aden.model.custom.process;
+package com.fc.aden.vo;
 
-import com.fc.aden.common.base.BaseEntity;
+import com.fc.aden.model.custom.process.PrintHistory;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-/**
- * @Description 打印历史实体类
- *
- * @author Created by zc on 2019/7/3
- */
-public class PrintHistory extends BaseEntity {
+public class PrintHistoryVO {
+
 
     private String itemsCode;
 
@@ -30,7 +26,10 @@ public class PrintHistory extends BaseEntity {
 
     private String employerName;
 
-    private Date printTime;
+    private String printTime;
+    private String createTime;
+    private String updateTime;
+    private String endTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -106,12 +105,35 @@ public class PrintHistory extends BaseEntity {
         this.employerName = employerName == null ? null : employerName.trim();
     }
 
-    public Date getPrintTime() {
+    public String getPrintTime() {
         return printTime;
     }
 
-    public void setPrintTime(Date printTime) {
+    public void setPrintTime(String printTime) {
         this.printTime = printTime;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 }

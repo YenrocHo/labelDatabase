@@ -2,10 +2,15 @@ package com.fc.aden.controller.admin;
 
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
+import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
+import com.fc.aden.model.custom.process.PrintHistory;
 import com.fc.aden.model.custom.process.TSysTag;
+import com.fc.aden.shiro.util.ShiroUtils;
+import com.fc.aden.vo.PrintHistoryVO;
 import com.fc.aden.vo.TagVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -29,7 +35,11 @@ public class TagController extends BaseController {
 
     @GetMapping("/view")
     @RequiresPermissions("system:tag:view")
-    public String view(Model model) {
+    public String view(Model model,ModelMap mp) {
+        List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+        mp.put("tSysItems", tSysItemsList);
+        TsysUser tsysUser = ShiroUtils.getUser();
+        mp.put("tsysUser", tsysUser);
         setTitle(model, new TitleVo("标签列表", "标签管理", false, "欢迎进入图片页面", false, false));
         return prefix + "/list";
     }
@@ -62,8 +72,8 @@ public class TagController extends BaseController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        PageInfo<TagVO> page = sysTagService.sysTagList(tablepar, stage, food, product, items, printUser, start, end);
-        TableSplitResult<TagVO> result = new TableSplitResult<TagVO>(page.getPageNum(), page.getTotal(), page.getList());
+        PageInfo<PrintHistoryVO> page = sysTagService.sysTagList(tablepar, stage, food, product, items, printUser, start, end);
+        TableSplitResult<PrintHistoryVO> result = new TableSplitResult<PrintHistoryVO>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
 

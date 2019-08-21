@@ -1,13 +1,18 @@
 package com.fc.aden.service;
 
 import com.fc.aden.common.base.BaseService;
+import com.fc.aden.mapper.auto.process.PrintHistoryMapper;
 import com.fc.aden.mapper.auto.process.TSysTagMapper;
 
 
+import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
+import com.fc.aden.model.custom.process.PrintHistory;
 import com.fc.aden.model.custom.process.TSysTag;
 import com.fc.aden.model.custom.process.TSysTagExample;
+import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.BeanCopierEx;
+import com.fc.aden.vo.PrintHistoryVO;
 import com.fc.aden.vo.TagVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,6 +29,9 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
 
     @Autowired
     private TSysTagMapper tagMapper;
+
+    @Autowired
+    private PrintHistoryMapper printHistoryMapper;
 
     @Override
     public int deleteByPrimaryKey(String ids) {
@@ -81,42 +89,38 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
      * @param printUser
      * @return
      */
-    public PageInfo<TagVO> sysTagList(Tablepar tablepar, String stage, String food, String product, String items, String printUser, Date start, Date end) {
+    public PageInfo<PrintHistoryVO> sysTagList(Tablepar tablepar, String stage, String food, String product, String items, String printUser, Date start, Date end) {
         TSysTagExample tSysTagExample = new TSysTagExample();
         tSysTagExample.setOrderByClause("id+0 desc");
-        List<TSysTag> list = null;
-        if (printUser == null && food == null && product == null && items == null && printUser == null && start == null && end == null) {
+        List<PrintHistory> list = null;
+        TsysUser tsysUser = ShiroUtils.getUser();
+//        if (printUser == null && food == null && product == null && items == null && printUser == null && start == null && end == null) {
             //第一次进入列表
-            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
+               //项目点管理员查询
+                list = printHistoryMapper.selectList(stage, food, product,items, printUser, start, end,tsysUser.getItemsCode());
+            }else{
+                //超级管理员查询
+                list = printHistoryMapper.selectByTag(stage, food, product, items, printUser, start, end);
             }
-            list = tagMapper.selectList();
-        } else {//搜索
-            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
-            }
-            stage = "%" + stage + "%";
-            food = "%" + food + "%";
-            product = "%" + product + "%";
-            items = "%" + items + "%";
-            printUser = "%" + printUser + "%";
-            list = tagMapper.selectByTag(stage, food, product, items, printUser, start, end);
+        if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
-        List<TagVO> tagVOList = new ArrayList<>();
-        for (TSysTag tSysTag : list) {
-            TagVO tagVO = new TagVO();
+        List<PrintHistoryVO> tagVOList = new ArrayList<>();
+        for (PrintHistory tSysTag : list) {
+            PrintHistoryVO tagVO = new PrintHistoryVO();
             //时间date转换为string类型
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String creatTime = formatter.format(tSysTag.getCreatTime());
-            String endTime = formatter.format(tSysTag.getEndTime());
+            String creatTime = formatter.format(tSysTag.getCreateTime());
+//            String endTime = formatter.format(tSysTag.getPrintTime());
             String printTime = formatter.format(tSysTag.getPrintTime());
-            tagVO.setCreatTime(creatTime);
-            tagVO.setEndTime(endTime);
+            tagVO.setCreateTime(creatTime);
+//            tagVO.setEndTime(endTime);
             tagVO.setPrintTime(printTime);
             BeanCopierEx.copy(tSysTag, tagVO);
             tagVOList.add(tagVO);
         }
-        PageInfo<TagVO> pageInfo = new PageInfo<TagVO>(tagVOList);
+        PageInfo<PrintHistoryVO> pageInfo = new PageInfo<PrintHistoryVO>(tagVOList);
         return pageInfo;
     }
 }
