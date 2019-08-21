@@ -185,11 +185,11 @@ public class UserController extends BaseController {
         return prefix + "/upload";
     }
 
-    @PostMapping("/upload")
+/*    @PostMapping("/upload")
     @RequiresPermissions("system:user:upload")
     public String uploadUser() {
         return prefix + "/upload";
-    }
+    }*/
 
 
     @PostMapping("/uploadFile")

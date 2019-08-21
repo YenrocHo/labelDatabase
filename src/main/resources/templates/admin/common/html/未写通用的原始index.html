@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="admin/common/html/head :: head(~{::title},~{::link},~{::style})">
 
-<title th:text=${title}></title>
-<!-- 这儿引用单独的css link -->
-<link rel="stylesheet" th:href="@{static/admin/assets/js/button/ladda/ladda.min.css}">
-<style type="text/css">
-/**
-*这里写单独的css样式
-*/
-</style>
+    <title th:text=${title}></title>
+    <!-- 这儿引用单独的css link -->
+    <link rel="stylesheet" th:href="@{static/admin/assets/js/button/ladda/ladda.min.css}">
+    <style type="text/css">
+        /**
+        *这里写单独的css样式
+        */
+    </style>
 
 </head>
 
@@ -20,20 +20,18 @@
 <div th:replace="admin/common/html/topMenu :: topMenu(${isribbon})">
 </div>
 <!-- 结束顶部通用 -->
-   
+
 <!-- 左边菜单栏通用 -->
 <div th:replace="admin/common/html/leftMenu :: leftMenu">
 </div>
 <!-- 结束左边菜单栏通用 -->
 
 
-
-
 <!-- ###############################代码编写出############################### -->
 
 <!-- 右边内容 -->
 <div class="wrap-fluid">
-    <div class="container-fluid paper-wrap bevel tlbr">
+    <div class="container-fluid paper-wrap bevel tlbr" id = "content_body">
         <!-- 内容 -->
         <!--标题 通用-->
         <div th:replace="admin/common/html/title :: title(${title},${parenttitle},${isMsg},${msgHTML})">
@@ -77,27 +75,22 @@
 <!-- ###############################代码编写出############################### -->
 
 
-
-
-
-
-
 <!-- 右侧隐藏滑块内容 -->
 <div th:include="admin/common/html/rightHide :: rightHide">
-    
+
 </div>
-   <!-- END 右侧隐藏滑块内容-->
+<!-- END 右侧隐藏滑块内容-->
 
 <!-- 通用js -->
 <div th:include="admin/common/html/js :: onload_js">
-   
+
 </div>
-    
+
 <script type="text/javascript" src="/static/admin/assets/js/toggle_close.js"></script>
-    <script src="/static/admin/assets/js/footable/js/footablecd98.js?v=2-0-1" type="text/javascript"></script>
-    <script src="/static/admin/assets/js/footable.sortcd98.js?v=2-0-1" type="text/javascript"></script>
-    <script src="/static/admin/assets/js/footable.filtercd98.js?v=2-0-1" type="text/javascript"></script>
-    <script src="/static/admin/assets/js/footable.paginatecd98.js?v=2-0-1" type="text/javascript"></script>
+<script src="/static/admin/assets/js/footable/js/footablecd98.js?v=2-0-1" type="text/javascript"></script>
+<script src="/static/admin/assets/js/footable.sortcd98.js?v=2-0-1" type="text/javascript"></script>
+<script src="/static/admin/assets/js/footable.filtercd98.js?v=2-0-1" type="text/javascript"></script>
+<script src="/static/admin/assets/js/footable.paginatecd98.js?v=2-0-1" type="text/javascript"></script>
 
 </body>
 

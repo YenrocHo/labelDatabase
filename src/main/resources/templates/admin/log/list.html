@@ -31,7 +31,7 @@
 
 <!-- 右边内容 -->
 <div class="wrap-fluid">
-    <div class="container-fluid paper-wrap bevel tlbr">
+    <div class="container-fluid paper-wrap bevel tlbr" id = "content_body">
         <!-- 内容 -->
         <!--标题 通用-->
         <div th:replace="admin/common/html/title :: title(${title},${parenttitle},${isMsg},${msgHTML})">
@@ -209,12 +209,15 @@ $(function(){
 	oTab.Init();
 })
 </script>
+<script type="text/javascript" language="javascript">
 
+    window.onresize = changeFrameHeight;
+    changeFrameHeight();
 
-<script type="text/javascript">
-
-
-
+    function changeFrameHeight() {
+        var ifm = document.getElementById("mainFrame");
+        ifm.height = document.documentElement.clientHeight - 80;
+    }
 </script>
 
 

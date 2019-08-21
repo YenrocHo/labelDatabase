@@ -31,7 +31,7 @@
 
 <!-- 右边内容 -->
 <div class="wrap-fluid">
-    <div class="container-fluid paper-wrap bevel tlbr">
+    <div class="container-fluid paper-wrap bevel tlbr" id = "content_body">
         <!-- 内容 -->
         <!--标题 通用-->
         <div th:replace="admin/common/html/title :: title(${title},${parenttitle},${isMsg},${msgHTML})">
@@ -233,7 +233,16 @@ $(function(){
 })
 </script>
 
+<script type="text/javascript" language="javascript">
 
+    window.onresize = changeDate;
+    changeDate();
+
+    function changeDate() {
+        var im_paper = document.getElementById("content_body");
+        im_paper.style.minHeight = (document.documentElement.clientHeight).toString()+"px";
+    }
+</script>
 
 </body>
 
