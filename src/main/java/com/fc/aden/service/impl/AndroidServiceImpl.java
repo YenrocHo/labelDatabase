@@ -10,6 +10,7 @@ import com.fc.aden.mapper.auto.process.*;
 
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.process.*;
+import com.fc.aden.model.po.ProductPo;
 import com.fc.aden.service.AndroidService;
 import com.fc.aden.util.SnowflakeIdWorker;
 import org.apache.commons.lang3.StringUtils;
@@ -89,14 +90,14 @@ public class AndroidServiceImpl implements AndroidService {
         AjaxResult ajaxResult = new AjaxResult();
         List<TSysStage> stageList;
         List<TSysFood> foodList;
-        List<TSysProduct> productList;
+        List<ProductPo> productList;
         List<TSysStore> storeList;
         List<TSysWeight> weightList;
         try{
             TsysUser tsysUser = tsysUserMapper.selectLogin(username);
             stageList = tSysStageMapper.selectStageList(tsysUser.getItemsCode(),keyword);
             foodList = tSysFoodMapper.selectFoodList(tsysUser.getItemsCode(),keyword);
-            productList = tSysProductMapper.selectProductList(tsysUser.getItemsCode(),keyword,foodCode);
+            productList = tSysProductMapper.selectAllProductList(tsysUser.getItemsCode(),keyword,foodCode);
             storeList = tSysStoreMapper.selectStoreList(tsysUser.getItemsCode(),keyword);
 //            weightList = tSysWeightMapper.selectWeightList(tsysUser.getItemsCode(),keyword);
         }catch (Exception e){
@@ -115,6 +116,9 @@ public class AndroidServiceImpl implements AndroidService {
         return ajaxResult;
 
     }
+
+
+
     @Override
     public AjaxResult selectOneList(String keyword,String statusToken,String type,String foodCode,String username){
         if (!token(username,statusToken)){

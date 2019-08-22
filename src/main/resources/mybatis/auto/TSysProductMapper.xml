@@ -13,6 +13,29 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="food_name" jdbcType="VARCHAR" property="foodName"/>
     </resultMap>
+    <resultMap id="BaseResultAllMap" type="com.fc.aden.model.po.ProductPo">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="items_code" jdbcType="VARCHAR" property="itemsCode"/>
+        <result column="product_code" jdbcType="VARCHAR" property="productCode"/>
+        <result column="product" jdbcType="VARCHAR" property="product"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="food_name" jdbcType="VARCHAR" property="foodName"/>
+
+        <collection property="productStores" ofType="com.fc.aden.model.po.ProductStorePo">
+            <result column="product_id" property="productId" jdbcType="VARCHAR"/>
+            <result column="store_id" property="storeId" jdbcType="VARCHAR" />
+            <result column="store_name" property="storeName" jdbcType="VARCHAR" />
+            <result column="shelf_life" property="shelfLife" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+
+
+
     <sql id="Base_Column_List">
     id, items_code,product_code,product,name,english_name,status,create_time, update_time,food_name
   </sql>
@@ -163,6 +186,7 @@
         select
         <include refid="Base_Column_List"/>
         from t_sys_product
+
         <where>
             <if test="keyword != null">
                 name like #{keyword,jdbcType=VARCHAR}
@@ -175,4 +199,37 @@
             </if>
         </where>
     </select>
+
+    <select id="selectAllProductList" resultMap="BaseResultAllMap">
+        SELECT
+        spr.*,
+        sps.product_id,
+        sps.store_id,
+        sps.store_name,
+        sps.shelf_life
+
+        FROM
+        t_sys_product spr
+        LEFT JOIN (
+            SELECT ps.store_id,ps.product_id, store.NAME as store_name, ps.shelf_life  FROM t_sys_product_store ps
+            LEFT JOIN t_sys_store store
+            ON ps.store_id = store.id
+            ) sps
+        ON spr.id = sps.product_id
+        <where>
+            <if test="keyword != null">
+                spr.name like #{keyword,jdbcType=VARCHAR}
+            </if>
+            <if test="itemsCode != null">
+                and spr.items_code like #{itemsCode,jdbcType=VARCHAR}
+            </if>
+             <if test="foodCode != null">
+                and spr.food_name like #{foodCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.fc.aden.mapper.auto.process;
 
 import com.fc.aden.model.custom.process.TSysProduct;
+import com.fc.aden.model.po.ProductPo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -36,4 +37,6 @@ public interface TSysProductMapper {
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
     List<TSysProduct> selectProductList(@Param("itemsCode") String itemsCode,@Param("keyword") String keyword,@Param("foodCode")String foodCode);
+
+    List<ProductPo> selectAllProductList(@Param("itemsCode") String itemsCode, @Param("keyword") String keyword, @Param("foodCode")String foodCode);
 }

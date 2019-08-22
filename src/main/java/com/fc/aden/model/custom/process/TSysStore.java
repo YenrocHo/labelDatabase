@@ -17,10 +17,7 @@ public class TSysStore implements Serializable {
 
     private String temperature;
 
-    /**
-     * 0 冻结   1  正常
-     */
-    private Integer status;
+    private Integer status;   // 0 冻结   1  正常
 
     private Date creatTime;
 

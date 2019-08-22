@@ -9,13 +9,12 @@ public class ProductStore {
 
     private String id;
     private String productId;//产品id
-    private String storeId;//储存条件
-
-    //保质期
-    private String shelfLife;
+    private String storeId;//储存条件id
+    private String shelfLife;//保质期
     private Date createTime;
-
     private Date updateTime;
+
+
 
     public ProductStore() {
     }

@@ -1,10 +1,26 @@
-package com.fc.aden.model.custom.process;
+/**
+ * projectName: labelDatabase
+ * fileName: ProductPo.java
+ * packageName: com.fc.aden.model.po
+ * date: 2019-08-22
+ * copyright(c) 2017-2020 德慧公司
+ */
+package com.fc.aden.model.po;
 
-import java.io.Serializable;
+import com.fc.aden.model.custom.process.ProductStore;
+
 import java.util.Date;
 import java.util.List;
 
-public class TSysProduct implements Serializable {
+/**
+ * @version: V1.0
+ * @author: DongXiaoMing
+ * @className: ProductPo
+ * @packageName: com.fc.aden.model.po
+ * @description: 产品关联详情信息
+ * @data: 2019-08-22
+ **/
+public class ProductPo {
     //产品Id
     private String id;
 
@@ -23,9 +39,6 @@ public class TSysProduct implements Serializable {
     //食品名称
     private String foodName;
 
-    //保质期
-    // private String shelfLife;
-
     //产品状态
     private Integer status;
 
@@ -37,21 +50,6 @@ public class TSysProduct implements Serializable {
 
     private List<ProductStore> productStores;
 
-    public TSysProduct(String id, String itemsCode, String product,String productCode, String name, String englishName, Integer status ,String foodName, Date createTime, Date updateTime) {
-        this.id = id;
-        this.itemsCode = itemsCode;
-        this.product = product;
-        this.productCode = productCode;
-        this.name = name;
-        this.englishName = englishName;
-        this.status = status;
-        this.createTime = createTime;
-        this.foodName = foodName;
-        this.updateTime = updateTime;
-    }
-
-    public TSysProduct() {
-    }
 
     public String getId() {
         return id;
@@ -77,6 +75,14 @@ public class TSysProduct implements Serializable {
         this.product = product;
     }
 
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
     public String getName() {
         return name;
     }
@@ -91,6 +97,14 @@ public class TSysProduct implements Serializable {
 
     public void setEnglishName(String englishName) {
         this.englishName = englishName;
+    }
+
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
     public Integer getStatus() {
@@ -117,35 +131,11 @@ public class TSysProduct implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getFoodName() {
-        return foodName;
+    public List<ProductStore> getProductStores() {
+        return productStores;
     }
 
-    public void setFoodName(String foodName) {
-        this.foodName = foodName;
-    }
-
-    public String getProductCode() {
-        return productCode;
-    }
-
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
-    }
-
-    @Override
-    public String toString() {
-        return "TSysProduct{" +
-                "id='" + id + '\'' +
-                ", itemsCode='" + itemsCode + '\'' +
-                ", product='" + product + '\'' +
-                ", productCode='" + productCode + '\'' +
-                ", name='" + name + '\'' +
-                ", englishName='" + englishName + '\'' +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", foodName=" + foodName +
-                ", updateTime=" + updateTime +
-                '}';
+    public void setProductStores(List<ProductStore> productStores) {
+        this.productStores = productStores;
     }
 }
