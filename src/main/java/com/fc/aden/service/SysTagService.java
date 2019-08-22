@@ -81,7 +81,6 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
     /**
      * 标签管理
      *
-     * @param tablepar
      * @param stage
      * @param food
      * @param product
@@ -89,7 +88,7 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
      * @param printUser
      * @return
      */
-    public PageInfo<PrintHistoryVO> sysTagList(Tablepar tablepar, String stage, String food, String product, String items, String printUser, Date start, Date end) {
+    public PageInfo<PrintHistoryVO> sysTagList(int pageNum , int pageSize, String stage, String food, String product, String items, String printUser, Date start, Date end) {
         TSysTagExample tSysTagExample = new TSysTagExample();
         tSysTagExample.setOrderByClause("id+0 desc");
         List<PrintHistory> list = null;
@@ -103,8 +102,8 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
                 //超级管理员查询
                 list = printHistoryMapper.selectByTag(stage, food, product, items, printUser, start, end);
             }
-        if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+        if (pageNum != 0 && pageSize != 0) {
+            PageHelper.startPage(pageNum, pageSize);
         }
         List<PrintHistoryVO> tagVOList = new ArrayList<>();
         for (PrintHistory tSysTag : list) {
