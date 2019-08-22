@@ -8,8 +8,8 @@ import java.util.Date;
 public class ProductStore {
 
     private String id;
-    private String productId;
-    private String storeId;
+    private String productId;//产品id
+    private String storeId;//储存条件
 
     //保质期
     private String shelfLife;

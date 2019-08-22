@@ -11,7 +11,7 @@ import java.util.List;
 public interface ProductStoreMapper {
     int deleteByPrimaryKey(String id);
 
-    int insertSelective(ProductStore record);
+    int insertSelective( ProductStore record);
 
     ProductStore selectByPrimaryKey(String id);
 

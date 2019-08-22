@@ -117,7 +117,7 @@ public class SysProductServiceImpl implements SysProductService {
      * @Param [tSysProduct]
      **/
     @Transactional
-    public int insertProduct(TSysProduct tSysProduct, List<ProductStoreDTO> store) {
+    public int insertProduct(TSysProduct tSysProduct, List<String> store, List<String> shelfLife) {
         TSysProduct product = new TSysProduct();
         String productId = SnowflakeIdWorker.getUUID().toString();
         product.setId(productId);
@@ -130,19 +130,25 @@ public class SysProductServiceImpl implements SysProductService {
         product.setCreateTime(new Date());
         product.setUpdateTime(new Date());
         if (StringUtils.isNotEmpty(store)) {//保存选择的存储条件
-            for (ProductStoreDTO storeDto : store) {
-                ProductStore productStore = new ProductStore();
-                productStore.setStoreId(storeDto.getStoreId());
-                productStore.setProductId(storeDto.getStoreId());
-                if(productStore.getShelfLife()!=null && productStore.getShelfLife().equals("")){
-                    productStore.setShelfLife(storeDto.getShelfLife()+"小时");
-                }else{
-                    productStore.setShelfLife("见包装");
+            List<ProductStore> productStores = new ArrayList<>();
+            for (String storeID : store) {
+                ProductStore productStore = null;
+                for(String shelfLifes:shelfLife){//保存保质期
+                    productStore = new ProductStore();
+                    productStore.setStoreId(storeID);
+                    productStore.setProductId(productId);
+                    productStore.setId(SnowflakeIdWorker.getUUID().toString());
+                    if(shelfLifes!=null && !shelfLifes.equals("")){
+                        productStore.setShelfLife(shelfLifes+"小时");
+                    }else{
+                        productStore.setShelfLife("见包装");
+                    }
+                    productStore.setCreateTime(new Date());
+                    productStore.setUpdateTime(new Date());
                 }
-                productStore.setCreateTime(new Date());
-                productStore.setUpdateTime(new Date());
                 productStoreMapper.insertSelective(productStore);
             }
+            //添加到数据库
         }
         return tSysProductMapper.insert(product);
     }

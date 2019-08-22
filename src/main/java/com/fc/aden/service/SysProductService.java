@@ -5,7 +5,6 @@ import com.fc.aden.model.custom.process.ImportProductDTO;
 import com.fc.aden.model.custom.process.TSysProduct;
 import com.fc.aden.vo.ImportTSysProductDTO;
 import com.fc.aden.vo.ProductFoodStoreVO;
-import com.fc.aden.vo.ProductStoreDTO;
 import com.fc.aden.vo.ProductVO;
 import com.github.pagehelper.PageInfo;
 
@@ -18,7 +17,7 @@ public interface SysProductService {
 
     ProductFoodStoreVO checkcNameUnique(String product, String itemsCode,String foodCode);
 
-    int insertProduct(TSysProduct tSysProduct,List<ProductStoreDTO> store);
+    int insertProduct(TSysProduct tSysProduct,List<String> store,List<String> shelfLife);
 
     int removeProduct(String ids);
 

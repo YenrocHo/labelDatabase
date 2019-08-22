@@ -2,6 +2,7 @@ package com.fc.aden.model.custom.process;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class TSysProduct implements Serializable {
     //产品Id
@@ -33,6 +34,8 @@ public class TSysProduct implements Serializable {
 
     //产品更新时间
     private Date updateTime;
+
+    private List<ProductStore> productStores;
 
     public TSysProduct(String id, String itemsCode, String product,String productCode, String name, String englishName, Integer status ,String foodName, Date createTime, Date updateTime) {
         this.id = id;

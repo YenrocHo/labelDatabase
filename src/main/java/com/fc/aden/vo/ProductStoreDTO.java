@@ -1,26 +1,28 @@
 package com.fc.aden.vo;
 
-public class ProductStoreDTO {
-    private String storeId;
-    private String shelfLife;
+import java.util.List;
 
-    public String getStoreId() {
+public class ProductStoreDTO {
+    private List<String> storeId;
+    private List<String> shelfLife;
+
+    public List<String> getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(String storeId) {
+    public void setStoreId(List<String> storeId) {
         this.storeId = storeId;
     }
 
-    public String getShelfLife() {
+    public List<String> getShelfLife() {
         return shelfLife;
     }
 
-    public void setShelfLife(String shelfLife) {
+    public void setShelfLife(List<String> shelfLife) {
         this.shelfLife = shelfLife;
     }
 
-    public ProductStoreDTO(String storeId, String shelfLife) {
+    public ProductStoreDTO(List<String> storeId, List<String> shelfLife) {
         this.storeId = storeId;
         this.shelfLife = shelfLife;
     }
@@ -28,11 +30,4 @@ public class ProductStoreDTO {
     public ProductStoreDTO() {
     }
 
-    @Override
-    public String toString() {
-        return "ProductStoreDTO{" +
-                "storeId='" + storeId + '\'' +
-                ", shelfLife='" + shelfLife + '\'' +
-                '}';
-    }
 }

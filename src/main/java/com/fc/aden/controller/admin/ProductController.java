@@ -147,8 +147,9 @@ public class ProductController extends BaseController {
     @PostMapping("/add")
     @RequiresPermissions("system:product:add")
     @ResponseBody
-    public AjaxResult add(TSysProduct tSysProduct,@RequestParam(value="store", required = false)List<ProductStoreDTO> store) {
-        int i = sysProductService.insertProduct(tSysProduct,store);
+    public AjaxResult add(TSysProduct tSysProduct,@RequestParam(value="store", required = false)List<String> store,
+                          @RequestParam(value="shelfLife", required = false)List<String> shelfLife) {
+        int i = sysProductService.insertProduct(tSysProduct,store,shelfLife);
         if (i > 0) {
             return success();
         } else {

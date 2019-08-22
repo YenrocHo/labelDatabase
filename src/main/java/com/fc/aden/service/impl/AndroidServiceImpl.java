@@ -130,7 +130,6 @@ public class AndroidServiceImpl implements AndroidService {
             TsysUser tsysUser = tsysUserMapper.selectLogin(username);
             List searchResult = searchList(str, tsysUser.getItemsCode(), keyword,foodCode);
             if (searchResult.size() == 0){
-
             }else if(searchResult.get(0).equals("参数错误")){
                 listResult = AjaxResult.error(Const.CodeEnum.wrongParam.getCode(),Const.CodeEnum.wrongParam.getValue());
             }else if(searchResult.get(0).equals("SQL错误")){
@@ -175,10 +174,6 @@ public class AndroidServiceImpl implements AndroidService {
         }
         return AjaxResult.error("操作失败");
     }
-
-
-
-
 
     private boolean token(String number,String statusToken){
         if (StringUtils.isBlank(statusToken)) {

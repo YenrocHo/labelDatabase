@@ -30,7 +30,7 @@
       <if test="storeId != null" >
         store_id,
       </if>
-      <if test="storeId != null" >
+      <if test="shelfLife != null" >
           shelf_life,
       </if>
       <if test="createTime != null" >
