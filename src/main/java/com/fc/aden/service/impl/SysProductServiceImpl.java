@@ -47,8 +47,6 @@ public class SysProductServiceImpl implements SysProductService {
     private TSysFoodMapper tSysFoodMapper;
     @Autowired
     private ProductStoreMapper productStoreMapper;
-    @Autowired
-    private TSysStoreMapper sysStoreMapper;
 
     /**
      * @return com.github.pagehelper.PageInfo<com.fc.aden.model.custom.process.TSysProduct>
@@ -239,12 +237,17 @@ public class SysProductServiceImpl implements SysProductService {
         List<ImportTSysProductDTO> importTSysProductDTOS = new ArrayList<ImportTSysProductDTO>();
         int errNumber = 0;
         int successNumber = 0;
-        for (Map<String, String> row : dataList) {
+//        for (Map<String, String> row : dataList) {
+        for (int i = 1; i < dataList.size(); i++) {
+            Map<String, String> row = dataList.get(i);
             String productName = row.get(ImportProductDTO.PRODUCT_NAME);
             String productCode = row.get(ImportProductDTO.PRODUCT_CODE);
-            String shelfLife = row.get(ImportProductDTO.SHELF_LIFE);
             String foodName = row.get(ImportProductDTO.FOOD_NAME);
             String items = row.get(ImportProductDTO.ITEM);
+            String fridge = row.get(ImportProductDTO.FRIDGE); //冰箱
+            String frozen = row.get(ImportProductDTO.FROZEN);  //冰柜
+            String temperature = row.get(ImportProductDTO.ROOM_TEMPERATURE); //室温
+            String above = row.get(ImportProductDTO.ABOVE); //高于65°C
 
             StringBuffer errorMessage = new StringBuffer();
             boolean pass = true;
@@ -268,27 +271,57 @@ public class SysProductServiceImpl implements SysProductService {
             //判断项目点
             List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(items);
             if (StringUtils.isEmpty(items)) {
-                errorMessage.append("项目点不为空；");
+                errorMessage.append("项目点编号不为空；");
                 pass = false;
             } else if (tSysItemsList != null && tSysItemsList.size() > 0) {
                 importTSysProductDTO.setItemsCode(items);
-            } else {
-                errorMessage.append("项目点不存在；");
+            } else if(projectNames.contains(productName)){
+                errorMessage.append("项目点编号重复；");
+                pass = false;
+            }else {
+                errorMessage.append("项目点编号不存在；");
                 pass = false;
             }
-            //保质期
-            if (StringUtils.isEmpty(shelfLife)) {
-                importTSysProductDTO.setShelfLife("见包装");
-            } else {
-                importTSysProductDTO.setShelfLife(shelfLife);
-            }
-            //食品种类 可以为null  如果不为空数据库必须存在
-            List<TSysFood> tSysFood = tSysFoodMapper.findByFood(foodName, items);
+            //
+            List<TSysFood> tSysFood = tSysFoodMapper.findByFoodCodeOrItemsCode(foodName, items);
             if (tSysFood != null && tSysFood.size() > 0) {
                 importTSysProductDTO.setFoodName(foodName);
             } else {
                 errorMessage.append("食品种类不存在；");
                 pass = false;
+            }
+
+            TSysStore  tSysStore = tSysStoreMapper.selectByItemsAndName(items,"冰柜");
+            if(frozen!=null&&!frozen.equals("")){
+                importTSysProductDTO.setFrozenID(tSysStore.getId());
+                importTSysProductDTO.setFrozen(frozen+"小时");
+            }else{
+                importTSysProductDTO.setFrozenID(tSysStore.getId());
+                importTSysProductDTO.setFrozen("见包装");
+            }
+            TSysStore  tSysStoreF = tSysStoreMapper.selectByItemsAndNameF(items,"冰箱");
+            if(fridge!=null&&!fridge.equals("")){
+                importTSysProductDTO.setFridgeID(tSysStoreF.getId());
+                importTSysProductDTO.setFridge(fridge+"小时");
+            }else{
+                importTSysProductDTO.setFridgeID(tSysStoreF.getId());
+                importTSysProductDTO.setFridge("见包装");
+            }
+            TSysStore  tSysStoreT = tSysStoreMapper.selectByItemsAndNameT(items,"室温");
+            if(temperature!=null&&!temperature.equals("")){
+                importTSysProductDTO.setTemperatureID(tSysStoreT.getId());
+                importTSysProductDTO.setTemperature(temperature+"小时");
+            }else{
+                importTSysProductDTO.setTemperatureID(tSysStoreT.getId());
+                importTSysProductDTO.setTemperature("见包装");
+            }
+            TSysStore  tSysStoreA = tSysStoreMapper.selectByItemsAndNameA(items,"高于65°C");
+            if(above!=null&&!above.equals("")){
+                importTSysProductDTO.setAboveID(tSysStoreA.getId());
+                importTSysProductDTO.setAbove(above+"小时");
+            }else{
+                importTSysProductDTO.setAboveID(tSysStoreA.getId());
+                importTSysProductDTO.setAbove("见包装");
             }
             if (pass) {
                 errorMessage.append("成功！");
@@ -334,11 +367,28 @@ public class SysProductServiceImpl implements SysProductService {
             //根据编号查询
             TSysFood tSysFood = tSysFoodMapper.findByFoodId(productVO.getFoodName());
             TSysProduct tSysProduct = new TSysProduct();
-            String id = tSysFood.getId();
+            for(int i = 0;i<4;i++){
+                ProductStore productStore = new ProductStore();
+                productStore.setId(UUID.randomUUID().toString());
+                productStore.setStoreId(productVO.getFrozenID());
+                productStore.setStoreId(productVO.getFridgeID());
+                productStore.setStoreId(productVO.getTemperatureID());
+                productStore.setStoreId(productVO.getAboveID());
+                productStore.setShelfLife(productVO.getFridge());
+                productStore.setShelfLife(productVO.getFrozen());
+                productStore.setShelfLife(productVO.getTemperature());
+                productStore.setShelfLife(productVO.getAbove());
+                productStore.setProductId(productVO.getId());
+                productStore.setUpdateTime(new Date());
+                productStore.setCreateTime(new Date());
+                productStoreMapper.insertSelective(productStore);
+            }
+            String id = tSysFood.getFoodCode();
             productVO.setFoodName(id);
             tSysProduct.setUpdateTime(new Date());
             tSysProduct.setCreateTime(new Date());
             BeanCopierEx.copy(productVO, tSysProduct);
+//            productStoreMapper.insertSelective(productStore);
             tSysProductMapper.insertSelective(tSysProduct);
         }
     }
@@ -360,7 +410,7 @@ public class SysProductServiceImpl implements SysProductService {
                 }
                 ProductVO productVO = new ProductVO();
                 if (isflag) {
-                    productVO.setStoreId(true);
+//                    productVO.setStoreId(true);
                     productVO.setNoStoreId(tSysStore.getId());
                     productVO.setStoreName(tSysStore.getName());
                     productVOList.add(productVO);

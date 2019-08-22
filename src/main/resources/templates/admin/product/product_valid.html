@@ -25,22 +25,25 @@
         <div class="content">
             <table>
                 <tr class="title">
-                    <th>状态</th>
                     <th>消息</th>
-                    <th>产品名称</th>
-                    <th>英文名</th>
-                    <th>保质期</th>
-                    <th>食品种类</th>
                     <th>项目点编号</th>
+                    <th>食品种类</th>
+                    <th>产品名称</th>
+                    <th>冰箱 低于5°C</th>
+                    <th>冰柜 低于-15°C</th>
+                    <th>室温</th>
+                    <th>高于65°C</th>
                 </tr>
                 <tr th:each="tSysProduct : ${importProductDTO.tSysProductDTOS}" class="data">
-                    <td th:text="${tSysProduct.pass}"></td>
+<!--                    <td th:text="${tSysProduct.pass}"></td>-->
                     <td th:text="${tSysProduct.messages}"></td>
-                    <td th:text="${tSysProduct.product}"></td>
-                    <td th:text="${tSysProduct.englishName}"></td>
-                    <td th:text="${tSysProduct.shelfLife}"></td>
-                    <td th:text="${tSysProduct.foodName}"></td>
                     <td th:text="${tSysProduct.itemsCode}"></td>
+                    <td th:text="${tSysProduct.foodName}"></td>
+                    <td th:text="${tSysProduct.product}"></td>
+                    <td th:text="${tSysProduct.fridge}"></td>
+                    <td th:text="${tSysProduct.frozen}"></td>
+                    <td th:text="${tSysProduct.temperature}"></td>
+                    <td th:text="${tSysProduct.above}"></td>
                 </tr>
             </table>
         </div>

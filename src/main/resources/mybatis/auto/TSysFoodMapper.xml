@@ -256,8 +256,20 @@
      <include refid="Base_Column_List"/>
      from t_sys_food
      where 1=1
-      <if test="food!=null and food!=''">
-        and food = #{food,jdbcType=VARCHAR}
+      <if test="foodCode!=null and foodCode!=''">
+        and food_code = #{foodCode,jdbcType=VARCHAR}
+      </if>
+      <if test="itemsCode!=null and itemsCode!=''">
+        and items_code = #{itemsCode,jdbcType=VARCHAR}
+      </if>
+  </select>
+  <select id="findByFoodCodeOrItemsCode" resultMap="BaseResultMap" >
+    select
+     <include refid="Base_Column_List"/>
+     from t_sys_food
+     where 1=1
+      <if test="foodCode!=null and foodCode!=''">
+        and food_code = #{foodCode,jdbcType=VARCHAR}
       </if>
       <if test="itemsCode!=null and itemsCode!=''">
         and items_code = #{itemsCode,jdbcType=VARCHAR}

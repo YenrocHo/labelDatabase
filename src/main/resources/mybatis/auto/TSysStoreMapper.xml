@@ -221,4 +221,28 @@
       and items_code = #{itemsCode}
     </if>
   </select>
+  <select id="selectByItemsAndName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_store
+    where name = #{name} and items_code = #{itemsCode}
+  </select>
+  <select id="selectByItemsAndNameF" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_store
+    where name = #{name} and items_code = #{itemsCode}
+  </select>
+  <select id="selectByItemsAndNameT" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_store
+    where name = #{name} and items_code = #{itemsCode}
+  </select>
+  <select id="selectByItemsAndNameA" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_store
+    where name = #{name} and items_code = #{itemsCode}
+  </select>
 </mapper>

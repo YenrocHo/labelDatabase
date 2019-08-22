@@ -4,12 +4,14 @@ import com.fc.aden.common.base.BaseService;
 import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.process.TSysStageMapper;
+import com.fc.aden.mapper.auto.process.TSysStoreMapper;
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.process.ImportStageDTO;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.model.custom.process.TSysStageExample;
+import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.SnowflakeIdWorker;
@@ -190,7 +192,6 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
             } else {
                 importTSysStageDTO.setItemsCode(items);
             }
-
             if (pass) {
                 errorMessage.append("成功！");
                 successNumber++;

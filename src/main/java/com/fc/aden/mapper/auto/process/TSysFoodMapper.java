@@ -35,6 +35,7 @@ public interface TSysFoodMapper {
     int updateByExample(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
 
     List<TSysFood> findByFood(String food,String itemsCode);
+    List<TSysFood> findByFoodCodeOrItemsCode(String foodCode,String itemsCode);
     //查询该项目点编号下的食品种类编号
     List<TSysFood> findByFoodCodeOrItem(String foodCode,String itemsCode);
     //根据项目点搜索

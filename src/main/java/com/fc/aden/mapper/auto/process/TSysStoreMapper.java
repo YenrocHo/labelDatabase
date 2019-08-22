@@ -29,6 +29,10 @@ public interface TSysStoreMapper {
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
     List<TSysStore> selectListByItems(String searchTxt,String itemsCode);
+    TSysStore selectByItemsAndName(String itemsCode,String name);
+    TSysStore selectByItemsAndNameF(String itemsCode,String name);
+    TSysStore selectByItemsAndNameT(String itemsCode,String name);
+    TSysStore selectByItemsAndNameA(String itemsCode,String name);
 
     List<TSysStore> selectStoreList(@Param("itemsCode") String itemsCode, @Param("keyword") String keyword);
 }

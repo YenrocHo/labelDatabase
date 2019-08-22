@@ -26,12 +26,19 @@ public class ProductVO {
 
     //产品创建时间
     private String createTime;
+    private String frozenID;//冰柜id
+    private String frozen;//冰柜
+    private String fridgeID;//冰箱id
+    private String fridge;//冰箱
+    private String temperatureID;//室温ID
+    private String temperature;//室温ID
+    private String aboveID;//高于65°C
+    private String above;//高于65°C
+
 
     //产品更新时间
     private String updateTime;
-
-
-    private Boolean storeId;//选中id
+    private String storeId;//选中id
     private String storeName;//选中id
     private String noStoreId;//没有选中id
     public ProductVO(){
@@ -50,6 +57,70 @@ public class ProductVO {
         this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
+    }
+
+    public String getFrozenID() {
+        return frozenID;
+    }
+
+    public void setFrozenID(String frozenID) {
+        this.frozenID = frozenID;
+    }
+
+    public String getFrozen() {
+        return frozen;
+    }
+
+    public void setFrozen(String frozen) {
+        this.frozen = frozen;
+    }
+
+    public String getFridgeID() {
+        return fridgeID;
+    }
+
+    public void setFridgeID(String fridgeID) {
+        this.fridgeID = fridgeID;
+    }
+
+    public String getFridge() {
+        return fridge;
+    }
+
+    public void setFridge(String fridge) {
+        this.fridge = fridge;
+    }
+
+    public String getTemperatureID() {
+        return temperatureID;
+    }
+
+    public void setTemperatureID(String temperatureID) {
+        this.temperatureID = temperatureID;
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
+    }
+
+    public String getAboveID() {
+        return aboveID;
+    }
+
+    public void setAboveID(String aboveID) {
+        this.aboveID = aboveID;
+    }
+
+    public String getAbove() {
+        return above;
+    }
+
+    public void setAbove(String above) {
+        this.above = above;
     }
 
     public String getId() {
@@ -140,11 +211,11 @@ public class ProductVO {
         this.productCode = productCode;
     }
 
-    public Boolean getStoreId() {
+    public String getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(Boolean storeId) {
+    public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
 
