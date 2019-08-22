@@ -11,7 +11,16 @@
     <link th:href="@{/static/admin/assets/js/bootstrap/css/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
     <!-- 用户界面自定义css -->
     <link th:href="@{/static/admin/user/css/user-add.css}" rel="stylesheet"/>
-    <style type="text/css"></style>
+    <style type="text/css">
+        #shelfLife{
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
 <div class="content-wrap">
@@ -62,23 +71,12 @@
                                     <span id="foodSpan" style="color: red;"></span>
                                 </div>
                             </div>
-                           <!-- <div class="form-group">
-                                <label class="col-sm-3 control-label ">存储条件：</label>
-                                <div class="col-sm-8">
-                                    <div class="icheckbox-blue" id="sysStores">
-                                    </div>
-                                    <span id="storeSpan" style="color: red;"></span>
-                                </div>
-                            </div>-->
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label ">保质期：</label>
                                 <div class="col-sm-8">
                                     <label id="sysStores">
-<!--                                        <input  name="store"  th:value="${p.id}"  type="hidden" >-->
-<!--                                        <b th:text="${p.storeName}"></b>&nbsp;-->
-                                       <!-- <input class="form-control" type="text" id="shelfLife" name="shelfLife"
-                                               oninput="value=value.replace(/[^\d]/g,'')"/>-->
-                                    </label>
+                                    </label><br>
                                     <span style="color: red;">只能输入数字，以小时(h)为单位。例：24 (不输入则默认'见包装')</span>
                                 </div>
                             </div>
@@ -198,20 +196,12 @@
             $("#sysStores").html("");
             $.each(result.data, function (i, d) {
                 var store_str = "";
-                store_str += "<input  name='store' type='hidden'  value='" + d.id + "' >";
-                store_str += "" + d.name + "";
-                store_str += "<input  type=\"text\" id=\"shelfLife\" name=\"shelfLife\"\n" +
-                    "                                               oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
+                store_str += "<input name='store' type='hidden' value='" + d.id + "' >";
+                store_str += d.name + "&nbsp;:";
+                store_str += "&nbsp;<input type=\"text\" id=\"shelfLife\" name=\"shelfLife\"\n" +
+                    "                                               oninput=\"value=value.replace(/[^\\d]/g,'')\"/><br><br>";
                 $("#sysStores").append(store_str);
             });
-            /*$.each(result.data, function (i, d) {
-                var store_str = "";
-                store_str += "<label>";
-                store_str += "<input class='sqcheckbox' name='store' value='" + d.id + "' checked type='checkbox'><b>" + d.name + "</b>";
-                store_str += "</label>";
-                $("#sysStores").append(store_str);
-            });*/
-
         }
     }
 

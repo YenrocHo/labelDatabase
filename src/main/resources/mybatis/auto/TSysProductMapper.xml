@@ -12,10 +12,9 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="food_name" jdbcType="VARCHAR" property="foodName"/>
-        <result column="shelf_life" jdbcType="VARCHAR" property="shelfLife"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, items_code,product_code,product,name,english_name,status,create_time, update_time,food_name,shelf_life
+    id, items_code,product_code,product,name,english_name,status,create_time, update_time,food_name
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -39,16 +38,15 @@
     where food_name = #{foodName,jdbcType=VARCHAR}
   </delete>
     <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysProduct">
-    insert into t_sys_product (id, items_code,product_code,product,name,english_name, status,create_time, update_time,food_name,shelf_life)
+    insert into t_sys_product (id, items_code,product_code,product,name,english_name, status,create_time, update_time,food_name)
     values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
     #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=INTEGER},#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-     #{updateTime,jdbcType=TIMESTAMP},#{foodName,jdbcType=INTEGER},#{shelfLife,jdbcType=INTEGER})
+     #{updateTime,jdbcType=TIMESTAMP},#{foodName,jdbcType=INTEGER})
   </insert>
     <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysProduct">
-    insert into t_sys_product (id,items_code,product_code,product, name,english_name,status,create_time, update_time, food_name,
-     shelf_life) values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
+    insert into t_sys_product (id,items_code,product_code,product, name,english_name,status,create_time, update_time, food_name) values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
     #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=INTEGER},#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-     #{updateTime,jdbcType=TIMESTAMP},#{foodName,jdbcType=INTEGER},#{shelfLife,jdbcType=INTEGER})
+     #{updateTime,jdbcType=TIMESTAMP},#{foodName,jdbcType=INTEGER})
   </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysProduct">
         update t_sys_product
@@ -77,9 +75,6 @@
             <if test="foodName != null">
                 food_name = #{foodName,jdbcType=VARCHAR},
             </if>
-            <if test="shelfLife != null">
-                shelf_life = #{shelfLife,jdbcType=VARCHAR},
-            </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
@@ -94,8 +89,7 @@
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now(),
-      food_name = #{foodName,jdbcType=VARCHAR},
-      shelf_life = #{shelfLife,jdbcType=VARCHAR}
+      food_name = #{foodName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <select id="selectList" resultMap="BaseResultMap" parameterType="com.fc.aden.vo.ProductVO">

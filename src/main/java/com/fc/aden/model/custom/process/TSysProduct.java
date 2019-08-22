@@ -23,7 +23,7 @@ public class TSysProduct implements Serializable {
     private String foodName;
 
     //保质期
-    private String shelfLife;
+//    private String shelfLife;
 
     //产品状态
     private Integer status;
@@ -34,7 +34,7 @@ public class TSysProduct implements Serializable {
     //产品更新时间
     private Date updateTime;
 
-    public TSysProduct(String id, String itemsCode, String product,String productCode, String name, String englishName, Integer status,String shelfLife,String foodName, Date createTime, Date updateTime) {
+    public TSysProduct(String id, String itemsCode, String product,String productCode, String name, String englishName, Integer status ,String foodName, Date createTime, Date updateTime) {
         this.id = id;
         this.itemsCode = itemsCode;
         this.product = product;
@@ -43,7 +43,6 @@ public class TSysProduct implements Serializable {
         this.englishName = englishName;
         this.status = status;
         this.createTime = createTime;
-        this.shelfLife = shelfLife;
         this.foodName = foodName;
         this.updateTime = updateTime;
     }
@@ -123,14 +122,6 @@ public class TSysProduct implements Serializable {
         this.foodName = foodName;
     }
 
-    public String getShelfLife() {
-        return shelfLife;
-    }
-
-    public void setShelfLife(String shelfLife) {
-        this.shelfLife = shelfLife;
-    }
-
     public String getProductCode() {
         return productCode;
     }
@@ -151,7 +142,6 @@ public class TSysProduct implements Serializable {
                 ", status=" + status +
                 ", createTime=" + createTime +
                 ", foodName=" + foodName +
-                ", shelfLife=" + shelfLife +
                 ", updateTime=" + updateTime +
                 '}';
     }

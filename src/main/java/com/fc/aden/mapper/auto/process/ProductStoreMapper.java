@@ -24,5 +24,6 @@ public interface ProductStoreMapper {
     List<ProductStore> findByProductIdList(String productId);
     List<ProductStore> findByStoreIdList(String storeId);
     int deleteStoreId(String storeId);
+    int deleteProductId(String productId);
 
 }

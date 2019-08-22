@@ -5,16 +5,17 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="product_id" property="productId" jdbcType="VARCHAR"/>
     <result column="store_id" property="storeId" jdbcType="VARCHAR" />
+    <result column="shelf_life" property="shelfLife" jdbcType="VARCHAR" />
     <result column="create_Time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_Time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, product_id, store_id,create_Time, update_Time
+    id, product_id, store_id,shelf_life,create_Time, update_Time
   </sql>
   <insert id="insert" parameterType="com.fc.aden.model.custom.process.ProductStore" >
-    insert into t_sys_product_store (id, product_id, store_id,create_Time,
+    insert into t_sys_product_store (id, product_id, store_id,shelf_life,create_Time,
       update_Time)
-    values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER} ,now(),
+    values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER} #{shelfLife,jdbcType=INTEGER} ,now(),
       now())
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.ProductStore" >
@@ -28,6 +29,9 @@
       </if>
       <if test="storeId != null" >
         store_id,
+      </if>
+      <if test="storeId != null" >
+          shelf_life,
       </if>
       <if test="createTime != null" >
         create_Time,
@@ -45,6 +49,9 @@
       </if>
       <if test="storeId != null" >
         #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="shelfLife != null" >
+        #{shelfLife,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
        now(),
@@ -69,5 +76,9 @@
   <delete id="deleteStoreId" parameterType="java.lang.String" >
     delete from t_sys_product_store
     where store_id = #{storeId}
+  </delete>
+  <delete id="deleteProductId" parameterType="java.lang.String" >
+    delete from t_sys_product_store
+    where product_id = #{productId}
   </delete>
 </mapper>

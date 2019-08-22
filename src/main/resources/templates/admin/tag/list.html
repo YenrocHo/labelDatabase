@@ -31,17 +31,14 @@
 
         width: 20%;
     }
-
-    .float_l {
+    .float_l{
         float: left;
     }
-
-    .form-control, .layui-form-select {
+    .form-control ,.layui-form-select{
         width: 80%;
 
     }
-
-    .form-dxm {
+    .form-dxm{
         width: 100%;
     }
 
@@ -60,7 +57,7 @@
 </style>
 <!-- 右边内容 -->
 <div class="wrap-fluid">
-    <div class="container-fluid paper-wrap bevel tlbr" id = "content_body">
+    <div class="container-fluid paper-wrap bevel tlbr">
         <!-- 内容 -->
         <!--标题 通用-->
         <div th:replace="admin/common/html/title :: title(${title},${parenttitle},${isMsg},${msgHTML})">
@@ -87,32 +84,43 @@
                         </div>
                         <div class="body-nest" id="search_div">
                             <div class="form_left">
-                                <form role="form" class="form-inline layui-form">
-                                    <div class="form-group">
-                                        <input type="text" name="stage" placeholder="阶段" class="form-control ">
+                                <form role="form" class="layui-form">
+                                    <div class="search_one">
+                                        <div class="clearfix float_l">
+                                            <input type="text" name="stage" placeholder="阶段" class="form-control ">
+                                        </div>
+                                        <div class="clearfix float_l">
+                                            <input type="text" name="food" placeholder="食品种类" class="form-control">
+                                        </div>
+                                        <div class="clearfix float_l">
+                                            <input type="text" name="product" placeholder="产品" class="form-control">
+                                        </div>
+                                        <div class="layui-input-inline clearfix">
+                                            <select name="itemsCode" lay-verify="required" lay-search="">
+                                                <option value="">项目点编号</option>
+                                                <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3
+                                                        th:text="${m.itemsCode}"></h3></option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <input type="text" name="food" placeholder="食品种类" class="form-control">
+                                    <div class="m_clear"></div>
+                                    <div class="search_two">
+                                        <!--<div class="clearfix clear  float_l">
+                                            <input type="text" name="items" placeholder="项目点名称" class="form-control">
+                                        </div>-->
+                                        <div class="clearfix float_l">
+                                            <input type="text" name="printUser" placeholder="打印人" class="form-control">
+                                        </div>
+                                        <div class="clearfix float_l">
+                                            <input type="text" class="form-control" name="startTime" placeholder="开始时间"
+                                                   id="startTime">
+                                        </div>
+                                        <div class="clearfix float_l">
+                                            <input type="text" class="form-control" name="endTime" placeholder="结束时间"
+                                                   id="endTime">
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <input type="text" name="product" placeholder="产品" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" name="printUser" placeholder="打印人" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="startTime" placeholder="开始时间"
-                                               id="startTime">
-                                        <input type="text" class="form-control" name="endTime" placeholder="结束时间"
-                                               id="endTime">
-                                    </div>
-                                    <div class="layui-input-inline clearfix" th:if="${tsysUser.roles} eq '2'">
-                                        <select name="itemsCode" lay-verify="required" lay-search="">
-                                            <option value="">项目点编号</option>
-                                            <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3
-                                                    th:text="${m.itemsCode}"></h3></option>
-                                        </select>
-                                    </div>
+                                    <div class="m_clear"></div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
                                             class="fa fa-search"></i>&nbsp;搜索
                                     </button>
@@ -197,7 +205,7 @@
             {
                 field: 'itemsCode',
                 title: '项目点'
-            }, {
+            },  {
                 field: 'correctStage',
                 title: '阶段'
             }, {
@@ -253,16 +261,6 @@
     layui.use(['form'], function () {
         var form = layui.form
     });
-</script>
-<script type="text/javascript" language="javascript">
-
-    window.onresize = changeDate;
-    changeDate();
-
-    function changeDate() {
-        var im_paper = document.getElementById("content_body");
-        im_paper.style.minHeight = (document.documentElement.clientHeight).toString()+"px";
-    }
 </script>
 </body>
 </html>

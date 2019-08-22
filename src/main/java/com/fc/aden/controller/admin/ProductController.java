@@ -12,6 +12,7 @@ import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.FoodVO;
 import com.fc.aden.vo.ProductFoodStoreVO;
+import com.fc.aden.vo.ProductStoreDTO;
 import com.fc.aden.vo.ProductVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -146,7 +147,7 @@ public class ProductController extends BaseController {
     @PostMapping("/add")
     @RequiresPermissions("system:product:add")
     @ResponseBody
-    public AjaxResult add(TSysProduct tSysProduct,@RequestParam(value="store", required = false)List<String> store) {
+    public AjaxResult add(TSysProduct tSysProduct,@RequestParam(value="store", required = false)List<ProductStoreDTO> store) {
         int i = sysProductService.insertProduct(tSysProduct,store);
         if (i > 0) {
             return success();

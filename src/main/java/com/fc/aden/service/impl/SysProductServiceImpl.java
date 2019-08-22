@@ -17,6 +17,7 @@ import com.fc.aden.util.SnowflakeIdWorker;
 import com.fc.aden.util.StringUtils;
 import com.fc.aden.vo.ImportTSysProductDTO;
 import com.fc.aden.vo.ProductFoodStoreVO;
+import com.fc.aden.vo.ProductStoreDTO;
 import com.fc.aden.vo.ProductVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -116,7 +117,7 @@ public class SysProductServiceImpl implements SysProductService {
      * @Param [tSysProduct]
      **/
     @Transactional
-    public int insertProduct(TSysProduct tSysProduct, List<String> store) {
+    public int insertProduct(TSysProduct tSysProduct, List<ProductStoreDTO> store) {
         TSysProduct product = new TSysProduct();
         String productId = SnowflakeIdWorker.getUUID().toString();
         product.setId(productId);
@@ -126,16 +127,20 @@ public class SysProductServiceImpl implements SysProductService {
         product.setFoodName(tSysProduct.getFoodName());
         product.setEnglishName(tSysProduct.getEnglishName());
         product.setStatus(1);
-        if (tSysProduct.getShelfLife() == null || "".equals(tSysProduct.getShelfLife())) {
-            product.setShelfLife("看包装");
-        } else {
-            product.setShelfLife(tSysProduct.getShelfLife() + "小时");
-        }
         product.setCreateTime(new Date());
         product.setUpdateTime(new Date());
         if (StringUtils.isNotEmpty(store)) {//保存选择的存储条件
-            for (String storeId : store) {
-                ProductStore productStore = new ProductStore(SnowflakeIdWorker.getUUID(), productId, storeId, new Date(), new Date());
+            for (ProductStoreDTO storeDto : store) {
+                ProductStore productStore = new ProductStore();
+                productStore.setStoreId(storeDto.getStoreId());
+                productStore.setProductId(storeDto.getStoreId());
+                if(productStore.getShelfLife()!=null && productStore.getShelfLife().equals("")){
+                    productStore.setShelfLife(storeDto.getShelfLife()+"小时");
+                }else{
+                    productStore.setShelfLife("见包装");
+                }
+                productStore.setCreateTime(new Date());
+                productStore.setUpdateTime(new Date());
                 productStoreMapper.insertSelective(productStore);
             }
         }
@@ -153,6 +158,11 @@ public class SysProductServiceImpl implements SysProductService {
     public int removeProduct(String ids) {
         List<String> list = Convert.toListStrArray(ids);
         int i = tSysProductMapper.deleteProductByIds(list);
+        //删除产品关联的存储条件
+        List<ProductStore> productStores = productStoreMapper.findByProductIdList(ids);
+        if (productStores!=null && productStores.size()>0){
+            productStoreMapper.deleteProductId(ids);
+        }
         return i;
     }
 

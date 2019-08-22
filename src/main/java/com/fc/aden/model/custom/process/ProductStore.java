@@ -10,6 +10,9 @@ public class ProductStore {
     private String id;
     private String productId;
     private String storeId;
+
+    //保质期
+    private String shelfLife;
     private Date createTime;
 
     private Date updateTime;
@@ -57,11 +60,20 @@ public class ProductStore {
         this.updateTime = updateTime;
     }
 
-    public ProductStore(String id, String productId, String storeId, Date createTime, Date updateTime) {
+    public String getShelfLife() {
+        return shelfLife;
+    }
+
+    public void setShelfLife(String shelfLife) {
+        this.shelfLife = shelfLife;
+    }
+
+    public ProductStore(String id, String productId, String storeId, Date createTime, Date updateTime,String shelfLife) {
         this.id = id;
         this.productId = productId;
         this.storeId = storeId;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.shelfLife = shelfLife;
     }
 }
