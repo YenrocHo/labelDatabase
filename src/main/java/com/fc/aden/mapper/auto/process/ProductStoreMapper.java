@@ -13,6 +13,8 @@ public interface ProductStoreMapper {
 
     int insertSelective( ProductStore record);
 
+    int insertBatch(@Param("recordList") List<ProductStore> recordList);
+
     ProductStore selectByPrimaryKey(String id);
 
     int insert(ProductStore record);
@@ -24,6 +26,8 @@ public interface ProductStoreMapper {
     List<ProductStore> findByProductIdList(String productId);
     List<ProductStore> findByStoreIdList(String storeId);
     int deleteStoreId(String storeId);
+    ProductStore findByStoreId(@Param("productId") String productId,@Param("storeId") String storeId);
+
     int deleteProductId(String productId);
 
 }

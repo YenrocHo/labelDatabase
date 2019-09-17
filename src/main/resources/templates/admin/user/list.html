@@ -30,7 +30,7 @@
 <!-- ###############################代码编写出############################### -->
 <!-- 右边内容 -->
 <div class="wrap-fluid">
-    <div class="container-fluid paper-wrap bevel tlbr" id = "content_body">
+    <div class="container-fluid paper-wrap bevel tlbr" id="content_body">
         <!-- 内容 -->
         <!--标题 通用-->
         <div th:replace="admin/common/html/title :: title(${title},${parenttitle},${isMsg},${msgHTML})">
@@ -167,7 +167,14 @@
         sortName: "username",
         modalName: "用户",
         search: false,
-        dataColumns: [
+        dataColumns: [{
+            title: '序号',
+            formatter: function (value, row, index) {
+                var actions = [];
+                actions.push(index + 1);
+                return actions.join('');
+            }
+        },
             {
                 field: 'username',
                 title: '工号'
@@ -244,7 +251,7 @@
 
     function changeDate() {
         var im_paper = document.getElementById("content_body");
-        im_paper.style.minHeight = (document.documentElement.clientHeight).toString()+"px";
+        im_paper.style.minHeight = (document.documentElement.clientHeight).toString() + "px";
     }
 </script>
 </body>

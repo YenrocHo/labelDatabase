@@ -9,8 +9,6 @@ import java.util.List;
 public interface TSysProductMapper {
     int deleteByPrimaryKey(String productId);
 
-    int insert(TSysProduct record);
-
     int insertSelective(TSysProduct record);
 
     TSysProduct selectByPrimaryKey(String productId);
@@ -24,6 +22,8 @@ public interface TSysProductMapper {
     int selectProductBycName(String product,String itemsCode);
 
     int deleteByFoodId(String foodName);
+
+    int selectItemsCode(String itemsCode);
 
     List<TSysProduct> selectByProduct(String product);
 

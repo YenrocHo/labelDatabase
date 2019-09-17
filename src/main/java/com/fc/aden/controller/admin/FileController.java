@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fc.aden.model.auto.TSysItems;
-import com.fc.aden.model.custom.ImportItemsDTO;
+import com.fc.aden.vo.importDto.ImportItemsDTO;
 import com.fc.aden.util.ExcelUtils;
 import io.swagger.annotations.Api;
 
@@ -89,6 +89,7 @@ public class FileController extends BaseController {
     @PostMapping("/upload")
     @ResponseBody
     public AjaxResult updateAvatar(@RequestParam("file") MultipartFile file) {
+        System.out.println(file);
         try {
             if (!file.isEmpty()) {
                 //插入文件存储表

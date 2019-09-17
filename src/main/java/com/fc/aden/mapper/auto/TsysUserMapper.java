@@ -3,6 +3,8 @@ package com.fc.aden.mapper.auto;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.auto.TsysUserExample;
 import java.util.List;
+
+import com.fc.aden.vo.UserVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface TsysUserMapper {
@@ -43,4 +45,7 @@ public interface TsysUserMapper {
 
     //查询工号
     TsysUser selectLogin(String number);
+
+    UserVO selectLoginVo(@Param("number") String number);
+    UserVO selectLoginOrItem(String number);
 }

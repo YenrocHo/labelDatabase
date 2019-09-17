@@ -84,11 +84,15 @@
       order by update_Time desc
     </if>
   </select>
-  <select id="selectByItems" parameterType="com.fc.aden.model.auto.TSysItems" resultMap="BaseResultMap">
+  <select id="selectByItems"  resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from t_sys_items
-    where items_code = #{itemsCode,jdbcType=VARCHAR}
+    where 1=1
+    <if test="itemsCode !=null and itemsCode != ''">
+     and items_code = #{itemsCode,jdbcType=VARCHAR}
+    </if>
+
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -256,11 +260,11 @@
     <include refid="Base_Column_List"/>
     from t_sys_items
     <where>
-      <if test="keyword != null">
+      <if test="keyword != null and keyword != ''">
         items_code like #{keyword,jdbcType=VARCHAR} or name like #{keyword,jdbcType=VARCHAR} or english_name like #{keyword,jdbcType=VARCHAR}
       </if>
-      <if test="itemsCode != null">
-        items_code = #{itemsCode,jdbcType=VARCHAR}
+      <if test="itemsCode != null and itemsCode != ''">
+       and items_code = #{itemsCode,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

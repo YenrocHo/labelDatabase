@@ -5,6 +5,7 @@ import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.process.ProductStoreMapper;
 import com.fc.aden.mapper.auto.process.TSysStoreMapper;
+import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
 
@@ -12,16 +13,19 @@ import com.fc.aden.model.custom.process.ProductStore;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysStoreService;
 import com.fc.aden.shiro.util.ShiroUtils;
+import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.SnowflakeIdWorker;
 import com.fc.aden.util.StringUtils;
+import com.fc.aden.vo.ImportTSysStoreDTO;
+import com.fc.aden.vo.StoreVO;
+import com.fc.aden.vo.importDto.ImportStoreDTO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class SysStoreServiceImpl implements SysStoreService {
@@ -33,6 +37,7 @@ public class SysStoreServiceImpl implements SysStoreService {
     private TSysItemsMapper tSysItemsMapper;
     @Autowired
     private ProductStoreMapper productStoreMapper;
+
     /**
      * @return com.github.pagehelper.PageInfo<com.fc.test.model.custom.process.TSysStore>
      * @Author Noctis
@@ -41,26 +46,21 @@ public class SysStoreServiceImpl implements SysStoreService {
      * @Param [tablepar, searchTxt]
      **/
     @Override
-    public PageInfo<TSysStore> list(Tablepar tablepar, String searchTxt,String itemsCode) {
+    public PageInfo<TSysStore> list(Tablepar tablepar, String searchTxt, String itemsCode) {
         TsysUser tsysUser = ShiroUtils.getUser();
+
         List<TSysStore> tSysStores = null;
-        if (StringUtils.isEmpty(searchTxt)&& StringUtils.isEmpty(itemsCode)) {
-            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())) {
-                //如果是项目管理员 根据项目编号搜索所有数据
-                tSysStores = tSysStoreMapper.selectListByItems(searchTxt,tsysUser.getItemsCode());
-            }else{
-                tSysStores = tSysStoreMapper.selectList(itemsCode,searchTxt);
+        if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
+            //如果是项目管理员 根据项目编号搜索所有数据
+            tSysStores = tSysStoreMapper.selectListByItems(searchTxt, tsysUser.getItemsCode());
         } else {
-            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())) {
-                //如果是项目管理员 根据项目编号搜索所有数据
-                tSysStores = tSysStoreMapper.selectListByItems(searchTxt,tsysUser.getItemsCode());
-            }else{
-                tSysStores = tSysStoreMapper.selectList(itemsCode,searchTxt);
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
-        }
-        if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            tSysStores = tSysStoreMapper.selectList(itemsCode, searchTxt);
         }
         PageInfo<TSysStore> pageInfo = new PageInfo<TSysStore>(tSysStores);
         return pageInfo;
@@ -79,7 +79,7 @@ public class SysStoreServiceImpl implements SysStoreService {
         int i = tSysStoreMapper.delectStoreByIds(storeIdlist);
         //删除产品关联的存储条件
         List<ProductStore> productStores = productStoreMapper.findByStoreIdList(ids);
-        if (productStores!=null && productStores.size()>0){
+        if (productStores != null && productStores.size() > 0) {
             productStoreMapper.deleteStoreId(ids);
         }
         return i;
@@ -119,17 +119,18 @@ public class SysStoreServiceImpl implements SysStoreService {
     }
 
     @Override
-    public TSysStore findByStore(String itemsCode){
-       return tSysStoreMapper.findByStore(itemsCode);
-    }
-    @Override
-    public List<TSysStore> findByStoreList(String itemsCode){
-       return tSysStoreMapper.findByStoreList(itemsCode);
+    public TSysStore findByStore(String itemsCode) {
+        return tSysStoreMapper.findByStore(itemsCode);
     }
 
     @Override
-    public  List<TSysStore> queryStoreList(){
-       return tSysStoreMapper.queryStoreList();
+    public List<TSysStore> findByStoreList(String itemsCode) {
+        return tSysStoreMapper.findByStoreList(itemsCode);
+    }
+
+    @Override
+    public List<TSysStore> queryStoreList() {
+        return tSysStoreMapper.queryStoreList();
     }
 
     /**
@@ -167,8 +168,115 @@ public class SysStoreServiceImpl implements SysStoreService {
         }
     }
 
-    public int checkStore(String name,String itemsCode){
-        List<TSysStore> tSysStores = tSysStoreMapper.checkStoreItems(name,itemsCode);
+    public int checkStore(String name, String itemsCode) {
+        List<TSysStore> tSysStores = tSysStoreMapper.checkStoreItems(name, itemsCode);
         return tSysStores.size();
+    }
+
+    ////数据导入
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+
+    /**
+     * 验证文件，数据导入到DTO
+     *
+     * @param dataList
+     * @return
+     */
+    public ImportStoreDTO importValid(List<Map<String, String>> dataList) {
+        List<String> projectNames = new ArrayList<>();
+        ImportStoreDTO importStoreDTO = new ImportStoreDTO();
+        List<ImportTSysStoreDTO> importTSysStoreDTOS = new ArrayList<ImportTSysStoreDTO>();
+        int errNumber = 0;
+        int successNumber = 0;
+        for (int i = 1; i < dataList.size(); i++) {
+            Map<String, String> row = dataList.get(i);
+            String itemsCode = row.get(ImportStoreDTO.ITEMS_CODE);
+            String storeName = row.get(ImportStoreDTO.STORE_NAME);
+            String storeDepict = row.get(ImportStoreDTO.STORE_DEPICT);
+            String storeEnglish = row.get(ImportStoreDTO.STORE_ENGLISH);
+            StringBuffer errorMessage = new StringBuffer();
+            boolean pass = true;
+            ImportTSysStoreDTO importTSysStoreDTO = new ImportTSysStoreDTO();
+            importTSysStoreDTO.setCreatTime(df.format(new Date()));
+            importTSysStoreDTO.setUpdateTime(df.format(new Date()));
+            importTSysStoreDTO.setStatus(1);
+            importTSysStoreDTO.setId(UUID.randomUUID().toString());
+            importTSysStoreDTO.setEnglishName(storeEnglish);
+            importTSysStoreDTO.setStore(storeDepict);
+
+            List<TSysStore> storeList = tSysStoreMapper.checkStoreItems(storeName, itemsCode);
+            if (StringUtils.isEmpty(storeName)) {
+                errorMessage.append("储存条件不能为空；");
+                pass = false;
+            } else if (projectNames.contains(storeName) || storeList != null && storeList.size() > 0) {
+                errorMessage.append("储存条件不能重复；");
+                pass = false;
+            } else {
+                importTSysStoreDTO.setName(storeName);
+            }
+            //判断项目点
+            List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(itemsCode);
+            if (StringUtils.isEmpty(itemsCode)) {
+                errorMessage.append("项目点编号不为空；");
+                pass = false;
+            } else if (tSysItemsList != null && tSysItemsList.size() > 0) {
+                importTSysStoreDTO.setItemsCode(itemsCode);
+            } else {
+                errorMessage.append("项目点编号不存在；");
+                pass = false;
+            }
+
+            if (pass) {
+                errorMessage.append("成功！");
+                successNumber++;
+            } else {
+                errNumber++;
+            }
+            importTSysStoreDTO.setPass(pass);
+            importTSysStoreDTO.setMessages(errorMessage.toString());
+            importTSysStoreDTOS.add(importTSysStoreDTO);
+        }
+        importStoreDTO.setErrorNumber(errNumber);
+        importStoreDTO.setSuccessNumber(successNumber);
+        importStoreDTO.setImportTSysStoreDTOS(importTSysStoreDTOS);
+        return importStoreDTO;
+    }
+
+    public List<StoreVO> getSuccessTSysStore(List<ImportTSysStoreDTO> importTSysStoreDTOS) {
+        if (importTSysStoreDTOS == null) return new ArrayList<>();
+        List<StoreVO> tsysUsers = new ArrayList<>();
+        for (ImportTSysStoreDTO importTSysStoreDTO : importTSysStoreDTOS) {
+            if (importTSysStoreDTO.getPass()) {
+                tsysUsers.add(loadByDTO(importTSysStoreDTO));
+            }
+        }
+        return tsysUsers;
+    }
+
+
+    public StoreVO loadByDTO(ImportTSysStoreDTO importTSysStoreDTO) {
+        StoreVO storeVO = new StoreVO();
+        BeanCopierEx.copy(importTSysStoreDTO, storeVO);
+        return storeVO;
+    }
+
+    /**
+     * 导入文件到数据库
+     *
+     * @param storeVOS
+     */
+    public void saveSysStore(List<StoreVO> storeVOS) {
+        for (StoreVO storeVO : storeVOS) {
+            TSysStore tSysStore = new TSysStore();
+            tSysStore.setId(storeVO.getId());
+            tSysStore.setUpdateTime(new Date());
+            tSysStore.setCreatTime(new Date());
+            tSysStore.setItemsCode(storeVO.getItemsCode());
+            tSysStore.setEnglishName(storeVO.getEnglishName());
+            tSysStore.setName(storeVO.getName());
+            tSysStore.setStore(storeVO.getStore());
+            System.out.println("store:::::" + storeVO.getStore());
+            tSysStoreMapper.insertSelective(tSysStore);
+        }
     }
 }

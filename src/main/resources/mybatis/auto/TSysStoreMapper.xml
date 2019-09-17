@@ -184,11 +184,11 @@
     <include refid="Base_Column_List" />
     from t_sys_store
     <where>
-      <if test="keyword != null">
+      <if test="keyword != null and keyword !=''">
         name like #{keyword,jdbcType=VARCHAR}
       </if>
-      <if test="itemsCode != null">
-        and items_code like #{itemsCode,jdbcType=VARCHAR}
+      <if test="itemsCode != null and itemsCode !=''">
+        and items_code = #{itemsCode,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

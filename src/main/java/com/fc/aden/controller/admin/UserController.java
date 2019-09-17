@@ -8,6 +8,7 @@ import com.fc.aden.model.custom.*;
 import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.UserVO;
+import com.fc.aden.vo.importDto.ImportUserDTO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -184,13 +185,6 @@ public class UserController extends BaseController {
     public String upload() {
         return prefix + "/upload";
     }
-
-/*    @PostMapping("/upload")
-    @RequiresPermissions("system:user:upload")
-    public String uploadUser() {
-        return prefix + "/upload";
-    }*/
-
 
     @PostMapping("/uploadFile")
     public String uploadFile(MultipartFile myFile, Model model) {

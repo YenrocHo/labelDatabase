@@ -24,7 +24,7 @@
 <!-- ###############################代码编写出############################### -->
 <!-- 右边内容 -->
 <div class="wrap-fluid">
-    <div class="container-fluid paper-wrap bevel tlbr" id = "content_body">
+    <div class="container-fluid paper-wrap bevel tlbr" id="content_body">
         <!-- 内容 -->
         <!--标题 通用-->
         <div th:replace="admin/common/html/title :: title(${title},${parenttitle},${isMsg},${msgHTML})">
@@ -117,12 +117,10 @@
 <!-- ###############################代码编写出############################### -->
 <!-- 右侧隐藏滑块内容 -->
 <div th:include="admin/common/html/rightHide :: rightHide">
-
 </div>
 <!-- END 右侧隐藏滑块内容-->
 <!-- 通用js -->
 <div th:include="admin/common/html/js :: onload_js">
-
 </div>
 <!-- bootstarp 表格 -->
 <script th:src="@{/static/admin/assets/js/bootstrap/js/bootstrap-table/bootstrap-table.min.js}"
@@ -146,49 +144,49 @@
     var removeUrl = window.rootPath + "/ProductController/remove";
     var createUrl = window.rootPath + "/ProductController/add";
     var updateUrl = window.rootPath + "/ProductController/edit/{id}";
-    var downUrl = window.rootPath+"/ProductController/upload";
+    var downUrl = window.rootPath + "/ProductController/upload";
     var options = {
         dataUrl: dataUrl,
         createUrl: createUrl,
         updateUrl: updateUrl,
         removeUrl: removeUrl,
-        downUrl:downUrl,
+        downUrl: downUrl,
         sortName: "id",
         modalName: "产品",
         search: false,
-        dataColumns: [
-            {
-                field: 'id',
-                title: '编号',
-                visible:false
-
-            },{
-                field: 'itemsCode',
-                title: '项目点'
-            },
-            {
-                field: 'product',
-                title: '产品'
-            },{
-                field: 'foodName',
-                title: '食品种类'
-            }, {
-                title: '操作',
-                formatter: function (value, row, index) {
-                    var id = row.id;
-                    var actions = [];
-                    if (row.status == 0) {
-                        actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\'  href="#" onclick="$.operate.edit(\'' + id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')" ><i class="fa fa-remove"></i>删除</a>');
-                        actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\'  href="#" onclick="freeze(\'' + id + '\')" style="background-color: #87CEFA;margin-left: 3px;color: white;width: 50px"><i class="fa fa-check"></i>解冻</a>');
-                    } else {
-                        actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\' href="#" onclick="$.operate.edit(\'' + id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')"><i class="fa fa-remove"></i>删除</a>');
-                        actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\' href="#" onclick="freeze(\'' + id + '\')" style="background-color: #F08080;margin-left: 3px;color: white;width: 50px"><i class="fa fa-ban"></i>冻结</a>');
-                    }
-                    return actions.join('');
+        dataColumns: [{
+            title: '序号',
+            formatter: function (value, row, index) {
+                var actions = [];
+                actions.push(index + 1);
+                return actions.join('');
+            }
+        }, {
+            field: 'itemsCode',
+            title: '项目点'
+        }, {
+            field: 'product',
+            title: '产品'
+        }, {
+            field: 'foodName',
+            title: '食品种类'
+        }, {
+            title: '操作',
+            formatter: function (value, row, index) {
+                var id = row.id;
+                var actions = [];
+                if (row.status == 0) {
+                    actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\'  href="#" onclick="$.operate.edit(\'' + id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
+                    actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')" ><i class="fa fa-remove"></i>删除</a>');
+                    actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\'  href="#" onclick="freeze(\'' + id + '\')" style="background-color: #87CEFA;margin-left: 3px;color: white;width: 50px"><i class="fa fa-check"></i>解冻</a>');
+                } else {
+                    actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\' href="#" onclick="$.operate.edit(\'' + id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                    actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                    actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\' href="#" onclick="freeze(\'' + id + '\')" style="background-color: #F08080;margin-left: 3px;color: white;width: 50px"><i class="fa fa-ban"></i>冻结</a>');
                 }
-            }]
+                return actions.join('');
+            }
+        }]
     };
     $(function () {
         var oTab = $.table.oTableInit(options);
@@ -222,10 +220,10 @@
         });
     }
 
-        function productUpload() {
-            var url = $.table._option.downUrl;
-            $.modal.open("导入" + $.table._option.modalName, url);
-        }
+    function productUpload() {
+        var url = $.table._option.downUrl;
+        $.modal.open("导入" + $.table._option.modalName, url);
+    }
 
 </script>
 <script>
@@ -240,7 +238,7 @@
 
     function changeDate() {
         var im_paper = document.getElementById("content_body");
-        im_paper.style.minHeight = (document.documentElement.clientHeight).toString()+"px";
+        im_paper.style.minHeight = (document.documentElement.clientHeight).toString() + "px";
     }
 </script>
 </body>

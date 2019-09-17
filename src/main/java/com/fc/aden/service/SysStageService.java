@@ -4,14 +4,12 @@ import com.fc.aden.common.base.BaseService;
 import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.process.TSysStageMapper;
-import com.fc.aden.mapper.auto.process.TSysStoreMapper;
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.Tablepar;
-import com.fc.aden.model.custom.process.ImportStageDTO;
+import com.fc.aden.vo.importDto.ImportStageDTO;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.model.custom.process.TSysStageExample;
-import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.SnowflakeIdWorker;
@@ -20,7 +18,6 @@ import com.fc.aden.vo.ImportTSysStageDTO;
 import com.fc.aden.vo.StageVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import javafx.stage.Stage;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,24 +103,20 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
     public PageInfo<TSysStage> sysStageList(Tablepar tablepar, String stage, String itemsCode) {
         TsysUser tsysUser = ShiroUtils.getUser();
         List<TSysStage> sysStages = null;
-        if (stage != null && itemsCode != null) {
-            if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
-                //根据项目点编号搜索
-                sysStages = tSysStageMapper.findByStageOrItems(stage, tsysUser.getItemsCode());
-            } else {
-                //管理员全部搜索
-                sysStages = tSysStageMapper.selectStage(itemsCode, stage);
+        if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
+            //根据项目点编号搜索
+            sysStages = tSysStageMapper.findByStageOrItems(stage, tsysUser.getItemsCode());
         } else {
-            if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
-                sysStages = tSysStageMapper.findByStageOrItems(stage, tsysUser.getItemsCode());
-            } else {
-                sysStages = tSysStageMapper.selectStage(itemsCode, stage);
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
+            //管理员全部搜索
+            sysStages = tSysStageMapper.selectStage(itemsCode, stage);
         }
-        if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
-        }
+
         PageInfo<TSysStage> pageInfo = new PageInfo<TSysStage>(sysStages);
         return pageInfo;
     }
@@ -131,12 +124,12 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
     /**
      * 根据项目点编号检查阶段名称是否重名
      *
-     * @param stage  itemsCode
+     * @param stage itemsCode
      * @return
      */
-    public int checkStageUnique(String stage,String itemsCode) {
-        List<TSysStage> list = tSysStageMapper.findByStage(stage,itemsCode);
-         return list.size();
+    public int checkStageUnique(String stage, String itemsCode) {
+        List<TSysStage> list = tSysStageMapper.findByStage(stage, itemsCode);
+        return list.size();
     }
 
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -154,7 +147,6 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
 
         int errNumber = 0;
         int successNumber = 0;
-//        for (Map<String, String> row : dataList) {
         for (int i = 1; i < dataList.size(); i++) {
             Map<String, String> row = dataList.get(i);
             String items = row.get(ImportStageDTO.ITEMS_CODE);
@@ -169,7 +161,7 @@ public class SysStageService implements BaseService<TSysStage, TSysStageExample>
             importTSysStageDTO.setId(UUID.randomUUID().toString());
             importTSysStageDTO.setStatus(1);
 
-            List<TSysStage> stages = tSysStageMapper.findByStage(stageName,items);
+            List<TSysStage> stages = tSysStageMapper.findByStage(stageName, items);
             if (StringUtils.isEmpty(stageName)) {
                 errorMessage.append("阶段名称名称不能为空；");
                 pass = false;

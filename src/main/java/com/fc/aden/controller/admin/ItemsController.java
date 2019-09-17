@@ -8,6 +8,7 @@ import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.shiro.util.ShiroUtils;
+import com.fc.aden.vo.ProductFoodStoreVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -117,7 +118,7 @@ public class ItemsController extends BaseController {
     }
 
     /**
-     * 删除用户
+     * 删除项目点
      * @return
      */
     @PostMapping("/remove")
@@ -131,6 +132,14 @@ public class ItemsController extends BaseController {
             return error();
         }
     }
+
+    @PostMapping("/selectItems")
+    @ResponseBody
+    public AjaxResult deleteItems(@RequestParam String ids){
+        ProductFoodStoreVO productFoodStoreVO = sysItemsService.findByItems(ids);
+        return AjaxResult.successData(200,productFoodStoreVO);
+    }
+
 
     @GetMapping("/upload")
     public String upload() {

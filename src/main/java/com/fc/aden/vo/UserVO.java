@@ -1,21 +1,23 @@
 package com.fc.aden.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fc.aden.model.auto.TSysItems;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserVO{
     private String id;
-
+    /**
+     * 员工工号
+     */
     private String username;
     /**
      * 员工姓名
      */
     private String name;
     private String password;
-    /**
-     * 员工工号
-     */
+
     private String number;
     /**
      * 英文名
@@ -24,9 +26,7 @@ public class UserVO{
     /**
      * 项目点
      */
-    private String items;
     private String itemsCode;
-    private String itemId;
     /**
      * 手机号
      */
@@ -36,22 +36,26 @@ public class UserVO{
      */
     private String statusToken;
 
+    private String roles;//0 普通员工 1  项目点管理员权限 2 超级管理员
+
+    private List<TSysItems> tSysItems;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String updateTime;
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String createTime;
     private static final long serialVersionUID = 1L;
 
-    public UserVO(String id, String username, String name, String password,String itemsCode, String number, String englishName, String items, String itemId, String phoneNumber, String sex, String updateTime, String createTime) {
+    public UserVO(String id, String username, String name, String password,String itemsCode, String number, String englishName, String phoneNumber, String updateTime, String createTime) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.password = password;
         this.number = number;
         this.englishName = englishName;
-        this.items = items;
-        this.itemId = itemId;
         this.itemsCode = itemsCode;
         this.phoneNumber = phoneNumber;
         this.updateTime = updateTime;
@@ -109,21 +113,6 @@ public class UserVO{
         this.englishName = englishName;
     }
 
-    public String getItems() {
-        return items;
-    }
-
-    public void setItems(String items) {
-        this.items = items;
-    }
-
-    public String getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -169,6 +158,22 @@ public class UserVO{
         this.itemsCode = itemsCode;
     }
 
+    public List<TSysItems> gettSysItems() {
+        return tSysItems;
+    }
+
+    public void settSysItems(List<TSysItems> tSysItems) {
+        this.tSysItems = tSysItems;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "TsysUser{" +
@@ -178,8 +183,6 @@ public class UserVO{
                 ", password='" + password + '\'' +
                 ", number='" + number + '\'' +
                 ", englishName='" + englishName + '\'' +
-                ", items='" + items + '\'' +
-                ", itemId='" + itemId + '\'' +
                 ", itemsCode='" + itemsCode + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", statusToken='" + statusToken + '\'' +

@@ -15,16 +15,26 @@
     <link th:href="@{/static/admin/user/css/user-add.css}" rel="stylesheet"/>
     <!-- 自定义food js -->
     <script  th:src="@{/static/admin/food/js/food-detail.js}" type="text/javascript"></script>
-    <style type="text/css"></style>
+    <style type="text/css">
+        #image-div{
+            width:500px;
+            height: 500px;
+            border-radius: 10px;
+        }
+    </style>
 
 </head>
-<body onclick="$.modal.close()">
+<body>
     <div class="name_box">
-        <h3>食品名</h3>
+        <h3>食品名AA</h3>
         <span class="img_name" th:text="${foodName}"></span>
     </div>
     <div class="img_box" >
-        <img class="image" th:src="${imagrUrl}">
+        <form  class="form-horizontal m" id="form-view" >
+            <div class="col-sm-8" id="image-div">
+                <img src="'/FileController/viewfile/'+${imagrUrl}">
+            </div>
+        </form>
     </div>
 
 <!-- 通用js -->

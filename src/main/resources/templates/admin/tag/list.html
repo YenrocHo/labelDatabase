@@ -105,9 +105,6 @@
                                     </div>
                                     <div class="m_clear"></div>
                                     <div class="search_two">
-                                        <!--<div class="clearfix clear  float_l">
-                                            <input type="text" name="items" placeholder="项目点名称" class="form-control">
-                                        </div>-->
                                         <div class="clearfix float_l">
                                             <input type="text" name="printUser" placeholder="打印人" class="form-control">
                                         </div>
@@ -119,11 +116,14 @@
                                             <input type="text" class="form-control" name="endTime" placeholder="结束时间"
                                                    id="endTime">
                                         </div>
+                                        <div class="clearfix float_l">
+                                            <button onclick="$.table.search(this)" class="form-control" type="button" style="background:#4bb6af;"><i
+                                                    class="fa fa-search" style="color: white">&nbsp;搜索</i><p style="color: white"></p>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="m_clear"></div>
-                                    <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
-                                            class="fa fa-search"></i>&nbsp;搜索
-                                    </button>
+
                                 </form>
                             </div>
                         </div>
@@ -203,6 +203,14 @@
         search: false,
         dataColumns: [
             {
+                title: '序号',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push(index+1);
+                    return actions.join('');
+                }
+            },
+            {
                 field: 'itemsCode',
                 title: '项目点'
             },  {
@@ -212,32 +220,55 @@
                 field: 'foodCategory',
                 title: '食品种类'
             }, {
-                field: 'expiration',
-                title: '保质期'
-            }, {
                 field: 'productName',
                 title: '产品'
             }, {
                 field: 'correctStorage',
                 title: '存储条件'
             }, {
+                field: 'shelfLife',
+                title: '保质期'
+            }, {
+                field: 'employerId',
+                title: '打印人工号'
+            },{
                 field: 'employerName',
                 title: '打印人'
             }, {
-                field: 'printTime',
-                title: '打印时间'
-            },/* {
-                field: 'endTime',
-                title: '过期时间'
-            },*/ {
-                field: 'createTime',
-                title: '上传时间'
+                // field: 'printTime',
+                title: '打印时间',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push(timeStamp(row.printTime));
+                    return actions.join('');
+                }
+            }, {
+                // field: 'createTime',
+                title: '上传时间',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push(timeStamp(row.createTime));
+                    return actions.join('');
+                }
             }]
     };
     $(function () {
         var oTab = $.table.oTableInit(options);
         oTab.Init();
     })
+
+    function timeStamp(time){
+        // yyyy-MM-dd hh:mm
+        var date = new Date(time);
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = date.getDate() + ' ';
+        var h = date.getHours() + ':';
+        var m = date.getMinutes() +":";
+        var s = date.getSeconds();
+        console.log(Y+M+D+h+m+s); //
+        return Y+M+D+h+m+s+" ";
+    }
 
 </script>
 <script type="text/javascript">

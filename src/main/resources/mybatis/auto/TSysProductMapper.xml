@@ -27,13 +27,11 @@
 
         <collection property="productStores" ofType="com.fc.aden.model.po.ProductStorePo">
             <result column="product_id" property="productId" jdbcType="VARCHAR"/>
-            <result column="store_id" property="storeId" jdbcType="VARCHAR" />
-            <result column="store_name" property="storeName" jdbcType="VARCHAR" />
-            <result column="shelf_life" property="shelfLife" jdbcType="VARCHAR" />
+            <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+            <result column="store_name" property="storeName" jdbcType="VARCHAR"/>
+            <result column="shelf_life" property="shelfLife" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
-
-
 
 
     <sql id="Base_Column_List">
@@ -60,14 +58,9 @@
     delete from t_sys_product
     where food_name = #{foodName,jdbcType=VARCHAR}
   </delete>
-    <insert id="insert" parameterType="com.fc.aden.model.custom.process.TSysProduct">
-    insert into t_sys_product (id, items_code,product_code,product,name,english_name, status,create_time, update_time,food_name)
-    values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
-    #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=INTEGER},#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-     #{updateTime,jdbcType=TIMESTAMP},#{foodName,jdbcType=INTEGER})
-  </insert>
     <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysProduct">
-    insert into t_sys_product (id,items_code,product_code,product, name,english_name,status,create_time, update_time, food_name) values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
+    insert into t_sys_product (id,items_code,product_code,product, name,english_name,status,create_time, update_time, food_name)
+    values (#{id,jdbcType=VARCHAR},#{itemsCode,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{product,jdbcType=VARCHAR},
     #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=INTEGER},#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
      #{updateTime,jdbcType=TIMESTAMP},#{foodName,jdbcType=INTEGER})
   </insert>
@@ -121,17 +114,17 @@
         from t_sys_product
     </select>
     <select id="selectProductBycName" resultType="int" parameterType="string">
-    select
-    count(1)
-    from t_sys_product
-    where 1=1
+        select
+        count(1)
+        from t_sys_product
+        where 1=1
         <if test="product!=null and product!=''">
             and product = #{product,jdbcType=VARCHAR}
         </if>
         <if test="itemsCode!=null and itemsCode!=''">
             and items_code = #{itemsCode,jdbcType=VARCHAR}
         </if>
-  </select>
+    </select>
     <delete id="deleteProductByIds" parameterType="map">
         delete
         from t_sys_product
@@ -141,32 +134,40 @@
         </foreach>
     </delete>
     <!--根据项目点编号查询-->
-    <select id="selectListByItems" parameterType="com.fc.aden.vo.ProductVO" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_sys_product
-        where 1=1
+    <select id="selectListByItems" parameterType="com.fc.aden.model.custom.process.TSysProduct"
+            resultMap="BaseResultMap">
+        select p.id as id,
+        p.product as product,
+        p.create_time as create_time,
+        p.items_code as items_code,
+        p.update_time as update_time,
+        f.food as food_name<!--foodName 是列的别名，对应BaseResultMap 的cloumn的值-->
+        from t_sys_product p,t_sys_food f
+        where p.food_name = f.food_code
         <if test="searchTxt != null and searchTxt !=''">
-            and product like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%',
+            and p.product like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%') or p.english_name like CONCAT('%',
             #{searchTxt, jdbcType=VARCHAR}, '%')
         </if>
-        and items_code = #{itemsCode}
-        order by update_time desc
+        and p.items_code = #{itemsCode}
+        order by p.update_time desc
     </select>
-    <select id="findByProduct" parameterType="com.fc.aden.vo.ProductVO" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_sys_product
-        <where>
-            <if test="searchTxt != null and searchTxt !=''">
-                and product like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%',
-                #{searchTxt, jdbcType=VARCHAR}, '%')
-            </if>
-            <if test="itemsCode != null and itemsCode !=''">
-                and items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
-            </if>
-        </where>
-        order by update_time desc
+    <select id="findByProduct" parameterType="com.fc.aden.model.custom.process.TSysProduct" resultMap="BaseResultMap">
+        select p.id as id,
+        p.product as product,
+        p.create_time as create_time,
+        p.items_code as items_code,
+        p.update_time as update_time,
+        f.food as food_name<!--foodName 是列的别名，对应BaseResultMap 的cloumn的值-->
+        from t_sys_product p,t_sys_food f
+        where p.food_name = f.food_code
+        <if test="searchTxt != null and searchTxt !=''">
+            and p.product like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%') or p.english_name like CONCAT('%',
+            #{searchTxt, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="itemsCode != null and itemsCode !=''">
+            and p.items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
+        </if>
+        order by p.update_time desc
     </select>
 
     <update id="updateStatusById" parameterType="map">
@@ -194,7 +195,7 @@
             <if test="itemsCode != null">
                 and items_code like #{itemsCode,jdbcType=VARCHAR}
             </if>
-             <if test="foodCode != null">
+            <if test="foodCode != null">
                 and food_name like #{foodCode,jdbcType=VARCHAR}
             </if>
         </where>
@@ -211,22 +212,28 @@
         FROM
         t_sys_product spr
         LEFT JOIN (
-            SELECT ps.store_id,ps.product_id, store.NAME as store_name, ps.shelf_life  FROM t_sys_product_store ps
-            LEFT JOIN t_sys_store store
-            ON ps.store_id = store.id
-            ) sps
+        SELECT ps.store_id,ps.product_id, store.NAME as store_name, ps.shelf_life FROM t_sys_product_store ps
+        LEFT JOIN t_sys_store store
+        ON ps.store_id = store.id
+        ) sps
         ON spr.id = sps.product_id
         <where>
-            <if test="keyword != null">
+            <if test="keyword != null and keyword !=''">
                 spr.name like #{keyword,jdbcType=VARCHAR}
             </if>
-            <if test="itemsCode != null">
+            <if test="itemsCode != null and itemsCode !=''">
                 and spr.items_code like #{itemsCode,jdbcType=VARCHAR}
             </if>
-             <if test="foodCode != null">
+            <if test="foodCode != null and foodCode !=''">
                 and spr.food_name like #{foodCode,jdbcType=VARCHAR}
             </if>
         </where>
     </select>
 
+    <select id="selectItemsCode" resultType="int" parameterType="string">
+    select
+    count(1)
+            from t_sys_product
+         where items_code = #{itemsCode}
+    </select>
 </mapper>

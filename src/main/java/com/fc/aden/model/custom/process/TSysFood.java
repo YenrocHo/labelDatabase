@@ -130,7 +130,7 @@ public class TSysFood {
                 ", picture='" + picture + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
-                ", status=" + status +
+        ", status=" + status +
                 '}';
     }
 }

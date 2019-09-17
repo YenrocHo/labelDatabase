@@ -10,17 +10,27 @@ import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysStoreService;
 import com.fc.aden.shiro.util.ShiroUtils;
+import com.fc.aden.util.ExcelUtils;
+import com.fc.aden.vo.ImportTSysStoreDTO;
+import com.fc.aden.vo.ProductVO;
+import com.fc.aden.vo.StoreVO;
+import com.fc.aden.vo.importDto.ImportProductDTO;
+import com.fc.aden.vo.importDto.ImportStoreDTO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
 
@@ -47,7 +57,8 @@ public class StoreController extends BaseController {
 
     @Autowired
     private SysStoreService sysStoreService;
-    
+    private static Logger logger = LoggerFactory.getLogger(StoreController.class);
+
     /**
      * @Author Noctis
      * @Description //页面跳转
@@ -182,4 +193,32 @@ public class StoreController extends BaseController {
         }
     }
 
+    //////////批量导入
+
+    /**
+     * 跳转导入页面
+     *
+     * @return
+     */
+    @GetMapping("/upload")
+    public String upload() {
+        return prefix + "/upload";
+    }
+
+    @PostMapping("/uploadFile")
+    public String uploadFile(Model model, MultipartFile myFile) {
+        List<Map<String, String>> dataList;
+        try {
+            dataList = ExcelUtils.getExcelData(myFile, ImportStoreDTO.IMPORT_TABLE_HEADER);
+        } catch (Exception e) {
+            logger.warn("数据异常，重新导入", e);
+            //文件解析异常
+            return prefix + "/import_error";
+        }
+        ImportStoreDTO importStoreDTO = sysStoreService.importValid(dataList);
+        List<StoreVO> storeVOS = sysStoreService.getSuccessTSysStore (importStoreDTO.getImportTSysStoreDTOS());
+        sysStoreService.saveSysStore(storeVOS);
+        model.addAttribute("importStoreDTO", importStoreDTO);
+        return prefix + "/store_valid";
+    }
 }

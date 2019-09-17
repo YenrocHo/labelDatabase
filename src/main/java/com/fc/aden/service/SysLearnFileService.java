@@ -7,7 +7,7 @@ import com.fc.aden.mapper.auto.TSysLearnFileMapper;
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TSysLearnFile;
 import com.fc.aden.model.auto.TSysLearnFileExample;
-import com.fc.aden.model.custom.ImportItemsDTO;
+import com.fc.aden.vo.importDto.ImportItemsDTO;
 import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.DateUtils;
 import com.fc.aden.util.ExcelUtils;

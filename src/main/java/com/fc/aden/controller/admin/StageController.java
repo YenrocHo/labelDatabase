@@ -7,7 +7,7 @@ import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
-import com.fc.aden.model.custom.process.ImportStageDTO;
+import com.fc.aden.vo.importDto.ImportStageDTO;
 import com.fc.aden.model.custom.process.TSysStage;
 import com.fc.aden.service.SysStageService2;
 import com.fc.aden.shiro.util.ShiroUtils;

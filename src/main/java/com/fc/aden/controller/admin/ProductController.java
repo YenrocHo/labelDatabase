@@ -9,11 +9,14 @@ import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.*;
 import com.fc.aden.shiro.util.ShiroUtils;
+import com.fc.aden.util.BeanCopierEx;
 import com.fc.aden.util.ExcelUtils;
+import com.fc.aden.util.SnowflakeIdWorker;
 import com.fc.aden.vo.FoodVO;
 import com.fc.aden.vo.ProductFoodStoreVO;
 import com.fc.aden.vo.ProductStoreDTO;
 import com.fc.aden.vo.ProductVO;
+import com.fc.aden.vo.importDto.ImportProductDTO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -99,8 +102,8 @@ public class ProductController extends BaseController {
         TsysUser tsysUser = ShiroUtils.getUser();//当前登录用户
         List<TSysItems> tSysItems = sysItemsService.queryItems();//获取全部项目点
         TSysFood tSysFood = sysFoodService.findByFoodId(tSysProduct.getFoodName());//当前食品种类
-
-        List<ProductVO> productVOList = sysProductService.findByProductAndStore(id,items);
+        //储存条件保质期
+        List<ProductVO> productStores = productStoreService.findByProductIdList(id);
 
         List<TSysFood> tSysFoodList =null;
         if(tsysUser.getRoles()!="2"&&!"2".equals(tsysUser.getRoles())){
@@ -109,7 +112,7 @@ public class ProductController extends BaseController {
             tSysFoodList = sysFoodService.queryFood();
         }
         mmap.addAttribute("tSysFood",tSysFood);
-        mmap.addAttribute("productVOList",productVOList);
+        mmap.addAttribute("productStores",productStores);
         mmap.addAttribute("tSysFoodList",tSysFoodList);
         mmap.addAttribute("items",items);
         mmap.addAttribute("tSysItems",tSysItems);
@@ -132,8 +135,8 @@ public class ProductController extends BaseController {
     @RequiresPermissions("system:product:list")
     @ResponseBody
     public Object list(Tablepar tablepar, String searchTxt, String itemsCode) {
-        PageInfo<ProductVO> page = sysProductService.list(tablepar, searchTxt, itemsCode);
-        TableSplitResult<ProductVO> result = new TableSplitResult<ProductVO>(page.getPageNum(), page.getTotal(), page.getList());
+        PageInfo<TSysProduct> page = sysProductService.list(tablepar, searchTxt, itemsCode);
+        TableSplitResult<TSysProduct> result = new TableSplitResult<TSysProduct>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
 
@@ -147,9 +150,36 @@ public class ProductController extends BaseController {
     @PostMapping("/add")
     @RequiresPermissions("system:product:add")
     @ResponseBody
-    public AjaxResult add(TSysProduct tSysProduct,@RequestParam(value="store", required = false)List<String> store,
-                          @RequestParam(value="shelfLife", required = false)List<String> shelfLife) {
-        int i = sysProductService.insertProduct(tSysProduct,store,shelfLife);
+    public AjaxResult add(TSysProduct tSysProduct,HttpServletRequest request,@RequestParam(value="store", required = false)List<String> store) {
+        TSysProduct product = new TSysProduct();
+        String pId = SnowflakeIdWorker.getUUID().toString();
+        product.setId(pId);
+        product.setStatus(1);
+        product.setCreateTime(new Date());
+        product.setUpdateTime(new Date());
+        product.setName(tSysProduct.getProduct());
+        product.setProduct(tSysProduct.getProduct());
+        product.setFoodName(tSysProduct.getFoodName());
+        product.setItemsCode(tSysProduct.getItemsCode());
+        //循环保存存储条件和保质期
+        for (String storeID : store) {
+            String sId = SnowflakeIdWorker.getUUID().toString();
+            //获取存储条件id下输入的保质期
+            String s = request.getParameter(storeID);
+            ProductStore productStore = new ProductStore();
+            productStore.setStoreId(storeID);
+            productStore.setId(sId);
+            productStore.setProductId(pId);
+            if(s != null && s != ""){//只能输入数字 为空则见包装
+                productStore.setShelfLife(s+"小时");
+            }else {
+                productStore.setShelfLife("见包装");
+            }
+            productStore.setCreateTime(new Date());
+            productStore.setUpdateTime(new Date());
+            productStoreService.insertSelective(productStore);
+        }
+        int i = sysProductService.insertProduct(product);
         if (i > 0) {
             return success();
         } else {
@@ -157,6 +187,33 @@ public class ProductController extends BaseController {
         }
     }
 
+    /***
+     * @Author Noctis
+     * @Description //产品修改
+     * @Date 2019/6/18 14:13
+     * @Param [tSysProduct, request]
+     * @return com.fc.test.common.domain.AjaxResult
+     **/
+    @RequiresPermissions("system:product:edit")
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult editSave(TSysProduct tSysProduct, HttpServletRequest request,@RequestParam(value="store", required = false)List<String> store) {
+        TSysProduct product = (TSysProduct) request.getSession().getAttribute("tSysProduct");
+        tSysProduct.setId(product.getId());
+        tSysProduct.setUpdateTime(new Date());
+        tSysProduct.setName(tSysProduct.getProduct());
+        //循环保存存储条件和保质期
+        for (String storeID : store) {
+            //获取存储条件id下输入的保质期
+            String s = request.getParameter(storeID);
+            ProductStore productStore = productStoreService.findByStoreId(product.getId(),storeID);
+            productStore.setProductId(product.getId());
+            productStore.setShelfLife(s);
+            productStore.setUpdateTime(new Date());
+            productStoreService.updateByPrimaryKey(productStore);
+        }
+        return toAjax(sysProductService.updateProduct(tSysProduct));
+    }
     /**
      * @return int
      * @Author Noctis
@@ -206,24 +263,6 @@ public class ProductController extends BaseController {
         }
     }
 
-    /***
-     * @Author Noctis
-     * @Description //产品修改
-     * @Date 2019/6/18 14:13
-     * @Param [tSysProduct, request]
-     * @return com.fc.test.common.domain.AjaxResult
-     **/
-    @RequiresPermissions("system:product:edit")
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(TSysProduct tSysProduct, HttpServletRequest request,@RequestParam(value="store", required = false)List<String> store) {
-        TSysProduct product = (TSysProduct) request.getSession().getAttribute("tSysProduct");
-        tSysProduct.setId(product.getId());
-        tSysProduct.setUpdateTime(new Date());
-        tSysProduct.setName(tSysProduct.getProduct());
-
-        return toAjax(sysProductService.updateProduct(tSysProduct));
-    }
 
     /***
      * @Author Noctis

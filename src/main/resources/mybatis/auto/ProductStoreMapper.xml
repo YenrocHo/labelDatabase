@@ -18,6 +18,8 @@
     values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER} #{shelfLife,jdbcType=INTEGER} ,now(),
       now())
   </insert>
+
+
   <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.ProductStore" >
     insert into t_sys_product_store
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -61,6 +63,29 @@
       </if>
     </trim>
   </insert>
+
+  <insert id="insertBatch" parameterType="java.util.List" >
+    insert into t_sys_product_store(
+        id,
+        product_id,
+        store_id,
+        shelf_life,
+        create_Time,
+        update_Time
+        )
+        values
+    <foreach collection="recordList" item="item" index="index" separator=",">
+      (
+      #{item.id,jdbcType=VARCHAR},
+      #{item.productId,jdbcType=VARCHAR},
+      #{item.storeId,jdbcType=VARCHAR},
+      #{item.shelfLife,jdbcType=VARCHAR},
+      #{item.createTime,jdbcType=TIMESTAMP},
+      #{item.updateTime,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
+
   <select id="findByProductIdList" parameterType="com.fc.aden.model.custom.process.ProductStore" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
@@ -73,6 +98,16 @@
     from t_sys_product_store
     where store_id = #{storeId}
   </select>
+  <select id="findByStoreId" parameterType="com.fc.aden.model.custom.process.ProductStore" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_product_store
+    where 1=1
+     <if test="storeId!=null and storeId != ''">
+      and store_id = #{storeId}
+     </if>
+     and product_id = #{productId}
+  </select>
   <delete id="deleteStoreId" parameterType="java.lang.String" >
     delete from t_sys_product_store
     where store_id = #{storeId}
@@ -81,4 +116,22 @@
     delete from t_sys_product_store
     where product_id = #{productId}
   </delete>
+  <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.ProductStore">
+    update t_sys_product_store
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null">
+        store_id = #{storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="shelfLife != null">
+        shelf_life = #{shelfLife,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>

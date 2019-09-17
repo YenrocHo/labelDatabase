@@ -2,40 +2,22 @@ package com.fc.aden.vo;
 
 public class ItemsVO {
 
-    private String itemsId;
-    private String items;
-    private String itemsCode;
-    private String name;
+    private String itemCode;
+    private String itemName;
 
-    public String getItemsId() {
-        return itemsId;
+    public String getItemCode() {
+        return itemCode;
     }
 
-    public void setItemsId(String itemsId) {
-        this.itemsId = itemsId;
+    public void setItemCode(String itemCode) {
+        this.itemCode = itemCode;
     }
 
-    public String getItems() {
-        return items;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setItems(String items) {
-        this.items = items;
-    }
-
-    public String getItemsCode() {
-        return itemsCode;
-    }
-
-    public void setItemsCode(String itemsCode) {
-        this.itemsCode = itemsCode;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 }

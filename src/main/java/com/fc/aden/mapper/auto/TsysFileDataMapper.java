@@ -27,4 +27,8 @@ public interface TsysFileDataMapper {
     int updateByPrimaryKeySelective(TsysFileData record);
 
     int updateByPrimaryKey(TsysFileData record);
+
+    int deleteByFileId(String fileId);
+
+    TsysFileData selectByFileId(String fileId);
 }

@@ -1,321 +1,353 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fc.aden.mapper.auto.process.PrintHistoryMapper">
-  <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.PrintHistory">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="items_code" jdbcType="VARCHAR" property="itemsCode" />
-    <result column="original_id" jdbcType="VARCHAR" property="originalId" />
-    <result column="print_lable_id" jdbcType="VARCHAR" property="printLableId" />
-    <result column="product_name" jdbcType="VARCHAR" property="productName" />
-    <result column="food_category" jdbcType="VARCHAR" property="foodCategory" />
-    <result column="product_weight" jdbcType="VARCHAR" property="productWeight" />
-    <result column="correct_stage" jdbcType="VARCHAR" property="correctStage" />
-    <result column="correct_storage" jdbcType="VARCHAR" property="correctStorage" />
-    <result column="employer_name" jdbcType="VARCHAR" property="employerName" />
-    <result column="print_time" jdbcType="TIMESTAMP" property="printTime" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+    <resultMap id="BaseResultMap" type="com.fc.aden.model.custom.process.PrintHistory">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="items_code" jdbcType="VARCHAR" property="itemsCode"/>
+        <result column="original_id" jdbcType="VARCHAR" property="originalId"/>
+        <result column="print_lable_id" jdbcType="VARCHAR" property="printLableId"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="food_category" jdbcType="VARCHAR" property="foodCategory"/>
+        <result column="product_weight" jdbcType="VARCHAR" property="productWeight"/>
+        <result column="correct_stage" jdbcType="VARCHAR" property="correctStage"/>
+        <result column="correct_storage" jdbcType="VARCHAR" property="correctStorage"/>
+        <result column="employer_name" jdbcType="VARCHAR" property="employerName"/>
+        <result column="employer_id" jdbcType="VARCHAR" property="employerId"/>
+        <result column="print_time" jdbcType="TIMESTAMP" property="printTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="shelf_life" jdbcType="VARCHAR" property="shelfLife"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
     id, items_code, original_id, print_lable_id, product_name, food_category, product_weight, correct_stage,
-    correct_storage, employer_name, print_time, create_time, update_time
+    correct_storage, employer_name,employer_id,print_time , create_time, update_time,shelf_life
   </sql>
-  <select id="selectByExample" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from al_print_history
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from al_print_history
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <select id="selectByExample" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from al_print_history
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from al_print_history
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from al_print_history
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample">
-    delete from al_print_history
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.fc.aden.model.custom.process.PrintHistory">
+    <delete id="deleteByExample" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample">
+        delete from al_print_history
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.fc.aden.model.custom.process.PrintHistory">
     insert into al_print_history (id, items_code, original_id,
       print_lable_id, product_name, food_category, product_weight,
-      correct_stage, correct_storage, employer_name, 
-      print_time, create_time, update_time
+      correct_stage, correct_storage, employer_name, employer_id,
+      print_time, create_time, update_time,shelf_life
       )
     values (#{id,jdbcType=VARCHAR}, #{itemsCode,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR},
       #{printLableId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{foodCategory,jdbcType=VARCHAR}, #{productWeight,jdbcType=VARCHAR},
-      #{correctStage,jdbcType=VARCHAR}, #{correctStorage,jdbcType=VARCHAR}, #{employerName,jdbcType=VARCHAR}, 
-      #{printTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{correctStage,jdbcType=VARCHAR}, #{correctStorage,jdbcType=VARCHAR}, #{employerName,jdbcType=VARCHAR}, #{employerId,jdbcType=VARCHAR},
+      #{printTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{shelfLife,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.PrintHistory">
-    insert into al_print_history
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="itemsCode != null">
-        items_code,
-      </if>
-      <if test="originalId != null">
-        original_id,
-      </if>
-      <if test="printLableId != null">
-        print_lable_id,
-      </if>
-      <if test="productName != null">
-        product_name,
-      </if>
-      <if test="foodCategory != null">
-        food_category,
-      </if>
-      <if test="productWeight != null">
-        product_weight,
-      </if>
-      <if test="correctStage != null">
-        correct_stage,
-      </if>
-      <if test="correctStorage != null">
-        correct_storage,
-      </if>
-      <if test="employerName != null">
-        employer_name,
-      </if>
-      <if test="printTime != null">
-        print_time,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="itemsCode != null">
-        #{itemsCode,jdbcType=VARCHAR},
-      </if>
-      <if test="originalId != null">
-        #{originalId,jdbcType=VARCHAR},
-      </if>
-      <if test="printLableId != null">
-        #{printLableId,jdbcType=VARCHAR},
-      </if>
-      <if test="productName != null">
-        #{productName,jdbcType=VARCHAR},
-      </if>
-      <if test="foodCategory != null">
-        #{foodCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="productWeight != null">
-        #{productWeight,jdbcType=VARCHAR},
-      </if>
-      <if test="correctStage != null">
-        #{correctStage,jdbcType=VARCHAR},
-      </if>
-      <if test="correctStorage != null">
-        #{correctStorage,jdbcType=VARCHAR},
-      </if>
-      <if test="employerName != null">
-        #{employerName,jdbcType=VARCHAR},
-      </if>
-      <if test="printTime != null">
-        #{printTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample" resultType="java.lang.Long">
-    select count(*) from al_print_history
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update al_print_history
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=VARCHAR},
-      </if>
-      <if test="record.itemsCode != null">
+    <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.PrintHistory">
+        insert into al_print_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="itemsCode != null">
+                items_code,
+            </if>
+            <if test="originalId != null">
+                original_id,
+            </if>
+            <if test="printLableId != null">
+                print_lable_id,
+            </if>
+            <if test="productName != null">
+                product_name,
+            </if>
+            <if test="foodCategory != null">
+                food_category,
+            </if>
+            <if test="productWeight != null">
+                product_weight,
+            </if>
+            <if test="correctStage != null">
+                correct_stage,
+            </if>
+            <if test="correctStorage != null">
+                correct_storage,
+            </if>
+            <if test="employerName != null">
+                employer_name,
+            </if>
+            <if test="employerId != null">
+                employer_id,
+            </if>
+            <if test="printTime != null">
+                print_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="shelfLife != null">
+                shelf_life,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="itemsCode != null">
+                #{itemsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="originalId != null">
+                #{originalId,jdbcType=VARCHAR},
+            </if>
+            <if test="printLableId != null">
+                #{printLableId,jdbcType=VARCHAR},
+            </if>
+            <if test="productName != null">
+                #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="foodCategory != null">
+                #{foodCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="productWeight != null">
+                #{productWeight,jdbcType=VARCHAR},
+            </if>
+            <if test="correctStage != null">
+                #{correctStage,jdbcType=VARCHAR},
+            </if>
+            <if test="correctStorage != null">
+                #{correctStorage,jdbcType=VARCHAR},
+            </if>
+            <if test="employerName != null">
+                #{employerName,jdbcType=VARCHAR},
+            </if>
+            <if test="employerId != null">
+                #{employerId,jdbcType=VARCHAR},
+            </if>
+            <if test="printTime != null">
+                #{printTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="shelfLife != null">
+                #{shelfLife,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample"
+            resultType="java.lang.Long">
+        select count(*) from al_print_history
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update al_print_history
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.itemsCode != null">
+                items_code = #{record.itemsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.originalId != null">
+                original_id = #{record.originalId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.printLableId != null">
+                print_lable_id = #{record.printLableId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.productName != null">
+                product_name = #{record.productName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.foodCategory != null">
+                food_category = #{record.foodCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="record.correctStage != null">
+                correct_stage = #{record.correctStage,jdbcType=VARCHAR},
+            </if>
+            <if test="record.correctStorage != null">
+                correct_storage = #{record.correctStorage,jdbcType=VARCHAR},
+            </if>
+            <if test="record.employerName != null">
+                employer_name = #{record.employerName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.employerId != null">
+                employer_id = #{record.employerId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.printTime != null">
+                print_time = #{record.printTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.shelfLife != null">
+                shelf_life = #{record.shelfLife,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update al_print_history
+        set id = #{record.id,jdbcType=VARCHAR},
         items_code = #{record.itemsCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.originalId != null">
         original_id = #{record.originalId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.printLableId != null">
         print_lable_id = #{record.printLableId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.productName != null">
         product_name = #{record.productName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.foodCategory != null">
         food_category = #{record.foodCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="record.correctStage != null">
         correct_stage = #{record.correctStage,jdbcType=VARCHAR},
-      </if>
-      <if test="record.correctStorage != null">
         correct_storage = #{record.correctStorage,jdbcType=VARCHAR},
-      </if>
-      <if test="record.employerName != null">
         employer_name = #{record.employerName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.printTime != null">
+        employer_id = #{record.employerId,jdbcType=VARCHAR},
         print_time = #{record.printTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update al_print_history
-    set id = #{record.id,jdbcType=VARCHAR},
-    items_code = #{record.itemsCode,jdbcType=VARCHAR},
-      original_id = #{record.originalId,jdbcType=VARCHAR},
-      print_lable_id = #{record.printLableId,jdbcType=VARCHAR},
-      product_name = #{record.productName,jdbcType=VARCHAR},
-    food_category = #{record.foodCategory,jdbcType=VARCHAR},
-      correct_stage = #{record.correctStage,jdbcType=VARCHAR},
-      correct_storage = #{record.correctStorage,jdbcType=VARCHAR},
-      employer_name = #{record.employerName,jdbcType=VARCHAR},
-      print_time = #{record.printTime,jdbcType=TIMESTAMP},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.PrintHistory">
-    update al_print_history
-    <set>
-      <if test="itemsCode != null">
-        items_code = #{itemsCode,jdbcType=VARCHAR},
-      </if>
-      <if test="originalId != null">
-        original_id = #{originalId,jdbcType=VARCHAR},
-      </if>
-      <if test="printLableId != null">
-        print_lable_id = #{printLableId,jdbcType=VARCHAR},
-      </if>
-      <if test="productName != null">
-        product_name = #{productName,jdbcType=VARCHAR},
-      </if>
-      <if test="foodCategory != null">
-        food_category = #{foodCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="productWeight != null">
-        product_weight = #{productWeight,jdbcType=VARCHAR},
-      </if>
-      <if test="correctStage != null">
-        correct_stage = #{correctStage,jdbcType=VARCHAR},
-      </if>
-      <if test="correctStorage != null">
-        correct_storage = #{correctStorage,jdbcType=VARCHAR},
-      </if>
-      <if test="employerName != null">
-        employer_name = #{employerName,jdbcType=VARCHAR},
-      </if>
-      <if test="printTime != null">
-        print_time = #{printTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.PrintHistory">
+        shelf_life = #{record.shelfLife,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.PrintHistory">
+        update al_print_history
+        <set>
+            <if test="itemsCode != null">
+                items_code = #{itemsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="originalId != null">
+                original_id = #{originalId,jdbcType=VARCHAR},
+            </if>
+            <if test="printLableId != null">
+                print_lable_id = #{printLableId,jdbcType=VARCHAR},
+            </if>
+            <if test="productName != null">
+                product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="employerId != null">
+                employer_id = #{employerId,jdbcType=VARCHAR},
+            </if>
+            <if test="foodCategory != null">
+                food_category = #{foodCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="productWeight != null">
+                product_weight = #{productWeight,jdbcType=VARCHAR},
+            </if>
+            <if test="correctStage != null">
+                correct_stage = #{correctStage,jdbcType=VARCHAR},
+            </if>
+            <if test="correctStorage != null">
+                correct_storage = #{correctStorage,jdbcType=VARCHAR},
+            </if>
+            <if test="employerName != null">
+                employer_name = #{employerName,jdbcType=VARCHAR},
+            </if>
+            <if test="printTime != null">
+                print_time = #{printTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="shelfLife != null">
+                shelf_life = #{shelfLife,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.PrintHistory">
     update al_print_history
     set items_code = #{itemsCode,jdbcType=VARCHAR},
       original_id = #{originalId,jdbcType=VARCHAR},
@@ -326,27 +358,31 @@
       correct_stage = #{correctStage,jdbcType=VARCHAR},
       correct_storage = #{correctStorage,jdbcType=VARCHAR},
       employer_name = #{employerName,jdbcType=VARCHAR},
+      employer_id = #{employerId,jdbcType=VARCHAR},
       print_time = #{printTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      shelf_life = #{shelfLife,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
     <insert id="insertBatch" parameterType="java.util.List">
         insert into al_print_history (
-            id,
-            items_code,
-            original_id,
-            print_lable_id,
-            product_name,
-            food_category,
-            product_weight,
-            correct_stage,
-            correct_storage,
-            employer_name,
-            print_time,
-            create_time,
-            update_time
+        id,
+        items_code,
+        original_id,
+        print_lable_id,
+        product_name,
+        food_category,
+        product_weight,
+        correct_stage,
+        correct_storage,
+        employer_name,
+        employer_id,
+        print_time,
+        create_time,
+        update_time,
+        shelf_life
         )
         values
         <foreach collection="printHistoryList" item="item" index="index" separator=",">
@@ -361,68 +397,71 @@
             #{item.correctStage,jdbcType=VARCHAR},
             #{item.correctStorage,jdbcType=VARCHAR},
             #{item.employerName,jdbcType=VARCHAR},
+            #{item.employerId,jdbcType=VARCHAR},
             #{item.printTime,jdbcType=TIMESTAMP},
             #{item.createTime,jdbcType=TIMESTAMP},
-            #{item.updateTime,jdbcType=TIMESTAMP}
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.shelfLife,jdbcType=TIMESTAMP}
             )
         </foreach>
 
     </insert>
-  <select id="selectList" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from al_print_history
-    where 1=1
-    <if test="printUser != null ">
-      and employer_name like CONCAT('%', #{printUser, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="items != null and items != ''">
-      and items_code like CONCAT('%', #{items, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="product != null ">
-      AND product_name like CONCAT('%', #{product, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="food != null ">
-      AND food_category like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="stage != null ">
-      AND correct_stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="start != null ">
-      AND print_Time >= #{start,jdbcType=TIMESTAMP}
-    </if>
-    <if test="end != null ">
-      AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
-    </if>
-    and items_code = #{itemsCode}
-    order by update_time desc
-  </select>
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from al_print_history
+        where 1=1
+        <if test="printUser != null ">
+            and employer_name like CONCAT('%', #{printUser, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="items != null and items != ''">
+            and items_code like CONCAT('%', #{items, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="product != null ">
+            AND product_name like CONCAT('%', #{product, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="food != null ">
+            AND food_category like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="stage != null ">
+            AND correct_stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="start != null ">
+            AND print_Time >= #{start,jdbcType=TIMESTAMP}
+        </if>
+        <if test="end != null ">
+            AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
+        </if>
+        and items_code = #{itemsCode}
+        order by create_time desc
+    </select>
 
-  <select id="selectByTag" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.PrintHistory">
-    select
-    <include refid="Base_Column_List"/>
-    from al_print_history
-    where 1=1
-    <if test="printUser != null ">
-      and employer_name like CONCAT('%', #{printUser, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="itemsCode != null and itemsCode != ''">
-      and items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="product != null ">
-      AND product_name like CONCAT('%', #{product, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="food != null ">
-      AND food_category like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="stage != null ">
-      AND correct_stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="start != null ">
-      AND print_Time >= #{start,jdbcType=TIMESTAMP}
-    </if>
-    <if test="end != null ">
-      AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
-    </if>
-  </select>
+    <select id="selectByTag" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.PrintHistory">
+        select
+        <include refid="Base_Column_List"/>
+        from al_print_history
+        where 1=1
+        <if test="printUser != null ">
+            and employer_name like CONCAT('%', #{printUser, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="itemsCode != null and itemsCode != ''">
+            and items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="product != null ">
+            AND product_name like CONCAT('%', #{product, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="food != null ">
+            AND food_category like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="stage != null ">
+            AND correct_stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="start != null ">
+            AND print_Time >= #{start,jdbcType=TIMESTAMP}
+        </if>
+        <if test="end != null ">
+            AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
+        </if>
+        order by create_time desc
+    </select>
 </mapper>

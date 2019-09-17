@@ -31,8 +31,8 @@ public class PrintHistoryServiceImpl extends BaseServiceImpl<PrintHistoryMapper,
      * @param printHistoryList
      * @author Created by zc on 2019/7/3
      */
-    @Override
-    @Transactional
+        @Override
+        @Transactional
     public int insertBatch(List<PrintHistory> printHistoryList) {
         Date currentDate = new Date();
         // 添加创建时间和更新时间

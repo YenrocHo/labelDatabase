@@ -8,11 +8,13 @@ import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.mapper.auto.TsysUserMapper;
 import com.fc.aden.mapper.auto.process.*;
 
+import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.process.*;
 import com.fc.aden.model.po.ProductPo;
 import com.fc.aden.service.AndroidService;
 import com.fc.aden.util.SnowflakeIdWorker;
+import com.fc.aden.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,9 +56,23 @@ public class AndroidServiceImpl implements AndroidService {
             AjaxResult ajaxResult = AjaxResult.error(Const.CodeEnum.noExistent.getCode(),Const.CodeEnum.noExistent.getValue());
             return ajaxResult;
         }
-        TsysUser tsysUser = tsysUserMapper.selectLogin(username);
+        UserVO tsysUser = tsysUserMapper.selectLoginOrItem(username);
         if(tsysUser == null){
             return AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
+        }
+        List<TSysItems> tSysItems = new ArrayList<>();
+        //如果 用户不为空
+        if(tsysUser!=null){
+            List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(tsysUser.getItemsCode());
+            for (TSysItems tSysItems1:tSysItemsList){
+                TSysItems items = new TSysItems();
+                items.setId(tSysItems1.getId());
+                items.setItemsCode(tSysItems1.getItemsCode());
+                items.setName(tSysItems1.getName());
+                items.setEnglishName(tSysItems1.getEnglishName());
+                tSysItems.add(items);
+            }
+            tsysUser.settSysItems(tSysItems);
         }
         String statusToken = UUID.randomUUID().toString();
         TokenCache.setKey(TokenCache.TOKRN_PREFIX + username, statusToken);
@@ -92,6 +108,7 @@ public class AndroidServiceImpl implements AndroidService {
         List<TSysFood> foodList;
         List<ProductPo> productList;
         List<TSysStore> storeList;
+        List<TSysItems> tSysItems;
         List<TSysWeight> weightList;
         try{
             TsysUser tsysUser = tsysUserMapper.selectLogin(username);
@@ -99,6 +116,7 @@ public class AndroidServiceImpl implements AndroidService {
             foodList = tSysFoodMapper.selectFoodList(tsysUser.getItemsCode(),keyword);
             productList = tSysProductMapper.selectAllProductList(tsysUser.getItemsCode(),keyword,foodCode);
             storeList = tSysStoreMapper.selectStoreList(tsysUser.getItemsCode(),keyword);
+            tSysItems = tSysItemsMapper.selectItemList(tsysUser.getItemsCode(),keyword);
 //            weightList = tSysWeightMapper.selectWeightList(tsysUser.getItemsCode(),keyword);
         }catch (Exception e){
             return AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
@@ -107,11 +125,13 @@ public class AndroidServiceImpl implements AndroidService {
         AjaxResult foodListAjaxResult = isNull(foodList);
         AjaxResult productListAjaxResult = isNull(productList);
         AjaxResult storeListAjaxResult = isNull(storeList);
+        AjaxResult itemsListAjaxResult = isNull(tSysItems);
 //        AjaxResult weightListAjaxResult = isNull(weightList);
         ajaxResult.put("Stage",stageListAjaxResult);
         ajaxResult.put("Food",foodListAjaxResult);
         ajaxResult.put("Product",productListAjaxResult);
         ajaxResult.put("Store",storeListAjaxResult);
+        ajaxResult.put("Items",itemsListAjaxResult);
 //        ajaxResult.put("Weight",weightListAjaxResult);
         return ajaxResult;
 

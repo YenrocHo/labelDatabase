@@ -256,4 +256,11 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectByIdList" parameterType="com.fc.aden.model.auto.TsysFile" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_file
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
 </mapper>

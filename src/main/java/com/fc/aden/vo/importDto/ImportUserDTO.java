@@ -1,4 +1,4 @@
-package com.fc.aden.model.custom;
+package com.fc.aden.vo.importDto;
 
 import com.fc.aden.vo.ImportTSysItemsDTO;
 import com.fc.aden.vo.ImportTSysUserDTO;
@@ -11,8 +11,9 @@ public class ImportUserDTO {
     public static final String ENGLISH_NAME="英文名";
     public static final String ITEMS="所属项目点(必填)";
     public static final String PHONE="手机号";
+    public static final String ROLES="用户角色";
 
-    public static final String[] IMPORT_TABLE_HEADER = new String[]{LOGIN_NAME, CHINESE_NAME, ENGLISH_NAME,ITEMS,PHONE};
+    public static final String[] IMPORT_TABLE_HEADER = new String[]{LOGIN_NAME, CHINESE_NAME, ENGLISH_NAME,ITEMS,PHONE,ROLES};
 
     /**
      * 成功导入数量

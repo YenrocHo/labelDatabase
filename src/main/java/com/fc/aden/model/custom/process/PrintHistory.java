@@ -12,25 +12,28 @@ import java.util.Date;
  */
 public class PrintHistory extends BaseEntity {
 
-    private String itemsCode;
+    private String itemsCode;//项目点编号
 
-    private String originalId;
+    private String originalId;//历史id Android传的id
 
-    private String printLableId;
+    private String printLableId;//打印id
 
-    private String productName;
+    private String productName;//产品名称
 
-    private String foodCategory;
+    private String foodCategory;//食品种类
 
     private String productWeight;
 
-    private String correctStage;
+    private String correctStage;//制作阶段
 
-    private String correctStorage;
+    private String correctStorage;//储存条件
 
-    private String employerName;
+    private String employerName;//员工姓名
+    private String employerId;// 员工工号
+    //保质期
+    private String shelfLife;
 
-    private Date printTime;
+    private Date printTime;//打印时间
 
     private static final long serialVersionUID = 1L;
 
@@ -114,4 +117,19 @@ public class PrintHistory extends BaseEntity {
         this.printTime = printTime;
     }
 
+    public String getShelfLife() {
+        return shelfLife;
+    }
+
+    public void setShelfLife(String shelfLife) {
+        this.shelfLife = shelfLife;
+    }
+
+    public String getEmployerId() {
+        return employerId;
+    }
+
+    public void setEmployerId(String employerId) {
+        this.employerId = employerId;
+    }
 }

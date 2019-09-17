@@ -137,9 +137,11 @@ public class LoginController  extends BaseController {
                 printHistory.setProductName(printData.getString("product"));
                 printHistory.setFoodCategory(printData.getString("productCategeroy"));
                 printHistory.setProductWeight(printData.getString("weight"));
+                printHistory.setShelfLife(printData.getString("shelfLife"));
                 printHistory.setCorrectStage(printData.getString("correctStage"));
                 printHistory.setCorrectStorage(printData.getString("correctStorage"));
-                printHistory.setEmployerName(printData.getString("employerName"));
+                printHistory.setEmployerName(printData.getString("employerName"));//员工姓名
+                printHistory.setEmployerId(printData.getString("employerId"));//员工工号
                 printHistory.setPrintTime(DateUtils.parseStrToDate(printData.getString("printTime"), "yyyy-MM-dd HH:mm:ss"));
                 // 添加到集合
                 printHistoryList.add(printHistory);
@@ -160,7 +162,7 @@ public class LoginController  extends BaseController {
         return AjaxResult.success(AjaxResult.CODE_SUCCESS, "操作成功");
     }
 
-/*    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
+/*  @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/submit")
     @ResponseBody
     public AjaxResult submit2(@RequestBody PrintHistoryVO printHistoryVO){
         logger.debug("打印历史记录：" + printHistoryVO.toString());
@@ -179,91 +181,6 @@ public class LoginController  extends BaseController {
     }*/
 
     ////////////////////////////////////////基础信息提交接口//////////////////////////
-
-    /**
-     * 项目点列表接口
-     * @param tablepar
-     * @param items
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/items-list")
-    @ResponseBody
-    public AjaxResult foodList(Tablepar tablepar, String items) {
-        logger.info("项目点列表接口========================");
-        PageInfo<TSysItems> page = sysItemsService.sysIteamsList(tablepar, items);
-        TableSplitResult<TSysItems> result = new TableSplitResult<TSysItems>(page.getPageNum(), page.getTotal(), page.getList());
-        AjaxResult ajaxResult = AjaxResult.success("读取成功");
-        ajaxResult.put(AJAX_DATA,result);
-        return ajaxResult;
-    }
-
-    /**
-     * 添加食品
-     * 所传参数  add-food?foodName=食品名称&&name=中文名称&&englishName=英文名称
-     * @param tSysFood
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "add-food")
-    @ResponseBody
-    public AjaxResult addFood(TSysFood tSysFood) {
-        int b = sysFoodService.insertSelective(tSysFood);
-        if (b > 0) {
-            return success();
-        } else {
-            return error();
-        }
-    }
-
-    /**
-     * 添加项目点接口
-     * 所传参数  add-items?items=项目点名称&&name=项目点中文名12&&englishName=英文名称
-     * @param tSysItems
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "add-items")
-    @ResponseBody
-    public AjaxResult addItems(TSysItems tSysItems) {
-        int b = sysItemsService.insertSelective(tSysItems);
-        if (b > 0) {
-            return success();
-        } else {
-            return error();
-        }
-    }
-
-    /**
-     * 阶段添加接口
-     * 所传参数 add-stage?stage=阶段名称&&name=阶段中文名12&&englishName=英文名称
-     * @param tSysStage
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "add-stage")
-    @ResponseBody
-    public AjaxResult addStage(TSysStage tSysStage) {
-        int b = sysStageService.insertSelective(tSysStage);
-        if (b > 0) {
-            return success();
-        } else {
-            return error();
-        }
-    }
-
-    /**
-     * 存储条件添加接口
-     * 所传参数  add-store?query=存储条件名称&&cCondition=存储条件中文名12&&eCondition=英文名称
-     * @param tSysStore
-     * @return
-     */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "add-store")
-    @ResponseBody
-    public AjaxResult addStore(TSysStore tSysStore) {
-        int i = sysStoreService.insertStore(tSysStore);
-        if (i > 0) {
-            return success();
-        } else {
-            return error();
-        }
-    }
 
     /**
      * 获取登录员工信息接口

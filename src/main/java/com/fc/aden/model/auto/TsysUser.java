@@ -3,21 +3,11 @@ package com.fc.aden.model.auto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class TsysUser implements Serializable {
 
-    /**
-     * 用户管理员
-     */
-    public static final Integer USER_MANAGE = 1;
-    /**
-     * 普通员工
-     */
-    public static final Integer EMPLOYEES = 0;
-
-
     private String id;
-
     /**
      * 员工工号
      */
@@ -46,7 +36,7 @@ public class TsysUser implements Serializable {
      */
     private String statusToken;
 
-    private String roles;//1 admin所有管理员权限  0  项目点管理员权限 2 admin管理员
+    private String roles;////0 普通员工 1  项目点管理员权限 2 超级管理员
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String updateTime;

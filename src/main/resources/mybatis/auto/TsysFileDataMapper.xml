@@ -91,6 +91,18 @@
     delete from t_sys_file_data
     where id = #{id,jdbcType=VARCHAR}
   </delete>
+
+  <select id="selectByFileId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_file_data
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByFileId" parameterType="java.lang.String" >
+    delete from t_sys_file_data
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </delete>
+
   <delete id="deleteByExample" parameterType="com.fc.aden.model.auto.TsysFileDataExample" >
     delete from t_sys_file_data
     <if test="_parameter != null" >

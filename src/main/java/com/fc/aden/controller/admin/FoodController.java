@@ -7,14 +7,12 @@ import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
-import com.fc.aden.model.custom.process.ImportFoodDTO;
+import com.fc.aden.vo.importDto.ImportFoodDTO;
 import com.fc.aden.model.custom.process.TSysFood;
-import com.fc.aden.model.custom.process.TSysStore;
 import com.fc.aden.service.SysFoodService2;
 import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.ExcelUtils;
 import com.fc.aden.vo.FoodVO;
-import com.fc.aden.vo.ItemsVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,8 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -51,11 +47,11 @@ public class FoodController extends BaseController {
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") String id, ModelMap mmap){
         TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
-        String imagrUrl = tSysFood.getPicture();
+       String imagrUrl = tSysFood.getPicture();
         mmap.put("imagrUrl",imagrUrl);
         mmap.put("foodName",tSysFood.getFood());
-        mmap.put("name",tSysFood.getName());
-        mmap.put("EnglishName",tSysFood.getEnglishName());
+       /*  mmap.put("name",tSysFood.getName());
+        mmap.put("EnglishName",tSysFood.getEnglishName());*/
         return prefix + "/detail";
     }
 
@@ -105,6 +101,22 @@ public class FoodController extends BaseController {
     @ResponseBody
     public AjaxResult add(TSysFood tSysFood) {
         int b = sysFoodService.insertSelective(tSysFood);
+        if (b > 0) {
+            return success();
+        } else {
+            return error();
+        }
+    }
+ /**
+     * 编辑食品
+     * @param tSysFood
+     * @return
+     */
+    @RequiresPermissions("system:food:edit")
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult edit(TSysFood tSysFood ,String pictureId) {
+        int b = sysFoodService.updateTsysFood(tSysFood,pictureId);
         if (b > 0) {
             return success();
         } else {
@@ -232,7 +244,7 @@ public class FoodController extends BaseController {
             return "admin/import_error";
         }
         ImportFoodDTO importFoodDTO = sysFoodService.importValid(dataList);
-        List<FoodVO> foodVOList = sysFoodService.getSuccessTSysProduct (importFoodDTO.getImportFoodDTOS());
+        List<FoodVO> foodVOList = sysFoodService.getSuccessTSysProduct(importFoodDTO.getImportFoodDTOS());
         sysFoodService.saveSysFood(foodVOList);
         model.addAttribute("importFoodDTO", importFoodDTO);
         return prefix + "/food_valid";

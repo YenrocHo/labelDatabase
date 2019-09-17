@@ -30,6 +30,8 @@ public class PrintHistoryVO {
     private String createTime;
     private String updateTime;
     private String endTime;
+    //保质期
+    private String shelfLife;
 
     private static final long serialVersionUID = 1L;
 
@@ -135,5 +137,13 @@ public class PrintHistoryVO {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getShelfLife() {
+        return shelfLife;
+    }
+
+    public void setShelfLife(String shelfLife) {
+        this.shelfLife = shelfLife;
     }
 }

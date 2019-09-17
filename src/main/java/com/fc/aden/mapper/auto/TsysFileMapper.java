@@ -19,6 +19,7 @@ public interface TsysFileMapper {
     List<TsysFile> selectByExample(TsysFileExample example);
 
     TsysFile selectByPrimaryKey(String id);
+    List<TsysFile> selectByIdList(String id);
 
     int updateByExampleSelective(@Param("record") TsysFile record, @Param("example") TsysFileExample example);
 

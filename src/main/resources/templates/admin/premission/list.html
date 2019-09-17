@@ -5,7 +5,7 @@
 
 <title th:text=${title}></title>
 <!-- 这儿引用单独的css link -->
-<!-- Ladda for Bootstrap 3按钮加载进度插件 -->
+<!-- Ladda for Bootstrap 3按钮加载进度插件  -->
 <link rel="stylesheet" th:href="@{/static/admin/assets/js/button/ladda/ladda.min.css}">
 <!-- bootstrap-table表单样式 -->
 <link th:href="@{/static/admin/assets/js/bootstrap/css/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
@@ -152,8 +152,6 @@
 
 <script type="text/javascript">
 
-
-<!-- 列表参数 -->
 var dataUrl=window.rootPath+"/PremissionController/list";
 var removeUrl=window.rootPath+"/PremissionController/remove";
 var createUrl=window.rootPath+"/PremissionController/add";
@@ -171,23 +169,19 @@ var exportUrl=window.rootPath+"/PremissionController/export";
 	   dataColumns: [
 			{
 			    checkbox: true
-			},                   
-			{
+			},{
 			    field: 'id',
 			    title: '序号'
 			},{
 			    field: 'name',
 			    title: '权限名称'
-			},
-			{
+			},{
 			    field: 'url',
 			    title: '权限URL'
-			},
-			{
+			},{
 			    field: 'perms',
 			    title: '权限关键字'
-			},
-			{
+			},{
 				 field: 'type',
 				 title: '菜单类型',
 				 formatter: function (value, row, index) {
@@ -201,20 +195,16 @@ var exportUrl=window.rootPath+"/PremissionController/export";
 			        }
 			      	return actions.join('');			    
 				 }
-			},
-			{
+			},{
 				 field: 'icon',
 				 title: '图标'
-			},
-			{
+			},{
 				 field: 'order_num',
 				 title: '排序'
-			},
-			{
+			},{
 			    field: 'descripion',
 			    title: '描述'
-			},
-			{
+			},{
 			    title: '操作',
 			    formatter: function (value, row, index) {
 			        var id = row.id;

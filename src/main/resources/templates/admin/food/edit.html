@@ -43,16 +43,26 @@
                 <div class="body-nest" id="element">
                     <div class="panel-body">
                         <form  class="form-horizontal m" id="form-edit" th:object="${session.tSysFood}">
-                             <div class="form-group">
-                                <label class="col-sm-3 control-label ">食品：</label>
+                            <input type="hidden" th:value="*{id}" name="id" id="id">
+                            <input type="hidden" th:value="*{picture}" name="picture" >
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label ">项目点编号：</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" type="text" th:value="*{food}" name="food"/>
+                                    <input class="form-control" type="text" name="itemsCode" readonly="readonly"
+                                           th:value="*{itemsCode}"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label ">食品编号：</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" type="text" th:value="*{foodCode}" name="foodCode"  disabled="disabled" />
+                                    <input class="form-control" type="text" th:value="*{foodCode}" name="foodCode"  readonly="readonly" />
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label ">食品：</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" th:value="*{food}" name="food" id="food"/>
+                                    <span id="stageSpan" style="color: red;"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -62,19 +72,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label ">项目点编号：</label>
-                                <div class="col-sm-8">
-<!--                                    <select class="form-control" id="items" name="itemsCode" th:value="*{itemsCode}" >-->
-<!--                                        <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3 th:text="${m.itemsCode}"></h3></option>-->
-<!--                                    </select>-->
-                                    <input class="form-control" type="text" name="itemsCode" readonly="readonly"
-                                           th:value="*{itemsCode}"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-sm-3 control-label ">图片：</label>
+
                                 <div class="col-sm-8">
-                                    <input type="hidden" th:value="*{picture}" name="picture">
+                                    <span style="color: red;margin: 5px 0 6px 0;">1,上传格式为：*.jpg,*.gif,*.png,*.jpeg<br>
+                                2,上传大小为：10M</span>
+                                    <input type="hidden" name="pictureId" id="picture">
                                     <div id="dropz"  class="dropzone"></div>
                                 </div>
                             </div>
@@ -150,26 +153,34 @@
                 });
             }
         });
-    })
 
-    /**
-     * 文件上传确定按钮
-     */
-    function add() {
-        var dataFormJson=$("#form-add").serialize();
-        $.ajax({
-            cache : true,
-            type : "POST",
-            url : rootPath + "/FoodController/add",
-            data : dataFormJson,
-            async : false,
-            error : function(request) {
-                $.modal.alertError("系统错误");
-            },
-            success : function(data) {
-                $.operate.saveSuccess(data);
-            }
-        });
-    }
+    });
+
+
+    $("#form-edit").validate({
+        submitHandler: function (form) {
+            edit();
+        }
+    });
+
+        /**
+         * 文件上传确定按钮
+         */
+        function edit() {
+            var dataFormJson = $("#form-edit").serializeJson();
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: rootPath + "/FoodController/edit",
+                data: dataFormJson,
+                async: false,
+                error: function (request) {
+                    $.modal.alertError("系统错误");
+                },
+                success: function (data) {
+                    $.operate.saveSuccess(data);
+                }
+            });
+        }
 </script>
 </html>

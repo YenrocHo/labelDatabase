@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.fc.aden.mapper.auto.TSysItemsMapper;
 import com.fc.aden.model.auto.*;
-import com.fc.aden.model.custom.ImportUserDTO;
+import com.fc.aden.vo.importDto.ImportUserDTO;
 import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.*;
 import com.fc.aden.vo.ImportTSysUserDTO;
@@ -64,28 +64,24 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
      *
      * @return
      */
-    public PageInfo<TsysUser> list(Tablepar tablepar, String username, String itemsCode,String number,String name,String phone) {
+    public PageInfo<TsysUser> list(Tablepar tablepar, String username, String itemsCode, String number, String name, String phone) {
         TsysUser tsysUser = ShiroUtils.getUser();
         List<TsysUser> tSysUsers = null;
-        if (username != null || itemsCode != null || name != null || phone != null ) {
-            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())){
-                tSysUsers = tsysUserMapper.selectByUserItems(name,phone,username,tsysUser.getItemsCode());
-            }else{
-                tSysUsers = tsysUserMapper.queryByUser(itemsCode,name,phone,username);
+        if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
-        }else{
-            if("2" != tsysUser.getRoles()&&!"2".equals(tsysUser.getRoles())){
-                tSysUsers = tsysUserMapper.selectByUserItems(name,phone,username,tsysUser.getItemsCode());
-            }else{
-                tSysUsers = tsysUserMapper.queryByUser(itemsCode,name,phone,username);
+            tSysUsers = tsysUserMapper.selectByUserItems(name, phone, username, tsysUser.getItemsCode());
+        } else {
+            if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
+                PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
             }
-        }
-        if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
-            PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
+            tSysUsers = tsysUserMapper.queryByUser(itemsCode, name, phone, username);
         }
         PageInfo<TsysUser> pageInfo = new PageInfo<TsysUser>(tSysUsers);
-        return  pageInfo;
+        return pageInfo;
     }
+
     @Override
     public int deleteByPrimaryKey(String ids) {
         List<String> lista = Convert.toListStrArray(ids);
@@ -102,8 +98,11 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
         return tsysUserMapper.insertSelective(record);
     }
 
+    public List<TsysUser> selectAllUser(String itemsCode) {
+        return tsysUserMapper.selectAllUser(itemsCode);
+    }
 
-    public TsysUser selectLogin(String number){
+    public TsysUser selectLogin(String number) {
         return tsysUserMapper.selectLogin(number);
     }
 
@@ -124,12 +123,12 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
         record.setNumber(record.getUsername());
         record.setRoles(roles);
         if (StringUtils.isNotEmpty(roles)) {
-                TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userId, roles);
-                tSysRoleUserMapper.insertSelective(roleUser);
+            TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userId, roles);
+            tSysRoleUserMapper.insertSelective(roleUser);
         }
-            //密码加密
-            record.setPassword(MD5Util.encode("123456"));
-            return tsysUserMapper.insertSelective(record);
+        //密码加密
+        record.setPassword(MD5Util.encode("123456"));
+        return tsysUserMapper.insertSelective(record);
     }
 
     @Override
@@ -182,6 +181,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             return 0;
         }
     }
+
     /**
      * 获取所有权限 并且增加是否有权限字段
      *
@@ -254,10 +254,11 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
 
     /**
      * 验证文件，数据导入到DTO
+     *
      * @param dataList
      * @return
      */
-    public ImportUserDTO importValid(List<Map<String, String>> dataList){
+    public ImportUserDTO importValid(List<Map<String, String>> dataList) {
         List<String> projectNames = new ArrayList<>();
         ImportUserDTO importUserDTO = new ImportUserDTO();
         List<ImportTSysUserDTO> importTSysUserDTOs = new ArrayList<>();
@@ -270,6 +271,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             String englishName = row.get(ImportUserDTO.ENGLISH_NAME);
             String items = row.get(ImportUserDTO.ITEMS);
             String phone = row.get(ImportUserDTO.PHONE);
+            String roles = row.get(ImportUserDTO.ROLES);
 
             StringBuffer errorMessage = new StringBuffer();
             boolean pass = true;
@@ -279,44 +281,58 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             importTSysUserDTO.setId(UUID.randomUUID().toString());
 
             List<TsysUser> userlist = tsysUserMapper.selectByName(loginName);
-            if(StringUtils.isEmpty(loginName)){
+            if (StringUtils.isEmpty(loginName)) {
                 errorMessage.append("工号名称不能为空；");
                 pass = false;
-            }else if(projectNames.contains(loginName)){
+            } else if (projectNames.contains(loginName)) {
                 errorMessage.append("工号名称不能重复；");
                 pass = false;
-            }else if(userlist!=null && userlist.size()>0) {
+            } else if (userlist != null && userlist.size() > 0) {
                 errorMessage.append("工号名称不能重复；");
                 pass = false;
-            }else {
+            } else {
                 importTSysUserDTO.setUsername(loginName);
             }
 
-            if(StringUtils.isEmpty(chineseName)){
+            if (StringUtils.isEmpty(chineseName)) {
                 errorMessage.append("中文名称不能为空；");
                 pass = false;
-            }else{
+            } else {
                 importTSysUserDTO.setName(chineseName);
             }
+
+            if (!roles.equals("0")  && !roles.equals("1") && !roles.equals("2")) {
+                errorMessage.append("角色权限不存在；");
+                pass = false;
+            } else if (StringUtils.isEmpty(roles)) {
+                errorMessage.append("角色不能为空；");
+                pass = false;
+            } else if (roles.equals("0")) {
+                importTSysUserDTO.setRoles(roles);
+            } else if (roles.equals("1")) {
+                importTSysUserDTO.setRoles(roles);
+            } else if (roles.equals("2")) {
+                importTSysUserDTO.setRoles(roles);
+            }
+
             List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(items);
             String item = "";
-            for(TSysItems tSysItems:tSysItemsList){
+            for (TSysItems tSysItems : tSysItemsList) {
                 item = tSysItems.getId();//获取项目点id
             }
-            if(StringUtils.isEmpty(items)){
+            if (StringUtils.isEmpty(items)) {
                 errorMessage.append("项目点不为空；");
                 pass = false;
-            }else if(tSysItemsList != null && tSysItemsList.size() > 0){
-                importTSysUserDTO.setItemId(item);//存入id
-                importTSysUserDTO.setItems(items);
-            }else {
+            } else if (tSysItemsList != null && tSysItemsList.size() > 0) {
+                importTSysUserDTO.setItemsCode(item);//存入
+            } else {
                 errorMessage.append("项目点不存在；");
                 pass = false;
             }
-            if(pass){
+            if (pass) {
                 errorMessage.append("成功！");
                 successNumber++;
-            }else{
+            } else {
                 errNumber++;
             }
             importTSysUserDTO.setEnglishName(englishName);
@@ -333,24 +349,25 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
 
     /**
      * 导入文件
+     *
      * @param userVOList
      */
- public void saveSysUser(List<UserVO> userVOList){
+    public void saveSysUser(List<UserVO> userVOList) {
         for (UserVO userVO : userVOList) {
             TsysUser tsysUser = new TsysUser();
             //权限存入管理员
             TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userVO.getId(), "488243256161730560");
-            BeanCopierEx.copy(userVO,tsysUser);
+            BeanCopierEx.copy(userVO, tsysUser);
             tSysRoleUserMapper.insertSelective(roleUser);
             tsysUserMapper.insertSelective(tsysUser);
         }
     }
 
-    public List<UserVO> getSuccessTSysItems(List<ImportTSysUserDTO> importTSysUserDTOS){
-        if(importTSysUserDTOS ==null) return new ArrayList<>();
+    public List<UserVO> getSuccessTSysItems(List<ImportTSysUserDTO> importTSysUserDTOS) {
+        if (importTSysUserDTOS == null) return new ArrayList<>();
         List<UserVO> tsysUsers = new ArrayList<>();
         for (ImportTSysUserDTO importTSysUserDTO : importTSysUserDTOS) {
-            if(importTSysUserDTO.getPass()){
+            if (importTSysUserDTO.getPass()) {
                 tsysUsers.add(loadByDTO(importTSysUserDTO));
             }
         }
@@ -359,23 +376,24 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
 
     /**
      * 确认导入数据
+     *
      * @param dto
      * @return
      */
-    private UserVO loadByDTO(ImportTSysUserDTO dto){
+    private UserVO loadByDTO(ImportTSysUserDTO dto) {
         UserVO userVO = new UserVO();
         //密码默认使用登录名称
         String pw = MD5Util.encode(dto.getUsername());
         userVO.setId(dto.getId());
-        userVO.setItemId(dto.getItemId());
+        userVO.setItemsCode(dto.getItemsCode());
         userVO.setName(dto.getName());
         userVO.setPhoneNumber(dto.getPhoneNumber());
         userVO.setEnglishName(dto.getEnglishName());
-        userVO.setItems(dto.getItems());
         userVO.setUsername(dto.getUsername());
         userVO.setUpdateTime(dto.getUpdateTime());
         userVO.setCreateTime(dto.getCreateTime());
         userVO.setNumber(dto.getUsername());
+        userVO.setRoles(dto.getRoles());
         userVO.setPassword(pw);
         return userVO;
     }

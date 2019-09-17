@@ -27,12 +27,16 @@ public interface TSysStageMapper {
     List<TSysStage> selectStageList(@Param("itemsCode")String itemsCode,@Param("keyword")String keyword);
 
     List<TSysStage> selectStage(String itemsCode,String stage);
+    List<TSysStage> selectItemsCode(String itemsCode);
 
     List<TSysStage> findByStageOrItems(String stage,String itemsCode);
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
+
     List<TSysStage> findByStage(String stage,String itemsCode);
+
     long countByExample(TSysStageExample example);
+
     int updateByExampleSelective(@Param("record") TSysStage record, @Param("example") TSysStageExample example);
     int updateByExample(@Param("record") TSysStage record, @Param("example") TSysStageExample example);
 }

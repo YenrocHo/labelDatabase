@@ -1,4 +1,4 @@
-package com.fc.aden.model.custom;
+package com.fc.aden.vo.importDto;
 
 import com.fc.aden.vo.ImportTSysItemsDTO;
 

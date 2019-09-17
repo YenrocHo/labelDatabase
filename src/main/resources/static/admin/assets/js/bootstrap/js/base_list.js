@@ -112,8 +112,7 @@
             }
             
             //table参数end
-		},
-		operate:{
+		},operate:{
 			submit: function(url, type, dataType, data) {
                 $.modal.loading("正在处理中，请稍后...");
                 var config = {

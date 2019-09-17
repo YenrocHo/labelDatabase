@@ -12,12 +12,7 @@
     <!-- 用户界面自定义css -->
     <link th:href="@{/static/admin/user/css/user-add.css}" rel="stylesheet"/>
     <style type="text/css">
-      /*  #shelfLife{
-            height: 34px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }*/
+
     </style>
 </head>
 <body>
@@ -30,7 +25,6 @@
                 <div class="body-nest" id="element">
                     <div class="panel-body">
                         <form class="form-horizontal m" id="form-add">
-
                             <div class="form-group">
                                 <label class="col-sm-3 control-label ">项目点编号：</label>
                                 <div class="col-sm-8" th:if="${tsysUser.roles} ne '2'">
@@ -186,7 +180,7 @@
                 var store_str = "";
                 store_str += "<input name='store' type='hidden' value='" + d.id + "' >";
                 store_str += d.name + "&nbsp;:";
-                store_str += "&nbsp;<input type='text' class=\"form-control\"  name='shelfLife'" +
+                store_str += "&nbsp;<input type='text' class=\"form-control\" value=''  name='" + d.id + "'" +
                     "                                               oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
                 $("#sysStores").append(store_str);
             });

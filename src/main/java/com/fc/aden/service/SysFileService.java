@@ -3,6 +3,7 @@ package com.fc.aden.service;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +72,9 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 		//插入创建时间
 		record.setCreateTime(new Date());
 		//添加雪花主键id
-		record.setId(SnowflakeIdWorker.getUUID());
+		if (StringUtils.isBlank(record.getId())) {
+			record.setId(SnowflakeIdWorker.getUUID());
+		}
 		//插入关联表
 		TsysFileData tsysFileData=new TsysFileData();
 		tsysFileData.setId(SnowflakeIdWorker.getUUID());
@@ -83,7 +86,6 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 
 	@Override
 	public TsysFile selectByPrimaryKey(String id) {
-		
 		return tsysFileMapper.selectByPrimaryKey(id);
 	}
 
@@ -108,7 +110,6 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 		fileDataExample.createCriteria().andFileIdEqualTo(record.getId());
 		tsysFileDataMapper.deleteByExample(fileDataExample);
 		
-		
 		//插入关联表
 		TsysFileData tsysFileData=new TsysFileData();
 		tsysFileData.setId(SnowflakeIdWorker.getUUID());
@@ -123,8 +124,7 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 		old_data.setUpdateUserName(ShiroUtils.getLoginName());
 		//插入修改时间
 		old_data.setUpdateTime(new Date());
-		
-		
+
 		return tsysFileMapper.updateByPrimaryKey(old_data);
 	}
 
@@ -164,7 +164,7 @@ public class SysFileService implements BaseService<TsysFile, TsysFileExample>{
 	
 	/**
 	 * 检查文件名字
-	 * @param TsysFile
+	 * @param tsysFile
 	 * @return
 	 */
 	public int checkNameUnique(TsysFile tsysFile){

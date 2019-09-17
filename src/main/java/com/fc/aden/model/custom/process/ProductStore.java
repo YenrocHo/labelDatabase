@@ -14,8 +14,6 @@ public class ProductStore {
     private Date createTime;
     private Date updateTime;
 
-
-
     public ProductStore() {
     }
 

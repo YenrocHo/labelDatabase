@@ -229,10 +229,10 @@
     <include refid="Base_Column_List"/>
     from t_sys_food
     <where>
-      <if test="keyword != null">
+      <if test="keyword != null and keyword !=''">
         food like #{keyword,jdbcType=VARCHAR}
       </if>
-      <if test="itemsCode != null">
+      <if test="itemsCode != null and itemsCode !=''">
         and items_code like #{itemsCode,jdbcType=VARCHAR}
       </if>
     </where>
@@ -256,8 +256,8 @@
      <include refid="Base_Column_List"/>
      from t_sys_food
      where 1=1
-      <if test="foodCode!=null and foodCode!=''">
-        and food_code = #{foodCode,jdbcType=VARCHAR}
+      <if test="food!=null and food!=''">
+        and food = #{food,jdbcType=VARCHAR}
       </if>
       <if test="itemsCode!=null and itemsCode!=''">
         and items_code = #{itemsCode,jdbcType=VARCHAR}

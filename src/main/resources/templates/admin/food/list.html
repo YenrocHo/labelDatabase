@@ -147,7 +147,7 @@
     var createUrl = window.rootPath + "/FoodController/add";
     var updateUrl = window.rootPath + "/FoodController/edit/{id}";
     var removeUrl = window.rootPath + "/FoodController/remove";
-    var detailUrl = window.rootPath + "/FoodController/detail/{id}";
+    var detailUrl = window.rootPath + "/FileController/viewfile/{id}";
     var downUrl = window.rootPath + "/FoodController/upload";
     var options = {
         dataUrl: dataUrl,
@@ -161,26 +161,28 @@
         search: false,
         dataColumns: [
             {
-                field: 'id',
-                title: '编号',
-                visible: false
-
+                title: '序号',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push(index+1);
+                    return actions.join('');
+                }
             }, {
                 field: 'itemsCode',
                 title: '项目点'
             }
             , {
                 field: 'food',
-                title: '食品名称'
+                title: '食品中文名'
             }, {
                 field: 'englishName',
-                title: '英文名'
+                title: '食品英文名'
             }, {
-                title: '查看图片',
+                title: '背景图片',
                 formatter: function (value, row, index) {
                     var id = row.id;
                     var actions = [];
-                    actions.push('<a class="btn btn-info btn-xs"  href="#" onclick="detail(\'' + row.id + '\')"><i class="fa fa-picture-o"style="margin-right: 2px"></i>查看</a> ');
+                    actions.push('<a class="btn btn-info btn-xs"  href="#" onclick="viewfile(\'' + row.picture + '\')"><i class="fa fa-picture-o"style="margin-right: 2px"></i>查看</a> ');
                     return actions.join('');
                 }
             }, {
@@ -233,7 +235,7 @@
         });
     }
 
-    function detail(id) {
+    function viewfile(id) {
         var url = $.table._option.detailURL.replace("{id}", id);
         $.modal.open("查看" + $.table._option.modalName, url);
     }

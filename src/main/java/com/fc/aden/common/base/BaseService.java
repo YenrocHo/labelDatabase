@@ -1,7 +1,14 @@
 package com.fc.aden.common.base;
 
 import java.util.List;
+
+import com.fc.aden.mapper.auto.TSysItemsMapper;
+import com.fc.aden.mapper.auto.TsysUserMapper;
+import com.fc.aden.mapper.auto.process.TSysFoodMapper;
+import com.fc.aden.mapper.auto.process.TSysProductMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * 抽象类BaseService
 * @ClassName: BaseService
@@ -11,7 +18,6 @@ import org.apache.ibatis.annotations.Param;
 *
  */
 public interface BaseService<T,T2> {
-	
     int deleteByPrimaryKey(String id);
 
     int insertSelective(T record);

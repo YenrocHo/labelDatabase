@@ -99,7 +99,7 @@ public class FileUtils
     public static void readIMGTohtml(HttpServletRequest request, HttpServletResponse response,String fileurl) throws IOException{
     	//读取本地图片输入流
     			FileInputStream inputStream = new FileInputStream(fileurl);
-    			int i = inputStream.available();
+    			int i = inputStream.available();// E:/Aden_label/profile/image/20190829/b4642936c49128d668e21800b80d8a65.jpg
     			//byte数组用于存放图片字节数据
     			byte[] buff = new byte[i];
     			inputStream.read(buff);

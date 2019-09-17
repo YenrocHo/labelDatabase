@@ -14,6 +14,25 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="roles" jdbcType="VARCHAR" property="roles"/>
     </resultMap>
+    <resultMap id="BaseResultAllMap" type="com.fc.aden.vo.UserVO">
+
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="number" jdbcType="VARCHAR" property="number"/>
+        <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
+        <result column="items_code" jdbcType="VARCHAR" property="itemsCode"/>
+        <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="roles" jdbcType="VARCHAR" property="roles"/>
+
+     <!--   <collection property="tSysItems" ofType="com.fc.aden.vo.ItemsVO">
+            <result column="item_code" jdbcType="VARCHAR" property="itemsCode"/>
+            <result column="item_name" jdbcType="VARCHAR" property="name"/>
+        </collection>-->
+    </resultMap>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -368,11 +387,31 @@
         from t_sys_user
         where number = #{username}
     </select>
-    <select id="selectLogin" parameterType="java.lang.String" resultMap="BaseResultMap">
+   <!-- <select id="selectLoginVo"  resultMap="BaseResultAllMap"  parameterType="java.lang.String" >
         select
-       <include refid="Base_Column_List"></include>
+        users.*,
+        item.item_code,
+        item.item_name
+        from t_sys_user users  LEFT JOIN t_sys_items item on
+        case when
+            users.roles != '2'
+        then
+			users.items_code = item.items_code
+		ELSE 1
+	    end
+       WHERE users.username = #{number}
+    </select>-->
+    <select id="selectLogin"  resultMap="BaseResultMap"  parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List"/>
         from t_sys_user
-        WHERE username = #{username}
+       WHERE username = #{number}
+    </select>
+    <select id="selectLoginOrItem" resultMap="BaseResultAllMap"  parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+       WHERE username = #{number}
     </select>
     <select id="selectAllUser" resultMap="BaseResultMap">
         select

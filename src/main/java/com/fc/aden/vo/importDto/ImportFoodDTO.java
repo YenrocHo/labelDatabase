@@ -1,4 +1,4 @@
-package com.fc.aden.model.custom.process;
+package com.fc.aden.vo.importDto;
 
 import com.fc.aden.vo.ImportTSysFoodDTO;
 import com.fc.aden.vo.ImportTSysProductDTO;

@@ -186,14 +186,13 @@
         select
         <include refid="Base_Column_List"/>
         from t_sys_stage
-        <where>
-            <if test="keyword != null">
-                stage like #{keyword,jdbcType=VARCHAR}
+        where 1=1
+            <if test="keyword != null and keyword != ''">
+               and stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
             </if>
-            <if test="itemsCode != null">
-                and items_code like #{itemsCode,jdbcType=VARCHAR}
+            <if test="itemsCode != null and itemsCode != ''">
+               and items_code = #{itemsCode,jdbcType=VARCHAR}
             </if>
-        </where>
     </select>
     <select id="findByStage" resultMap="BaseResultMap" parameterType="string">
         select
@@ -247,4 +246,10 @@
         </choose>
         where id = #{id}
     </update>
+    <select id="selectItemsCode" resultMap="BaseResultMap" parameterType="string">
+        select
+            <include refid="Base_Column_List"/>
+        from t_sys_stage
+        where items_code = #{itemsCode}
+    </select>
 </mapper>

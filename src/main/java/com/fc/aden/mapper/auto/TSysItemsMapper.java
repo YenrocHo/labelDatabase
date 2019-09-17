@@ -30,7 +30,7 @@ public interface TSysItemsMapper {
     int updateByPrimaryKey(TSysItems record);
 
 
-    List<TSysItems> selectByItems(String itemsCode);
+    List<TSysItems> selectByItems(@Param("itemsCode") String itemsCode);
 
     int deleteByItems(List<TSysItems> example);
 

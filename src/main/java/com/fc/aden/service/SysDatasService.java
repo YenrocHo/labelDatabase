@@ -64,9 +64,8 @@ public class SysDatasService implements BaseService<TsysDatas, TsysDatasExample>
 	public String insertSelective(MultipartFile file) throws IOException {
 		//文件上传获取文件名字
         String files = FileUploadUtils.upload(file);
-        //补充完整url地址 
+        //补充完整url地址
         String filesURL=V2Config.getProfile()+"temp/"+files;
-        
 		TsysDatas record=new TsysDatas();
 		//添加雪花主键id
 		record.setId(SnowflakeIdWorker.getUUID());

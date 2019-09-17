@@ -33,6 +33,13 @@ label.error {
     color: #ef392b;
     font-size: 12px;
 }
+img{
+	  width:500px;
+	  height: 400px;
+	  border-radius: 10px;
+	margin-left: 90px;
+  }
+
 </style>
 
 </head>
@@ -48,7 +55,7 @@ label.error {
 					<div class="panel-body">
 						<form  class="form-horizontal m" id="form-view" >
 							<div class="form-group" th:each="sysdata : ${tsysDatas}">
-								<div class="col-sm-8">
+								<div class="col-sm-8" id="image-div">
 									<img th:src="'../viewImg/'+${sysdata.id}">
 								</div>
 							</div>

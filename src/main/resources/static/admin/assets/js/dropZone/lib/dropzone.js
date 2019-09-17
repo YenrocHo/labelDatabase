@@ -744,7 +744,7 @@ require.register("dropzone/lib/dropzone.js", function(exports, require, module){
       if (this.clickableElements.length) {
         setupHiddenFileInput = function() {
           if (_this.hiddenFileInput) {
-            /*document.body.removeChild(_this.hiddenFileInput);*/
+            document.body.removeChild(_this.hiddenFileInput);
           }
           _this.hiddenFileInput = document.createElement("input");
           _this.hiddenFileInput.setAttribute("type", "file");

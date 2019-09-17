@@ -23,7 +23,7 @@
 </style>
 <!-- 右边内容 -->
 <div class="wrap-fluid">
-    <div class="container-fluid paper-wrap bevel tlbr" id = "content_body">
+    <div class="container-fluid paper-wrap bevel tlbr" id="content_body">
         <!-- 内容 -->
         <!--标题 通用-->
         <div th:replace="admin/common/html/title :: title(${title},${parenttitle},${isMsg},${msgHTML})">
@@ -159,14 +159,22 @@
         search: false,
         dataColumns: [
             {
+                title: '序号',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push(index + 1);
+                    return actions.join('');
+                }
+            },
+            {
                 field: 'itemsCode',
                 title: '项目点'
             }, {
                 field: 'stage',
-                title: '阶段'
+                title: '阶段中文名'
             }, {
                 field: 'englishName',
-                title: '英文名'
+                title: '阶段英文名'
             }, {
                 title: '操作',
                 formatter: function (value, row, index) {
@@ -236,7 +244,7 @@
 
     function changeDate() {
         var im_paper = document.getElementById("content_body");
-        im_paper.style.minHeight = (document.documentElement.clientHeight).toString()+"px";
+        im_paper.style.minHeight = (document.documentElement.clientHeight).toString() + "px";
     }
 </script>
 </body>
