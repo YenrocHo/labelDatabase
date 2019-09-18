@@ -6,7 +6,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>labelDatabase</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>Aden labelDatabase</name>
 	<description>Demo project for Spring Boot</description>
@@ -218,6 +218,7 @@
 
 
 	<build>
+		<finalName>labelDatabase</finalName>
 		<plugins>
 			<!-- JUnit 配置 -->
 			<plugin>
