@@ -180,7 +180,7 @@
 		    <artifactId>velocity</artifactId>
 		    <version>1.7</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
@@ -282,6 +282,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 	
 </project>

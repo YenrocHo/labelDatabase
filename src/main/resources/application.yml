@@ -23,6 +23,8 @@ server :
     max-connections: 200000
     max-http-post-size: 9000000
 spring :
+
+
   # 环境 dev|aden|prod
   profiles :
     active : dev
@@ -30,8 +32,11 @@ spring :
     multipart:
       max-request-size: 100MB
       maxFileSize : 10MB
-  mvc:   #静态文件
+  mvc :   #静态文件
+    favicon:
+      enabled: false
     static-path-pattern : /static/**
+
   thymeleaf:
     model: HTML5
     prefix: classpath:/templates/
