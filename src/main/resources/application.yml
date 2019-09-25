@@ -10,32 +10,36 @@ fuce:
   #profile: D:/profile/
   profile: E:/Aden_label/profile/
 #tomcat config
-server :
-  port : 8090
+server:
+  port: 8090
   ##项目名字配置
   #servlet : 
   #  context-path : /demo
-  tomcat :
-    max-threads : 128
-    min-spare-threads : 5
-    uri-encoding : UTF-8
+  tomcat:
+    max-threads: 128
+    min-spare-threads: 5
+    uri-encoding: UTF-8
     #shiro 报错修改的地方
     max-connections: 200000
     max-http-post-size: 9000000
-spring :
-
-
+spring:
   # 环境 dev|aden|prod
-  profiles :
-    active : dev
+  profiles:
+    active: dev
   servlet:
     multipart:
       max-request-size: 100MB
-      maxFileSize : 10MB
-  mvc :   #静态文件
+      maxFileSize: 10MB
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+  mvc:
     favicon:
       enabled: false
-    static-path-pattern : /static/**
+    # 静态文件
+    static-path-pattern: /static/**
 
   thymeleaf:
     model: HTML5
@@ -44,17 +48,24 @@ spring :
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-mybatis :
-  mapperLocations : classpath*:mybatis/*/*.xml
-  executor-type : reuse
-  type-aliases-package : com.*.model
-  configuration :
-    map-underscore-to-camel-case : true
+mybatis:
+  mapperLocations: classpath*:mybatis/*/*.xml
+  executor-type: reuse
+  type-aliases-package: com.*.model
+  configuration:
+    map-underscore-to-camel-case: true
 #pagehelper分页插件
 pagehelper:
-    helperDialect: mysql
-    reasonable: true
-    supportMethodsArguments: true
-    params: count=countSql
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+# securityKey
+dh:
+  security:
+    key: sgo9ej2eqrbofsbe5wjfodsv4rfkiyjb
+
+
 logging:
   file: E:/Aden_lable/log/

@@ -12,7 +12,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fc.aden.mapper.custom.PermissionDao;
 import com.fc.aden.mapper.custom.RoleDao;
@@ -22,6 +21,8 @@ import com.fc.aden.model.auto.TsysRole;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.util.StringUtils;
 import com.google.gson.Gson;
+
+import javax.annotation.Resource;
 
 /**
  * 身份校验核心类
@@ -36,12 +37,12 @@ public class MyShiroRealm extends AuthorizingRealm {
 	
 	
 	
-	@Autowired
+	@Resource
 	private TsysUserDao tsysUserDao;
 	
-	@Autowired
+	@Resource
 	private PermissionDao permissionDao;//权限dao
-	@Autowired
+	@Resource
 	private RoleDao roleDao ;//角色dao
 	
 	
@@ -52,11 +53,34 @@ public class MyShiroRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken token) throws AuthenticationException {
-		
+
+
+
+
 		 //加这一步的目的是在Post请求的时候会先进认证，然后在到请求
         if (token.getPrincipal() == null) {
             return null;
         }
+
+
+		/*String bodyString = null;
+		try {
+			bodyString = HttpHelper.getBodyString(new RequestReaderHttpServletRequestWrapper(request));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("bodyString===" + bodyString);
+		JSONObject jso = JSONObject.parseObject(bodyString);
+
+		String phone = String.valueOf(jso.get("phone"));    //用户登录的数据
+		String token_id = String.valueOf(jso.get("token_id"));
+		String timestamp = String.valueOf(jso.get("timeStamp"));
+		String encryption = String.valueOf(jso.get("encryption"));
+		String apiV = String.valueOf(jso.get("apiV"));
+		System.out.println("=====apiV======"+apiV);*/
+
+
+
 		String username = (String) token.getPrincipal();
 		String password = new String((char[]) token.getCredentials());
 		// 通过username从数据库中查找 User对象，如果找到，没找到.
@@ -64,6 +88,12 @@ public class MyShiroRealm extends AuthorizingRealm {
 		
 		
 		TsysUser userInfo = tsysUserDao.queryUserName(username);
+
+
+		//boolean result = EncryptionUtils.verify(phone, token_id, timestamp, encryption);
+
+
+
 		
 //		System.out.println(userInfo);
 //		System.out.println("----->>userInfo=" + userInfo.getUsername() + "---"+ userInfo.getPassword());

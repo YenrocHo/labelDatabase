@@ -1,5 +1,7 @@
 package com.fc.aden.shiro.config;
 
+import com.fc.aden.shiro.service.CredentialsMatcher;
+import com.fc.aden.shiro.service.MyFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
@@ -15,6 +17,19 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+
+
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.servlet.Filter;
 
 import com.fc.aden.common.exception.GlobalExceptionResolver;
 import com.fc.aden.shiro.service.MyShiroRealm;
@@ -40,6 +55,11 @@ public class ShiroConfig {
 	@Bean
 	public ShiroFilterFactoryBean shiroFilterFactoryBean(org.apache.shiro.mgt.SecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+
+		Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
+		filtersMap.put("authc",formValid());
+		shiroFilterFactoryBean.setFilters(filtersMap);
+
 		//登录
 		shiroFilterFactoryBean.setLoginUrl("/login");
 		//首页
@@ -52,7 +72,14 @@ public class ShiroConfig {
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
 		return shiroFilterFactoryBean;
 	}
-	
+
+	//自定义过滤器 ---》里面实现了对验证码校验
+	@Bean("myFilter")
+	public MyFilter formValid() {
+		return new MyFilter();
+	}
+
+
 	/**
 	 * web应用管理配置
 	 * @param shiroRealm
@@ -68,7 +95,7 @@ public class ShiroConfig {
 		securityManager.setRealm(shiroRealm);
 		return securityManager;
 	}
-	
+
 	/**
 	 * 加密算法
 	 * @return
@@ -80,7 +107,7 @@ public class ShiroConfig {
 		hashedCredentialsMatcher.setHashIterations(1);//加密次数
 		return hashedCredentialsMatcher;
 	}
-	
+
 	/**
 	 * 记住我的配置
 	 * @return
@@ -103,7 +130,7 @@ public class ShiroConfig {
 		MemoryConstrainedCacheManager cacheManager=new MemoryConstrainedCacheManager();//使用内存缓存
 		return cacheManager;
 	}
-	
+
 	/**
 	 * 配置realm，用于认证和授权
 	 * @param hashedCredentialsMatcher
@@ -116,7 +143,7 @@ public class ShiroConfig {
 		shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher);
 		return shiroRealm;
 	}
-	
+
 	/**
 	 * 启用shiro方言，这样能在页面上使用shiro标签
 	 * @return
@@ -125,11 +152,11 @@ public class ShiroConfig {
     public ShiroDialect shiroDialect() {
         return new ShiroDialect();
     }
-	
+
 	/**
      * 启用shiro注解
      *加入注解的使用，不加入这个注解不生效
-     */
+	 */
     @Bean
     public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(org.apache.shiro.mgt.SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
