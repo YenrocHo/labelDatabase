@@ -7,6 +7,8 @@
  */
 package com.fc.aden.util.dxm.result;
 
+import net.sf.json.JSON;
+
 /**
  * @version: V1.0
  * @author: DongXiaoMing
@@ -20,8 +22,15 @@ public class ResponseResult {
     private int code;
     private String message;
     private String data;
+    private JSON content;
 
+    public JSON getContent() {
+        return content;
+    }
 
+    public void setContent(JSON content) {
+        this.content = content;
+    }
 
     public ResponseResult setCodeMsg(ResponseCode rc) {
         this.code = rc.getCode();
