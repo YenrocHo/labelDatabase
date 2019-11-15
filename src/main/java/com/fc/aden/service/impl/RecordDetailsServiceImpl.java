@@ -14,6 +14,7 @@ import com.fc.aden.service.RecordDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @version: V1.0
@@ -32,19 +33,8 @@ public class RecordDetailsServiceImpl implements RecordDetailsService {
     public AjaxResult getRecordDetails(String id) {
 
         // 根据ID查询 记录
-        PrintHistory result = printHistoryMapper.selectByPrimaryKey(id);
-//        HashMap<String, Object> map = new HashMap<>();
-//        if (result != null){
-//            map.put("code",200);
-//            map.put("msg","操作成功");
-//            map.put("data",result);
-//        }else {
-//            map.put("code",240);
-//            map.put("msg", "未查到数据");
-//        }
-//
-//        JSONObject object = JSONObject.fromObject(map);
-
+        List<PrintHistory> resultList = printHistoryMapper.selectByOriginalId(id);
+        PrintHistory result = resultList.get(0);
         return  AjaxResult.successData(200,result);
     }
 }

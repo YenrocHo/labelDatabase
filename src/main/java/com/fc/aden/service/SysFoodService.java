@@ -83,17 +83,6 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         tSysFood.setCreateTime(new Date());//保存创建时间
         tSysFood.setUpdateTime(new Date());//保存更新时间
         tSysFood.setName(tSysFood.getFood());//保存更新时间
-        String dataId = tSysFood.getPicture();
-        String fileId = "";
-        if (dataId != "" && !dataId.equals("")) {
-            fileId = SnowflakeIdWorker.getUUID();
-            TsysFile record = new TsysFile();// 文件
-            record.setId(fileId);
-            record.setFileName(tSysFood.getFood());
-            record.setUpdateTime(new Date());
-            sysFileService.insertSelective(record, dataId);
-            tSysFood.setPicture(fileId);// 图片用的是fileId
-        }
         return tSysFoodMapper.insertSelective(tSysFood);
     }
 

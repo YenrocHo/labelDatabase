@@ -136,6 +136,9 @@
       <if test="picture != null" >
         picture,
       </if>
+      <if test="pictureHight != null" >
+        picture_hight,
+      </if>
       <if test="status != null" >
         status,
       </if>
@@ -167,6 +170,9 @@
       </if>
       <if test="picture != null" >
         #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureHight != null" >
+        #{pictureHight,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},

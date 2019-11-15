@@ -65,13 +65,13 @@ public class SysDatasService implements BaseService<TsysDatas, TsysDatasExample>
 		//文件上传获取文件名字
         String files = FileUploadUtils.upload(file);
         //补充完整url地址
-        String filesURL=V2Config.getProfile()+"temp/"+files;
+        String filesURL=V2Config.getProfile() +files;
 		TsysDatas record=new TsysDatas();
 		//添加雪花主键id
 		record.setId(SnowflakeIdWorker.getUUID());
 		record.setFilePath(filesURL);
 		if(tsysDatasMapper.insertSelective(record)>0) {
-			return record.getId();
+			return files;
 		}
 		return null;
 	}

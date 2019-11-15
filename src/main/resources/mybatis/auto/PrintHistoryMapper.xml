@@ -97,6 +97,15 @@
             order by ${orderByClause}
         </if>
     </select>
+
+
+    <select id="selectByOriginalId" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample"
+            resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from al_print_history
+        where original_id = #{originalId,jdbcType=VARCHAR}
+    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

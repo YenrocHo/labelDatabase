@@ -26,6 +26,8 @@ public interface PrintHistoryMapper extends BaseMapper<PrintHistory, PrintHistor
 
     List<PrintHistory> selectByExample(PrintHistoryExample example);
 
+    List<PrintHistory> selectByOriginalId(String originalId);
+
     PrintHistory selectByPrimaryKey(String id);
 
     int updateByExampleSelective(@Param("record") PrintHistory record, @Param("example") PrintHistoryExample example);

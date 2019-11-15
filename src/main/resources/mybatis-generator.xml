@@ -15,11 +15,11 @@
         1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；
         2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；
     introspectedColumnImpl：类全限定名，用于扩展MBG
-    
-    
-    eclispe 运行mybatis-generator.xml  
+
+
+    eclispe 运行mybatis-generator.xml
 3.运行方法：在eclipse 中，选择pom.xml文件，击右键先择Run AS——>Maven Build… ——>在Goals框中输入：mybatis-generator:generate
-    
+
 -->
 
     <context id="mysql" targetRuntime="MyBatis3" defaultModelType="flat">
@@ -37,11 +37,12 @@
             <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
         </commentGenerator>
         <!-- 数据库链接地址账号密码 -->
+<!--                connectionURL="jdbc:mysql://139.196.193.182:8306/adenlabel"-->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://139.196.193.182:8306/adenlabel"
+                connectionURL="jdbc:mysql://47.102.107.246:8306/adenlabel"
                 userId="root"
-                password="DecentSmart2016">
+                password="aden1234">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>

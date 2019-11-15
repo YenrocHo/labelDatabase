@@ -81,7 +81,7 @@
                                     <input type="hidden" id="picture" name="picture">
                                     <div id="dropz"  class="dropzone"></div>
                                 </div>
-<!--                                <input name = "picture" id="picture" type ="file" class="form-control" size ="140" maxlength="140">-->
+                            <!-- <input name = "picture" id="picture" type ="file" class="form-control" size ="140" maxlength="140">-->
                             </div>
                             <div class="form-group">
                                 <div class="form-control-static col-sm-offset-9">
@@ -116,20 +116,21 @@
 <script  th:src="@{/static/js/jqueryFormSerializeJson.js}" type="text/javascript"></script>
 </body>
 <script type="application/javascript">
+    var dataUrl = [];
     $(function(){
         Dropzone.autoDiscover = false;//防止报"Dropzone already attached."的错误
         var myDropzone = new Dropzone("#dropz", {
             url: rootPath + "/FileController/upload",//文件提交地址
             method:"post",  //也可用put
             paramName:"file", //默认为file
-            maxFiles:1,//一次性上传的文件数量上限
-            maxFilesize: 2, //文件大小，单位：MB
+            maxFiles:2,//一次性上传的文件数量上限
+            maxFilesize: 10, //文件大小，单位：MB
             acceptedFiles: ".jpg,.gif,.png,.jpeg", //上传的类型
             addRemoveLinks:true,
-            parallelUploads: 1,//一次上传的文件数量
+            parallelUploads: 2,//一次上传的文件数量
             //previewsContainer:"#preview",//上传图片的预览窗口
             dictDefaultMessage:'拖动文件至此或者点击上传',
-            dictMaxFilesExceeded: "您最多只能上传1个文件！",
+            dictMaxFilesExceeded: "您最多只能上传2个文件！",
             dictResponseError: '文件上传失败!',
             dictInvalidFileType: "文件类型只能是*.jpg,*.gif,*.png,*.jpeg",
             dictFallbackMessage:"浏览器不受支持",
@@ -141,6 +142,7 @@
                 });
                 this.on("success",function(file,data){//上传成功触发的事件
                     if(data!=null&&data!=""){
+                        dataUrl.push(data.data);
                         $("#picture").val(data.data);
                     }
                 });
@@ -203,8 +205,9 @@
      */
     function add() {
         var dataFormJson=$("#form-add").serializeJson();
-        var l = $("#picture").val();
-        alert(l)
+        dataFormJson.picture=dataUrl[0];
+        dataFormJson.pictureHight=dataUrl[1];
+        alert(dataUrl);
         $.ajax({
             cache : true,
             type : "POST",
