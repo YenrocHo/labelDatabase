@@ -100,6 +100,7 @@ public class FoodController extends BaseController {
     @RequiresPermissions("system:food:add")
     @ResponseBody
     public AjaxResult add(TSysFood tSysFood) {
+        System.out.println("路径"+tSysFood.getPicture());
         int b = sysFoodService.insertSelective(tSysFood);
         if (b > 0) {
             return success();

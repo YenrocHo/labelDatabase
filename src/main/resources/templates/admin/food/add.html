@@ -81,6 +81,7 @@
                                     <input type="hidden" id="picture" name="picture">
                                     <div id="dropz"  class="dropzone"></div>
                                 </div>
+<!--                                <input name = "picture" id="picture" type ="file" class="form-control" size ="140" maxlength="140">-->
                             </div>
                             <div class="form-group">
                                 <div class="form-control-static col-sm-offset-9">
@@ -126,21 +127,17 @@
             acceptedFiles: ".jpg,.gif,.png,.jpeg", //上传的类型
             addRemoveLinks:true,
             parallelUploads: 1,//一次上传的文件数量
-//previewsContainer:"#preview",//上传图片的预览窗口
+            //previewsContainer:"#preview",//上传图片的预览窗口
             dictDefaultMessage:'拖动文件至此或者点击上传',
             dictMaxFilesExceeded: "您最多只能上传1个文件！",
             dictResponseError: '文件上传失败!',
-            dictInvalidFileType: "文件类型只能是*.jpg,*.gif,*.png,*.jpeg。",
+            dictInvalidFileType: "文件类型只能是*.jpg,*.gif,*.png,*.jpeg",
             dictFallbackMessage:"浏览器不受支持",
             dictFileTooBig:"文件过大上传文件最大支持.",
             dictRemoveLinks: "删除",
             dictCancelUpload: "取消",
             init:function(){
                 this.on("addedfile", function(file) {
-                    /*
-                    static/admin/assets/js/dropZone/lib/dropzone.js 这个文件的第747行报错 ，为了能正常运行把那句话注释了。
-                    目前还不知道会不会有影响
-                     */
                 });
                 this.on("success",function(file,data){//上传成功触发的事件
                     if(data!=null&&data!=""){
@@ -149,7 +146,7 @@
                 });
                 this.on("error",function (file,data) {//上传失败触发的事件
                 });
-                this.on("removedfile",function(file){//删除文件触发结果
+                this.on("removedfile",function(file) {//删除文件触发结果
                     $("#picture").val("");
                 });
             }
@@ -181,7 +178,7 @@
                 remote: "编号已经存在"
             }
         },
-        submitHandler:function(form){
+        submitHandler:function(form) {
             var food = $("#food").val();
             var itemsCode = $("[name='itemsCode']").val();
             $.post(rootPath + "/FoodController/checkFoodUnique", {"food": food,"itemsCode": itemsCode}, function (data, statusText) {
@@ -206,6 +203,8 @@
      */
     function add() {
         var dataFormJson=$("#form-add").serializeJson();
+        var l = $("#picture").val();
+        alert(l)
         $.ajax({
             cache : true,
             type : "POST",

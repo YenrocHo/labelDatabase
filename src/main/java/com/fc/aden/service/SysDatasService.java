@@ -70,8 +70,7 @@ public class SysDatasService implements BaseService<TsysDatas, TsysDatasExample>
 		//添加雪花主键id
 		record.setId(SnowflakeIdWorker.getUUID());
 		record.setFilePath(filesURL);
-		if(tsysDatasMapper.insertSelective(record)>0)
-		{
+		if(tsysDatasMapper.insertSelective(record)>0) {
 			return record.getId();
 		}
 		return null;

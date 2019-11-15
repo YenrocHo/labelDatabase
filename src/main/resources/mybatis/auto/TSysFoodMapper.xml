@@ -9,12 +9,13 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="english_name" property="englishName" jdbcType="VARCHAR" />
     <result column="picture" property="picture" jdbcType="VARCHAR" />
+    <result column="picture_hight" property="pictureHight" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER"/>
     <result column="create_Time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_Time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, items_code,food_code,food, name, english_name, picture, status,create_Time, update_Time
+    id, items_code,food_code,food, name, english_name, picture, status,create_Time, update_Time,picture_hight
   </sql>
   <sql id="Example_Where_Clause">
     <where>
@@ -77,7 +78,6 @@
     </if>
       order by update_time desc
   </select>
-
 
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFoodExample" >
     select

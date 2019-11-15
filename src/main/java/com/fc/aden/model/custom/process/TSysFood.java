@@ -15,6 +15,7 @@ public class TSysFood {
     private String englishName;
 
     private String picture;
+    private String pictureHight;
 
     private Date createTime;
 
@@ -22,7 +23,7 @@ public class TSysFood {
 
     private Integer status;
 
-    public TSysFood(String id, String itemsCode, String foodCode, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status) {
+    public TSysFood(String id, String itemsCode, String foodCode, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status,String pictureHight) {
         this.id = id;
         this.itemsCode = itemsCode;
         this.foodCode = foodCode;
@@ -33,6 +34,7 @@ public class TSysFood {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.status = status;
+        this.pictureHight = pictureHight;
     }
 
     public TSysFood() {
@@ -118,6 +120,14 @@ public class TSysFood {
         this.foodCode = foodCode;
     }
 
+    public String getPictureHight() {
+        return pictureHight;
+    }
+
+    public void setPictureHight(String pictureHight) {
+        this.pictureHight = pictureHight;
+    }
+
     @Override
     public String toString() {
         return "TSysFood{" +
@@ -130,6 +140,7 @@ public class TSysFood {
                 ", picture='" + picture + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", pictureHight=" + pictureHight +
         ", status=" + status +
                 '}';
     }

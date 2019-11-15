@@ -192,7 +192,6 @@ public class FileUtils {
                 else{
                     temp=new  File(oldPath+File.separator+file[i]);
                 }
-
                 if(temp.isFile()){
                     FileInputStream  input  =  new  FileInputStream(temp);
                     FileOutputStream  output  =  new  FileOutputStream(newPath  +  "/"  +
@@ -214,9 +213,7 @@ public class FileUtils {
         catch  (Exception  e)  {
             System.out.println("复制整个文件夹内容操作出错");
             e.printStackTrace();
-
         }
-
     }
 
     /**
@@ -227,8 +224,5 @@ public class FileUtils {
     public static void  moveFile(String  oldPath,  String  newPath)  {
         copyFile(oldPath,  newPath);
         delFile(oldPath);
-
     }
-
-
 }
