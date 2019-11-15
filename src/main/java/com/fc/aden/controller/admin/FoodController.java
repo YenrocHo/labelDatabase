@@ -116,8 +116,8 @@ public class FoodController extends BaseController {
     @RequiresPermissions("system:food:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult edit(TSysFood tSysFood ,String pictureId) {
-        int b = sysFoodService.updateTsysFood(tSysFood,pictureId);
+    public AjaxResult edit(TSysFood tSysFood ) {
+        int b = sysFoodService.updateTsysFood(tSysFood);
         if (b > 0) {
             return success();
         } else {

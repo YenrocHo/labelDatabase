@@ -86,31 +86,8 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         return tSysFoodMapper.insertSelective(tSysFood);
     }
 
-//    private TsysDatas insertFoodPictureAndGetNewPath(TSysFood tSysFood) {
-//        TsysDatas tsysDatas = tsysDatasMapper.selectFileParhById(tSysFood.getPicture());
-//        System.out.println("tsysDatas===:"+tSysFood.getPicture());
-////        String[] strings = tsysDatas.getFilePath().split("/");
-////        String pictureName = strings[strings.length - 1];
-//        String oldPath = tsysDatas.getFilePath();
-////        String newPath = V2Config.getProfile() + "image/" + getSystemTimeAndToString();
-//        FileUtils.createFileDir(newPath);//创建图片存储路径
-//        String newPicturePath = newPath + "/" + pictureName;
-//        // 点击提交后
-//        // 删除E:/Aden_lable/profile/ 下的图片
-//        // 转移到E:/Aden_lable/profile/image中
-//        FileUtils.moveFile(oldPath, newPicturePath);//从原来路径移动到新的路径
-//        tsysDatas.setFilePath(newPicturePath);
-//        int i =  tsysDatasMapper.updateByPrimaryKeySelective(tsysDatas);
-//        System.out.println("TsysDatas.id===:"+tsysDatas.getId()+":===:"+tsysDatas.getFilePath());
-////       tSysFoodPictureMapper.insertSelective(tSysFoodPicture);
-//        if (i > 0) {
-//            return tsysDatas;
-//        } else {
-//            return null;
-//        }
-//    }
 
-    public int updateTsysFood(TSysFood tSysFood,String dataId) {
+    public int updateTsysFood(TSysFood tSysFood) {
         //删除老数据
         //新增图片id
         String pictureId = tSysFood.getPicture();
@@ -118,43 +95,8 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         tSysFood.setName(tSysFood.getFood());
         TSysFood tSysFood1 = tSysFoodMapper.selectByPrimaryKey(tSysFood.getId());
 
-        //如果图片为空 file表可能为空   如果图片不为空 file表也不为空
-        if (!dataId.equals("") && dataId != "") {
-            //获取旧数据
-            TsysFile old_data = null;
-            if(pictureId!="" && pictureId.equals("")) { //不为空编辑
-                old_data = tsysFileMapper.selectByPrimaryKey(pictureId);
-                //删除绑定数据
-                TsysFileDataExample fileDataExample=new TsysFileDataExample();
-                fileDataExample.createCriteria().andFileIdEqualTo(pictureId);
-                tsysFileDataMapper.deleteByExample(fileDataExample);
-                //插入关联表
-                TsysFileData tsysFileData=new TsysFileData();
-                tsysFileData.setId(SnowflakeIdWorker.getUUID());
-                tsysFileData.setFileId(old_data.getId());
-                tsysFileData.setDataId(dataId);
-                tSysFood.setPicture(old_data.getId());
-                tsysFileDataMapper.insert(tsysFileData);
-                //插入修改人name
-                old_data.setUpdateUserName(ShiroUtils.getLoginName());
-                //插入修改时间
-                old_data.setUpdateTime(new Date());
-                tsysFileMapper.updateByPrimaryKey(old_data);
-            }else{//为空新增
-                old_data = new TsysFile();
-                String file = SnowflakeIdWorker.getUUID();
-                old_data.setId(file);
-                old_data.setUpdateTime(new Date());
-                old_data.setFileName(tSysFood.getFood());
-                tSysFood.setPicture(file);
-                sysFileService.insertSelective(old_data, dataId);
-            }
-        } else {
-            if (tSysFood1.getPicture() != null) {
-                //如果该食品种类图片id不为空 则直接在食品种类表上该id
-                tSysFood.setPicture(tSysFood1.getPicture());
-            }
-        }
+
+
         return tSysFoodMapper.updateByPrimaryKeySelective(tSysFood);
     }
 

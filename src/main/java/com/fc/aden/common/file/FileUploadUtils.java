@@ -35,7 +35,7 @@ public class FileUploadUtils
     /**
      * 默认上传的地址
      */
-    private static String defaultBaseDir = V2Config.getProfile()+"temp/";
+    private static String defaultBaseDir = V2Config.getProfile();
 
     /**
      * 默认的文件名最大长度

@@ -207,7 +207,6 @@
         var dataFormJson=$("#form-add").serializeJson();
         dataFormJson.picture=dataUrl[0];
         dataFormJson.pictureHight=dataUrl[1];
-        alert(dataUrl);
         $.ajax({
             cache : true,
             type : "POST",

@@ -7,8 +7,8 @@ fuce:
   #版权年份
   copyrightYear: 2019
   #头像上传路径
-#  profile: E:/apache-tomcat-desmartNew/webapps/images
-  profile: /data/apache-tomcat-8.5.45/webapps/images
+#  profile: E:/apache-tomcat-desmartNew/webapps/images/
+  profile: /data/apache-tomcat-8.5.45/webapps/images/
 #tomcat config
 server:
   port: 8090
