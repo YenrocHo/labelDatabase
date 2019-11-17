@@ -82,21 +82,16 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         tSysFood.setId(id);
         tSysFood.setCreateTime(new Date());//保存创建时间
         tSysFood.setUpdateTime(new Date());//保存更新时间
-        tSysFood.setName(tSysFood.getFood());//保存更新时间
+        tSysFood.setName(tSysFood.getFood());//保存食品名字
         return tSysFoodMapper.insertSelective(tSysFood);
     }
 
 
     public int updateTsysFood(TSysFood tSysFood) {
-        //删除老数据
         //新增图片id
-        String pictureId = tSysFood.getPicture();
         tSysFood.setUpdateTime(new Date());
-        tSysFood.setName(tSysFood.getFood());
-        TSysFood tSysFood1 = tSysFoodMapper.selectByPrimaryKey(tSysFood.getId());
-
-
-
+        tSysFood.setStatus(1);
+        tSysFood.setName(tSysFood.getFood());//保存食品名字
         return tSysFoodMapper.updateByPrimaryKeySelective(tSysFood);
     }
 

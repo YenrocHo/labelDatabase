@@ -100,7 +100,7 @@ public class FoodController extends BaseController {
     @RequiresPermissions("system:food:add")
     @ResponseBody
     public AjaxResult add(TSysFood tSysFood) {
-
+        System.out.println("addfood:"+tSysFood);
         int b = sysFoodService.insertSelective(tSysFood);
         if (b > 0) {
             return success();
@@ -117,6 +117,7 @@ public class FoodController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult edit(TSysFood tSysFood ) {
+        System.out.println("food:"+tSysFood.toString());
         int b = sysFoodService.updateTsysFood(tSysFood);
         if (b > 0) {
             return success();
@@ -209,6 +210,8 @@ public class FoodController extends BaseController {
         String items = tSysFood.getItemsCode();
         List<TSysItems> tSysItems = sysItemsService.queryItems();
         request.getSession().setAttribute("tSysFood", tSysFood);
+        mmap.addAttribute("pictureFood", "https://label.adenservices.com/images/"+tSysFood.getPicture());
+        mmap.addAttribute("pictureHightFood", "https://label.adenservices.com/images/"+tSysFood.getPictureHight());
         mmap.addAttribute("items",items);
         mmap.addAttribute("tSysItems",tSysItems);
         return prefix + "/edit";

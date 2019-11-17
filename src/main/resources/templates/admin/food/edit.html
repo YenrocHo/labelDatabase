@@ -72,12 +72,24 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label ">默认背景图片：</label>
+                                <div class="col-sm-8">
+<!--                                    <img class="form-control" type="text" th:value="*{picture}" name="englishName"/>-->
+                                    <img th:src='${pictureFood}' style='width: 50px;height: 50px;'/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label ">高亮背景图片：</label>
+                                <div class="col-sm-8">
+                                    <img th:src='${pictureHightFood}' style='width: 50px;height: 50px;'/>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label ">图片：</label>
-
                                 <div class="col-sm-8">
                                     <span style="color: red;margin: 5px 0 6px 0;">1,上传格式为：*.jpg,*.gif,*.png,*.jpeg<br>
-                                2,上传大小为：10M</span>
-                                    <input type="hidden" name="pictureId" id="picture">
+                                2,上传大小为：10M<br>3,编辑图片则需要两个都重新上传。</span>
+                                    <input type="hidden" name="picture" id="picture">
                                     <div id="dropz"  class="dropzone"></div>
                                 </div>
                             </div>
@@ -137,14 +149,11 @@
             dictCancelUpload: "取消",
             init:function(){
                 this.on("addedfile", function(file) {
-                    /*
-                    static/admin/assets/js/dropZone/lib/dropzone.js 这个文件的第747行报错 ，为了能正常运行把那句话注释了。
-                    目前还不知道会不会有影响
-                     */
                 });
                 this.on("success",function(file,data){//上传成功触发的事件
                     if(data!=null&&data!=""){
                         dataUrl.push(data.data);
+                        $("#picture").val(data.data);
                     }
                 });
                 this.on("error",function (file,data) {//上传失败触发的事件
@@ -157,8 +166,7 @@
 
     });
 
-
-    $("#form-edit").validate({
+        $("#form-edit").validate({
         submitHandler: function (form) {
             edit();
         }
