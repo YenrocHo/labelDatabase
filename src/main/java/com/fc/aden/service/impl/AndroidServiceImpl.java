@@ -173,7 +173,6 @@ public class AndroidServiceImpl implements AndroidService {
         JSONObject jsonObject = jsonStr.getJSONObject(0);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
-
         TSysTag tSysTag = new TSysTag();
         tSysTag.setId(SnowflakeIdWorker.getUUID());
         tSysTag.setStage(jsonObject.getString("stage"));

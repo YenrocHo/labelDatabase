@@ -394,7 +394,6 @@
             #{item.shelfLife,jdbcType=TIMESTAMP}
             )
         </foreach>
-
     </insert>
     <select id="selectList" resultMap="BaseResultMap">
         select
