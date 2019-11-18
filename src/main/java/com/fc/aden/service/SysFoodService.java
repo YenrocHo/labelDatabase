@@ -1,17 +1,10 @@
 package com.fc.aden.service;
 
-import com.fc.aden.common.conf.V2Config;
 import com.fc.aden.mapper.auto.TSysItemsMapper;
-import com.fc.aden.mapper.auto.TsysDatasMapper;
-import com.fc.aden.mapper.auto.TsysFileDataMapper;
-import com.fc.aden.mapper.auto.TsysFileMapper;
-import com.fc.aden.mapper.auto.process.TSysFoodPictureMapper;
-import com.fc.aden.mapper.auto.process.TSysProductMapper;
 import com.fc.aden.model.auto.*;
 import com.fc.aden.model.custom.process.*;
 import com.fc.aden.shiro.util.ShiroUtils;
 import com.fc.aden.util.BeanCopierEx;
-import com.fc.aden.util.FileUtils;
 import com.fc.aden.util.StringUtils;
 
 
@@ -36,16 +29,6 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
 
     @Autowired
     private TSysFoodMapper tSysFoodMapper;
-    @Autowired
-    private TsysDatasMapper tsysDatasMapper;
-    @Autowired
-    private TSysProductMapper tSysProductMapper;
-    @Autowired
-    private SysFileService sysFileService;
-    @Autowired
-    private TsysFileMapper tsysFileMapper;
-    @Autowired
-    private TsysFileDataMapper tsysFileDataMapper;
 
     /**
      * 删除食品分类
