@@ -36,8 +36,6 @@ public class AndroidServiceImpl implements AndroidService {
     @Autowired
     private TSysStoreMapper tSysStoreMapper;
     @Autowired
-    private TSysWeightMapper tSysWeightMapper;
-    @Autowired
     private TsysUserMapper tsysUserMapper;
     @Autowired
     private TSysItemsMapper tSysItemsMapper;
@@ -109,7 +107,6 @@ public class AndroidServiceImpl implements AndroidService {
         List<ProductPo> productList;
         List<TSysStore> storeList;
         List<TSysItems> tSysItems;
-        List<TSysWeight> weightList;
         try{
             TsysUser tsysUser = tsysUserMapper.selectLogin(username);
             stageList = tSysStageMapper.selectStageList(tsysUser.getItemsCode(),keyword);
@@ -117,7 +114,6 @@ public class AndroidServiceImpl implements AndroidService {
             productList = tSysProductMapper.selectAllProductList(tsysUser.getItemsCode(),keyword,foodCode);
             storeList = tSysStoreMapper.selectStoreList(tsysUser.getItemsCode(),keyword);
             tSysItems = tSysItemsMapper.selectItemList(tsysUser.getItemsCode(),keyword);
-//            weightList = tSysWeightMapper.selectWeightList(tsysUser.getItemsCode(),keyword);
         }catch (Exception e){
             return AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
         }
@@ -126,13 +122,11 @@ public class AndroidServiceImpl implements AndroidService {
         AjaxResult productListAjaxResult = isNull(productList);
         AjaxResult storeListAjaxResult = isNull(storeList);
         AjaxResult itemsListAjaxResult = isNull(tSysItems);
-//        AjaxResult weightListAjaxResult = isNull(weightList);
         ajaxResult.put("Stage",stageListAjaxResult);
         ajaxResult.put("Food",foodListAjaxResult);
         ajaxResult.put("Product",productListAjaxResult);
         ajaxResult.put("Store",storeListAjaxResult);
         ajaxResult.put("Items",itemsListAjaxResult);
-//        ajaxResult.put("Weight",weightListAjaxResult);
         return ajaxResult;
 
     }
@@ -231,9 +225,6 @@ public class AndroidServiceImpl implements AndroidService {
                 case "Store"    :
                     list = tSysStoreMapper.selectStoreList(itemsCode,keyword);
                     break;
-            /*    case "Weight"    :
-                    list = tSysWeightMapper.selectWeightList(itemsCode,keyword);
-                    break;*/
                 default:
                     list.add("参数错误");
                     break;

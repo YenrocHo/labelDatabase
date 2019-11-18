@@ -133,7 +133,6 @@
             acceptedFiles: ".jpg,.gif,.png,.jpeg", //上传的类型
             addRemoveLinks:true,
             parallelUploads: 1,//一次上传的文件数量
-            //previewsContainer:"#preview",//上传图片的预览窗口
             dictDefaultMessage:'拖动文件至此或者点击上传',
             dictMaxFilesExceeded: "您最多只能上传2个文件！",
             dictResponseError: '文件上传失败!',
@@ -170,7 +169,6 @@
             acceptedFiles: ".jpg,.gif,.png,.jpeg", //上传的类型
             addRemoveLinks:true,
             parallelUploads: 1,//一次上传的文件数量
-            //previewsContainer:"#preview",//上传图片的预览窗口
             dictDefaultMessage:'拖动文件至此或者点击上传',
             dictMaxFilesExceeded: "您最多只能上传2个文件！",
             dictResponseError: '文件上传失败!',
@@ -184,7 +182,6 @@
                 });
                 this.on("success",function(file,data){//上传成功触发的事件
                     if(data!=null&&data!=""){
-                        // dataUrl.push(data.data);
                         $("#pictureHight").val(data.data);
                     }
                 });
@@ -247,8 +244,6 @@
      */
     function add() {
         var dataFormJson=$("#form-add").serializeJson();
-        // dataFormJson.picture=dataUrl[0];
-        // dataFormJson.pictureHight=dataUrl[1];
         dataFormJson.picture= $("#picture").val();
         dataFormJson.pictureHight= $("#pictureHight").val();
         $.ajax({
