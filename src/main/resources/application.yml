@@ -67,4 +67,4 @@ dh:
   security:
     key: sgo9ej2eqrbofsbe5wjfodsv4rfkiyjb
 logging:
-  file: E:/Aden_lable/log/
+  file: /data/Aden_lable/logs/
