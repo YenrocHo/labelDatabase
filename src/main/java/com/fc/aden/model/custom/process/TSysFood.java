@@ -23,7 +23,8 @@ public class TSysFood {
 
     private Integer status;
 
-    public TSysFood(String id, String itemsCode, String foodCode, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status,String pictureHight) {
+    private Integer foodIndex;//用来排序  默认自增排序
+    public TSysFood(String id, String itemsCode, String foodCode, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status,String pictureHight,Integer foodIndex) {
         this.id = id;
         this.itemsCode = itemsCode;
         this.foodCode = foodCode;
@@ -35,6 +36,7 @@ public class TSysFood {
         this.updateTime = updateTime;
         this.status = status;
         this.pictureHight = pictureHight;
+        this.foodIndex = foodIndex;
     }
 
     public TSysFood() {
@@ -128,6 +130,14 @@ public class TSysFood {
         this.pictureHight = pictureHight;
     }
 
+    public Integer getFoodIndex() {
+        return foodIndex;
+    }
+
+    public void setFoodIndex(Integer foodIndex) {
+        this.foodIndex = foodIndex;
+    }
+
     @Override
     public String toString() {
         return "TSysFood{" +
@@ -140,6 +150,7 @@ public class TSysFood {
                 ", picture='" + picture + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", foodIndex=" + foodIndex +
                 ", pictureHight=" + pictureHight +
         ", status=" + status +
                 '}';

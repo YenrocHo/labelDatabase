@@ -358,7 +358,6 @@ public class SysProductServiceImpl implements SysProductService {
             aboveStore.setCreateTime(new Date());
             aboveStore.setUpdateTime(new Date());
             productStoreList.add(aboveStore);
-
             productStoreMapper.insertBatch(productStoreList);
 
             String id = tSysFood.getFoodCode();

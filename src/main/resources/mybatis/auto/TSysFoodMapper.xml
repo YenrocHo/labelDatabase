@@ -11,11 +11,12 @@
     <result column="picture" property="picture" jdbcType="VARCHAR" />
     <result column="picture_hight" property="pictureHight" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER"/>
+    <result column="food_index" property="foodIndex" jdbcType="INTEGER"/>
     <result column="create_Time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_Time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, items_code,food_code,food, name, english_name, picture, status,create_Time, update_Time,picture_hight
+    id, items_code,food_code,food, name, english_name, picture, status,food_index,create_Time, update_Time,picture_hight
   </sql>
   <sql id="Example_Where_Clause">
     <where>
@@ -109,7 +110,7 @@
       english_name, picture, status,create_Time,
       update_Time)
     values (#{id,jdbcType=VARCHAR}, #{itemsCode ,jdbcType=VARCHAR}, #{foodCode ,jdbcType=VARCHAR} ,#{food,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-      #{englishName,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER} ,now(),
+      #{englishName,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},now(),
       now())
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.TSysFood" >
@@ -245,6 +246,7 @@
         and items_code like #{itemsCode,jdbcType=VARCHAR}
       </if>
     </where>
+    order by food_index asc
   </select>
 
   <update id="updateStatusById" parameterType="map">
