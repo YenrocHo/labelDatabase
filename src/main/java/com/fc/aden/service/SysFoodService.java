@@ -58,20 +58,6 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         List<String> lista = Convert.toListStrArray(ids);
         TSysFoodExample example = new TSysFoodExample();
         example.createCriteria().andIdIn(lista);
-        //删除关联图片
-        TsysFile tsysFile = tsysFileMapper.selectByPrimaryKey(ids);
-        if (tsysFile != null) {
-            TsysFileData tsysFileData = tsysFileDataMapper.selectByFileId(tsysFile.getId());
-            String fId = tsysFileData.getFileId();
-            String dId = tsysFileData.getDataId();
-            tsysFileDataMapper.deleteByFileId(fId);//删除关联数据
-            tsysDatasMapper.deleteByPrimaryKey(dId);//删除关联数据
-        }
-        //删除关联的产品
-        List<TSysProduct> productList = tSysProductMapper.selectList();
-        if (productList != null && productList.size() > 0) {
-            tSysProductMapper.deleteByFoodId(ids);
-        }
         return tSysFoodMapper.deleteByExample(example);
     }
 
