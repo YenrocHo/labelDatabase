@@ -131,7 +131,7 @@
     values (#{id,jdbcType=VARCHAR}, #{itemsCode,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR},
       #{printLableId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{foodCategory,jdbcType=VARCHAR}, #{productWeight,jdbcType=VARCHAR},
       #{correctStage,jdbcType=VARCHAR}, #{correctStorage,jdbcType=VARCHAR}, #{employerName,jdbcType=VARCHAR}, #{employerId,jdbcType=VARCHAR},
-      #{printTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{shelfLife,jdbcType=TIMESTAMP}
+      #{printTime,jdbcType=TIMESTAMP}, now(), now(), #{shelfLife,jdbcType=TIMESTAMP}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.PrintHistory">
@@ -288,26 +288,7 @@
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByExample" parameterType="map">
-        update al_print_history
-        set id = #{record.id,jdbcType=VARCHAR},
-        items_code = #{record.itemsCode,jdbcType=VARCHAR},
-        original_id = #{record.originalId,jdbcType=VARCHAR},
-        print_lable_id = #{record.printLableId,jdbcType=VARCHAR},
-        product_name = #{record.productName,jdbcType=VARCHAR},
-        food_category = #{record.foodCategory,jdbcType=VARCHAR},
-        correct_stage = #{record.correctStage,jdbcType=VARCHAR},
-        correct_storage = #{record.correctStorage,jdbcType=VARCHAR},
-        employer_name = #{record.employerName,jdbcType=VARCHAR},
-        employer_id = #{record.employerId,jdbcType=VARCHAR},
-        print_time = #{record.printTime,jdbcType=TIMESTAMP},
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-        shelf_life = #{record.shelfLife,jdbcType=TIMESTAMP}
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.PrintHistory">
         update al_print_history
         <set>
@@ -345,10 +326,10 @@
                 print_time = #{printTime,jdbcType=TIMESTAMP},
             </if>
             <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
+                create_time = now(),
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
+                update_time = now(),
             </if>
             <if test="shelfLife != null">
                 shelf_life = #{shelfLife,jdbcType=TIMESTAMP},
@@ -370,7 +351,7 @@
       employer_id = #{employerId,jdbcType=VARCHAR},
       print_time = #{printTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_time = now(),
       shelf_life = #{shelfLife,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -408,8 +389,8 @@
             #{item.employerName,jdbcType=VARCHAR},
             #{item.employerId,jdbcType=VARCHAR},
             #{item.printTime,jdbcType=TIMESTAMP},
-            #{item.createTime,jdbcType=TIMESTAMP},
-            #{item.updateTime,jdbcType=TIMESTAMP},
+            now(),
+            now(),
             #{item.shelfLife,jdbcType=TIMESTAMP}
             )
         </foreach>
