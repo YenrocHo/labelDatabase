@@ -54,8 +54,8 @@ public class MyFilter extends AccessControlFilter {
 
         Subject subject = getSubject(request, servletResponse);
         String url = getPathWithinApplication(request);
-        log.info("当前用户正在访问的url为 " + url);
-        log.info("subject.isPermitted(url);" + subject.isPermitted(url));
+//        log.info("当前用户正在访问的url为 " + url);
+//        log.info("subject.isPermitted(url);" + subject.isPermitted(url));
         //可自行根据需要判断是否拦截，可以获得subject判断用户权限，也可以使用req获得请求头请求体信息
         //return true;
 
@@ -63,7 +63,7 @@ public class MyFilter extends AccessControlFilter {
         String type = "";
         try {
             type = httpRequest.getHeader("type");
-            System.out.println("type："+type);
+//            log.info("type："+type);
 
         } catch (Exception e) {
             type = null;

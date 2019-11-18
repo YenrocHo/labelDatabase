@@ -9,6 +9,7 @@ fuce:
   #头像上传路径
 #  profile: E:/apache-tomcat-desmartNew/webapps/images/
   profile: /data/apache-tomcat-8.5.45/webapps/images/
+#  profile: /Users/dxm/Desktop/images/
 #tomcat config
 server:
   port: 8090
@@ -66,4 +67,4 @@ dh:
   security:
     key: sgo9ej2eqrbofsbe5wjfodsv4rfkiyjb
 logging:
-  file: E:/Aden_lable/log/
+  file: /data/Aden_lable/logs/
