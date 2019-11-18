@@ -38,12 +38,12 @@
         </commentGenerator>
         <!-- 数据库链接地址账号密码 -->
 <!--                connectionURL="jdbc:mysql://139.196.193.182:8306/adenlabel"-->
-        <jdbcConnection
-                driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://47.102.107.246:8306/adenlabel"
-                userId="root"
-                password="aden1234">
-        </jdbcConnection>
+<!--        <jdbcConnection-->
+<!--                driverClass="com.mysql.jdbc.Driver"-->
+<!--                connectionURL="jdbc:mysql://47.102.107.246:8306/adenlabel"-->
+<!--                userId="root"-->
+<!--                password="aden1234">-->
+<!--        </jdbcConnection>-->
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
