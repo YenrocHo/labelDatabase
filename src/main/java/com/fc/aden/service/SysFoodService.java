@@ -38,10 +38,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      */
     @Override
     public int deleteByPrimaryKey(String ids) {
-        List<String> lista = Convert.toListStrArray(ids);
-        TSysFoodExample example = new TSysFoodExample();
-        example.createCriteria().andIdIn(lista);
-        return tSysFoodMapper.deleteByExample(example);
+        return tSysFoodMapper.deleteByPrimaryKey(ids);
     }
 
     @Override
