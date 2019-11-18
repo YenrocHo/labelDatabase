@@ -40,7 +40,6 @@ public class SecurityKeyController {
      * 获取安全KEY
      * @return
      */
-
     @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET}, value = "/key")
     public String getKey(){
         String key = obtainKeyConfig.getKey();
@@ -50,6 +49,4 @@ public class SecurityKeyController {
         StringHttpMessageConverter converter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
         return JSONObject.fromObject(result).toString();
     }
-
-
 }

@@ -37,24 +37,6 @@ public class FoodController extends BaseController {
     private String prefix = "admin/food";
     private static Logger logger = LoggerFactory.getLogger(FoodController.class);
 
-    /**
-     * @Author Noctis
-     * @Description //TODO 查看视频图片
-     * @Date 2019/6/21 10:30
-     * @Param [id, mmap]
-     * @return java.lang.String
-     **/
-    @GetMapping("/detail/{id}")
-    public String detail(@PathVariable("id") String id, ModelMap mmap){
-        TSysFood tSysFood = sysFoodService.selectByPrimaryKey(id);
-       String imagrUrl = tSysFood.getPicture();
-        mmap.put("imagrUrl",imagrUrl);
-        mmap.put("foodName",tSysFood.getFood());
-       /*  mmap.put("name",tSysFood.getName());
-        mmap.put("EnglishName",tSysFood.getEnglishName());*/
-        return prefix + "/detail";
-    }
-
     @GetMapping("/view")
     @RequiresPermissions("system:food:view")
     public String view(Model model,ModelMap mp) {
