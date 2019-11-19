@@ -213,7 +213,7 @@ public class FileController extends BaseController {
     }
 
     @PostMapping("/uploadFile")
-    public String uploadFile(MultipartFile myFile, Model model) {
+    public String uploadFile(@RequestParam(value = "myFile", required = false) MultipartFile myFile, Model model) {
         List<Map<String, String>> dataList;
         try {
             dataList = ExcelUtils.getExcelData(myFile, ImportItemsDTO.IMPORT_TABLE_HEADER);

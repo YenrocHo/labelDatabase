@@ -23,7 +23,7 @@
                 </div>
                 <div class="body-nest" id="element">
                     <div class="panel-body">
-                        <form class="form-horizontal m" action="[[${rootPath}]]/StageController/uploadFile" id="form-add" method="post"
+                        <form class="form-horizontal m" id="form-add" method="post"
                               enctype="multipart/form-data">
                             <div class="form-group">
                                 <div class="text-info">
@@ -42,8 +42,10 @@
                             <div class="form-group">
                                 <div class="form-control-static col-sm-offset-9">
                                     <div class="text-center">
+                                        <!--<input type="submit" class="btn btn-danger" value="提交"
+                                               onclick="return checkData()"/>-->
                                         <input type="submit" class="btn btn-danger" value="提交"
-                                               onclick="return checkData()"/>
+                                               id = "submited"/>
                                         <input onclick="$.modal.close()" class="btn btn-danger" type="button"
                                                value="关闭">
                                     </div>
@@ -79,7 +81,7 @@
         return false;
     }
     //JS校验form表单信息
-    function checkData() {
+  /*  function checkData() {
         var myFile = $("#myFile").val();
         var suffix = myFile.substr(myFile.lastIndexOf("."));
         if ("" == myFile) {
@@ -87,6 +89,32 @@
             return false;
         }
         return true;
-    }
+    }*/
+    $("#submited").click(function(){
+        var myFile = $("#myFile").val();
+        if (myFile != "") {
+            var files = document.getElementById("myFile").files;
+            console.log(files);
+            var formdata = new FormData();
+            formdata.append("myFile", files[0])
+            $.ajax({
+                url: rootPath + "/StageController/uploadFile",
+                type: "post",
+                data: formdata,
+                contentType: false, //- 必须false才会自动加上正确的Content-Type
+                processData: false, //- 必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
+                success: function (res) {
+                    debugger
+                    alert(res);
+                },
+                error: function () {
+                    alert("请上传xls表格数据");
+                }
+            });
+        }else {
+            alert("请上传xls表格数据");
+            return false;
+        }
+    });
 </script>
 </html>

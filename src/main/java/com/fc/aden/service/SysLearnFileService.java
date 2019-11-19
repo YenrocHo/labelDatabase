@@ -203,12 +203,11 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
         List<String> projectNames = new ArrayList<>();
         ImportItemsDTO importItemsDTO = new ImportItemsDTO();
         List<ImportTSysItemsDTO> importTSysItemsDTOS = new ArrayList<>();
-
         int errNumber = 0;
         int successNumber = 0;
-        // for (Map<String, String> row : dataList) {
-        for (int i = 1; i < dataList.size(); i++) {
-            Map<String, String> row = dataList.get(i);
+         for (Map<String, String> row : dataList) {
+//        for (int i = 1; i < dataList.size(); i++) {//从文件的第二行开始
+//            Map<String, String> row = dataList.get(i);
             String itemsCode = row.get(ImportItemsDTO.PROJECT_NAME);
             String chineseName = row.get(ImportItemsDTO.CHINESE_NAME);
             String englishName = row.get(ImportItemsDTO.ENGLISH_NAME);
