@@ -13,7 +13,7 @@ import java.util.Map;
 
 public interface SysProductService {
 
-    PageInfo list(Tablepar tablepar,String searchTxt,String itemsCode);
+    PageInfo list(Tablepar tablepar,String searchTxt,String itemsCode,String foodName);
 
     ProductFoodStoreVO checkcNameUnique(String product, String itemsCode,String foodCode);
 

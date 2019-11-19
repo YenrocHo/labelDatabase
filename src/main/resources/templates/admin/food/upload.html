@@ -23,7 +23,7 @@
                 </div>
                 <div class="body-nest" id="element">
                     <div class="panel-body">
-                        <form class="form-horizontal m" action="/FoodController/uploadFile" id="form-add" method="post"
+                        <form class="form-horizontal m" id="form-add" action="[[${rootPath}]]/FoodController/uploadFile" method="post"
                               enctype="multipart/form-data">
                             <div class="form-group">
                                 <div class="text-info">
@@ -47,7 +47,6 @@
 
                                         <input onclick="$.modal.close()" class="btn btn-danger" type="button"
                                                value="关闭">
-
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +76,7 @@
 <script type="application/javascript">
     function downloadFood() {//获取模板
         var host = window.location.host;//获取请求地址
-        window.open("http://" + host + "/static/templates/food_template.xls");
+        window.open(window.rootPath + "/static/templates/food_template.xls");
         return false;
     }
     //JS校验form表单信息

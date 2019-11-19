@@ -55,17 +55,17 @@ public class SysProductServiceImpl implements SysProductService {
      * @Param [pageNum, pageSize]
      **/
     @Override
-    public PageInfo<TSysProduct> list(Tablepar tablepar, String searchTxt, String itemsCode) {
+    public PageInfo<TSysProduct> list(Tablepar tablepar, String searchTxt, String itemsCode,String foodName) {
         TsysUser tsysUser = ShiroUtils.getUser();
         List<TSysProduct> tSysProductList = null;
         if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
             PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
         }
         if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
-            //如果是项目管理员 根据项目编号搜索所有数据
-            tSysProductList = tSysProductMapper.selectListByItems(searchTxt, tsysUser.getItemsCode());
+            //如果是超级管理员 根据项目编号搜索所有数据
+            tSysProductList = tSysProductMapper.selectListByItems(searchTxt, tsysUser.getItemsCode(),foodName);
         } else {
-            tSysProductList = tSysProductMapper.findByProduct(searchTxt, itemsCode);
+            tSysProductList = tSysProductMapper.findByProduct(searchTxt, itemsCode,foodName);
         }
         PageInfo<TSysProduct> pageInfo = new PageInfo<TSysProduct>(tSysProductList);
         return pageInfo;
@@ -136,7 +136,6 @@ public class SysProductServiceImpl implements SysProductService {
             return null;
         }
     }
-
     /**
      * @return int
      * @Author Noctis

@@ -23,7 +23,7 @@
                 </div>
                 <div class="body-nest" id="element">
                     <div class="panel-body">
-                        <form class="form-horizontal m" action="/StoreController/uploadFile" id="form-add" method="post"
+                        <form class="form-horizontal m" action="[[${rootPath}]]/StoreController/uploadFile" id="form-add" method="post"
                               enctype="multipart/form-data">
                             <div class="form-group">
                                 <div class="text-info">
@@ -75,7 +75,7 @@
 <script type="application/javascript">
     function downloadPro() {//获取模板
         var host = window.location.host;//获取请求地址
-        window.open("http://" + host + "/static/templates/store_template.xlsx");
+        window.open(window.rootPath + "/static/templates/store_template.xlsx");
         return false;
     }
     //JS校验form表单信息

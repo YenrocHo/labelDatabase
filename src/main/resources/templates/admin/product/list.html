@@ -63,6 +63,13 @@
                                                     th:text="${m.itemsCode}"></h3></option>
                                         </select>
                                     </div>
+                                    <div class="layui-input-inline">
+                                        <select name="foodName" lay-verify="required" lay-search="">
+                                            <option value="">食品名称</option>
+                                            <option th:each="m : ${tSysFood}" th:value="${m.foodCode}"><h3
+                                                    th:text="${m.food}"></h3></option>
+                                        </select>
+                                    </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
                                             class="fa fa-search"></i>&nbsp;搜索
                                     </button>

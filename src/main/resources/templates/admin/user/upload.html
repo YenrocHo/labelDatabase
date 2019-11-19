@@ -24,7 +24,7 @@
                 </div>
                 <div class="body-nest" id="element">
                     <div class="panel-body">
-                        <form class="form-horizontal m" action="/UserController/uploadFile" id="form-add" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal m" action="[[${rootPath}]]/UserController/uploadFile" id="form-add" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <div class="text-info">
                                     <input type="button" onclick="downloadUser()"
@@ -76,7 +76,7 @@
 <script type="application/javascript">
     function downloadUser() {
         var host = window.location.host;//获取请求地址
-        window.open("http://" + host + "/static/templates/user_template.xls");
+        window.open(window.rootPath + "/static/templates/user_template.xls");
     }
     //JS校验form表单信息
     function checkData(){

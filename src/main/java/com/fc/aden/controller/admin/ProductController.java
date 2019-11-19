@@ -67,6 +67,8 @@ public class ProductController extends BaseController {
         mp.put("tSysItems", tSysItemsList);
         TsysUser tsysUser = ShiroUtils.getUser();
         mp.put("tsysUser", tsysUser);
+        List<TSysFood> tSysFoodList = sysFoodService.findByItemCode(tsysUser.getItemsCode());
+        mp.put("tSysFood", tSysFoodList);
         setTitle(model, new TitleVo("产品列表", "产品管理", false, "欢迎进入产品页面", false, false));
         return prefix + "/list";
     }
@@ -134,8 +136,8 @@ public class ProductController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:product:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String searchTxt, String itemsCode) {
-        PageInfo<TSysProduct> page = sysProductService.list(tablepar, searchTxt, itemsCode);
+    public Object list(Tablepar tablepar, String searchTxt, String itemsCode,String foodName) {
+        PageInfo<TSysProduct> page = sysProductService.list(tablepar, searchTxt, itemsCode,foodName);
         TableSplitResult<TSysProduct> result = new TableSplitResult<TSysProduct>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }

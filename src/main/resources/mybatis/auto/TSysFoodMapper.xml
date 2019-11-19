@@ -290,13 +290,16 @@
     select
     <include refid="Base_Column_List"/>
     from t_sys_food
-    where food_code like #{foodCode,jdbcType=VARCHAR}
+    where food_code = #{foodCode,jdbcType=VARCHAR}
   </select>
-  <select id="findByItemCode" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
+  <select id="findByItemCode" resultMap="BaseResultMap"  parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List"/>
     from t_sys_food
-    where items_code like #{itemsCode,jdbcType=VARCHAR}
+    where 1=1
+    <if test="itemsCode!='' and itemsCode != null">
+       and items_code = #{itemsCode,jdbcType=VARCHAR}
+    </if>
   </select>
   <select id="findByFoodCodeOrItem" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
     select
@@ -313,7 +316,7 @@
     select
     <include refid="Base_Column_List"/>
     from t_sys_food
-     where   food_code like #{foodCode,jdbcType=VARCHAR}
+     where   food_code = #{foodCode,jdbcType=VARCHAR}
   </select>
 
 </mapper>

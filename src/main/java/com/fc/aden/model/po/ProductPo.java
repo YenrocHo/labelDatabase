@@ -48,6 +48,7 @@ public class ProductPo {
     //产品更新时间
     private Date updateTime;
 
+    private Integer priority;//优先级
     private List<ProductStore> productStores;
 
 
@@ -137,5 +138,13 @@ public class ProductPo {
 
     public void setProductStores(List<ProductStore> productStores) {
         this.productStores = productStores;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 }

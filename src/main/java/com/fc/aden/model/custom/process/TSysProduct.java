@@ -35,9 +35,11 @@ public class TSysProduct implements Serializable {
     //产品更新时间
     private Date updateTime;
 
+    private Integer priority;//优先级
+
     private List<ProductStore> productStores;
 
-    public TSysProduct(String id, String itemsCode, String product,String productCode, String name, String englishName, Integer status ,String foodName, Date createTime, Date updateTime) {
+    public TSysProduct(String id, String itemsCode, String product,String productCode, String name, String englishName, Integer status ,String foodName, Date createTime, Date updateTime,Integer priority) {
         this.id = id;
         this.itemsCode = itemsCode;
         this.product = product;
@@ -48,6 +50,7 @@ public class TSysProduct implements Serializable {
         this.createTime = createTime;
         this.foodName = foodName;
         this.updateTime = updateTime;
+        this.priority = priority;
     }
 
     public TSysProduct() {
@@ -133,6 +136,14 @@ public class TSysProduct implements Serializable {
         this.productCode = productCode;
     }
 
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
     @Override
     public String toString() {
         return "TSysProduct{" +
@@ -146,6 +157,7 @@ public class TSysProduct implements Serializable {
                 ", createTime=" + createTime +
                 ", foodName=" + foodName +
                 ", updateTime=" + updateTime +
+                ", priority=" + priority +
                 '}';
     }
 }

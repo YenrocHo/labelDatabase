@@ -45,7 +45,7 @@ public interface TSysFoodMapper {
     List<TSysFood> queryByFood(String food,String itemsCode);
     //根据食品种类编号查询
     List<TSysFood> findByFoodCode(String foodCode);
-    List<TSysFood> findByItemCode(String itemsCode);
+    List<TSysFood> findByItemCode(@Param("itemsCode") String itemsCode);
     //根据食品种类编号查询
     TSysFood findByFoodId(String foodCode);
 

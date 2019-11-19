@@ -27,12 +27,12 @@ public interface TSysProductMapper {
 
     List<TSysProduct> selectByProduct(String product);
 
-    List<TSysProduct> findByProduct(String searchTxt,String itemsCode);
+    List<TSysProduct> findByProduct(String searchTxt,String itemsCode,String foodName);
 
     int deleteProductByIds(@Param("productIdList") List<String> productIdList);
 
     //根据项目点编号查询
-    List<TSysProduct> selectListByItems(String searchTxt,String itemsCode);
+    List<TSysProduct> selectListByItems(String searchTxt,String itemsCode,String foodName);
 
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
