@@ -31,6 +31,7 @@ public interface TSysFoodMapper {
     int updateStatusById(@Param("id") String id, @Param("status") Integer status);
 
     long countByExample(TSysFoodExample example);
+    List<TSysFood> countByFood();
     int updateByExampleSelective(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
     int updateByExample(@Param("record") TSysFood record, @Param("example") TSysFoodExample example);
 

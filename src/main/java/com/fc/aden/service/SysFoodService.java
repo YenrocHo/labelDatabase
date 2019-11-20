@@ -9,7 +9,6 @@ import com.fc.aden.util.StringUtils;
 
 
 import com.fc.aden.common.base.BaseService;
-import com.fc.aden.common.support.Convert;
 import com.fc.aden.mapper.auto.process.TSysFoodMapper;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.util.SnowflakeIdWorker;
@@ -49,16 +48,21 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         tSysFood.setCreateTime(new Date());//保存创建时间
         tSysFood.setUpdateTime(new Date());//保存更新时间
         tSysFood.setName(tSysFood.getFood());//保存食品名字
+        List<TSysFood> list = tSysFoodMapper.countByFood();
+        Integer i = list.size()+1;
+        tSysFood.setFoodIndex(i);
         return tSysFoodMapper.insertSelective(tSysFood);
     }
 
-
     public int updateTsysFood(TSysFood tSysFood) {
-        //新增图片id
-        tSysFood.setUpdateTime(new Date());
         tSysFood.setStatus(1);
         tSysFood.setName(tSysFood.getFood());//保存食品名字
         return tSysFoodMapper.updateByPrimaryKeySelective(tSysFood);
+    }
+
+    @Override
+    public long countByExample(TSysFoodExample tSysFoodExample){
+        return tSysFoodMapper.countByExample(tSysFoodExample);
     }
 
     private String getSystemTimeAndToString() {
@@ -90,12 +94,6 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
     @Override
     public List<TSysFood> selectByExample(TSysFoodExample tSysFoodExample) {
         return tSysFoodMapper.selectByExample(tSysFoodExample);
-    }
-
-
-    @Override
-    public long countByExample(TSysFoodExample tSysFoodExample) {
-        return tSysFoodMapper.countByExample(tSysFoodExample);
     }
 
     public TSysFood findByFoodId(String foodCode) {

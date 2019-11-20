@@ -163,6 +163,7 @@ public class ProductController extends BaseController {
         product.setProduct(tSysProduct.getProduct());
         product.setFoodName(tSysProduct.getFoodName());
         product.setItemsCode(tSysProduct.getItemsCode());
+        product.setPriority(tSysProduct.getPriority());
         //循环保存存储条件和保质期
         for (String storeID : store) {
             String sId = SnowflakeIdWorker.getUUID().toString();

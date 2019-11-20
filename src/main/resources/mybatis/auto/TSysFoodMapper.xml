@@ -140,6 +140,9 @@
       <if test="pictureHight != null" >
         picture_hight,
       </if>
+      <if test="foodIndex != null" >
+        food_index,
+      </if>
       <if test="status != null" >
         status,
       </if>
@@ -175,6 +178,9 @@
       <if test="pictureHight != null" >
         #{pictureHight,jdbcType=VARCHAR},
       </if>
+      <if test="foodIndex != null" >
+        #{foodIndex,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
@@ -189,33 +195,28 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fc.aden.model.custom.process.TSysFood" >
     update t_sys_food
     <set >
-      <if test="food != null" >
+      <if test="food != null and food != ''" >
         food = #{food,jdbcType=VARCHAR},
       </if>
-      <if test="foodCode != null" >
+      <if test="foodCode != null and foodCode != ''" >
         food_code = #{foodCode,jdbcType=VARCHAR},
       </if>
-      <if test="name != null" >
+      <if test="name != null and name != ''" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="englishName != null" >
+      <if test="englishName != null and englishName != ''" >
         english_name = #{englishName,jdbcType=VARCHAR},
       </if>
-      <if test="picture != null" >
+      <if test="picture != null and picture != ''" >
         picture = #{picture,jdbcType=VARCHAR},
       </if>
-      <if test="pictureHight != null" >
+      <if test="pictureHight != null and pictureHight != ''" >
         picture_hight = #{pictureHight,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
+      <if test="status != null and status != ''" >
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        create_Time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
         update_Time = now(),
-      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -286,6 +287,13 @@
         and items_code = #{itemsCode,jdbcType=VARCHAR}
       </if>
   </select>
+
+  <select id="countByFood" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_food
+  </select>
+
   <select id="findByFoodCode" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
     select
     <include refid="Base_Column_List"/>
