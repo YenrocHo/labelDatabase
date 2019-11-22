@@ -6,6 +6,7 @@
     <result column="items_code" jdbcType="VARCHAR" property="itemsCode" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="english_name" jdbcType="VARCHAR" property="englishName" />
+    <result column="status" property="status" jdbcType="INTEGER"/>
     <result column="create_Time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_Time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, items_code, name, english_name, create_Time, update_Time
+    id, items_code, name, english_name, status,create_Time, update_Time
   </sql>
   <select id="selectByExample" parameterType="com.fc.aden.model.auto.TSysItemsExample" resultMap="BaseResultMap">
     select
@@ -100,6 +101,12 @@
     from t_sys_items
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="queryByItemsCode"  resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_items
+    where items_code = #{itemsCode,jdbcType=VARCHAR}
+  </select>
   <select id="selectByItemCode" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
     <include refid="Base_Column_List" />
@@ -129,9 +136,9 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_sys_items (items_code, name, english_name,
+    insert into t_sys_items (items_code, name, english_name,status,
       create_Time, update_Time)
-    values (#{itemsCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR},
+    values (#{itemsCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, #{status},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fc.aden.model.auto.TSysItems">
@@ -148,6 +155,9 @@
       </if>
       <if test="englishName != null">
         english_name,
+      </if>
+      <if test="status != null">
+        status,
       </if>
       <if test="createTime != null">
         create_Time,
@@ -168,6 +178,9 @@
       </if>
       <if test="englishName != null">
         #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -195,6 +208,9 @@
       <if test="record.englishName != null">
         english_name = #{record.englishName,jdbcType=VARCHAR},
       </if>
+      <if test="record.status != null">
+        status = #{record.status},
+      </if>
       <if test="record.createTime != null">
         create_Time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -206,12 +222,16 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="selectById" parameterType="map">
+    update t_sys_items set status = #{status} where id = #{id}
+  </update>
   <update id="updateByExample" parameterType="map">
     update t_sys_items
     set id = #{record.id,jdbcType=VARCHAR},
     items_code = #{record.itemsCode,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       english_name = #{record.englishName,jdbcType=VARCHAR},
+      status = #{record.status},
       create_Time = #{record.createTime,jdbcType=TIMESTAMP},
       update_Time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -230,6 +250,9 @@
       <if test="englishName != null">
         english_name = #{englishName,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
       <if test="createTime != null">
         create_Time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -244,13 +267,14 @@
     set items_code = #{itemsCode,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       english_name = #{englishName,jdbcType=VARCHAR},
+      status = #{status},
       create_Time = #{createTime,jdbcType=TIMESTAMP},
       update_Time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectItemByUserNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        u.items_code,i.id as 'id',i.name,i.english_name,i.create_Time,i.update_Time
+        u.items_code,i.id as 'id',i.name,i.english_name,i.status,i.create_Time,i.update_Time
         from t_sys_user u left join t_sys_items i on u.items_code = i.items_code
         WHERE u.number = #{number}
     </select>

@@ -19,7 +19,6 @@ public interface TSysItemsMapper {
     List<TSysItems> selectByExample(TSysItemsExample example);
 
     TSysItems selectByPrimaryKey(String id);
-    List<TSysItems> selectByItemCode(@Param("itemsCode") String itemsCode);
 
     int updateByExampleSelective(@Param("record") TSysItems record, @Param("example") TSysItemsExample example);
 
@@ -29,9 +28,10 @@ public interface TSysItemsMapper {
 
     int updateByPrimaryKey(TSysItems record);
 
-
     List<TSysItems> selectByItems(@Param("itemsCode") String itemsCode);
+    List<TSysItems> selectByItemCode(@Param("itemsCode") String itemsCode);
 
+    TSysItems queryByItemsCode(String itemsCode);
     int deleteByItems(List<TSysItems> example);
 
     List<TSysItems> selectItemList(@Param("itemsCode") String itemsCode,@Param("keyword")String keyword);

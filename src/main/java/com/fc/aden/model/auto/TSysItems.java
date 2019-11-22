@@ -12,15 +12,18 @@ public class TSysItems implements Serializable {
 
     private String englishName;//英文名
 
+    private Integer status;// 项目点状态 1 项目点正在运行中 0 项目点已经停止运行
+
     private Date createTime;
 
     private Date updateTime;
 
-    public TSysItems(String id, String itemsCode, String name, String englishName, Date createTime, Date updateTime) {
+    public TSysItems(String id, String itemsCode, String name, String englishName,Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.itemsCode = itemsCode;
         this.name = name;
         this.englishName = englishName;
+        this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -76,6 +79,14 @@ public class TSysItems implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "TSysItems{" +
@@ -83,6 +94,7 @@ public class TSysItems implements Serializable {
                 ", itemsCode='" + itemsCode + '\'' +
                 ", name='" + name + '\'' +
                 ", englishName='" + englishName + '\'' +
+                ", status='" + status + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';

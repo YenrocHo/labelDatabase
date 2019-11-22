@@ -82,9 +82,9 @@
                             </div>
                         </div>
 
-                        <div class="body-nest" id="Blank_Page_Content">
+                        <div class="body-nest" id="Blank_Page_Content" >
                             <!-- 工具条 -->
-                            <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
+                            <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group" th:if="${tsysUser.roles} eq '2'">
                                 <button onclick="$.operate.add()" type="button" class="btn btn-primary">
                                     <span class="entypo-plus-squared"></span>&nbsp;&nbsp;新增
                                 </button>&nbsp;&nbsp;
@@ -171,12 +171,27 @@
             field: 'englishName',
             title: '英文名'
         }, {
+            title: '项目点状态',
+            formatter: function (value, row, index) {
+                var actions = [];
+                if (row.status == 0) {
+                    actions.push('<span style="color: darkred;" >已停</span>');
+                } else if (row.status == 1) {
+                    actions.push('运行中');
+                }
+                return actions.join('');
+            }
+        }, {
             title: '操作',
             formatter: function (value, row, index) {
                 var id = row.id;
                 var actions = [];
                 actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="deleteItems(\'' + id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                if (row.status == 1) {
+                    actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="stopItems(\'' + id + '\')"><i class="fa fa-remove"></i>停用</a>');
+                } else if (row.status == 0) {
+                    actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="stopItems(\'' + id + '\')"><i class="fa fa-remove"></i>启用</a>');
+                }
                 return actions.join('');
             }
         }]
@@ -191,6 +206,26 @@
     function itemsUpload() {
         var url = $.table._option.downUrl;
         $.modal.open("导入" + $.table._option.modalName, url);
+    }
+
+    function stopItems(id){
+        $.ajax({
+            url: "/ItemsController/stopItems",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: {
+                "id": id
+            },    //参数值
+            type: "POST",   //请求方式
+            success: function (result) {
+                alert("修改成功");
+                location.reload();
+            },
+            error: function (result) {
+                alert("修改失败");
+                location.reload();
+            }
+        });
     }
 
     function deleteItems(ids) {

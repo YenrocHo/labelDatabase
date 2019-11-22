@@ -141,14 +141,21 @@ public class ItemsController extends BaseController {
     }
 
 
-    @GetMapping("/upload")
-    public String upload() {
-        return prefix + "/upload";
-    }
 
     @PostMapping("/upload")
     @RequiresPermissions("system:items:upload")
     public String upload(TSysItems tSysItems) {
         return prefix + "/upload";
+    }
+
+    @ResponseBody
+    @PostMapping("stopItems")
+    public int stopItems(String id){
+        int b = sysItemsService.selectById(id);
+        if(b>0){
+            return 1;
+        }else{
+            return 0;
+        }
     }
 }

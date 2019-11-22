@@ -12,7 +12,8 @@ public class Const {
         badSQL(418,"SQL语句执行失败"),
         wrongServer(500,"服务器内部错误"),
         noToken(503,"无效的token"),
-        wrongParam(504,"参数错误");
+        wrongParam(504,"参数错误"),
+        noItems(505,"项目点停止运行");
 
 
         CodeEnum(int code,String value){

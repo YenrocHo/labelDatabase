@@ -50,28 +50,23 @@ public class AndroidServiceImpl implements AndroidService {
     @Override
     public AjaxResult login(String username){
         int resultCount = tsysUserMapper.checkUserName(username);
+
         if (resultCount == 0) {
             AjaxResult ajaxResult = AjaxResult.error(Const.CodeEnum.noExistent.getCode(),Const.CodeEnum.noExistent.getValue());
             return ajaxResult;
         }
         UserVO tsysUser = tsysUserMapper.selectLoginOrItem(username);
-        if(tsysUser == null){
-            return AjaxResult.error(Const.CodeEnum.badSQL.getCode(),Const.CodeEnum.badSQL.getValue());
+        if(tsysUser == null || tsysUser.getItemsCode()==null || tsysUser.getItemsCode() == ""){
+            //账号不存在
+            return AjaxResult.error(Const.CodeEnum.noExistent.getCode(),Const.CodeEnum.noExistent.getValue());
         }
-        List<TSysItems> tSysItems = new ArrayList<>();
-        //如果 用户不为空
-        if(tsysUser!=null){
-            List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(tsysUser.getItemsCode());
-            for (TSysItems tSysItems1:tSysItemsList){
-                TSysItems items = new TSysItems();
-                items.setId(tSysItems1.getId());
-                items.setItemsCode(tSysItems1.getItemsCode());
-                items.setName(tSysItems1.getName());
-                items.setEnglishName(tSysItems1.getEnglishName());
-                tSysItems.add(items);
-            }
-            tsysUser.settSysItems(tSysItems);
+        TSysItems tSysItems = tSysItemsMapper.queryByItemsCode(tsysUser.getItemsCode());
+        Integer i = tSysItems.getStatus();
+        if (i == 0){
+            //项目点停止运行
+            return AjaxResult.error(Const.CodeEnum.noItems.getCode(),Const.CodeEnum.noItems.getValue());
         }
+        tsysUser.settSysItems(tSysItems);
         String statusToken = UUID.randomUUID().toString();
         TokenCache.setKey(TokenCache.TOKRN_PREFIX + username, statusToken);
         tsysUser.setStatusToken(statusToken);

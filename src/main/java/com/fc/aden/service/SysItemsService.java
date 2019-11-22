@@ -59,6 +59,7 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
         record.setId(id);
         record.setCreateTime(new Date());//保存创建时间
         record.setUpdateTime(new Date());//保存更新时间
+        record.setStatus(1);
         return tSysItemsMapper.insertSelective(record);
     }
 
@@ -67,6 +68,16 @@ public class SysItemsService implements BaseService<TSysItems, TSysItemsExample>
         return tSysItemsMapper.selectByPrimaryKey(id);
     }
 
+    public int selectById(String id){
+        TSysItems items = tSysItemsMapper.selectByPrimaryKey(id);
+        Integer i = items.getStatus();
+        if (i == 1){//1为运行中
+            items.setStatus(0);
+        }else{//0为停运中
+            items.setStatus(1);
+        }
+        return tSysItemsMapper.updateByPrimaryKeySelective(items);//修改数据
+    }
 
     public ProductFoodStoreVO findByItems(String itemsId) {
         TSysItems items = tSysItemsMapper.selectByPrimaryKey(itemsId);
