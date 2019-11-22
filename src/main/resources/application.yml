@@ -7,10 +7,10 @@ fuce:
   #版权年份
   copyrightYear: 2019
   #头像上传路径
-#  profile: E:/apache-tomcat-desmartNew/webapps/images/
+  #  profile: E:/apache-tomcat-desmartNew/webapps/images/
   profile: /data/apache-tomcat-8.5.45/webapps/images/
-#  profile: /Users/dxm/Desktop/images/
-#tomcat config
+  #  profile: /Users/dxm/Desktop/images/
+  #tomcat config
 server:
   port: 8090
   ##项目名字配置
@@ -26,7 +26,7 @@ server:
 spring:
   # 环境 dev|aden|prod
   profiles:
-    active: prod
+    active: dev
   servlet:
     multipart:
       max-request-size: 100MB
@@ -67,4 +67,5 @@ dh:
   security:
     key: sgo9ej2eqrbofsbe5wjfodsv4rfkiyjb
 logging:
-  file: E:/Aden_lable/log/
+#  file: E:/Aden_lable/log/
+  file: /data/Aden_lable/logs/
