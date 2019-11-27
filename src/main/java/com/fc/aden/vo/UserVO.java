@@ -38,7 +38,7 @@ public class UserVO{
 
     private String roles;//0 普通员工 1  项目点管理员权限 2 超级管理员
 
-    private TSysItems tSysItems;
+    private List<TSysItems> tSysItems;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String updateTime;
@@ -158,11 +158,11 @@ public class UserVO{
         this.itemsCode = itemsCode;
     }
 
-    public TSysItems gettSysItems() {
+    public List<TSysItems> gettSysItems() {
         return tSysItems;
     }
 
-    public void settSysItems(TSysItems tSysItems) {
+    public void settSysItems(List<TSysItems> tSysItems) {
         this.tSysItems = tSysItems;
     }
 

@@ -5,10 +5,13 @@ import com.fc.aden.mapper.auto.process.PrintHistoryMapper;
 import com.fc.aden.model.custom.process.PrintHistory;
 import com.fc.aden.model.custom.process.PrintHistoryExample;
 import com.fc.aden.service.PrintHistoryService;
+import com.fc.aden.util.BeanCopierEx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +34,14 @@ public class PrintHistoryServiceImpl extends BaseServiceImpl<PrintHistoryMapper,
     @Override
     @Transactional
     public int insertBatch(List<PrintHistory> printHistoryList) {
-        return printHistoryMapper.insertBatch(printHistoryList);
+        List<PrintHistory> printHistories = new ArrayList<>();
+        for (PrintHistory p:printHistoryList){
+            PrintHistory printHistory = new PrintHistory();
+            printHistory.setCreateTime(new Date());
+            printHistory.setUpdateTime(new Date());
+            BeanCopierEx.copy(p,printHistory);
+            printHistories.add(printHistory);
+        }
+        return printHistoryMapper.insertBatch(printHistories);
     }
 }

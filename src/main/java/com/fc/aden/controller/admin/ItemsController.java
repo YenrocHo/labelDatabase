@@ -144,7 +144,13 @@ public class ItemsController extends BaseController {
 
     @PostMapping("/upload")
     @RequiresPermissions("system:items:upload")
-    public String upload(TSysItems tSysItems) {
+    public String upload() {
+        return prefix + "/upload";
+    }
+
+
+    @GetMapping("/upload")
+    public String uploadGet() {
         return prefix + "/upload";
     }
 

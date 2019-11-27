@@ -80,24 +80,6 @@
         window.open(window.rootPath + "/static/templates/product_template.xls");
         return false;
     }
-    //JS校验form表单信息
-    /*function checkData() {
-        var myFile = $("#myFile").val();
-        // var suffix = myFile.substr(myFile.lastIndexOf("."));
-        if ("" != myFile) {
-            $.post(rootPath+"/ProductController/uploadFile", {"myFile": myFile}, function (data, statusText) {
-                if ('success' == statusText) {
-                    alert("导入成功");
-                } else {
-                    alert("网络返回异常");
-                }
-            }, "JSON");
-        }else{
-            alert("选择需要导入的Excel文件!");
-            return false;
-        }
-        return true;
-    }*/
     $("#submited").click(function(){
         var myFile = $("#myFile").val();
         if (myFile != "") {
@@ -108,6 +90,7 @@
             $.ajax({
                 url: rootPath + "/ProductController/uploadFile",
                 type: "post",
+                async: false,
                 data: formdata,
                 contentType: false, //- 必须false才会自动加上正确的Content-Type
                 processData: false, //- 必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理

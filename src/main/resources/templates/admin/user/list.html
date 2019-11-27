@@ -208,7 +208,7 @@
                 formatter: function (value, row, index) {
                     var id = row.id;
                     var actions = [];
-                    if (row.username == "admin") {
+                    if (row.id == "1") {
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')" disabled="disabled"><i class="fa fa-remove"></i>删除</a>&nbsp;');
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updatePwd(\'' + row.id + '\')"><i class="fa fa-edit"></i>重置密码</a> ');

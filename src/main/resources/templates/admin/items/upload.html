@@ -105,21 +105,17 @@
             console.log(files);
             var formdata = new FormData();
             formdata.append("myFile", files[0]);
-            alert("yitianjia");
             $.ajax({
                 url: rootPath + "/FileController/uploadFile",
                 type: "post",
-                async: false,
                 data: formdata,
                 contentType: false, //- 必须false才会自动加上正确的Content-Type
                 processData: false, //- 必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
                 success:function (res) {
-                    // debugger
-                    console.log("====1212121");
                     alert(res);
                 },
                 error: function () {
-                    alert("请上传xls表格数据111111");
+                    alert("请上传xls表格数据");
                 }
             });
         }else {

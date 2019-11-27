@@ -216,6 +216,7 @@ public class SysLearnFileService implements BaseService<TSysLearnFile, TSysLearn
             ImportTSysItemsDTO importTSysItemsDTO = new ImportTSysItemsDTO();
             importTSysItemsDTO.setCreateTime(new Date());
             importTSysItemsDTO.setUpdateTime(new Date());
+            importTSysItemsDTO.setStatus(1);
             importTSysItemsDTO.setId(UUID.randomUUID().toString());
 
             List<TSysItems> items = tSysItemsMapper.selectByItems(itemsCode);

@@ -17,7 +17,6 @@ public class TSysItems implements Serializable {
     private Date createTime;
 
     private Date updateTime;
-
     public TSysItems(String id, String itemsCode, String name, String englishName,Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.itemsCode = itemsCode;
