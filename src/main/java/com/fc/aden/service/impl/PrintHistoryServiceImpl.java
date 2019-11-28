@@ -34,14 +34,6 @@ public class PrintHistoryServiceImpl extends BaseServiceImpl<PrintHistoryMapper,
     @Override
     @Transactional
     public int insertBatch(List<PrintHistory> printHistoryList) {
-        List<PrintHistory> printHistories = new ArrayList<>();
-        for (PrintHistory p:printHistoryList){
-            PrintHistory printHistory = new PrintHistory();
-            printHistory.setCreateTime(new Date());
-            printHistory.setUpdateTime(new Date());
-            BeanCopierEx.copy(p,printHistory);
-            printHistories.add(printHistory);
-        }
-        return printHistoryMapper.insertBatch(printHistories);
+        return printHistoryMapper.insertBatch(printHistoryList);
     }
 }

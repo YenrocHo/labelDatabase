@@ -105,20 +105,6 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
                 //超级管理员查询
                 list = printHistoryMapper.selectByTag(stage, food, product, items, printUser, start, end);
             }
-
-   /*     List<PrintHistoryVO> tagVOList = new ArrayList<>();
-        for (PrintHistory tSysTag : list) {
-            PrintHistoryVO tagVO = new PrintHistoryVO();
-            //时间date转换为string类型
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String creatTime = formatter.format(tSysTag.getCreateTime());
-            String printTime = formatter.format(tSysTag.getPrintTime());
-            tagVO.setCreateTime(creatTime);
-            tagVO.setPrintTime(printTime);
-            tagVO.setShelfLife(tSysTag.getShelfLife());
-            BeanCopierEx.copy(tSysTag, tagVO);
-            tagVOList.add(tagVO);
-        }*/
         PageInfo<PrintHistory> pageInfo = new PageInfo<PrintHistory>(list);
         return pageInfo;
     }

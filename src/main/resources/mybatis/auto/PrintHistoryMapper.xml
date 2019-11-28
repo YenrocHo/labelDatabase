@@ -389,8 +389,8 @@
             #{item.employerName,jdbcType=VARCHAR},
             #{item.employerId,jdbcType=VARCHAR},
             #{item.printTime,jdbcType=TIMESTAMP},
-            #{item.createTime,jdbcType=TIMESTAMP},
-            #{item.updateTime,jdbcType=TIMESTAMP},
+            now(),
+            now(),
             #{item.shelfLife,jdbcType=TIMESTAMP}
             )
         </foreach>

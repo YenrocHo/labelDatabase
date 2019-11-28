@@ -257,8 +257,7 @@
         oTab.Init();
     })
 
-    function timeStamp(time){
-        // yyyy-MM-dd hh:mm
+  /*  function timeStamp(time){
         var date = new Date(time);
         var Y = date.getFullYear() + '-';
         var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
@@ -268,6 +267,10 @@
         var s = date.getSeconds();
         console.log(Y+M+D+h+m+s); //
         return Y+M+D+h+m+s+" ";
+    }*/
+    function timeStamp(time){
+        var date = new Date(time + 8 * 3600 * 1000);
+        return date.toJSON().substr(0, 19).replace('T', ' ').replace(/-/g, '.');
     }
 
 </script>
