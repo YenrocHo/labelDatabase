@@ -182,7 +182,11 @@
                 formatter: function (value, row, index) {
                     var id = row.id;
                     var actions = [];
-                    actions.push("<img src='https://label.adenservices.com/images/" + row.picture + "' style='width: 50px;height: 50px;'/>" );
+                    if(row.picture!=null&&row.picture!=''){
+                        actions.push("<img src='https://label.adenservices.com/images/" + row.picture + "' style='width: 50px;height: 50px;'/>" );
+                    }else{
+                        actions.push("" );
+                    }
                     return actions.join('');
                 }
             }, {
@@ -190,7 +194,11 @@
                 formatter: function (value, row, index) {
                     var id = row.id;
                     var actions = [];
-                    actions.push("<img src='https://label.adenservices.com/images/" + row.pictureHight + "' style='width: 50px;height: 50px;'/>" );
+                    if(row.pictureHight!=null&&row.pictureHight!=''){
+                        actions.push("<img src='https://label.adenservices.com/images/" + row.pictureHight + "' style='width: 50px;height: 50px;'/>" );
+                    }else{
+                        actions.push("" );
+                    }
                     return actions.join('');
                 }
             }, {

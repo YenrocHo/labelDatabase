@@ -205,11 +205,12 @@ public class SysProductServiceImpl implements SysProductService {
             importTSysProductDTO.setStatus(1);
             importTSysProductDTO.setId(UUID.randomUUID().toString());
 
-            List<TSysProduct> productList = tSysProductMapper.selectByProduct(productName);
+            int productList = tSysProductMapper.selectProductBycName(productName,items);
             if (StringUtils.isEmpty(productName)) {
                 errorMessage.append("产品名称不能为空；");
                 pass = false;
-            } else if (projectNames.contains(productName) || productList != null && productList.size() > 0) {
+            } else if (projectNames.contains(productName) || productList > 0) {
+                importTSysProductDTO.setProduct(productName);
                 errorMessage.append("产品名称不能重复；");
                 pass = false;
             } else {
@@ -223,10 +224,7 @@ public class SysProductServiceImpl implements SysProductService {
                 pass = false;
             } else if (tSysItemsList != null && tSysItemsList.size() > 0) {
                 importTSysProductDTO.setItemsCode(items);
-            } else if (projectNames.contains(productName)) {
-                errorMessage.append("项目点编号重复；");
-                pass = false;
-            } else {
+            }else {
                 errorMessage.append("项目点编号不存在；");
                 pass = false;
             }

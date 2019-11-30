@@ -17,9 +17,9 @@
 <div class="wrap-fluid">
     <div class="container-fluid paper-wrap bevel tlbr" id = "content_body" style="height:  485px;">
         <div class="massage">
-            校验成功：<span id="success" th:text="${importProductDTO.successNumber}"></span>&nbsp;条
+            校验成功：<span id="success" th:text="${importFoodDTO.successNumber}"></span>&nbsp;条
             &nbsp;&nbsp;
-            校验失败：<span id="error" th:text="${importProductDTO.errorNumber}"></span>&nbsp;条
+            校验失败：<span id="error" th:text="${importFoodDTO.errorNumber}"></span>&nbsp;条
         </div>
         <hr/>
         <div class="content">
@@ -27,23 +27,17 @@
                 <tr class="title">
                     <th>消息</th>
                     <th>项目点编号</th>
-                    <th>食品种类</th>
-                    <th>产品名称</th>
-                    <th>冰箱 低于5°C</th>
-                    <th>冰柜 低于-15°C</th>
-                    <th>室温</th>
-                    <th>高于65°C</th>
+                    <th>食品编号</th>
+                    <th>食品名称</th>
+                    <th>食品英文名</th>
                 </tr>
-                <tr th:each="tSysProduct : ${importProductDTO.tSysProductDTOS}" class="data">
+                <tr th:each="food : ${importFoodDTO.importFoodDTOS}" class="data">
 <!--                    <td th:text="${tSysProduct.pass}"></td>-->
-                    <td th:text="${tSysProduct.messages}"></td>
-                    <td th:text="${tSysProduct.itemsCode}"></td>
-                    <td th:text="${tSysProduct.foodName}"></td>
-                    <td th:text="${tSysProduct.product}"></td>
-                    <td th:text="${tSysProduct.fridge}"></td>
-                    <td th:text="${tSysProduct.frozen}"></td>
-                    <td th:text="${tSysProduct.temperature}"></td>
-                    <td th:text="${tSysProduct.above}"></td>
+                    <td th:text="${food.messages}"></td>
+                    <td th:text="${food.itemsCode}"></td>
+                    <td th:text="${food.foodCode}"></td>
+                    <td th:text="${food.food}"></td>
+                    <td th:text="${food.englishName}"></td>
                 </tr>
             </table>
         </div>

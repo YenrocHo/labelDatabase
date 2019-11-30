@@ -21,6 +21,15 @@ public class FoodVO {
     private String updateTime;
 
     private Integer status;
+    private Integer foodIndex;//用来排序  默认自增排序
+
+    public Integer getFoodIndex() {
+        return foodIndex;
+    }
+
+    public void setFoodIndex(Integer foodIndex) {
+        this.foodIndex = foodIndex;
+    }
 
     public String getId() {
         return id;

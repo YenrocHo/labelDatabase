@@ -136,7 +136,7 @@
     $(function(){
         Dropzone.autoDiscover = false;//防止报"Dropzone already attached."的错误
         var myDropzone1 = new Dropzone("#dropz1", {
-            url: rootPath + "/FoodController/upload",//文件提交地址
+            url: rootPath + "/FoodController/uploadPicture",//文件提交地址
             method:"post",  //也可用put
             paramName:"file", //默认为file
             maxFiles:1,//一次性上传的文件数量上限
@@ -172,7 +172,7 @@
     $(function(){
         Dropzone.autoDiscover = false;//防止报"Dropzone already attached."的错误
         var myDropzone2 = new Dropzone("#dropz2", {
-            url: rootPath + "/FoodController/upload",//文件提交地址
+            url: rootPath + "/FoodController/uploadPicture",//文件提交地址
             method:"post",  //也可用put
             paramName:"file", //默认为file
             maxFiles:1,//一次性上传的文件数量上限

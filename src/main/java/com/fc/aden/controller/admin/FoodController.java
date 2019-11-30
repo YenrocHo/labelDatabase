@@ -111,7 +111,7 @@ public class FoodController extends BaseController {
     /**
      * 上传文件
      */
-    @PostMapping("/upload")
+    @PostMapping("/uploadPicture")
     @ResponseBody
     public AjaxResult updateAvatar(@RequestParam("file") MultipartFile file) {
         try {
@@ -214,8 +214,13 @@ public class FoodController extends BaseController {
         }
     }
 
-    @GetMapping("/upload")
+    @PostMapping("/upload")
     public String upload() {
+        return prefix + "/upload";
+    }
+
+    @GetMapping("/upload")
+    public String uploadGet() {
         return prefix + "/upload";
     }
 

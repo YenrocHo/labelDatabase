@@ -24,6 +24,7 @@ public class TSysFood {
     private Integer status;
 
     private Integer foodIndex;//用来排序  默认自增排序
+
     public TSysFood(String id, String itemsCode, String foodCode, String food, String name, String englishName, String picture, Date createTime, Date updateTime, Integer status,String pictureHight,Integer foodIndex) {
         this.id = id;
         this.itemsCode = itemsCode;
