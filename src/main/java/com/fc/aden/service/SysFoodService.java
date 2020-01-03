@@ -198,11 +198,13 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
             importTSysFoodDTO.setStatus(1);
             importTSysFoodDTO.setId(UUID.randomUUID().toString());
             List<TSysFood> tSysFoodList = tSysFoodMapper.findByFood(foodName, items);
+            List<TSysFood> list = tSysFoodMapper.countByFood();
+            Integer index = list.size()+1;
+            importTSysFoodDTO.setFoodIndex(index);
             if (StringUtils.isEmpty(foodName)) {
                 errorMessage.append("食品种类不能为空；");
                 pass = false;
             } else if (projectNames.contains(foodName) || tSysFoodList != null && tSysFoodList.size() > 0) {
-                importTSysFoodDTO.setFood(foodName);
                 errorMessage.append("食品种类不能重复；");
                 pass = false;
             } else {
@@ -215,7 +217,6 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
                 errorMessage.append("食品种类编号不能为空；");
                 pass = false;
             } else if (projectNames.contains(foodName) || tSysFoodCode != null && tSysFoodCode.size() > 0) {
-                importTSysFoodDTO.setFoodCode(foodCode);
                 errorMessage.append("食品种类编号不能重复；");
                 pass = false;
             } else {

@@ -282,13 +282,13 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
 
             List<TsysUser> userlist = tsysUserMapper.selectByName(loginName);
             if (StringUtils.isEmpty(loginName)) {
-                errorMessage.append("工号名称不能为空；");
+                errorMessage.append("工号不能为空；");
                 pass = false;
             } else if (projectNames.contains(loginName)) {
-                errorMessage.append("工号名称不能重复；");
+                errorMessage.append("工号不能重复；");
                 pass = false;
             } else if (userlist != null && userlist.size() > 0) {
-                errorMessage.append("工号名称不能重复；");
+                errorMessage.append("工号不能重复；");
                 pass = false;
             } else {
                 importTSysUserDTO.setUsername(loginName);
@@ -316,15 +316,11 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             }
 
             List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(items);
-            String item = "";
-            for (TSysItems tSysItems : tSysItemsList) {
-                item = tSysItems.getId();//获取项目点id
-            }
             if (StringUtils.isEmpty(items)) {
                 errorMessage.append("项目点不为空；");
                 pass = false;
             } else if (tSysItemsList != null && tSysItemsList.size() > 0) {
-                importTSysUserDTO.setItemsCode(item);//存入
+                importTSysUserDTO.setItemsCode(items);//存入
             } else {
                 errorMessage.append("项目点不存在；");
                 pass = false;
@@ -356,7 +352,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
         for (UserVO userVO : userVOList) {
             TsysUser tsysUser = new TsysUser();
             //权限存入管理员
-            TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userVO.getId(), "488243256161730560");
+            TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userVO.getId(),userVO.getRoles());
             BeanCopierEx.copy(userVO, tsysUser);
             tSysRoleUserMapper.insertSelective(roleUser);
             tsysUserMapper.insertSelective(tsysUser);

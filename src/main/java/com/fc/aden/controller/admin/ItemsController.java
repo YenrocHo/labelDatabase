@@ -148,7 +148,6 @@ public class ItemsController extends BaseController {
         return prefix + "/upload";
     }
 
-
     @GetMapping("/upload")
     public String uploadGet() {
         return prefix + "/upload";

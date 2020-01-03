@@ -76,46 +76,15 @@
 
 </body>
 <script type="application/javascript">
+    $(function(){
+        $("#form-add").prop("action",rootPath + "/UserController/uploadFile");
+    })
+
     function downloadUser() {
         var host = window.location.host;//获取请求地址
         window.open(window.rootPath + "/static/templates/user_template.xls");
     }
-    //JS校验form表单信息
-    /*function checkData(){
-        var myFile = $("#myFile").val();
-        var suffix = myFile.substr(myFile.lastIndexOf("."));
-        if("" == myFile){
-            alert("选择需要导入的Excel文件！");
-            return false;
-        }
-        return true;
-    }*/
-    $("#submited").click(function(){
-        var myFile = $("#myFile").val();
-        if (myFile != "") {
-            var files = document.getElementById("myFile").files;
-            console.log(files);
-            var formdata = new FormData();
-            formdata.append("myFile", files[0])
-            $.ajax({
-                url: rootPath + "/UserController/uploadFile",
-                type: "post",
-                data: formdata,
-                contentType: false, //- 必须false才会自动加上正确的Content-Type
-                processData: false, //- 必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
-                success: function (res) {
-                    debugger
-                    alert(res);
-                },
-                error: function () {
-                    alert("请上传xls表格数据");
-                }
-            });
-        }else {
-            alert("请上传xls表格数据");
-            return false;
-        }
-    });
+
 </script>
 </html>
 
