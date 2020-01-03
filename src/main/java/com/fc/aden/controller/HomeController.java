@@ -1,5 +1,7 @@
 package com.fc.aden.controller;
 
+import com.fc.aden.model.auto.TSysItems;
+import com.fc.aden.shiro.util.ShiroUtils;
 import io.swagger.annotations.ApiOperation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +31,8 @@ import com.fc.aden.common.base.BaseController;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.BootstrapThree;
 import com.fc.aden.model.custom.TitleVo;
+
+import java.util.List;
 
 @Controller
 public class HomeController extends BaseController{
@@ -42,8 +47,13 @@ public class HomeController extends BaseController{
 	
 	@ApiOperation(value="局部刷新区域",notes="局部刷新区域")
 	@GetMapping("/main")
-	public String main() {
-		return "admin/main";
+	public String main(Model model,ModelMap mp) {
+		List<TSysItems> tSysItemsList = sysItemsService.queryItems();
+		mp.put("tSysItems", tSysItemsList);
+		TsysUser tsysUser = ShiroUtils.getUser();
+		mp.put("tsysUser", tsysUser);
+		setTitle(model, new TitleVo("用户列表", "用户管理", true, "欢迎进入用户页面", true, false));
+		return "admin/user/list";
 	}
 	
 	/**
