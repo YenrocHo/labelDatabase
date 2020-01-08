@@ -101,24 +101,16 @@ public class ProductController extends BaseController {
     public String edit(@PathVariable("id") String id, HttpServletRequest request, ModelMap mmap) {
         TSysProduct tSysProduct = sysProductService.selectProductById(id);
         String items = tSysProduct.getItemsCode();//当前用户项目点
-        TsysUser tsysUser = ShiroUtils.getUser();//当前登录用户
         List<TSysItems> tSysItems = sysItemsService.queryItems();//获取全部项目点
-        TSysFood tSysFood = sysFoodService.findByFoodId(tSysProduct.getFoodName());//当前食品种类
+        TSysFood tSysFood = sysFoodService.findByFoodId(tSysProduct.getFoodName(),items);//当前食品种类
         //储存条件保质期
         List<ProductVO> productStores = productStoreService.findByProductIdList(id);
-
-        List<TSysFood> tSysFoodList =null;
-        if(tsysUser.getRoles()!="2"&&!"2".equals(tsysUser.getRoles())){
-            tSysFoodList = sysFoodService.findByItemCode(tsysUser.getItemsCode());
-        }else{
-            tSysFoodList = sysFoodService.queryFood();
-        }
+        List<TSysFood> tSysFoodList = sysFoodService.findByItemCode(items);//获取用户食品种类
         mmap.addAttribute("tSysFood",tSysFood);
         mmap.addAttribute("productStores",productStores);
         mmap.addAttribute("tSysFoodList",tSysFoodList);
         mmap.addAttribute("items",items);
         mmap.addAttribute("tSysItems",tSysItems);
-        mmap.put("tsysUser", tsysUser);
         request.getSession().setAttribute("tSysProduct", tSysProduct);
         return prefix + "/edit";
     }

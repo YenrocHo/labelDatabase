@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -38,13 +39,13 @@ import java.util.*;
  */
 @Service
 public class SysProductServiceImpl implements SysProductService {
-    @Autowired
+    @Resource
     private TSysProductMapper tSysProductMapper;
-    @Autowired
+    @Resource
     private TSysItemsMapper tSysItemsMapper;
-    @Autowired
+    @Resource
     private TSysFoodMapper tSysFoodMapper;
-    @Autowired
+    @Resource
     private ProductStoreMapper productStoreMapper;
 
     /**
@@ -192,6 +193,7 @@ public class SysProductServiceImpl implements SysProductService {
             String productCode = row.get(ImportProductDTO.PRODUCT_CODE);
             String foodName = row.get(ImportProductDTO.FOOD_NAME);
             String items = row.get(ImportProductDTO.ITEM);
+            String priority = row.get(ImportProductDTO.PRIORITY);//产品
             String fridge = row.get(ImportProductDTO.FRIDGE); //冰箱
             String frozen = row.get(ImportProductDTO.FROZEN);  //冰柜
             String temperature = row.get(ImportProductDTO.ROOM_TEMPERATURE); //室温
@@ -204,7 +206,9 @@ public class SysProductServiceImpl implements SysProductService {
             importTSysProductDTO.setUpdateTime(df.format(new Date()));
             importTSysProductDTO.setStatus(1);
             importTSysProductDTO.setId(UUID.randomUUID().toString());
-
+            if (priority.equals("")){//优先级为空默认 2
+                importTSysProductDTO.setPriority(2);
+            }
             int productList = tSysProductMapper.selectProductBycName(productName,items);
             if (StringUtils.isEmpty(productName)) {
                 errorMessage.append("产品名称不能为空；");
@@ -229,7 +233,7 @@ public class SysProductServiceImpl implements SysProductService {
                 pass = false;
             }
             //
-            List<TSysFood> tSysFood = tSysFoodMapper.findByFoodCodeOrItemsCode(foodName, items);
+            List<TSysFood> tSysFood = tSysFoodMapper.findByFoodCodeOrItem(foodName, items);
             if (tSysFood != null && tSysFood.size() > 0) {
                 importTSysProductDTO.setFoodName(foodName);
             } else {
@@ -312,7 +316,7 @@ public class SysProductServiceImpl implements SysProductService {
     public void saveSysProduct(List<ProductVO> productVOS) {
         for (ProductVO productVO : productVOS) {
             //根据编号查询
-            TSysFood tSysFood = tSysFoodMapper.findByFoodId(productVO.getFoodName());
+            TSysFood tSysFood = tSysFoodMapper.findByFoodId(productVO.getFoodName(),productVO.getItemsCode());
             TSysProduct tSysProduct = new TSysProduct();
             List<ProductStore> productStoreList = new ArrayList<>();
 
@@ -367,7 +371,7 @@ public class SysProductServiceImpl implements SysProductService {
         }
     }
 
-    @Autowired
+    @Resource
     private TSysStoreMapper tSysStoreMapper;
 
     public List<ProductVO> findByProductAndStore(String id, String items) {

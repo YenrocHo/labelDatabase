@@ -96,8 +96,8 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
         return tSysFoodMapper.selectByExample(tSysFoodExample);
     }
 
-    public TSysFood findByFoodId(String foodCode) {
-        return tSysFoodMapper.findByFoodId(foodCode);
+    public TSysFood findByFoodId(String foodCode,String itemCode) {
+        return tSysFoodMapper.findByFoodId(foodCode,itemCode);
     }
 
     @Override
@@ -144,7 +144,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
      * @return
      */
     public int checkFoodUnique(String food, String itemsCode) {
-        List<TSysFood> list = tSysFoodMapper.findByFood(food, itemsCode);
+        List<TSysFood> list = tSysFoodMapper.findByFoodCodeOrItem(food, itemsCode);
         return list.size();
     }
 
@@ -197,7 +197,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
             importTSysFoodDTO.setUpdateTime(df.format(new Date()));
             importTSysFoodDTO.setStatus(1);
             importTSysFoodDTO.setId(UUID.randomUUID().toString());
-            List<TSysFood> tSysFoodList = tSysFoodMapper.findByFood(foodName, items);
+            List<TSysFood> tSysFoodList = tSysFoodMapper.findByFoodCodeOrItem(foodName, items);
             List<TSysFood> list = tSysFoodMapper.countByFood();
             Integer index = list.size()+1;
             importTSysFoodDTO.setFoodIndex(index);
@@ -212,11 +212,11 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
                 importTSysFoodDTO.setName(foodName);
             }
             //判断食品编号
-            List<TSysFood> tSysFoodCode = tSysFoodMapper.findByFoodCode(foodCode);
+            List<TSysFood> tSysFoodCode = tSysFoodMapper.findByFoodCodeOrItem(foodCode,items);
             if (StringUtils.isEmpty(foodName)) {
                 errorMessage.append("食品种类编号不能为空；");
                 pass = false;
-            } else if (projectNames.contains(foodName) || tSysFoodCode != null && tSysFoodCode.size() > 0) {
+            } else if (tSysFoodCode.size() > 0) {
                 errorMessage.append("食品种类编号不能重复；");
                 pass = false;
             } else {

@@ -35,6 +35,7 @@ public class ProductVO {
     private String aboveID;//高于65°C
     private String above;//高于65°C
 
+    private Integer priority;//优先级
 
     //产品更新时间
     private String updateTime;
@@ -57,6 +58,14 @@ public class ProductVO {
         this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     public String getFrozenID() {

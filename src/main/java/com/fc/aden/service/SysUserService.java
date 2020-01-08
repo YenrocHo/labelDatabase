@@ -126,8 +126,8 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
             TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID().toString(), userId, roles);
             tSysRoleUserMapper.insertSelective(roleUser);
         }
-        //密码加密
-        record.setPassword(MD5Util.encode("123456"));
+        //密码加密 密码是登录名
+        record.setPassword(MD5Util.encode(record.getUsername()));
         return tsysUserMapper.insertSelective(record);
     }
 

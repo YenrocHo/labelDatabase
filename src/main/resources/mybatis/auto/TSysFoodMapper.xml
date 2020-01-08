@@ -263,30 +263,6 @@
     </choose>
     where id = #{id}
   </update>
-  <select id="findByFood" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
-    select
-     <include refid="Base_Column_List"/>
-     from t_sys_food
-     where 1=1
-      <if test="food!=null and food!=''">
-        and food = #{food,jdbcType=VARCHAR}
-      </if>
-      <if test="itemsCode!=null and itemsCode!=''">
-        and items_code = #{itemsCode,jdbcType=VARCHAR}
-      </if>
-  </select>
-  <select id="findByFoodCodeOrItemsCode" resultMap="BaseResultMap" >
-    select
-     <include refid="Base_Column_List"/>
-     from t_sys_food
-     where 1=1
-      <if test="foodCode!=null and foodCode!=''">
-        and food_code = #{foodCode,jdbcType=VARCHAR}
-      </if>
-      <if test="itemsCode!=null and itemsCode!=''">
-        and items_code = #{itemsCode,jdbcType=VARCHAR}
-      </if>
-  </select>
 
   <select id="countByFood" resultMap="BaseResultMap">
     select
@@ -313,18 +289,24 @@
     select
     <include refid="Base_Column_List"/>
     from t_sys_food
-    where 1=1
-    <if test="foodCode!=null and foodCode != ''">
-        and food_code = #{foodCode}
-    </if>
-    and items_code = #{itemsCode,jdbcType=VARCHAR}
+      <include refid="FindCriteria"/>
   </select>
 
   <select id="findByFoodId" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood">
     select
     <include refid="Base_Column_List"/>
     from t_sys_food
-     where   food_code = #{foodCode,jdbcType=VARCHAR}
+    <include refid="FindCriteria"/>
   </select>
 
+  <sql id="FindCriteria">
+    <where>
+        <if test="foodCode!=null and foodCode != ''">
+            and food_code = #{foodCode}
+        </if>
+        <if test="itemsCode!=null and itemsCode!=''">
+            and items_code = #{itemsCode,jdbcType=VARCHAR}
+        </if>
+    </where>
+  </sql>
 </mapper>

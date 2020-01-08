@@ -149,7 +149,7 @@
         p.update_time as update_time,
         f.food as food_name<!--foodName 是列的别名，对应BaseResultMap 的cloumn的值-->
         from t_sys_product p,t_sys_food f
-        where p.food_name = f.food_code
+        where p.food_name = f.food_code  and f.items_code = p.items_code
         <if test="searchTxt != null and searchTxt !=''">
             and p.product like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%') or p.english_name like CONCAT('%',
             #{searchTxt, jdbcType=VARCHAR}, '%')
@@ -157,7 +157,9 @@
         <if test="foodName !='' and foodName != null">
             and p.food_name = #{foodName}
         </if>
-        and p.items_code = #{itemsCode}
+        <if test="itemsCode != null and itemsCode !=''">
+          and p.items_code = #{itemsCode}
+        </if>
         order by p.update_time desc
     </select>
     <select id="findByProduct" parameterType="com.fc.aden.model.custom.process.TSysProduct" resultMap="BaseResultMap">
@@ -168,7 +170,7 @@
         p.update_time as update_time,
         f.food as food_name<!--foodName 是列的别名，对应BaseResultMap 的cloumn的值-->
         from t_sys_product p,t_sys_food f
-        where p.food_name = f.food_code
+        where p.food_name = f.food_code and f.items_code = p.items_code
         <if test="searchTxt != null and searchTxt !=''">
             and p.product like CONCAT('%', #{searchTxt, jdbcType=VARCHAR}, '%') or p.english_name like CONCAT('%',
             #{searchTxt, jdbcType=VARCHAR}, '%')
