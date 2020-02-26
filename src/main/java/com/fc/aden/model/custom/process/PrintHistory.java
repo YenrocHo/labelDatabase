@@ -35,6 +35,18 @@ public class PrintHistory extends BaseEntity {
 
     private Date printTime;//打印时间
 
+    /** 是否核销（0 - 否；1 - 是） */
+    private Integer writeOffFlag;
+
+    /** 核销人用户账号 */
+    private String writeOffOperatorNo;
+
+    /** 核销人姓名 */
+    private String writeOffOperatorName;
+
+    /** 核销时间 */
+    private Date writeOffTime;
+
     private static final long serialVersionUID = 1L;
 
     public String getItemsCode() {
@@ -131,5 +143,37 @@ public class PrintHistory extends BaseEntity {
 
     public void setEmployerId(String employerId) {
         this.employerId = employerId;
+    }
+
+    public Integer getWriteOffFlag() {
+        return writeOffFlag;
+    }
+
+    public void setWriteOffFlag(Integer writeOffFlag) {
+        this.writeOffFlag = writeOffFlag;
+    }
+
+    public String getWriteOffOperatorNo() {
+        return writeOffOperatorNo;
+    }
+
+    public void setWriteOffOperatorNo(String writeOffOperatorNo) {
+        this.writeOffOperatorNo = writeOffOperatorNo;
+    }
+
+    public String getWriteOffOperatorName() {
+        return writeOffOperatorName;
+    }
+
+    public void setWriteOffOperatorName(String writeOffOperatorName) {
+        this.writeOffOperatorName = writeOffOperatorName;
+    }
+
+    public Date getWriteOffTime() {
+        return writeOffTime;
+    }
+
+    public void setWriteOffTime(Date writeOffTime) {
+        this.writeOffTime = writeOffTime;
     }
 }

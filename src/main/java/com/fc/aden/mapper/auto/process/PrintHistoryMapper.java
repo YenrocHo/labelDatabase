@@ -48,4 +48,42 @@ public interface PrintHistoryMapper extends BaseMapper<PrintHistory, PrintHistor
     List<PrintHistory> selectList(String stage, String food, String product,String items,String printUser,Date start,Date end,String itemsCode);
 
     List<PrintHistory> selectByTag(String stage, String food, String product, String itemsCode, String printUser, Date start, Date end);
+
+    /**
+     * 查询临期和过期的总数量
+     *
+     * @author Created by zc on 2020/2/18
+     */
+    int countExpired(@Param("itemsCode") String itemsCode, @Param("expiredType") String expiredType);
+
+    /**
+     * 查询临期和过期数据列表
+     *
+     * @author Created by zc on 2020/2/19
+     */
+    List<PrintHistory> listExpired(@Param("itemsCode") String itemsCode, @Param("expiredType") String expiredType);
+
+    /**
+     * 此标签是否在此项目点
+     *
+     * @author Created by zc on 2020/2/21
+     */
+    boolean isExistPrintIdAndItemCode(@Param("printLableId") String printLableId, @Param("itemsCode") String itemsCode);
+
+    /**
+     * 批量核销
+     *
+     * @author Created by zc on 2020/2/21
+     */
+    int writeOffBatch(@Param("writeOffOperatorNo") String writeOffOperatorNo,
+                      @Param("writeOffOperatorName") String writeOffOperatorName,
+                      @Param("writeOffTime") Date writeOffTime,
+                      @Param("printLabelIdList") List<String> printLabelIdList);
+
+    /**
+     * 通过标签打印id查询
+     *
+     * @author Created by zc on 2020/2/24
+     */
+    PrintHistory selectByPrintLabelId(@Param("printLableId") String printLableId);
 }

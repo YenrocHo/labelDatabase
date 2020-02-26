@@ -6,6 +6,8 @@ import com.fc.aden.model.custom.process.PrintHistory;
 import com.fc.aden.model.custom.process.PrintHistoryExample;
 import com.fc.aden.service.PrintHistoryService;
 import com.fc.aden.util.BeanCopierEx;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,5 +37,65 @@ public class PrintHistoryServiceImpl extends BaseServiceImpl<PrintHistoryMapper,
     @Transactional
     public int insertBatch(List<PrintHistory> printHistoryList) {
         return printHistoryMapper.insertBatch(printHistoryList);
+    }
+
+    /**
+     * 查询临期和过期的总数量
+     *
+     * @param itemsCode 项目点编号
+     * @author Created by zc on 2020/2/18
+     */
+    @Override
+    public int countExpired(String itemsCode, String expiredType) {
+        return printHistoryMapper.countExpired(itemsCode, expiredType);
+    }
+
+    /**
+     * 查询临期和过期数据列表
+     *
+     * @param itemsCode 项目点编号
+     * @author Created by zc on 2020/2/19
+     */
+    @Override
+    public List<PrintHistory> listExpired(String itemsCode, String expiredType, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo<>(printHistoryMapper.listExpired(itemsCode, expiredType)).getList();
+    }
+
+    /**
+     * 此标签是否在此项目点
+     *
+     * @param printLableId 打印标签id
+     * @param itemsCode 项目点编号
+     * @author Created by zc on 2020/2/21
+     */
+    @Override
+    public boolean isExistPrintIdAndItemCode(String printLableId, String itemsCode) {
+        return printHistoryMapper.isExistPrintIdAndItemCode(printLableId, itemsCode);
+    }
+
+    /**
+     * 批量核销
+     *
+     * @param writeOffOperatorNo 核销人账号
+     * @param writeOffOperatorName 核销人姓名
+     * @param writeOffTime 核销时间
+     * @param printLabelIdList 核销标签id集合
+     * @author Created by zc on 2020/2/21
+     */
+    @Override
+    public int writeOffBatch(String writeOffOperatorNo, String writeOffOperatorName, Date writeOffTime, List<String> printLabelIdList) {
+        return printHistoryMapper.writeOffBatch(writeOffOperatorNo, writeOffOperatorName, writeOffTime, printLabelIdList);
+    }
+
+    /**
+     * 通过标签打印id查询
+     *
+     * @param printLableId 标签打印id
+     * @author Created by zc on 2020/2/24
+     */
+    @Override
+    public PrintHistory selectByPrintLabelId(String printLableId) {
+        return printHistoryMapper.selectByPrintLabelId(printLableId);
     }
 }

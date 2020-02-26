@@ -394,4 +394,13 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
         return userVO;
     }
 
+    /**
+     * 通过用户名和项目点判断是否存在
+     *
+     * @author Created by zc on 2020/2/19
+     */
+    public boolean isExist(String username, String itemsCode) {
+        return tsysUserMapper.isExist(username, itemsCode);
+    }
+
 }

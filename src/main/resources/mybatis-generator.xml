@@ -73,8 +73,8 @@
                selectByExampleQueryId="false">
         </table>-->
 
-         <table tableName="t_sys_tag" domainObjectName="TSysTag" enableCountByExample="true">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+         <table tableName="al_print_history" domainObjectName="PrintHistory" enableCountByExample="true">
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         </table>
         <!--<table tableName="t_sys_premission" domainObjectName="TsysPremission" enableCountByExample="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>

@@ -24,6 +24,8 @@ public class AjaxResult extends HashMap<String, Object>
     public static final Integer CODE_ERROR  = 1;
     public static final Integer CODE_SUCCESS  = 200;
     public static final Integer CODE_SERVER_ERROR  = 500;
+    /** 参数错误 */
+    public static final int CODE_PARAM_ERROR = 414;
     public static final String AJAX_DATA  = "data";
     public static final String AJAX_CODE = "code";
     public static final String AJAX_MSG  = "msg";
@@ -124,6 +126,19 @@ public class AjaxResult extends HashMap<String, Object>
     {
         super.put(key, value);
         return this;
+    }
+
+    /**
+     * 返回
+     *
+     * @author Created by zc on 2020/2/19
+     */
+    public static AjaxResult success(int code, String msg, Object data){
+        AjaxResult json = new AjaxResult();
+        json.put(AJAX_CODE, code);
+        json.put(AJAX_MSG, msg);
+        json.put(AJAX_DATA, data);
+        return json;
     }
 
 }

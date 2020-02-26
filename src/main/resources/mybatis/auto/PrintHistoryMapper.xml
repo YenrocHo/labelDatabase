@@ -17,6 +17,10 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="shelf_life" jdbcType="VARCHAR" property="shelfLife"/>
+        <result column="is_write_off" jdbcType="INTEGER" property="writeOffFlag"/>
+        <result column="write_off_operator_no" jdbcType="VARCHAR" property="writeOffOperatorNo"/>
+        <result column="write_off_operator_name" jdbcType="VARCHAR" property="writeOffOperatorName"/>
+        <result column="write_off_time" jdbcType="TIMESTAMP" property="writeOffTime"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -452,5 +456,77 @@
             AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
         </if>
         order by create_time desc
+    </select>
+
+    <select id="countExpired" resultType="Integer" parameterType="String">
+        SELECT
+            COUNT(*)
+        FROM
+            al_print_history
+        WHERE 1 = 1
+        <choose>
+            <when test="expiredType == 1">
+                AND TIMEDIFF(shelf_life, DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S')) BETWEEN 0 AND 24
+            </when>
+            <otherwise>
+                AND TIMEDIFF(DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S'), shelf_life) > 0
+            </otherwise>
+        </choose>
+        <if test="itemsCode != null and itemsCode != ''">
+            and items_code = #{itemsCode, jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="listExpired" parameterType="String" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            al_print_history
+        WHERE 1 = 1
+        <choose>
+            <when test="expiredType == 1">
+                AND TIMEDIFF(shelf_life, DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S')) BETWEEN 0 AND 24
+            </when>
+            <otherwise>
+                AND TIMEDIFF(DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S'), shelf_life) > 0
+            </otherwise>
+        </choose>
+            <if test="itemsCode != null and itemsCode != ''">
+                and items_code = #{itemsCode, jdbcType=VARCHAR}
+            </if>
+    </select>
+
+    <select id="isExistPrintIdAndItemCode" resultType="Boolean" parameterType="String">
+        SELECT
+           COUNT(*)
+        FROM
+            al_print_history
+        WHERE
+            print_lable_id = #{printLableId, jdbcType=VARCHAR}
+            and items_code = #{itemsCode, jdbcType=VARCHAR}
+    </select>
+
+    <update id="writeOffBatch" parameterType="java.util.List">
+        UPDATE
+          al_print_history
+        SET
+          is_write_off = 1,
+          write_off_operator_no = #{writeOffOperatorNo, jdbcType=VARCHAR},
+          write_off_operator_name = #{writeOffOperatorName, jdbcType=VARCHAR},
+          write_off_time = #{writeOffTime, jdbcType=TIMESTAMP}
+        where print_lable_id in
+        <foreach collection="printLabelIdList" index="index" item="item" separator="," open="(" close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <select id="selectByPrintLabelId" parameterType="String" resultType="com.fc.aden.model.custom.process.PrintHistory">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            al_print_history
+        where
+            print_lable_id = #{printLableId, jdbcType=VARCHAR}
+        LIMIT 0, 1
     </select>
 </mapper>

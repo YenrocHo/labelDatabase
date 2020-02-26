@@ -48,4 +48,11 @@ public interface TsysUserMapper {
 
     UserVO selectLoginVo(@Param("number") String number);
     UserVO selectLoginOrItem(String number);
+
+    /**
+     * 通过用户名和项目点判断是否存在
+     *
+     * @author Created by zc on 2020/2/19
+     */
+    boolean isExist(@Param("username") String username, @Param("itemsCode") String itemsCode);
 }

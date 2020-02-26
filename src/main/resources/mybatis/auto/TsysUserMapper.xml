@@ -419,4 +419,12 @@
         from t_sys_user
         where items_code = #{itemsCode}
     </select>
+
+    <select id="isExist" resultType="Boolean" parameterType="String">
+        SELECT COUNT(*) FROM
+            t_sys_user
+        WHERE
+            username = #{username}
+        AND items_code = #{itemsCode};
+    </select>
 </mapper>
