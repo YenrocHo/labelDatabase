@@ -1,51 +1,59 @@
+/**
+ * projectName: labelDatabase
+ * fileName: ExpireController.java
+ * packageName: com.fc.aden.controller.admin
+ * date: 2020-02-27 14:42
+ * copyright(c) 德慧
+ */
 package com.fc.aden.controller.admin;
+
 
 import com.fc.aden.common.base.BaseController;
 import com.fc.aden.common.domain.AjaxResult;
+import com.fc.aden.common.support.Convert;
 import com.fc.aden.model.auto.TSysItems;
 import com.fc.aden.model.auto.TsysUser;
 import com.fc.aden.model.custom.TableSplitResult;
 import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.PrintHistory;
-import com.fc.aden.model.custom.process.TSysTag;
 import com.fc.aden.shiro.util.ShiroUtils;
-import com.fc.aden.vo.PrintHistoryVO;
-import com.fc.aden.vo.TagVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-
 @Controller
-@Api(value = "标签记录")
-@RequestMapping("TagController")
-public class TagController extends BaseController {
+@Api(value = "食品记录")
+@RequestMapping("PeriodController")
+public class PeriodController extends BaseController {
     //跳转页面参数
     private String prefix = "admin/tag";
 
     @GetMapping("/view")
-    @RequiresPermissions("system:tag:view")
-    public String view(Model model,ModelMap mp) {
+    @RequiresPermissions("system:period:view")
+    public String view(Model model, ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
         TsysUser tsysUser = ShiroUtils.getUser();
         mp.put("tsysUser", tsysUser);
-        setTitle(model, new TitleVo("标签列表", "标签管理", false, "欢迎进入图片页面", false, false));
-        return prefix + "/list";
+        setTitle(model, new TitleVo("标签临期列表", "标签临期管理", false, "欢迎进入图片页面", false, false));
+        return prefix + "/periodList";
     }
 
     /**
-     * 打印历史列表
+     * 打印历史列标签临期表
      *
      * @param stage
      * @param food
@@ -55,14 +63,14 @@ public class TagController extends BaseController {
      * @return
      */
     @PostMapping("/list")
-    @RequiresPermissions("system:tag:list")
+    @RequiresPermissions("system:period:list")
     @ResponseBody
-    public Object list(Tablepar tablepar,String stage, String food, String product, String items, String printUser, String startTime, String endTime) {
+    public Object list(Tablepar tablepar, String stage, String food, String product, String items, String printUser, String startTime, String endTime) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date start = null;
         Date end = null;
         Date date = null;//用于过期数据区别 勿修改
-        int period = 0;// 用于临期数据区别 勿修改
+        int period = 1;// 用于临期数据区别 勿修改
         try {
             if (startTime != null && !"".equals(startTime)) {
                 start = dateFormat.parse(startTime);
@@ -79,34 +87,23 @@ public class TagController extends BaseController {
     }
 
     /**
-     * 删除食物
-     *
+     * 批量核销历史数据
      * @param ids
      * @return
      */
-    @PostMapping("/remove")
-    @RequiresPermissions("system:tag:remove")
+    @PostMapping("updateList")
+    @RequiresPermissions("system:period:updateList")
     @ResponseBody
-    public AjaxResult remove(String ids) {
-        int b = sysTagService.deleteByPrimaryKey(ids);
-        if (b > 0) {
+    public AjaxResult updateList(String ids){
+        List<String> lista= Convert.toListStrArray(ids);
+        int b = 0;
+        for (String id:lista) {
+            b = sysTagService.update(id);
+        }
+        if(b>0){
             return success();
-        } else {
+        }else{
             return error();
         }
     }
-
-    @GetMapping("/details/{id}")
-    public String details(@PathVariable("id") String id, ModelMap modelMap) {
-        TSysTag tag = sysTagService.selectByPrimaryKey(id);
-        modelMap.put("tag", tag);
-        return prefix + "/details";
-    }
-
-    @GetMapping("/details")
-    @RequiresPermissions("system:tag:details")
-    public String upload(TSysTag tSysTag) {
-        return prefix + "/details";
-    }
 }
-

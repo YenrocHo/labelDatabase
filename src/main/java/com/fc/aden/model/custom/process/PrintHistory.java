@@ -12,6 +12,9 @@ import java.util.Date;
  */
 public class PrintHistory extends BaseEntity {
 
+
+
+    private String id;//项目点编号
     private String itemsCode;//项目点编号
 
     private String originalId;//历史id Android传的id
@@ -30,12 +33,14 @@ public class PrintHistory extends BaseEntity {
 
     private String employerName;//员工姓名
     private String employerId;// 员工工号
-    //保质期
+    //保质期 时间
     private String shelfLife;
+    //保质期 小时
+    private String productShelfLife;
 
     private Date printTime;//打印时间
 
-    /** 是否核销（0 - 否；1 - 是） */
+    /** 是否核销（0 - 否  核销；1 - 是 已核销） */
     private Integer writeOffFlag;
 
     /** 核销人用户账号 */
@@ -48,6 +53,24 @@ public class PrintHistory extends BaseEntity {
     private Date writeOffTime;
 
     private static final long serialVersionUID = 1L;
+
+    public String getProductShelfLife() {
+        return productShelfLife;
+    }
+
+    public void setProductShelfLife(String productShelfLife) {
+        this.productShelfLife = productShelfLife;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getItemsCode() {
         return itemsCode;

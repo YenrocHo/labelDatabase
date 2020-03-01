@@ -17,6 +17,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="shelf_life" jdbcType="VARCHAR" property="shelfLife"/>
+        <result column="product_shelf_life" jdbcType="VARCHAR" property="productShelfLife"/>
         <result column="is_write_off" jdbcType="INTEGER" property="writeOffFlag"/>
         <result column="write_off_operator_no" jdbcType="VARCHAR" property="writeOffOperatorNo"/>
         <result column="write_off_operator_name" jdbcType="VARCHAR" property="writeOffOperatorName"/>
@@ -84,7 +85,8 @@
     </sql>
     <sql id="Base_Column_List">
     id, items_code, original_id, print_lable_id, product_name, food_category, product_weight, correct_stage,
-    correct_storage, employer_name,employer_id,print_time , create_time, update_time,shelf_life
+    correct_storage, employer_name,employer_id,print_time , create_time, update_time,shelf_life,is_write_off,write_off_operator_no,
+    write_off_operator_name,write_off_time,product_shelf_life
   </sql>
     <select id="selectByExample" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample"
             resultMap="BaseResultMap">
@@ -101,8 +103,6 @@
             order by ${orderByClause}
         </if>
     </select>
-
-
     <select id="selectByOriginalId" parameterType="com.fc.aden.model.custom.process.PrintHistoryExample"
             resultMap="BaseResultMap">
         select
@@ -338,26 +338,20 @@
             <if test="shelfLife != null">
                 shelf_life = #{shelfLife,jdbcType=TIMESTAMP},
             </if>
+            <if test="productShelfLife != null">
+                product_shelf_life = #{productShelfLife,jdbcType=TIMESTAMP}
+            </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.fc.aden.model.custom.process.PrintHistory">
-    update al_print_history
-    set items_code = #{itemsCode,jdbcType=VARCHAR},
-      original_id = #{originalId,jdbcType=VARCHAR},
-      print_lable_id = #{printLableId,jdbcType=VARCHAR},
-      product_name = #{productName,jdbcType=VARCHAR},
-      food_category = #{foodCategory,jdbcType=VARCHAR},
-      product_weight = #{productWeight,jdbcType=VARCHAR},
-      correct_stage = #{correctStage,jdbcType=VARCHAR},
-      correct_storage = #{correctStorage,jdbcType=VARCHAR},
-      employer_name = #{employerName,jdbcType=VARCHAR},
-      employer_id = #{employerId,jdbcType=VARCHAR},
-      print_time = #{printTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now(),
-      shelf_life = #{shelfLife,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=VARCHAR}
+        update al_print_history
+        set
+        is_write_off = #{writeOffFlag},
+        write_off_time = #{writeOffTime},
+        write_off_operator_name = #{writeOffOperatorName},
+        write_off_operator_no = #{writeOffOperatorNo}
+        where id = #{id,jdbcType=VARCHAR}
   </update>
 
     <insert id="insertBatch" parameterType="java.util.List">
@@ -376,7 +370,8 @@
         print_time,
         create_time,
         update_time,
-        shelf_life
+        shelf_life,
+        product_shelf_life
         )
         values
         <foreach collection="printHistoryList" item="item" index="index" separator=",">
@@ -395,7 +390,8 @@
             #{item.printTime,jdbcType=TIMESTAMP},
             now(),
             now(),
-            #{item.shelfLife,jdbcType=TIMESTAMP}
+            #{item.shelfLife,jdbcType=TIMESTAMP},
+            #{item.productShelfLife,jdbcType=TIMESTAMP}
             )
         </foreach>
     </insert>
@@ -425,6 +421,12 @@
         <if test="end != null ">
             AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
         </if>
+        <if test="dateToday != null">
+            and shelf_life !='见包装' and now() &gt; UNIX_TIMESTAMP(shelf_life)
+        </if>
+        <if test="period == 1">
+            and shelf_life != '见包装' and TO_DAYS(shelf_life)-TO_DAYS(now()) = 1
+        </if>
         and items_code = #{itemsCode}
         order by create_time desc
     </select>
@@ -450,10 +452,16 @@
             AND correct_stage like CONCAT('%', #{stage, jdbcType=VARCHAR}, '%')
         </if>
         <if test="start != null ">
-            AND print_Time >= #{start,jdbcType=TIMESTAMP}
+            AND print_Time &gt;= #{start,jdbcType=TIMESTAMP}
         </if>
         <if test="end != null ">
             AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
+        </if>
+        <if test="dateToday != null">
+            and shelf_life != '见包装' and now() &gt; UNIX_TIMESTAMP(shelf_life)
+        </if>
+        <if test="period == 1">
+            and shelf_life != '见包装' and TO_DAYS(shelf_life)-TO_DAYS(now()) = 1
         </if>
         order by create_time desc
     </select>

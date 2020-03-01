@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="admin/common/html/head :: head(~{::title},~{::link},~{::style})">
+    <meta charset="UTF-8">
+    <title th:text=${title}></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+</head>
+<body>
+<!-- Ladda for Bootstrap 3按钮加载进度插件 -->
+<link rel="stylesheet" th:href="@{/static/admin/assets/js/button/ladda/ladda.min.css}">
+<!-- bootstrap-table表单样式 -->
+<link th:href="@{/static/admin/assets/js/bootstrap/css/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+<!--layui 修改原文件后的搜索下拉框 -->
+<link rel="stylesheet" th:href="@{/static/admin/layui/css/layui.css}" media="all"/>
+<style type="text/css">
+    /**
+    *这里写单独的css样式
+    */
+    .select-list ul li {
+        list-style-type: none;
+        float: left;
+    }
+
+    .clearfix {
+
+        width: 20%;
+    }
+
+    .float_l {
+        float: left;
+    }
+
+    .form-control, .layui-form-select {
+        width: 80%;
+
+    }
+
+    .form-dxm {
+        width: 100%;
+    }
+
+    .clear, .btn-success {
+        clear: left;
+    }
+
+    .search_two, .btn-success {
+        margin-top: 12px;
+    }
+
+    .m_clear {
+        clear: both;
+    }
+
+</style>
+<!-- 右边内容 -->
+<div class="wrap-fluid">
+    <div class="container-fluid paper-wrap bevel tlbr">
+        <!-- 内容 -->
+        <!--标题 通用-->
+        <div th:replace="admin/common/html/title :: title(${title},${parenttitle},${isMsg},${msgHTML})">
+        </div>
+        <!-- 结束标题 通用-->
+        <div class="content-wrap">
+            <!-- 结束内容 -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- 搜索条件 -->
+                    <div class="nest" id="inlineClose">
+                        <div class="title-alt">
+                            <h6>搜索条件</h6>
+                            <div class="titleClose">
+                                <a class="gone" href="#inlineClose">
+                                    <span class="entypo-cancel"></span>
+                                </a>
+                            </div>
+                            <div class="titleToggle">
+                                <a class="nav-toggle-alt" href="#search_div">
+                                    <span class="entypo-up-open"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="body-nest" id="search_div">
+                            <div class="form_left">
+                                <form role="form" class="layui-form">
+                                    <div class="search_one">
+                                        <div class="clearfix float_l">
+                                            <input type="text" name="stage" placeholder="阶段" class="form-control ">
+                                        </div>
+                                        <div class="clearfix float_l">
+                                            <input type="text" name="food" placeholder="食品种类" class="form-control">
+                                        </div>
+                                        <div class="clearfix float_l">
+                                            <input type="text" name="product" placeholder="产品" class="form-control">
+                                        </div>
+                                        <div class="layui-input-inline clearfix">
+                                            <select name="itemsCode" lay-verify="required" lay-search="">
+                                                <option value="">项目点编号</option>
+                                                <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3
+                                                        th:text="${m.itemsCode}"></h3></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="m_clear"></div>
+                                    <div class="search_two">
+                                        <div class="clearfix float_l">
+                                            <input type="text" name="printUser" placeholder="打印人" class="form-control">
+                                        </div>
+                                        <div class="clearfix float_l">
+                                            <input type="text" class="form-control" name="startTime" placeholder="开始时间"
+                                                   id="startTime">
+                                        </div>
+                                        <div class="clearfix float_l">
+                                            <input type="text" class="form-control" name="endTime" placeholder="结束时间"
+                                                   id="endTime">
+                                        </div>
+                                        <div class="clearfix float_l">
+                                            <button onclick="$.table.search(this)" class="form-control" type="button"
+                                                    style="background:#4bb6af;"><i
+                                                    class="fa fa-search" style="color: white">&nbsp;搜索</i>
+                                                <p style="color: white"></p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="m_clear"></div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END搜索条件 -->
+                    <!-- 空白页开始-->
+                    <div class="nest" id="Blank_PageClose">
+                        <div class="title-alt">
+                            <h6>表单</h6>
+                            <div class="titleClose">
+                                <a class="gone" href="#Blank_PageClose">
+                                    <span class="entypo-cancel"></span>
+                                </a>
+                            </div>
+                            <div class="titleToggle">
+                                <a class="nav-toggle-alt" href="#Blank_Page_Content">
+                                    <span class="entypo-up-open"></span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="body-nest" id="Blank_Page_Content">
+                            <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
+                                <button onclick="$.operate.batUpdate()" type="button" class="btn btn-info">
+                                    <span class="entypo-trash"></span>&nbsp;&nbsp;批量核销
+                                </button>
+                            </div>
+                            <!-- 工具条 end-->
+                            <table id="dataTable" class="table-striped footable-res footable metro-blue"
+                                   data-page-size="6">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 空白页结束 -->
+            </div>
+            <!-- 结束内容 -->
+            <!-- 页脚 通用-->
+            <div th:replace="admin/common/html/footer :: footer">
+            </div>
+            <!-- 结束页脚通用 -->
+        </div>
+    </div>
+</div>
+<!-- 结束右边内容 -->
+<!-- ###############################代码编写出############################### -->
+<!-- END 右侧隐藏滑块内容-->
+
+<!-- 通用js -->
+<div th:include="admin/common/html/js :: onload_js">
+
+</div>
+<!-- bootstarp 表格 -->
+<script th:src="@{/static/admin/assets/js/bootstrap/js/bootstrap-table/bootstrap-table.min.js}"
+        type="text/javascript"></script>
+<script th:src="@{/static/admin/assets/js/bootstrap/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"
+        type="text/javascript"></script>
+<script th:src="@{/static/admin/assets/js/bootstrap/js/base_list.js}" type="text/javascript"></script>
+<!-- 导出 -->
+<script th:src="@{/static/admin/assets/js/bootstrap/extensions/export/bootstrap-table-export.js}"
+        type="text/javascript"></script>
+<script th:src="@{/static/admin/assets/js/bootstrap/extensions/export/tableExport.js}" type="text/javascript"></script>
+
+<!-- 弹窗 -->
+<script th:src="@{/static/admin/assets/js/layer/layer.js}" type="text/javascript"></script>
+<!-- 遮罩层 -->
+<script th:src="@{/static/admin/assets/js/blockUI/jquery.blockUI.js}" type="text/javascript"></script>
+<!--时间插件-->
+<script th:src="@{/static/admin/laydate/laydate.js}"></script>
+<!-- layui 修改原文件后的搜索下拉框-->
+<script th:src="@{/static/admin/layui/layui.js}" charset="utf-8" type="text/javascript"></script>
+<script type="text/javascript">
+    var dataUrl = window.rootPath + "/PeriodController/list";
+    var updateList = window.rootPath + "/PeriodController/updateList";
+    var options = {
+        dataUrl: dataUrl,
+        updateList: updateList,
+        sortName: "id",
+        modalName: "标签",
+        search: false,
+        dataColumns: [
+            {
+                checkbox: true
+            }, {
+                field: "id",
+                visible: false,
+                title: 'id'
+            },{
+                title: '序号',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push(index + 1);
+                    return actions.join('');
+                }
+            },
+            {
+                field: 'itemsCode',
+                title: '项目点'
+            }, {
+                field: 'correctStage',
+                title: '阶段'
+            }, {
+                field: 'foodCategory',
+                title: '食品种类'
+            }, {
+                field: 'productName',
+                title: '产品'
+            }, {
+                field: 'correctStorage',
+                title: '存储条件'
+            }, {
+                field: 'productShelfLife',
+                title: '保质期'
+            }, {
+                field: 'employerId',
+                title: '打印人工号'
+            }, {
+                field: 'employerName',
+                title: '打印人'
+            }, {
+                // field: 'printTime',
+                title: '打印时间',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push(timeStamp(row.printTime));
+                    return actions.join('');
+                }
+            }, {
+                // field: 'createTime',
+                title: '上传时间',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push(timeStamp(row.createTime));
+                    return actions.join('');
+                }
+            }, {
+                field: 'writeOffOperatorNo',
+                title: '核销人账号'
+            }, {
+                field: 'writeOffOperatorName',
+                title: '核销人姓名'
+            }, {
+                // field: 'createTime',
+                title: '核销时间',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    if (row.writeOffTime != null && row.writeOffTime != '') {
+                        actions.push(timeStamp(row.writeOffTime));
+                    }
+                    return actions.join('');
+                }
+            }, {
+                title: '操作',
+                formatter: function (value, row, index) {
+                    var id = row.id;
+                    var actions = [];
+                    if (row.writeOffFlag == 0) {
+                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updateWriteOffFlag(\'' + id + '\')" ><i class="fa fa-edit"></i>核销</a> ');
+                    } else {
+                        actions.push('<a class="btn btn-success btn-xs" disabled="disabled"><i class="fa fa-edit"></i>已核销</a> ');
+                    }
+                    return actions.join('');
+                }
+            }]
+    };
+    $(function () {
+        var oTab = $.table.oTableInit(options);
+        oTab.Init();
+    })
+
+    function timeStamp(time) {
+        var date = new Date(time + 8 * 3600 * 1000);
+        return date.toJSON().substr(0, 19).replace('T', ' ').replace(/-/g, '.');
+    }
+
+</script>
+<script type="text/javascript">
+    function updateWriteOffFlag(id) {
+        $.ajax({
+            url: window.rootPath +"/ExpireController/update",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: {
+                "id": id
+            },    //参数值
+            type: "POST",   //请求方式
+            success: function (result) {
+                alert("核销成功")
+                location.reload();
+            },
+            error: function (result) {
+                alert(result.message);
+                location.reload();
+            }
+        });
+    }
+</script>
+
+<script>
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#startTime' //指定元素
+    });
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#endTime' //指定元素
+    });
+</script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form
+    });
+</script>
+</body>
+</html>

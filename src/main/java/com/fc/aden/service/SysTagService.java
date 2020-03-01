@@ -88,7 +88,7 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
      * @param printUser
      * @return
      */
-    public PageInfo<PrintHistory> sysTagList(Tablepar tablepar, String stage, String food, String product, String items, String printUser, Date start, Date end) {
+    public PageInfo<PrintHistory> sysTagList(Tablepar tablepar, String stage, String food, String product, String items, String printUser, Date start, Date end,Date dateToday,int period) {
         List<PrintHistory> list = null;
         TsysUser tsysUser = ShiroUtils.getUser();
             //第一次进入列表
@@ -97,15 +97,25 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
                     PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
                 }
                //项目点管理员查询
-                list = printHistoryMapper.selectList(stage, food, product,items, printUser, start, end,tsysUser.getItemsCode());
+                list = printHistoryMapper.selectList(stage, food, product,items, printUser, start, end,tsysUser.getItemsCode(),dateToday,period);
             }else{
                 if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
                     PageHelper.startPage(tablepar.getPageNum(), tablepar.getPageSize());
                 }
                 //超级管理员查询
-                list = printHistoryMapper.selectByTag(stage, food, product, items, printUser, start, end);
+                list = printHistoryMapper.selectByTag(stage, food, product, items, printUser, start, end,dateToday,period);
             }
         PageInfo<PrintHistory> pageInfo = new PageInfo<PrintHistory>(list);
         return pageInfo;
+    }
+
+    public int update(String id){
+        TsysUser tsysUser = ShiroUtils.getUser();
+        PrintHistory printHistory = printHistoryMapper.selectByPrimaryKey(id);
+        printHistory.setWriteOffOperatorName(tsysUser.getName());
+        printHistory.setWriteOffOperatorNo(tsysUser.getUsername());
+        printHistory.setWriteOffFlag(1);
+        printHistory.setWriteOffTime(new Date());
+      return printHistoryMapper.updateByPrimaryKey(printHistory);
     }
 }

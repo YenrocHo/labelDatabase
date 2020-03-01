@@ -139,6 +139,7 @@ public class LoginController  extends BaseController {
                 printHistory.setProductWeight(printData.getString("weight"));
                 printHistory.setShelfLife(printData.getString("shelfLife"));
                 printHistory.setCorrectStage(printData.getString("correctStage"));
+                printHistory.setProductShelfLife(printData.getString("productShelfLife"));
                 printHistory.setCorrectStorage(printData.getString("correctStorage"));
                 printHistory.setEmployerName(printData.getString("employerName"));//员工姓名
                 printHistory.setEmployerId(printData.getString("employerId"));//员工工号
