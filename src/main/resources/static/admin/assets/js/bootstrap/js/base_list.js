@@ -163,7 +163,6 @@
                 })
             },	batUpdate: function() {
                 var rows = $.common.isEmpty($.table._option.id) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.id);
-                alert(rows);
                if (rows.length == 0) {
                     $.modal.alertWarning("请至少选择一条记录");
                     return
