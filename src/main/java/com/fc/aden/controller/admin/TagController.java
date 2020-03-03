@@ -57,7 +57,7 @@ public class TagController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:tag:list")
     @ResponseBody
-    public Object list(Tablepar tablepar,String stage, String food, String product, String items, String printUser, String startTime, String endTime) {
+    public Object list(Tablepar tablepar,String stage, String food, String product, String items, String printUser, String startTime, String endTime,String writeOffFlag) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date start = null;
         Date end = null;
@@ -73,7 +73,7 @@ public class TagController extends BaseController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        PageInfo<PrintHistory> page = sysTagService.sysTagList(tablepar, stage, food, product, items, printUser, start, end,date,period);
+        PageInfo<PrintHistory> page = sysTagService.sysTagList(tablepar, stage, food, product, items, printUser, start, end,date,period,writeOffFlag);
         TableSplitResult<PrintHistory> result = new TableSplitResult<PrintHistory>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }

@@ -45,9 +45,9 @@ public interface PrintHistoryMapper extends BaseMapper<PrintHistory, PrintHistor
      */
     public int insertBatch(@Param("printHistoryList") List<PrintHistory> printHistoryList);
 
-    List<PrintHistory> selectList(String stage, String food, String product,String items,String printUser,Date start,Date end,String itemsCode,Date dateToday,int period);
+    List<PrintHistory> selectList(String stage, String food, String product,String items,String printUser,Date start,Date end,String itemsCode,Date dateToday,int period,int writeOffFlag);
 
-    List<PrintHistory> selectByTag(String stage, String food, String product, String itemsCode, String printUser, Date start, Date end,Date dateToday,int period);
+    List<PrintHistory> selectByTag(String stage, String food, String product, String itemsCode, String printUser, Date start, Date end,Date dateToday,int period,int writeOffFlag);
 
     /**
      * 查询临期和过期的总数量

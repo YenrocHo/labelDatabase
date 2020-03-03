@@ -38,10 +38,6 @@
         width: 80%;
 
     }
-    .form-dxm{
-        width: 100%;
-    }
-
     .clear, .btn-success {
         clear: left;
     }
@@ -49,7 +45,9 @@
     .search_two, .btn-success {
         margin-top: 12px;
     }
-
+    .form-dxm{
+        width: 100%;
+    }
     .m_clear {
         clear: both;
     }
@@ -102,7 +100,15 @@
                                                         th:text="${m.itemsCode}"></h3></option>
                                             </select>
                                         </div>
+                                        <div class="clearfix float_l">
+                                            <select name="writeOffFlag" lay-verify="required" lay-search="">
+                                                <option value="3">全部</option>
+                                                <option  value = "1"><h3>已核销</h3></option>
+                                                <option  value = "0"><h3>未核销</h3></option>
+                                            </select>
+                                        </div>
                                     </div>
+
                                     <div class="m_clear"></div>
                                     <div class="search_two">
                                         <div class="clearfix float_l">
@@ -123,7 +129,6 @@
                                         </div>
                                     </div>
                                     <div class="m_clear"></div>
-
                                 </form>
                             </div>
                         </div>
@@ -190,6 +195,7 @@
 <script th:src="@{/static/admin/laydate/laydate.js}"></script>
 <!-- layui 修改原文件后的搜索下拉框-->
 <script th:src="@{/static/admin/layui/layui.js}" charset="utf-8" type="text/javascript"></script>
+
 <script type="text/javascript">
     var dataUrl = window.rootPath + "/TagController/list";
     var removeUrl = window.rootPath + "/TagController/remove";
@@ -250,6 +256,34 @@
                     actions.push(timeStamp(row.createTime));
                     return actions.join('');
                 }
+            },{
+                field: 'writeOffOperatorNo',
+                title: '核销人账号'
+            }, {
+                field: 'writeOffOperatorName',
+                title: '核销人姓名'
+            }, {
+                // field: 'createTime',
+                title: '核销时间',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    if (row.writeOffTime != null && row.writeOffTime != '') {
+                        actions.push(timeStamp(row.writeOffTime));
+                    }
+                    return actions.join('');
+                }
+            }, {
+                title: '操作',
+                formatter: function (value, row, index) {
+                    var id = row.id;
+                    var actions = [];
+                    if (row.writeOffFlag == 0) {
+                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updateWriteOffFlag(\'' + id + '\')" ><i class="fa fa-edit"></i>核销</a> ');
+                    } else {
+                        actions.push('已核销 ');
+                    }
+                    return actions.join('');
+                }
             }]
     };
     $(function () {
@@ -257,17 +291,26 @@
         oTab.Init();
     })
 
-  /*  function timeStamp(time){
-        var date = new Date(time);
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-        var D = date.getDate() + ' ';
-        var h = date.getHours() + ':';
-        var m = date.getMinutes() +":";
-        var s = date.getSeconds();
-        console.log(Y+M+D+h+m+s); //
-        return Y+M+D+h+m+s+" ";
-    }*/
+    function updateWriteOffFlag(id) {
+        $.ajax({
+            url: window.rootPath +"/ExpireController/update",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: {
+                "id": id
+            },    //参数值
+            type: "POST",   //请求方式
+            success: function (result) {
+                alert("核销成功")
+                location.reload();
+            },
+            error: function (result) {
+                alert(result.message);
+                location.reload();
+            }
+        });
+    }
+
     function timeStamp(time){
         var date = new Date(time + 8 * 3600 * 1000);
         return date.toJSON().substr(0, 19).replace('T', ' ').replace(/-/g, '.');

@@ -228,7 +228,7 @@
                 field: 'correctStorage',
                 title: '存储条件'
             }, {
-                field: 'productShelfLife',
+                field: 'shelfLife',
                 title: '保质期'
             }, {
                 field: 'employerId',
@@ -276,7 +276,7 @@
                     if (row.writeOffFlag == 0) {
                         actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updateWriteOffFlag(\'' + id + '\')" ><i class="fa fa-edit"></i>核销</a> ');
                     } else {
-                        actions.push('<a class="btn btn-success btn-xs" disabled="disabled"><i class="fa fa-edit"></i>已核销</a> ');
+                        actions.push('已核销');
                     }
                     return actions.join('');
                 }

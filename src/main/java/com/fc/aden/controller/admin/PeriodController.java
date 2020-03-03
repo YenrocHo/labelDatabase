@@ -65,12 +65,13 @@ public class PeriodController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:period:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String stage, String food, String product, String items, String printUser, String startTime, String endTime) {
+    public Object list(Tablepar tablepar, String stage, String food, String product, String items, String printUser, String startTime, String endTime,String writeOffFlag) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date start = null;
         Date end = null;
         Date date = null;//用于过期数据区别 勿修改
         int period = 1;// 用于临期数据区别 勿修改
+        int write = Integer.parseInt(writeOffFlag);
         try {
             if (startTime != null && !"".equals(startTime)) {
                 start = dateFormat.parse(startTime);
@@ -81,7 +82,7 @@ public class PeriodController extends BaseController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        PageInfo<PrintHistory> page = sysTagService.sysTagList(tablepar, stage, food, product, items, printUser, start, end,date,period);
+        PageInfo<PrintHistory> page = sysTagService.sysTagList(tablepar, stage, food, product, items, printUser, start, end,date,period,writeOffFlag);
         TableSplitResult<PrintHistory> result = new TableSplitResult<PrintHistory>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }

@@ -423,9 +423,17 @@
         </if>
         <if test="dateToday != null">
             and shelf_life !='见包装' and now() &gt; UNIX_TIMESTAMP(shelf_life)
+            and is_write_off = 0
         </if>
         <if test="period == 1">
             and shelf_life != '见包装' and TO_DAYS(shelf_life)-TO_DAYS(now()) = 1
+            and is_write_off = 0
+        </if>
+        <if test="writeOffFlag == 0">
+            and is_write_off = 0
+        </if>
+        <if test="writeOffFlag == 1">
+            and is_write_off = 1
         </if>
         and items_code = #{itemsCode}
         order by create_time desc
@@ -459,10 +467,13 @@
         </if>
         <if test="dateToday != null">
             and shelf_life != '见包装' and now() &gt; UNIX_TIMESTAMP(shelf_life)
+            and is_write_off = 0
         </if>
         <if test="period == 1">
             and shelf_life != '见包装' and TO_DAYS(shelf_life)-TO_DAYS(now()) = 1
+            and is_write_off = 0
         </if>
+
         order by create_time desc
     </select>
 
