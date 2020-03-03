@@ -482,7 +482,7 @@
             COUNT(*)
         FROM
             al_print_history
-        WHERE 1 = 1
+        WHERE is_write_off = 0
         <choose>
             <when test="expiredType == 1">
                 AND TIMEDIFF(shelf_life, DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S')) BETWEEN 0 AND 24
@@ -501,7 +501,7 @@
             <include refid="Base_Column_List"/>
         from
             al_print_history
-        WHERE 1 = 1
+        WHERE is_write_off = 0
         <choose>
             <when test="expiredType == 1">
                 AND TIMEDIFF(shelf_life, DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S')) BETWEEN 0 AND 24
