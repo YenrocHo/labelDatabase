@@ -57,13 +57,13 @@
                                         <input type="text" name="searchTxt" placeholder="产品名字" class="form-control">
                                     </div>
                                     <div class="layui-input-inline" th:if="${tsysUser.roles} eq '2'">
-                                        <select name="itemsCode" lay-verify="required" lay-search="">
+                                        <select name="itemsCode" lay-verify="required" lay-search="" onchange="selectFood()">
                                             <option value="">项目点编号</option>
                                             <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3
                                                     th:text="${m.itemsCode}"></h3></option>
                                         </select>
                                     </div>
-                                    <div class="layui-input-inline">
+                                    <div class="layui-input-inline" id="food">
                                         <select name="foodName" lay-verify="required" lay-search="">
                                             <option value="">食品名称</option>
                                             <option th:each="m : ${tSysFood}" th:value="${m.foodCode}"><h3
@@ -227,6 +227,15 @@
         });
     }
 
+    function selectFood() {
+        alert(1);
+        var items =$("[name='itemsCode']").val();
+        alert(items);
+        if (items!=""){
+
+        }
+    }
+
     function productUpload() {
         var url = $.table._option.downUrl;
         $.modal.open("导入" + $.table._option.modalName, url);
@@ -247,6 +256,8 @@
         var im_paper = document.getElementById("content_body");
         im_paper.style.minHeight = (document.documentElement.clientHeight).toString() + "px";
     }
+
+
 </script>
 </body>
 </html>

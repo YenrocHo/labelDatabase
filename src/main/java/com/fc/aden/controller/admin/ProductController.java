@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @Description: 产品管理
@@ -62,7 +63,7 @@ public class ProductController extends BaseController {
      **/
     @GetMapping("view")
     @RequiresPermissions("system:product:view")
-    public String view(Model model,ModelMap mp) {
+    public String view(Model model, ModelMap mp) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
         mp.put("tSysItems", tSysItemsList);
         TsysUser tsysUser = ShiroUtils.getUser();
@@ -76,11 +77,11 @@ public class ProductController extends BaseController {
     @GetMapping("/add")
     public String add(ModelMap modelMap) {
         List<TSysItems> tSysItemsList = sysItemsService.queryItems();
-        List<TSysFood> tSysFoods =null;
+        List<TSysFood> tSysFoods = null;
         TsysUser tsysUser = ShiroUtils.getUser();
-        if(tsysUser.getRoles()!="2"&&!"2".equals(tsysUser.getRoles())){
+        if (tsysUser.getRoles() != "2" && !"2".equals(tsysUser.getRoles())) {
             tSysFoods = sysFoodService.findByItemCode(tsysUser.getItemsCode());
-        }else{
+        } else {
             tSysFoods = sysFoodService.queryFood();
         }
         List<FoodVO> foodVOList = new ArrayList<>();
@@ -102,15 +103,15 @@ public class ProductController extends BaseController {
         TSysProduct tSysProduct = sysProductService.selectProductById(id);
         String items = tSysProduct.getItemsCode();//当前用户项目点
         List<TSysItems> tSysItems = sysItemsService.queryItems();//获取全部项目点
-        TSysFood tSysFood = sysFoodService.findByFoodId(tSysProduct.getFoodName(),items);//当前食品种类
+        TSysFood tSysFood = sysFoodService.findByFoodId(tSysProduct.getFoodName(), items);//当前食品种类
         //储存条件保质期
         List<ProductVO> productStores = productStoreService.findByProductIdList(id);
         List<TSysFood> tSysFoodList = sysFoodService.findByItemCode(items);//获取用户食品种类
-        mmap.addAttribute("tSysFood",tSysFood);
-        mmap.addAttribute("productStores",productStores);
-        mmap.addAttribute("tSysFoodList",tSysFoodList);
-        mmap.addAttribute("items",items);
-        mmap.addAttribute("tSysItems",tSysItems);
+        mmap.addAttribute("tSysFood", tSysFood);
+        mmap.addAttribute("productStores", productStores);
+        mmap.addAttribute("tSysFoodList", tSysFoodList);
+        mmap.addAttribute("items", items);
+        mmap.addAttribute("tSysItems", tSysItems);
         request.getSession().setAttribute("tSysProduct", tSysProduct);
         return prefix + "/edit";
     }
@@ -128,8 +129,8 @@ public class ProductController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:product:list")
     @ResponseBody
-    public Object list(Tablepar tablepar, String searchTxt, String itemsCode,String foodName) {
-        PageInfo<TSysProduct> page = sysProductService.list(tablepar, searchTxt, itemsCode,foodName);
+    public Object list(Tablepar tablepar, String searchTxt, String itemsCode, String foodName) {
+        PageInfo<TSysProduct> page = sysProductService.list(tablepar, searchTxt, itemsCode, foodName);
         TableSplitResult<TSysProduct> result = new TableSplitResult<TSysProduct>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
     }
@@ -144,7 +145,7 @@ public class ProductController extends BaseController {
     @PostMapping("/add")
     @RequiresPermissions("system:product:add")
     @ResponseBody
-    public AjaxResult add(TSysProduct tSysProduct,HttpServletRequest request,@RequestParam(value="store", required = false)List<String> store) {
+    public AjaxResult add(TSysProduct tSysProduct, HttpServletRequest request, @RequestParam(value = "store", required = false) List<String> store) {
         TSysProduct product = new TSysProduct();
         String pId = SnowflakeIdWorker.getUUID().toString();
         product.setId(pId);
@@ -165,9 +166,14 @@ public class ProductController extends BaseController {
             productStore.setStoreId(storeID);
             productStore.setId(sId);
             productStore.setProductId(pId);
-            if(s != null && s != ""){//只能输入数字 为空则见包装
-                productStore.setShelfLife(s+"小时");
-            }else {
+            if (s != "") {
+                boolean b = isNumeric(s);
+                if (b == true) {//为true则是数字
+                    productStore.setShelfLife(s + "小时");
+                } else {
+                    productStore.setShelfLife("见包装");
+                }
+            }else{
                 productStore.setShelfLife("见包装");
             }
             productStore.setCreateTime(new Date());
@@ -182,6 +188,16 @@ public class ProductController extends BaseController {
         }
     }
 
+    //判断数据是否为int类型
+    public static boolean isNumeric(String str) {
+        for (int i = str.length(); --i >= 0; ) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /***
      * @Author Noctis
      * @Description //产品修改
@@ -192,7 +208,7 @@ public class ProductController extends BaseController {
     @RequiresPermissions("system:product:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(TSysProduct tSysProduct, HttpServletRequest request,@RequestParam(value="store", required = false)List<String> store) {
+    public AjaxResult editSave(TSysProduct tSysProduct, HttpServletRequest request, @RequestParam(value = "store", required = false) List<String> store) {
         TSysProduct product = (TSysProduct) request.getSession().getAttribute("tSysProduct");
         tSysProduct.setId(product.getId());
         tSysProduct.setUpdateTime(new Date());
@@ -201,7 +217,7 @@ public class ProductController extends BaseController {
         for (String storeID : store) {
             //获取存储条件id下输入的保质期
             String s = request.getParameter(storeID);
-            ProductStore productStore = productStoreService.findByStoreId(product.getId(),storeID);
+            ProductStore productStore = productStoreService.findByStoreId(product.getId(), storeID);
             productStore.setProductId(product.getId());
             productStore.setShelfLife(s);
             productStore.setUpdateTime(new Date());
@@ -209,6 +225,7 @@ public class ProductController extends BaseController {
         }
         return toAjax(sysProductService.updateProduct(tSysProduct));
     }
+
     /**
      * @return int
      * @Author Noctis
@@ -222,20 +239,21 @@ public class ProductController extends BaseController {
         String product = request.getParameter("product");
         String itemsCode = request.getParameter("itemsCode");
         String foodCode = request.getParameter("foodName");
-        ProductFoodStoreVO b = sysProductService.checkcNameUnique(product,itemsCode,foodCode);
-        return AjaxResult.successData(200,b);
+        ProductFoodStoreVO b = sysProductService.checkcNameUnique(product, itemsCode, foodCode);
+        return AjaxResult.successData(200, b);
     }
 
     /**
      * 查询存储条件
+     *
      * @param itemsCode
      * @return
      */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/findStore")
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "/findStore")
     @ResponseBody
-    public AjaxResult findStore(String itemsCode){
+    public AjaxResult findStore(String itemsCode) {
         List<TSysStore> sysStores = sysStoreService.findByStoreList(itemsCode);
-        return AjaxResult.successData(200,sysStores);
+        return AjaxResult.successData(200, sysStores);
     }
 
 
@@ -304,7 +322,7 @@ public class ProductController extends BaseController {
             return prefix + "/import_error";
         }
         ImportProductDTO importProductDTO = sysProductService.importValid(dataList);
-        List<ProductVO> productVOList = sysProductService.getSuccessTSysProduct (importProductDTO.gettSysProductDTOS());
+        List<ProductVO> productVOList = sysProductService.getSuccessTSysProduct(importProductDTO.gettSysProductDTOS());
         sysProductService.saveSysProduct(productVOList);
         model.addAttribute("importProductDTO", importProductDTO);
         return prefix + "/product_valid";

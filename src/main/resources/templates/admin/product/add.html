@@ -47,12 +47,11 @@
                                     <span id="stageSpan" style="color: red;"></span>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="food">
                                 <label class="col-sm-3 control-label ">食品种类：</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" id="foodName" name="foodName">
-                                        <option th:each="m : ${foodVOList}" th:value="${m.foodCode}"><h3
-                                                th:text="${m.food}"></h3></option>
+                                <div class="col-sm-8" >
+                                    <select class='form-control' id='foodName' name='foodName'>
+
                                     </select>
                                     <span id="foodSpan" style="color: red;"></span>
                                 </div>
@@ -62,7 +61,7 @@
                                 <div class="col-sm-8">
                                     <div class="icheckbox-blue">
                                         <label>
-                                            <input name="priority" value="1"  type="radio"><b>是</b>
+                                            <input name="priority" value="1" type="radio"><b>是</b>
                                         </label>
                                         <label>
                                             <input name="priority" value="2" type="radio" checked><b>否</b>
@@ -114,7 +113,7 @@
 </body>
 <script type="text/javascript">
     $(function () {
-        itemsCodeFun();
+        // itemsCodeFun();
         $("#form-add").validate({
             rules: {
                 product: {
@@ -171,7 +170,7 @@
 
     //根据项目点显示存储条件
     function itemsCodeFun() {
-        var items =$("[name='itemsCode']").val();
+        var items = $("[name='itemsCode']").val();
         $.ajax({
             url: rootPath + "/ProductController/findStore",
             type: "get",
@@ -183,6 +182,29 @@
                 storeView(result)
             }
         });
+        $.ajax({
+            url: rootPath + "/FoodController/findFood",
+            type: "get",
+            dataType: "json",
+            data: {
+                "itemsCode": items,
+            },
+            success: function (result) {
+                foodView(result)
+            }
+        });
+    }
+
+    function foodView(result) {
+        if (result != null) {
+            $("#foodName").html("");
+            $.each(result.data, function (i, d) {
+            var food_str = "";
+                food_str += "<option value='" + d.foodCode + "'>";
+                food_str += "<h3>"+ d.food +"</h3></option>";
+                $("#foodName").append(food_str);
+            });
+        }
     }
 
     //食品种类渲染页面
@@ -193,11 +215,10 @@
                 var store_str = "";
                 store_str += "<input name='store' type='hidden' value='" + d.id + "' >";
                 store_str += d.name + "&nbsp;:";
-                store_str += "&nbsp;<input type='text' class=\"form-control\" value=''  name='" + d.id + "'" +
-                    "                                               oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
+                store_str += "&nbsp;<input type='text' class=\"form-control\" value=''  name='" + d.id + "'/>";
                 $("#sysStores").append(store_str);
             });
-        }
+    }
     }
 
 </script>

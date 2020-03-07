@@ -60,14 +60,14 @@ public class AndroidServiceImpl implements AndroidService {
             //账号不存在
             return AjaxResult.error(Const.CodeEnum.noExistent.getCode(),Const.CodeEnum.noExistent.getValue());
         }
-//        TSysItems tSysItems = tSysItemsMapper.queryByItemsCode(tsysUser.getItemsCode());
+        TSysItems tSysItem = tSysItemsMapper.queryByItemsCode(tsysUser.getItemsCode());
         List<TSysItems> tSysItems = tSysItemsMapper.selectByItems(tsysUser.getItemsCode());
 
-//        Integer i = tSysItems.getStatus();
-//        if (i == 0){
+        Integer i = tSysItem.getStatus();
+        if (i == 0){
 //            //项目点停止运行
-//            return AjaxResult.error(Const.CodeEnum.noItems.getCode(),Const.CodeEnum.noItems.getValue());
-//        }
+            return AjaxResult.error(Const.CodeEnum.noItems.getCode(),Const.CodeEnum.noItems.getValue());
+        }
         tsysUser.settSysItems(tSysItems);
         String statusToken = UUID.randomUUID().toString();
         TokenCache.setKey(TokenCache.TOKRN_PREFIX + username, statusToken);

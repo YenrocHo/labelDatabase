@@ -94,7 +94,7 @@
                                             <input type="text" name="product" placeholder="产品" class="form-control">
                                         </div>
                                         <div class="layui-input-inline clearfix">
-                                            <select name="itemsCode" lay-verify="required" lay-search="">
+                                            <select name="items" lay-verify="required" lay-search="">
                                                 <option value="">项目点编号</option>
                                                 <option th:each="m : ${tSysItems}" th:value="${m.itemsCode}"><h3
                                                         th:text="${m.itemsCode}"></h3></option>

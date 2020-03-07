@@ -240,4 +240,11 @@ public class FoodController extends BaseController {
         model.addAttribute("importFoodDTO", importFoodDTO);
         return prefix + "/food_valid";
     }
+
+    @GetMapping("/findFood")
+    @ResponseBody
+    public AjaxResult findFood(@RequestParam String itemsCode) {
+       List<TSysFood> tSysFood = sysFoodService.findByItemCode(itemsCode);
+       return AjaxResult.successData(200,tSysFood);
+    }
 }
