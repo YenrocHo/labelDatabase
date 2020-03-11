@@ -150,12 +150,12 @@ public class PrintHistoryController {
             String userName = bodyJsonObject.getString("userName");
             String itemsCode = bodyJsonObject.getString("itemsCode");
             String printLabelId = bodyJsonObject.getString("printLabelId");
-            if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(itemsCode) || StringUtils.isEmpty(printLabelId)) {
+            if (StringUtils.isEmpty(printLabelId)) {
                 throw new JSONException("参数错误");
             }
-            if (!userService.isExist(userName, itemsCode)) {
+          /*  if (!userService.isExist(userName, itemsCode)) {
                 return AjaxResult.error(AjaxResult.CODE_ERROR, "该用户名在此项目点不存在");
-            }
+            }*/
             PrintHistory printHistory = printHistoryService.selectByPrintLabelId(printLabelId);
             return AjaxResult.success(AjaxResult.CODE_SUCCESS, "查询成功", printHistory);
         } catch (JSONException e) {

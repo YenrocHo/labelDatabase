@@ -127,16 +127,16 @@
         </if>
     </delete>
     <insert id="insert" parameterType="com.fc.aden.model.custom.process.PrintHistory">
-    insert into al_print_history (id, items_code, original_id,
-      print_lable_id, product_name, food_category, product_weight,
-      correct_stage, correct_storage, employer_name, employer_id,
-      print_time, create_time, update_time,shelf_life
-      )
-    values (#{id,jdbcType=VARCHAR}, #{itemsCode,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR},
-      #{printLableId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{foodCategory,jdbcType=VARCHAR}, #{productWeight,jdbcType=VARCHAR},
-      #{correctStage,jdbcType=VARCHAR}, #{correctStorage,jdbcType=VARCHAR}, #{employerName,jdbcType=VARCHAR}, #{employerId,jdbcType=VARCHAR},
-      #{printTime,jdbcType=TIMESTAMP}, now(), now(), #{shelfLife,jdbcType=TIMESTAMP}
-      )
+        insert into al_print_history (id, items_code, original_id,
+          print_lable_id, product_name, food_category, product_weight,
+          correct_stage, correct_storage, employer_name, employer_id,
+          print_time, create_time, update_time,shelf_life
+          )
+        values (#{id,jdbcType=VARCHAR}, #{itemsCode,jdbcType=VARCHAR}, #{originalId,jdbcType=VARCHAR},
+          #{printLableId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{foodCategory,jdbcType=VARCHAR}, #{productWeight,jdbcType=VARCHAR},
+          #{correctStage,jdbcType=VARCHAR}, #{correctStorage,jdbcType=VARCHAR}, #{employerName,jdbcType=VARCHAR}, #{employerId,jdbcType=VARCHAR},
+          #{printTime,jdbcType=TIMESTAMP}, now(), now(), #{shelfLife,jdbcType=TIMESTAMP}
+          )
   </insert>
     <insert id="insertSelective" parameterType="com.fc.aden.model.custom.process.PrintHistory">
         insert into al_print_history
@@ -395,6 +395,7 @@
             )
         </foreach>
     </insert>
+    <!--    项目管理员查询项目下数据-->
     <select id="selectList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -422,7 +423,7 @@
             AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
         </if>
         <if test="dateToday != null">
-            and shelf_life !='见包装' and now() &gt; UNIX_TIMESTAMP(shelf_life)
+            and shelf_life !='见包装' and now() &gt; date_format(shelf_life,'%Y-%c-%d %H:%i:%s')
             and is_write_off = 0
         </if>
         <if test="period == 1">
@@ -438,7 +439,7 @@
         and items_code = #{itemsCode}
         order by create_time desc
     </select>
-
+    <!--    管理员查询所有数据-->
     <select id="selectByTag" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.PrintHistory">
         select
         <include refid="Base_Column_List"/>
@@ -466,14 +467,19 @@
             AND print_Time &lt;= #{end,jdbcType=TIMESTAMP}
         </if>
         <if test="dateToday != null">
-            and shelf_life != '见包装' and now() &gt; UNIX_TIMESTAMP(shelf_life)
+            and shelf_life != '见包装' and now() &gt; date_format(shelf_life,'%Y-%c-%d %H:%i:%s')
             and is_write_off = 0
         </if>
         <if test="period == 1">
             and shelf_life != '见包装' and TO_DAYS(shelf_life)-TO_DAYS(now()) = 1
             and is_write_off = 0
         </if>
-
+        <if test="writeOffFlag == 0">
+            and is_write_off = 0
+        </if>
+        <if test="writeOffFlag == 1">
+            and is_write_off = 1
+        </if>
         order by create_time desc
     </select>
 

@@ -116,7 +116,11 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
     public int update(String id) {
         TsysUser tsysUser = ShiroUtils.getUser();
         PrintHistory printHistory = printHistoryMapper.selectByPrimaryKey(id);
-        printHistory.setWriteOffOperatorName(tsysUser.getName());
+        if (tsysUser.getEnglishName() == null && tsysUser.getEnglishName().equals("")){
+            printHistory.setWriteOffOperatorName(tsysUser.getName());
+        }else{
+            printHistory.setWriteOffOperatorName(tsysUser.getEnglishName());
+        }
         printHistory.setWriteOffOperatorNo(tsysUser.getUsername());
         printHistory.setWriteOffFlag(1);
         printHistory.setWriteOffTime(new Date());

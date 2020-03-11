@@ -71,7 +71,7 @@ public class PeriodController extends BaseController {
         Date end = null;
         Date date = null;//用于过期数据区别 勿修改
         int period = 1;// 用于临期数据区别 勿修改
-        int write = Integer.parseInt(writeOffFlag);
+//        int write = Integer.parseInt(writeOffFlag);
         try {
             if (startTime != null && !"".equals(startTime)) {
                 start = dateFormat.parse(startTime);
