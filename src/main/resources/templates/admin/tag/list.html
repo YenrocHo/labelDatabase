@@ -200,10 +200,12 @@
     var dataUrl = window.rootPath + "/TagController/list";
     var removeUrl = window.rootPath + "/TagController/remove";
     var detailsUrl = window.rootPath + "/TagController/details/{id}";
+    var updateList = window.rootPath + "/PeriodController/updateList";
     var options = {
         dataUrl: dataUrl,
         removeUrl: removeUrl,
         detailsUrl: detailsUrl,
+        updateList: updateList,
         sortName: "id",
         modalName: "标签",
         search: false,
@@ -278,7 +280,7 @@
                     var id = row.id;
                     var actions = [];
                     if (row.writeOffFlag == 0) {
-                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updateWriteOffFlag(\'' + id + '\')" ><i class="fa fa-edit"></i>核销</a> ');
+                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.updateWriteOffFlag(\'' + id + '\')" ><i class="fa fa-edit"></i>核销</a> ');
                     } else {
                         actions.push('已核销 ');
                     }

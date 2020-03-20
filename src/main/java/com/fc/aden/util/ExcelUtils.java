@@ -39,8 +39,8 @@ public class ExcelUtils {
                 // 获得当前sheet的结束行
                 int lastRowNum = sheet.getLastRowNum();
                 // 获取表头
-                // String[] cellTr = new
-                // String[sheet.getRow(0).getLastCellNum()];
+               /*  String[] cellTr = new
+                 String[sheet.getRow(0).getLastCellNum()];*/
                 // 循环所有行
                 for (int rowNum = firstRowNum; rowNum <= lastRowNum; rowNum++) {
                     Map<String, String> map = new HashMap<String, String>();

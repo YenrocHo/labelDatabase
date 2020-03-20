@@ -30,10 +30,12 @@
                                     <input type="button" onclick="downloadPro()"
                                            style="border: 0;border-radius: 10px;color: aliceblue; background: #5a7bc2; width: 100px;height: 35px; outline: none;font-size: 18px"
                                            value="下载模板">
+                                    <input type="hidden" name="itemCode" id="itemCode" th:value="${itemCode}"/>
                                 </div>
                                 <p>a.模板文件中第一行为标题,请保留</p>
                                 <p>b.模板文件中各列不能变动,请按要求填写,否则可能导致导入的那一行验证不通过</p>
                                 <p>c.上传的文件大小不超过10M,允许上传的格式为*.xls,*.xlsx</p>
+                                <p>c.上传的文件需根据模板严格操作，不允许一个文件上传两个项目数据</p>
                                 <input type="file" name="myFile" id="myFile" accept=".xls,.xlsx">
                                 <input type="hidden" name="fileId" id="fileId" value=""/>
                             </div>
@@ -42,8 +44,6 @@
                             <div class="form-group">
                                 <div class="form-control-static col-sm-offset-9">
                                     <div class="text-center">
-                                        <!--<input type="submit" class="btn btn-danger" value="提交"
-                                               onclick="checkData()"/>-->
                                         <input type="submit" class="btn btn-danger" value="提交"
                                                id = "submited"/>
                                         <input onclick="$.modal.close()" class="btn btn-danger" type="button"
@@ -80,8 +80,13 @@
     })
 
     function downloadPro() {//获取模板
-        var host = window.location.host;//获取请求地址
-        window.open(window.rootPath + "/static/templates/product_template.xls");
+        var item = $("#itemCode").val();
+        var r = item.split(",");
+        var n = r.length;
+        for (var i = 0; i < n; i++) {
+            var m = r[i].split(",");
+            window.open(window.rootPath + "/ProductController/uploadTemplate/"+m);
+        }
         return false;
     }
 

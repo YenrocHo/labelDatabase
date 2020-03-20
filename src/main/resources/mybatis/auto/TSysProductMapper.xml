@@ -155,7 +155,7 @@
             #{searchTxt, jdbcType=VARCHAR}, '%')
         </if>
         <if test="foodName !='' and foodName != null">
-            and p.food_name = #{foodName}
+            and f.food like CONCAT('%', #{foodName, jdbcType=VARCHAR}, '%')
         </if>
         <if test="itemsCode != null and itemsCode !=''">
           and p.items_code = #{itemsCode}
@@ -179,7 +179,7 @@
             and p.items_code like CONCAT('%', #{itemsCode, jdbcType=VARCHAR}, '%')
         </if>
         <if test="foodName !='' and foodName != null">
-            and p.food_name = #{foodName}
+            and f.food  like CONCAT('%', #{foodName, jdbcType=VARCHAR}, '%')
         </if>
         order by p.update_time desc
     </select>

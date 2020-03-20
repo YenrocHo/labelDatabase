@@ -491,7 +491,8 @@
         WHERE is_write_off = 0
         <choose>
             <when test="expiredType == 1">
-                AND TIMEDIFF(shelf_life, DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S')) BETWEEN 0 AND 24
+--                 AND TIMEDIFF(shelf_life, DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S')) BETWEEN 0 AND 24
+                and shelf_life != '见包装' and TO_DAYS(shelf_life)-TO_DAYS(now()) = 1
             </when>
             <otherwise>
                 AND TIMEDIFF(DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S'), shelf_life) > 0
@@ -510,7 +511,8 @@
         WHERE is_write_off = 0
         <choose>
             <when test="expiredType == 1">
-                AND TIMEDIFF(shelf_life, DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S')) BETWEEN 0 AND 24
+--                 AND TIMEDIFF(shelf_life, DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S')) BETWEEN 0 AND 24
+                and shelf_life != '见包装' and TO_DAYS(shelf_life)-TO_DAYS(now()) = 1
             </when>
             <otherwise>
                 AND TIMEDIFF(DATE_FORMAT(CURDATE(), '%Y-%m-%d %H:%i:%S'), shelf_life) > 0
@@ -519,6 +521,7 @@
             <if test="itemsCode != null and itemsCode != ''">
                 and items_code = #{itemsCode, jdbcType=VARCHAR}
             </if>
+        <if test="offset!=null and rows!=null">limit ${offset},${rows}</if>
     </select>
 
     <select id="isExistPrintIdAndItemCode" resultType="Boolean" parameterType="String">
@@ -545,7 +548,7 @@
         </foreach>
     </update>
 
-    <select id="selectByPrintLabelId" parameterType="String" resultType="com.fc.aden.model.custom.process.PrintHistory">
+    <select id="selectByPrintLabelId" parameterType="String" resultMap="BaseResultMap">
         select
             <include refid="Base_Column_List"/>
         from

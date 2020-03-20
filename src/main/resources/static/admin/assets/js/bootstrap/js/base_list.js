@@ -139,6 +139,13 @@
                 var url = $.table._option.updateUrl.replace("{id}", id);
                 $.modal.open("修改" + $.table._option.modalName, url);
             },
+            updateWriteOffFlag: function(id) {
+                var url = $.table._option.updateList;
+                var data = {
+                    "id": id
+                };
+                $.operate.submit(url, "post", "json", data);
+            },
 			remove:function(id){
 				$.modal.confirm("确定删除该条" +$.table._option.modalName+ "信息吗？", function() {
                     var url = $.common.isEmpty(id) ? $.table._option.removeUrl : $.table._option.removeUrl.replace("{id}", id);
@@ -170,7 +177,7 @@
                 $.modal.confirm("确认要核销选中的" + rows.length + "条数据吗?", function() {
                     var url = $.table._option.updateList;
                     var data = {
-                        "ids": rows.join()
+                        "id": rows.join()
                     };
                     $.operate.submit(url, "post", "json", data);
                 })

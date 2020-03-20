@@ -9,9 +9,7 @@ import com.fc.aden.model.custom.Tablepar;
 import com.fc.aden.model.custom.TitleVo;
 import com.fc.aden.model.custom.process.*;
 import com.fc.aden.shiro.util.ShiroUtils;
-import com.fc.aden.util.BeanCopierEx;
-import com.fc.aden.util.ExcelUtils;
-import com.fc.aden.util.SnowflakeIdWorker;
+import com.fc.aden.util.*;
 import com.fc.aden.vo.FoodVO;
 import com.fc.aden.vo.ProductFoodStoreVO;
 import com.fc.aden.vo.ProductStoreDTO;
@@ -19,6 +17,10 @@ import com.fc.aden.vo.ProductVO;
 import com.fc.aden.vo.importDto.ImportProductDTO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -173,7 +178,7 @@ public class ProductController extends BaseController {
                 } else {
                     productStore.setShelfLife("见包装");
                 }
-            }else{
+            } else {
                 productStore.setShelfLife("见包装");
             }
             productStore.setCreateTime(new Date());
@@ -302,30 +307,76 @@ public class ProductController extends BaseController {
      * @return
      */
     @GetMapping("/upload")
-    public String upload() {
-        return prefix + "/upload";
-    }
-
-    @PostMapping("/upload")
-    public String uploadProduct() {
+    public String upload(ModelMap modelMap) {
+        TsysUser tsysUser = ShiroUtils.getUser();
+        String icode = tsysUser.getItemsCode();
+        if (icode != null && !icode.equals("")) {
+            modelMap.put("itemCode", tsysUser.getItemsCode());
+        } else {
+            List<TSysItems> items = sysItemsService.queryItems();
+            StringBuffer buf = new StringBuffer();
+            for (TSysItems tSysItems : items) {
+                String ite = tSysItems.getItemsCode();
+                buf.append(ite).append(",");
+            }
+            String s = buf.deleteCharAt(buf.length() - 1).toString();//去掉最后一个逗号
+            modelMap.put("itemCode", s);
+        }
         return prefix + "/upload";
     }
 
     @PostMapping("/uploadFile")
-    public String uploadFile(Model model, MultipartFile myFile) {
-        List<Map<String, String>> dataList;
+    public String uploadFile(Model model, MultipartFile myFile, HttpServletRequest request) throws IOException {
+        ExcelUtils.checkFile(myFile);
+        String[] portProduct = null;
+/*        List<Map<String, String>> dataList;
         try {
-            dataList = ExcelUtils.getExcelData(myFile, ImportProductDTO.IMPORT_TABLE_HEADER);
+//            dataList = ProductExcelUtils.getExcelData(myFile, ImportProductDTO.IMPORT_TABLE_HEADER);
+            dataList = ProductExcelUtils.getExcelData(myFile);
         } catch (Exception e) {
             logger.warn("数据异常，重新导入", e);
             //文件解析异常
             return prefix + "/import_error";
-        }
-        ImportProductDTO importProductDTO = sysProductService.importValid(dataList);
+        }*/
+        ImportProductDTO importProductDTO = sysProductService.importValid1(myFile, request);
         List<ProductVO> productVOList = sysProductService.getSuccessTSysProduct(importProductDTO.gettSysProductDTOS());
         sysProductService.saveSysProduct(productVOList);
         model.addAttribute("importProductDTO", importProductDTO);
         return prefix + "/product_valid";
+    }
+
+
+    /**
+     * 产品导入 模版下载
+     *
+     * @param response
+     * @throws Exception
+     */
+    @GetMapping("/uploadTemplate/{item}")
+    public void uploadTemplate(@PathVariable("item") String item, HttpServletResponse response,HttpServletRequest request) throws Exception {
+         String path = this.getClass().getResource("/").getPath();
+        System.out.println("pathURl="+path);
+//        FileInputStream fs = new FileInputStream("E:/apache-tomcat-desmartNew/webapps/labelprint/WEB-INF/classes/static/templates/product_template.xls");
+        FileInputStream fs = new FileInputStream(path+"/static/templates/product_template.xls");//获取tomcat下解压的文件路径
+//        FileInputStream fs = new FileInputStream(System.getProperty("user.dir")+"\\src\\main\\resources\\static\\templates\\product_template.xls");//本地项目路径
+        POIFSFileSystem ps = new POIFSFileSystem(fs);  //使用POI提供的方法得到excel的信息
+        HSSFWorkbook wb = new HSSFWorkbook(ps);
+        HSSFSheet sheet = wb.getSheetAt(0);  //获取到工作表，因为一个excel可能有多个工作表
+        HSSFRow row = sheet.getRow(0);  //获取第一行（excel中的行默认从0开始，所以这就是为什么，一个excel必须有字段列头），即，字段列头，便于赋值
+//        System.out.println(sheet.getLastRowNum() + " " + row.getLastCellNum());  //分别得到最后一行的行号，和一条记录的最后一个单元格
+//        FileOutputStream out=new FileOutputStream(System.getProperty("user.dir")+"\\src\\main\\resources\\static\\templates\\product_template.xls");
+        row = sheet.getRow(1); //在现有行号后追加数据
+        List<TSysStore> sysStore = null;
+        if (item != null && !item.equals("")) {
+            sysStore = sysStoreService.findByStoreList(item);
+            int j = 4;
+            for (TSysStore tSysStore1 : sysStore) {
+                j++;
+                row.createCell(j).setCellValue(tSysStore1.getName()); //设置第一个（从0开始）单元格的数据
+            }
+            FileUtils.createFile(response, wb, item + "_产品模板");
+        }
+
     }
 
 

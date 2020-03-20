@@ -48,7 +48,7 @@ public class ExpireController extends BaseController {
         mp.put("tSysItems", tSysItemsList);
         TsysUser tsysUser = ShiroUtils.getUser();
         mp.put("tsysUser", tsysUser);
-        setTitle(model, new TitleVo("标签到期列表", "标签到期管理", false, "欢迎进入图片页面", false, false));
+        setTitle(model, new TitleVo("过期标签列表", "过期标签管理", false, "过期标签列表", false, false));
         return prefix + "/expireList";
     }
 
@@ -105,17 +105,17 @@ public class ExpireController extends BaseController {
 
     /**
      * 批量核销历史数据
-     * @param ids
+     * @param id
      * @return
      */
     @PostMapping("updateList")
     @RequiresPermissions("system:expire:updateList")
     @ResponseBody
-    public AjaxResult updateList(String ids){
-        List<String> lista= Convert.toListStrArray(ids);
+    public AjaxResult updateList(String id){
+        List<String> lista= Convert.toListStrArray(id);
         int b = 0;
-        for (String id:lista) {
-            b = sysTagService.update(id);
+        for (String ids:lista) {
+            b = sysTagService.update(ids);
         }
         if(b>0){
             return success();

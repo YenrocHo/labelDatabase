@@ -7,7 +7,9 @@ import com.fc.aden.vo.ImportTSysProductDTO;
 import com.fc.aden.vo.ProductFoodStoreVO;
 import com.fc.aden.vo.ProductVO;
 import com.github.pagehelper.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +29,9 @@ public interface SysProductService {
 
     TSysProduct updateStatus(TSysProduct tSysProduct);
 
-    ImportProductDTO importValid(List<Map<String, String>> dataList);
+//    ImportProductDTO importValid(List<Map<String, String>> dataList);
+    ImportProductDTO importValid1(MultipartFile myFile, HttpServletRequest request);
+
 
     List<ProductVO> getSuccessTSysProduct(List<ImportTSysProductDTO> importProductDTOS);
 

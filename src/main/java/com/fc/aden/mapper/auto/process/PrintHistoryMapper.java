@@ -6,6 +6,8 @@ import com.fc.aden.model.custom.process.PrintHistoryExample;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -57,11 +59,11 @@ public interface PrintHistoryMapper extends BaseMapper<PrintHistory, PrintHistor
     int countExpired(@Param("itemsCode") String itemsCode, @Param("expiredType") String expiredType);
 
     /**
-     * 查询临期和过期数据列表
+     * 分页查询临期和过期数据列表
      *
      * @author Created by zc on 2020/2/19
      */
-    List<PrintHistory> listExpired(@Param("itemsCode") String itemsCode, @Param("expiredType") String expiredType);
+    List<PrintHistory> listExpired(Map<String, Object> paramMap);
 
     /**
      * 此标签是否在此项目点

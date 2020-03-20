@@ -286,7 +286,7 @@
                     var id = row.id;
                     var actions = [];
                     if (row.writeOffFlag == 0) {
-                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="updateWriteOffFlag(\'' + id + '\')" ><i class="fa fa-edit"></i>核销</a> ');
+                        actions.push('<a class="btn btn-success btn-xs"  href="#" onclick="$.operate.updateWriteOffFlag(\'' + id + '\')" ><i class="fa fa-edit"></i>核销</a> ');
                     } else {
                         actions.push('已核销');
                     }

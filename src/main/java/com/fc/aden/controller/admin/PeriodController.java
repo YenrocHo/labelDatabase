@@ -48,7 +48,7 @@ public class PeriodController extends BaseController {
         mp.put("tSysItems", tSysItemsList);
         TsysUser tsysUser = ShiroUtils.getUser();
         mp.put("tsysUser", tsysUser);
-        setTitle(model, new TitleVo("标签临期列表", "标签临期管理", false, "欢迎进入图片页面", false, false));
+        setTitle(model, new TitleVo("预警标签列表", "预警标签管理", false, "预警标签列表", false, false));
         return prefix + "/periodList";
     }
 
@@ -95,11 +95,11 @@ public class PeriodController extends BaseController {
     @PostMapping("updateList")
     @RequiresPermissions("system:period:updateList")
     @ResponseBody
-    public AjaxResult updateList(String ids){
-        List<String> lista= Convert.toListStrArray(ids);
+    public AjaxResult updateList(String id){
+        List<String> lista= Convert.toListStrArray(id);
         int b = 0;
-        for (String id:lista) {
-            b = sysTagService.update(id);
+        for (String ids:lista) {
+            b = sysTagService.update(ids);
         }
         if(b>0){
             return success();

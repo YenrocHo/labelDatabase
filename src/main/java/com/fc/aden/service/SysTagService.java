@@ -20,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
@@ -95,6 +93,14 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
             writeOffFlag = "3";
         }
         int write = Integer.parseInt(writeOffFlag);
+        System.out.println("开始时间=="+start);
+        if (end!=null) {
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(end);
+            calendar.add(calendar.DATE, 1); //把日期往后增加一天,整数  往后推,负数往前移动
+            end = calendar.getTime(); //这个时间就是日期往后推一天的结果
+            System.out.println("结束时间==" + end);
+        }
         //第一次进入列表
         if ("2" != tsysUser.getRoles() && !"2".equals(tsysUser.getRoles())) {
             if (tablepar.getPageNum() != 0 && tablepar.getPageSize() != 0) {
@@ -116,10 +122,10 @@ public class SysTagService implements BaseService<TSysTag, TSysTagExample> {
     public int update(String id) {
         TsysUser tsysUser = ShiroUtils.getUser();
         PrintHistory printHistory = printHistoryMapper.selectByPrimaryKey(id);
-        if (tsysUser.getEnglishName() == null && tsysUser.getEnglishName().equals("")){
-            printHistory.setWriteOffOperatorName(tsysUser.getName());
-        }else{
+        if (tsysUser.getEnglishName() != null && !tsysUser.getEnglishName().equals("")){
             printHistory.setWriteOffOperatorName(tsysUser.getEnglishName());
+        }else{
+            printHistory.setWriteOffOperatorName(tsysUser.getName());
         }
         printHistory.setWriteOffOperatorNo(tsysUser.getUsername());
         printHistory.setWriteOffFlag(1);

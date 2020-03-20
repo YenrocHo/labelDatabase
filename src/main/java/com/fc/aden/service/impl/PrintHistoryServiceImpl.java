@@ -6,6 +6,7 @@ import com.fc.aden.model.custom.process.PrintHistory;
 import com.fc.aden.model.custom.process.PrintHistoryExample;
 import com.fc.aden.service.PrintHistoryService;
 import com.fc.aden.util.BeanCopierEx;
+import com.fc.aden.util.SqlParameter;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,9 @@ public class PrintHistoryServiceImpl extends BaseServiceImpl<PrintHistoryMapper,
      */
     @Override
     public List<PrintHistory> listExpired(String itemsCode, String expiredType, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(printHistoryMapper.listExpired(itemsCode, expiredType)).getList();
+       return  printHistoryMapper.listExpired(SqlParameter.getParameter().addLimit(pageNum,
+                pageSize).addQuery("itemsCode", itemsCode)
+                .addQuery("expiredType",expiredType).getMap());
     }
 
     /**

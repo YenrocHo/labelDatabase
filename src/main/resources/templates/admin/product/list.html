@@ -64,11 +64,12 @@
                                         </select>
                                     </div>
                                     <div class="layui-input-inline" id="food">
-                                        <select name="foodName" lay-verify="required" lay-search="">
+                                        <!--<select name="foodName" lay-verify="required" lay-search="">
                                             <option value="">食品名称</option>
                                             <option th:each="m : ${tSysFood}" th:value="${m.foodCode}"><h3
                                                     th:text="${m.food}"></h3></option>
-                                        </select>
+                                        </select>-->
+                                        <input type="text" name="foodName" placeholder="食品名称" class="form-control">
                                     </div>
                                     <button onclick="$.table.search(this)" class="btn btn-success" type="button"><i
                                             class="fa fa-search"></i>&nbsp;搜索

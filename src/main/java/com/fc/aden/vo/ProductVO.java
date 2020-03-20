@@ -1,5 +1,7 @@
 package com.fc.aden.vo;
 
+import java.util.List;
+
 public class ProductVO {
     //产品Id
     private String id;
@@ -35,6 +37,7 @@ public class ProductVO {
     private String aboveID;//高于65°C
     private String above;//高于65°C
 
+    private List<StoreVO> storeVOS;
     private Integer priority;//优先级
 
     //产品更新时间
@@ -58,6 +61,14 @@ public class ProductVO {
         this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
+    }
+
+    public List<StoreVO> getStoreVOS() {
+        return storeVOS;
+    }
+
+    public void setStoreVOS(List<StoreVO> storeVOS) {
+        this.storeVOS = storeVOS;
     }
 
     public Integer getPriority() {
