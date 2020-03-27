@@ -50,7 +50,6 @@ public class AndroidServiceImpl implements AndroidService {
     @Override
     public AjaxResult login(String username){
         int resultCount = tsysUserMapper.checkUserName(username);
-
         if (resultCount == 0) {
             AjaxResult ajaxResult = AjaxResult.error(Const.CodeEnum.noExistent.getCode(),Const.CodeEnum.noExistent.getValue());
             return ajaxResult;

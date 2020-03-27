@@ -52,10 +52,10 @@ public class LoginController  extends BaseController {
      * @Param [number, request]
      * @return com.fc.aden.common.domain.AjaxResult
      **/
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/login")
+    @RequestMapping("/login")
     @ResponseBody
-    public AjaxResult login(String username, HttpServletRequest request) {
-        AjaxResult result = androidService.login(username);
+    public AjaxResult login(@RequestBody UserVO username, HttpServletRequest request) {
+        AjaxResult result = androidService.login(username.getUsername());
         request.getSession().setAttribute("current_user",result.get("data"));
         return result;
     }

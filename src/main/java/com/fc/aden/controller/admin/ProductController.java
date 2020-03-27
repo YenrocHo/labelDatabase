@@ -310,17 +310,22 @@ public class ProductController extends BaseController {
     public String upload(ModelMap modelMap) {
         TsysUser tsysUser = ShiroUtils.getUser();
         String icode = tsysUser.getItemsCode();
+        String s = "";//去掉最后一个逗号
         if (icode != null && !icode.equals("")) {
             modelMap.put("itemCode", tsysUser.getItemsCode());
         } else {
             List<TSysItems> items = sysItemsService.queryItems();
-            StringBuffer buf = new StringBuffer();
-            for (TSysItems tSysItems : items) {
-                String ite = tSysItems.getItemsCode();
-                buf.append(ite).append(",");
+            if(items==null || items.size()==0){
+                modelMap.put("itemCode", s);
+            }else {
+                StringBuffer buf = new StringBuffer();
+                for (TSysItems tSysItems : items) {
+                    String ite = tSysItems.getItemsCode();
+                    buf.append(ite).append(",");
+                }
+                s = buf.deleteCharAt(buf.length() - 1).toString();//去掉最后一个逗号
+                modelMap.put("itemCode", s);
             }
-            String s = buf.deleteCharAt(buf.length() - 1).toString();//去掉最后一个逗号
-            modelMap.put("itemCode", s);
         }
         return prefix + "/upload";
     }
