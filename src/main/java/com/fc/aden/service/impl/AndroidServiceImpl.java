@@ -76,6 +76,12 @@ public class AndroidServiceImpl implements AndroidService {
         return ajaxResult;
     }
 
+    /**
+     * 查询所有用户列表
+     * @param statusToken
+     * @param username
+     * @return
+     */
     @Override
     public AjaxResult AllUserList(String statusToken,String username){
         if (!token(username,statusToken)){
@@ -92,6 +98,14 @@ public class AndroidServiceImpl implements AndroidService {
         return tsysUserListResult;
     }
 
+    /**
+     * 查询所有数据列表
+     * @param keyword
+     * @param statusToken
+     * @param username
+     * @param foodCode
+     * @return
+     */
     @Override
     public AjaxResult selectAllList(String keyword,String statusToken,String username,String foodCode){
         if (!token(username,statusToken)){

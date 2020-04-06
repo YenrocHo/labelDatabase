@@ -7,7 +7,7 @@ fuce:
   #版权年份
   copyrightYear: 2019
   #图片路径 本地路径
-  #  profile: E:/apache-tomcat-desmartNew/webapps/images/
+#   profile: E:/apache-tomcat-desmartNew/webapps/images/
   #图片路径 47.102.107.246 服务器路径
 #  profile: /data/apache-tomcat-8.5.45/webapps/images/
   #图片路径 52.130.86.35 服务器路径

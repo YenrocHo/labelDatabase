@@ -199,122 +199,6 @@ public class SysProductServiceImpl implements SysProductService {
 
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 
-    /**
-     * 验证文件，数据导入到DTO
-     *
-     * @param dataList
-     * @return
-     */
-    public ImportProductDTO importValid(List<Map<String, String>> dataList) {
-        List<String> projectNames = new ArrayList<>();
-        ImportProductDTO importProductDTO = new ImportProductDTO();
-        List<ImportTSysProductDTO> importTSysProductDTOS = new ArrayList<ImportTSysProductDTO>();
-        int errNumber = 0;
-        int successNumber = 0;
-        for (int i = 1; i < dataList.size(); i++) {
-            Map<String, String> row = dataList.get(i);
-            String productName = row.get(ImportProductDTO.PRODUCT_NAME);
-            String productCode = row.get(ImportProductDTO.PRODUCT_CODE);
-            String foodName = row.get(ImportProductDTO.FOOD_NAME);
-            String items = row.get(ImportProductDTO.ITEM);
-            String priority = row.get(ImportProductDTO.PRIORITY);//产品
-            String fridge = row.get(ImportProductDTO.FRIDGE); //冰箱
-            String frozen = row.get(ImportProductDTO.FROZEN);  //冰柜
-            String temperature = row.get(ImportProductDTO.ROOM_TEMPERATURE); //室温
-            String above = row.get(ImportProductDTO.ABOVE); //高于65°C
-
-            StringBuffer errorMessage = new StringBuffer();
-            boolean pass = true;
-            ImportTSysProductDTO importTSysProductDTO = new ImportTSysProductDTO();
-            importTSysProductDTO.setCreateTime(df.format(new Date()));
-            importTSysProductDTO.setUpdateTime(df.format(new Date()));
-            importTSysProductDTO.setStatus(1);
-            importTSysProductDTO.setId(UUID.randomUUID().toString());
-            if (priority.equals("")) {//优先级为空默认 2
-                importTSysProductDTO.setPriority(2);
-            }
-            int productList = tSysProductMapper.selectProductBycName(productName, items);
-            if (StringUtils.isEmpty(productName)) {
-                errorMessage.append("产品名称不能为空；");
-                pass = false;
-            } else if (projectNames.contains(productName) || productList > 0) {
-                importTSysProductDTO.setProduct(productName);
-                errorMessage.append("产品名称不能重复；");
-                pass = false;
-            } else {
-                importTSysProductDTO.setProduct(productName);
-                importTSysProductDTO.setName(productName);
-            }
-            //判断项目点
-            List<TSysItems> tSysItemsList = tSysItemsMapper.selectByItems(items);
-            if (StringUtils.isEmpty(items)) {
-                errorMessage.append("项目点编号不为空；");
-                pass = false;
-            } else if (tSysItemsList != null && tSysItemsList.size() > 0) {
-                importTSysProductDTO.setItemsCode(items);
-            } else {
-                errorMessage.append("项目点编号不存在；");
-                pass = false;
-            }
-            //
-            List<TSysFood> tSysFood = tSysFoodMapper.findByFoodCodeOrItem(foodName, items);
-            if (tSysFood != null && tSysFood.size() > 0) {
-                importTSysProductDTO.setFoodName(foodName);
-            } else {
-                errorMessage.append("食品种类不存在；");
-                pass = false;
-            }
-
-            TSysStore tSysStore = tSysStoreMapper.selectByItemsAndName(items, "冰柜");
-            if (frozen != null && !frozen.equals("")) {
-                importTSysProductDTO.setFrozenID(tSysStore.getId());
-                importTSysProductDTO.setFrozen(frozen + "小时");
-            } else {
-                importTSysProductDTO.setFrozenID(tSysStore.getId());
-                importTSysProductDTO.setFrozen("见包装");
-            }
-
-            TSysStore tSysStoreF = tSysStoreMapper.selectByItemsAndNameF(items, "冰箱");
-            if (fridge != null && !fridge.equals("")) {
-                importTSysProductDTO.setFridgeID(tSysStoreF.getId());
-                importTSysProductDTO.setFridge(fridge + "小时");
-            } else {
-                importTSysProductDTO.setFridgeID(tSysStoreF.getId());
-                importTSysProductDTO.setFridge("见包装");
-            }
-            TSysStore tSysStoreT = tSysStoreMapper.selectByItemsAndNameT(items, "室温");
-            if (temperature != null && !temperature.equals("")) {
-                importTSysProductDTO.setTemperatureID(tSysStoreT.getId());
-                importTSysProductDTO.setTemperature(temperature + "小时");
-            } else {
-                importTSysProductDTO.setTemperatureID(tSysStoreT.getId());
-                importTSysProductDTO.setTemperature("见包装");
-            }
-            TSysStore tSysStoreA = tSysStoreMapper.selectByItemsAndNameA(items, "高于65°C");
-            if (above != null && !above.equals("")) {
-                importTSysProductDTO.setAboveID(tSysStoreA.getId());
-                importTSysProductDTO.setAbove(above + "小时");
-            } else {
-                importTSysProductDTO.setAboveID(tSysStoreA.getId());
-                importTSysProductDTO.setAbove("见包装");
-            }
-            if (pass) {
-                errorMessage.append("成功！");
-                successNumber++;
-            } else {
-                errNumber++;
-            }
-            importTSysProductDTO.setProductCode(productCode);
-            importTSysProductDTO.setPass(pass);
-            importTSysProductDTO.setMessages(errorMessage.toString());
-            importTSysProductDTOS.add(importTSysProductDTO);
-        }
-        importProductDTO.setErrorNumber(errNumber);
-        importProductDTO.setSuccessNumber(successNumber);
-        importProductDTO.settSysProductDTOS(importTSysProductDTOS);
-        return importProductDTO;
-    }
-
     public List<ProductVO> getSuccessTSysProduct(List<ImportTSysProductDTO> importProductDTOS) {
         if (importProductDTOS == null) return new ArrayList<>();
         List<ProductVO> tsysUsers = new ArrayList<>();
@@ -383,6 +267,11 @@ public class SysProductServiceImpl implements SysProductService {
         return productVOList;
     }
 
+    /**
+     * 验证文件，数据导入到DTO
+     *
+     * @return
+     */
     public ImportProductDTO importValid1(MultipartFile myFile, HttpServletRequest request) {
         ImportProductDTO importProductDTO = new ImportProductDTO();
         List<ImportTSysProductDTO> importTSysProductDTOS = new ArrayList<ImportTSysProductDTO>();
@@ -473,11 +362,18 @@ public class SysProductServiceImpl implements SysProductService {
                     StoreVO storeVOS = new StoreVO();
                     String proStore = listList.get(g++);
                     String store = firstList.get(i).toString();//将object类型转成string类型
-                    TSysStore tSysStoreF = tSysStoreMapper.selectByItemsAndNameF(item, store);
+                        TSysStore tSysStoreF = tSysStoreMapper.selectByItemsAndNameF(item, store);
                     if (proStore != null && !proStore.equals("")) {
-                        storeVOS.setId(tSysStoreF.getId());
-                        storeVOS.setStore(proStore + "小时");
-                        storeVOList.add(storeVOS);
+                        boolean result=proStore.matches("[0-9]+");
+                        if(result == true) {
+                            storeVOS.setId(tSysStoreF.getId());
+                            storeVOS.setStore(proStore);//小时
+                            storeVOList.add(storeVOS);
+                        }else{
+                            storeVOS.setId(tSysStoreF.getId());
+                            storeVOS.setStore("见包装");
+                            storeVOList.add(storeVOS);
+                        }
                     } else {
                         storeVOS.setId(tSysStoreF.getId());
                         storeVOS.setStore("见包装");

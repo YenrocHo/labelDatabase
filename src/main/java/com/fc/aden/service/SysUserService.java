@@ -60,7 +60,7 @@ public class SysUserService implements BaseService<TsysUser, TsysUserExample> {
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 
     /**
-     * 分页查询
+     * 用户分页查询
      *
      * @return
      */
