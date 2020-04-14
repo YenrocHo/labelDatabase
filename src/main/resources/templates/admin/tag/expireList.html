@@ -288,8 +288,20 @@
     })
 
     function timeStamp(time) {
-        var date = new Date(time + 0 * 3600 * 1000);
-        return date.toJSON().substr(0, 19).replace('T', ' ').replace(/-/g, '.');
+        // var date = new Date(time + 0 * 3600 * 1000);
+        // return date.toJSON().substr(0, 19).replace('T', ' ').replace(/-/g, '.');
+        if (time == null) {
+            return '-';
+        }
+        let datetime = new Date();
+        datetime.setTime(time);
+        let year = datetime.getFullYear();
+        let month = (datetime.getMonth() + 1).toString().length === 2 ? datetime.getMonth() + 1 : "0" + (datetime.getMonth() + 1);
+        let date = datetime.getDate().toString().length === 2 ? datetime.getDate() : "0" + datetime.getDate();
+        let hour = datetime.getHours().toString().length === 2 ? datetime.getHours() : "0" + datetime.getHours();
+        let minute = datetime.getMinutes().toString().length === 2 ? datetime.getMinutes() : "0" + datetime.getMinutes();
+        let second = datetime.getSeconds().toString().length === 2 ? datetime.getSeconds() : "0" + datetime.getSeconds();
+        return year + "." + month + "." + date + " " + hour + ":" + minute + ":" + second;
     }
 
 </script>

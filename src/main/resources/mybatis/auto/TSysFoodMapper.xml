@@ -63,7 +63,7 @@
       and food like CONCAT('%', #{food, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
     </if>
     and items_code = #{itemsCode}
-    order by update_time desc
+    order by food_index asc
   </select>
   <!--管理员查询所有数据-->
   <select id="queryByFood" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFood" >
@@ -77,7 +77,7 @@
     <if test="food != null and  food !=''">
       and food like CONCAT('%', #{food, jdbcType=VARCHAR}, '%') or english_name like CONCAT('%', #{food, jdbcType=VARCHAR}, '%')
     </if>
-      order by update_time desc
+      order by food_index asc
   </select>
 
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fc.aden.model.custom.process.TSysFoodExample" >

@@ -218,12 +218,12 @@
             },    //参数值
             type: "POST",   //请求方式
             success: function (result) {
-                alert("修改成功");
-                location.reload();
+                $.modal.msgSuccess("修改成功");
+                $.table.refresh();
             },
             error: function (result) {
-                alert("修改失败");
-                location.reload();
+                $.modal.alertError("修改失败")
+                // location.reload();
             }
         });
     }

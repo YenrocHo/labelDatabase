@@ -210,11 +210,13 @@
                     var actions = [];
                     if (row.status == 0) {
                         actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\'  href="#" onclick="$.operate.edit(\'' + id + '\')" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="deleteFood(\'' + id + '\')" ><i class="fa fa-remove"></i>删除</a>');
+                        // actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="deleteFood(\'' + id + '\')" ><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>&nbsp;');
                         actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\'  href="#" onclick="freeze(\'' + id + '\')" style="background-color: #87CEFA;margin-left: 3px;color: white;width: 50px"><i class="fa fa-check"></i>解冻</a>');
                     } else {
                         actions.push('<a class="btn btn-success btn-xs" name=\'' + id + '\' href="#" onclick="$.operate.edit(\'' + id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="deleteFood(\'' + id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        // actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="deleteFood(\'' + id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>&nbsp;');
                         actions.push('<a class="btn btn-freeze btn-xs" id= \'' + id + '\' href="#" onclick="freeze(\'' + id + '\')" style="background-color: #F08080;margin-left: 3px;color: white;width: 50px"><i class="fa fa-ban"></i>冻结</a>');
                     }
                     return actions.join('');
@@ -228,7 +230,7 @@
 
     function freeze(id) {
         $.ajax({
-            url: "/FoodController/freeze",    //请求的url地址
+            url: window.rootPath + "/FoodController/freeze",    //请求的url地址
             dataType: "json",   //返回格式为json
             async: true,//请求是否异步，默认为异步，这也是ajax重要特性
             data: {

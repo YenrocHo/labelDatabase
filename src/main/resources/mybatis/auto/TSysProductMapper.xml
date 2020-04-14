@@ -160,7 +160,7 @@
         <if test="itemsCode != null and itemsCode !=''">
           and p.items_code = #{itemsCode}
         </if>
-        order by p.update_time desc
+        order by p.priority ASC, p.order_id ASC
     </select>
     <select id="findByProduct" parameterType="com.fc.aden.model.custom.process.TSysProduct" resultMap="BaseResultMap">
         select p.id as id,
@@ -181,7 +181,7 @@
         <if test="foodName !='' and foodName != null">
             and f.food  like CONCAT('%', #{foodName, jdbcType=VARCHAR}, '%')
         </if>
-        order by p.update_time desc
+        order by p.priority ASC, p.order_id ASC
     </select>
 
     <update id="updateStatusById" parameterType="map">

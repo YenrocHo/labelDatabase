@@ -199,7 +199,7 @@ public class SysFoodService implements BaseService<TSysFood, TSysFoodExample> {
             importTSysFoodDTO.setId(UUID.randomUUID().toString());
             List<TSysFood> tSysFoodList = tSysFoodMapper.findByFoodCodeOrItem(foodName, items);
             List<TSysFood> list = tSysFoodMapper.countByFood();
-            Integer index = list.size()+1;
+            Integer index = list.size()+i;
             importTSysFoodDTO.setFoodIndex(index);
             if (StringUtils.isEmpty(foodName)) {
                 errorMessage.append("食品种类不能为空；");
