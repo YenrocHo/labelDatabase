@@ -361,7 +361,6 @@ public class ProductController extends BaseController {
     public void uploadTemplate(@PathVariable("item") String item, HttpServletResponse response,HttpServletRequest request) throws Exception {
          String path = this.getClass().getResource("/").getPath();
         System.out.println("pathURl="+path);
-//        FileInputStream fs = new FileInputStream("E:/apache-tomcat-desmartNew/webapps/labelprint/WEB-INF/classes/static/templates/product_template.xls");
         FileInputStream fs = new FileInputStream(path+"/static/templates/product_template.xls");//获取tomcat下解压的文件路径
 //        FileInputStream fs = new FileInputStream(System.getProperty("user.dir")+"\\src\\main\\resources\\static\\templates\\product_template.xls");//本地项目路径
         POIFSFileSystem ps = new POIFSFileSystem(fs);  //使用POI提供的方法得到excel的信息
