@@ -1,7 +1,7 @@
-#dev环境  mysql7.0
+#dev环境  mysql5.0
 spring:
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
+    driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://139.196.193.182:8306/adenLabel?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
     username: root
     password: DecentSmart2016

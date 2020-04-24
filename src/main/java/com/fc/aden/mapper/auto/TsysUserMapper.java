@@ -41,7 +41,7 @@ public interface TsysUserMapper {
     List<TsysUser> selectAllUser(String itemsCode);
 
     //唯一标识
-    int checkUserName(String username);
+    int checkUserName(@Param("username") String username);
 
     //查询工号
     TsysUser selectLogin(String number);
